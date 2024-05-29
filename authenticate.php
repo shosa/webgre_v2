@@ -1,0 +1,87 @@
+<?php
+require_once 'config/config.php';
+session_start();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	$username = filter_input(INPUT_POST, 'username');
+	$passwd = filter_input(INPUT_POST, 'passwd');
+	$remember = filter_input(INPUT_POST, 'remember');
+
+	try {
+		// Connessione al database utilizzando PDO
+		$pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
+		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+		// Prepare SQL statement
+		$statement = $pdo->prepare("SELECT * FROM utenti WHERE user_name = :username");
+
+		// Bind the parameter
+		$statement->bindParam(':username', $username);
+
+		// Execute SQL statement
+		$statement->execute();
+
+		// Fetch the record
+		$row = $statement->fetch(PDO::FETCH_ASSOC);
+
+		if ($statement->rowCount() >= 1) {
+
+			$db_password = $row['password'];
+			$user_id = $row['id'];
+
+			if (password_verify($passwd, $db_password)) {
+
+				$_SESSION['user_logged_in'] = TRUE;
+				$_SESSION['admin_type'] = $row['admin_type'];
+				$_SESSION['nome'] = $row['nome'];
+				$_SESSION['username'] = $row['user_name'];
+				$_SESSION['tipo'] = $row['admin_type'];
+				$_SESSION['user_id'] = $row['id'];
+
+				if ($remember) {
+
+					$series_id = randomString(16);
+					$remember_token = getSecureRandomToken(20);
+					$encryted_remember_token = password_hash($remember_token, PASSWORD_DEFAULT);
+
+
+					$expiry_time = date('Y-m-d H:i:s', strtotime(' + 30 days'));
+
+					$expires = strtotime($expiry_time);
+
+					setcookie('series_id', $series_id, $expires, "/");
+					setcookie('remember_token', $remember_token, $expires, "/");
+
+					// Prepare SQL statement for updating remember details
+					$update_statement = $pdo->prepare("UPDATE utenti SET series_id = :series_id, remember_token = :remember_token, expires = :expires WHERE id = :user_id");
+
+					// Bind parameters
+					$update_statement->bindParam(':series_id', $series_id);
+					$update_statement->bindParam(':remember_token', $encryted_remember_token);
+					$update_statement->bindParam(':expires', $expiry_time);
+					$update_statement->bindParam(':user_id', $user_id);
+
+					// Execute SQL statement
+					$update_statement->execute();
+				}
+				// Authentication successful, redirect user
+				header('Location:index.php');
+				exit;
+			} else {
+
+				$_SESSION['login_failure'] = "Username o password non validi.";
+				header('Location:login.php');
+				exit;
+			}
+		} else {
+			$_SESSION['login_failure'] = "Username o password non validi.";
+			header('Location:login.php');
+			exit;
+		}
+	} catch (PDOException $e) {
+		// If an error occurs, display the error message
+		echo "Errore: " . $e->getMessage();
+	}
+} else {
+	die('Method Not allowed');
+}
+?>

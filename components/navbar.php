@@ -1,0 +1,145 @@
+<!-- SIDEBAR -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+
+    <!-- SIDEBAR INTESTAZIONE -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../../index">
+        <div class="sidebar-brand-icon">
+            <img src="<?php BASE_PATH ?>/img/roundLogo.png" alt="" width="40" height="40">
+        </div>
+        <div class="sidebar-brand-text mx-3">WEBGRE </div>
+    </a>
+
+    <!-- DIVISORE -->
+    <hr class="sidebar-divider my-0">
+    <li class="nav-item">
+        <a id="home" class="nav-link" href="../../index">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
+
+    <!-- DIVISORE -->
+    <hr class="sidebar-divider">
+
+    <!-- TITOLO SEZIONE -->
+    <div class="sidebar-heading">
+        Funzioni
+    </div>
+
+    <!-- RIPARAZIONI -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRiparazioni"
+            aria-expanded="true" aria-controls="collapseRiparazioni">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Riparazioni</span>
+        </a>
+        <div id="collapseRiparazioni" class="collapse" aria-labelledby="headingRiparazioni"
+            data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Sezioni:</h6>
+                <a id="riparazioni-add-step1" class="collapse-item" href="../../functions/riparazioni/add_step1"><i
+                        class="fa fa-plus fa-fw"></i> Nuova</a>
+                <a id="riparazioni-elenco" class="collapse-item" href="../../functions/riparazioni/riparazioni"><i
+                        class="fa fa-list fa-fw"></i> Elenco</a>
+                <a id="riparazioni-close-barcode" class="collapse-item"
+                    href="../../functions/riparazioni/close_barcode"><i class="far fa-scanner"></i> Chiudi Più</a>
+                <a id="riparazioni-make-plist" class="collapse-item" href="../../functions/riparazioni/make_plist"><i
+                        class="fa fa-stream fa-fw"></i> Packing List</a>
+            </div>
+        </div>
+    </li>
+    <!-- CONTROLLO QUALITA -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCQ" aria-expanded="true"
+            aria-controls="collapseCQ">
+            <i class="far fa-box-check"></i>
+            <span>Controllo Qualita'</span>
+        </a>
+        <div id="collapseCQ" class="collapse" aria-labelledby="headingCQ" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Sezioni:</h6>
+                <a id="quality-new" class="collapse-item" href="../../functions/quality/new"><i class="fa fa-plus"></i>
+                    Nuova</a>
+                <a id="quality-read" class="collapse-item" href="../../functions/quality/read"><i
+                        class="far fa-folder-tree"></i>
+                    Elenco</a>
+                <a id="quality-search" class="collapse-item" href="../../functions/quality/search"><i
+                        class="fa fa-search"></i>
+                    Cerca</a>
+                <a id="quality-barcode" class="collapse-item" href="../../functions/quality/barcode"><i
+                        class="fal fa-barcode-alt"></i>
+                    Barcodes</a>
+                <a class="collapse-item" href="#"><i class="far fa-chart-pie-alt"></i>
+                    Reportistica</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- DIVISORE -->
+    <hr class="sidebar-divider">
+
+    <!-- TITOLO SEZIONE -->
+    <div class="sidebar-heading">
+        Addons
+    </div>
+
+    <!-- DIVISORE -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- TOGGLE SIDEBAR -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+</ul>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var currentUrl = window.location.pathname;
+
+        // Rimuove eventuali prefissi e normalizza l'URL
+        currentUrl = currentUrl.replace(/\/$/, ''); // Rimuove l'eventuale barra finale
+
+        // Mappa degli URL alle classi degli elementi di navigazione
+        var navLinks = {
+            '/index': 'home',
+            '/functions/riparazioni/add_step1': 'riparazioni-add-step1',
+            '/functions/riparazioni/riparazioni': 'riparazioni-elenco',
+            '/functions/riparazioni/close_barcode': 'riparazioni-close-barcode',
+            '/functions/riparazioni/make_plist': 'riparazioni-make-plist',
+            '/functions/quality/new': 'quality-new',
+            '/functions/quality/read': 'quality-read',
+            '/functions/quality/search': 'quality-search',
+            '/functions/quality/barcode': 'quality-barcode',
+            // Aggiungi qui altri link come necessario
+        };
+
+        // Controlla se l'URL corrente corrisponde a uno degli URL nel menu
+        for (var url in navLinks) {
+            if (navLinks.hasOwnProperty(url) && currentUrl.includes(url)) {
+                var navItem = document.getElementById(navLinks[url]);
+                if (navItem) {
+                    navItem.classList.add('active');
+                    var parentNavLink = navItem.closest('.nav-item').querySelector('.nav-link');
+                    if (parentNavLink) {
+                        parentNavLink.classList.remove('collapsed');
+                    }
+                    var parentCollapse = navItem.closest('.collapse');
+                    var navbarNav = document.getElementById('accordionSidebar');
+                    if (parentCollapse && (!navbarNav || !navbarNav.classList.contains('toggled'))) {
+                        parentCollapse.classList.add('show');
+                    }
+                }
+            }
+        }
+
+        // Gestione speciale per la dashboard
+        if (currentUrl.endsWith('/index') || currentUrl === '/index' || currentUrl === '/') {
+            var homeNavItem = document.getElementById('home');
+            if (homeNavItem) {
+                homeNavItem.classList.add('active');
+            }
+        }
+    });
+
+</script>
+
+<!-- FINE SIDEBAR -->

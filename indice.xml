@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<indice>
+    <!-- DASHBOARD -->
+    <pagina>
+        <tag>home;dashboard;main</tag>
+        <nome>Dashboard</nome>
+        <descrizione>Pagina iniziale</descrizione>
+        <link>/index</link>
+        <icona>fas fa-home fa-2x text-gray-300</icona>
+    </pagina>
+    <!-- RIPARAZIONI -->
+    <pagina>
+        <tag>riparazioni;cedole;cedola</tag>
+        <nome>Riparazioni</nome>
+        <descrizione>Elenco riparazioni attive</descrizione>
+        <link>/functions/riparazioni/riparazioni</link>
+        <icona>fas fa-hammer fa-2x text-gray-300</icona>
+    </pagina>
+    <pagina>
+        <tag>riparazioni;cedola;nuova;</tag>
+        <nome>Nuova Riparazione</nome>
+        <descrizione>Inserisci una nuova cedola</descrizione>
+        <link>/functions/riparazioni/add_step1</link>
+        <icona>fas fa-plus fa-2x text-gray-300</icona>
+    </pagina>
+    <pagina>
+        <tag>riparazioni;packing;list;</tag>
+        <nome>Crea Packing list</nome>
+        <descrizione>Genera elenco cedole</descrizione>
+        <link>/functions/riparazioni/make_plist</link>
+        <icona>fas fa-stream fa-2x text-gray-300</icona>
+    </pagina>
+    <pagina>
+        <tag>barcode;chiudi;chiudere;</tag>
+        <nome>Chiudi più</nome>
+        <descrizione>Chiudi cedole con Barcode</descrizione>
+        <link>/functions/riparazioni/close_barcode</link>
+        <icona>fas fa-scanner fa-2x text-gray-300</icona>
+    </pagina>
+    <pagina>
+        <tag>log;cronologia;</tag>
+        <nome>Log Attività</nome>
+        <descrizione>Cronologia operazioni</descrizione>
+        <link>/functions/users/log</link>
+        <icona>fas fa-monitor-heart-rate fa-2x text-gray-300</icona>
+    </pagina>
+</indice>
