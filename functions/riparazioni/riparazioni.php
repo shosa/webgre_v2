@@ -249,7 +249,7 @@ function getUrgencyColor($urgency)
     <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="<?php BASE_PATH ?>/js/demo/datatables-demo.js"></script>
+    <script src="<?php BASE_PATH ?>/js/datatables.js"></script>
 
     <?php include_once BASE_PATH . '/components/footer.php'; ?>
 </body>

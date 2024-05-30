@@ -2,7 +2,7 @@
 session_start();
 require_once '../../config/config.php';
 require_once BASE_PATH . '/components/auth_validate.php';
-
+require_once '../../utils/log_utils.php';
 $db = getDbInstance();
 
 // Recupera la variabile cartellino dall'URL
@@ -24,7 +24,7 @@ $paia = filter_input(INPUT_POST, 'paia', FILTER_UNSAFE_RAW);
 $stmt = $db->prepare("SELECT * FROM dati WHERE Cartel = :cartellino");
 $stmt->execute(['cartellino' => $cartellino]);
 $informazione = $stmt->fetch(PDO::FETCH_ASSOC);
-
+logActivity($_SESSION['user_id'], 'CQ', 'INIZIO', 'Test', 'Cartellino ' . $cartellino, '');
 $cartellino = $informazione["Cartel"];
 $commessa = $informazione["Commessa Cli"];
 
@@ -377,6 +377,7 @@ require_once BASE_PATH . '/components/header.php';
                 </div>
             </div>
 
+            <?php include_once BASE_PATH . '/components/scripts.php'; ?>
             <?php include_once BASE_PATH . '/components/footer.php'; ?>
         </div>
     </div>

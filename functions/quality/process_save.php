@@ -2,6 +2,7 @@
 session_start();
 require_once '../../config/config.php';
 require_once BASE_PATH . '/components/auth_validate.php';
+require_once '../../utils/log_utils.php';
 
 // Ottieni l'orario corrente
 $orario = date('H:i');
@@ -48,7 +49,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         VALUES (:testid, :reparto, :cartellino, :commessa, :cod_articolo, :articolo, :calzata, :test, :note, :esito, :data, :orario, :operatore, :linea, :pa)";
                 $stmt = $pdo->prepare($sql);
                 $insert_success = $stmt->execute($data);
-
+                $real_query = replacePlaceholders($pdo, $sql, $data);
+                logActivity($_SESSION['user_id'], 'CQ', 'FINE', 'Test', 'Cartellino ' . $_POST['cartellino']);
                 if ($insert_success) {
                     $new_testid++; // Incrementa testid per il prossimo inserimento
                 } else {

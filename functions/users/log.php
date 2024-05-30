@@ -150,22 +150,13 @@ include (BASE_PATH . "/components/header.php");
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-    <!-- Bootstrap core JavaScript-->
     <script src="<?php BASE_PATH ?>/vendor/jquery/jquery.min.js"></script>
     <script src="<?php BASE_PATH ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
     <script src="<?php BASE_PATH ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
     <script src="<?php BASE_PATH ?>/js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
     <script src="<?php BASE_PATH ?>/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="<?php BASE_PATH ?>/js/demo/datatables-demo.js"></script>
+    <script src="<?php BASE_PATH ?>/js/datatables.js"></script>
 
 </body>
 <script>

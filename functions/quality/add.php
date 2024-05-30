@@ -3,6 +3,7 @@
 session_start();
 require_once '../../config/config.php';
 require_once BASE_PATH . '/components/auth_validate.php';
+require_once '../../utils/log_utils.php';
 
 // Funzione per ottenere l'istanza del database
 
@@ -72,10 +73,11 @@ require_once BASE_PATH . '/components/header.php';
                                 #<?php echo $new_testid; ?></h6>
                             <span class="badge bg-success text-white"><?php echo $nomeLinea; ?></span>
                         </div>
-                        <h4 class="page-header page-action-links text-center font-weight-bold" style="color:red;padding:1%">
+                        <h4 class="page-header page-action-links text-center font-weight-bold"
+                            style="color:red;padding:1%">
                             ** Controllare il riepilogo prima di procedere, andando avanti l'operazione di controllo
                             sarà
-                            registrata ** 
+                            registrata **
                         </h4>
                         <form class="form" action="cqtest.php" method="post" id="customer_form"
                             enctype="multipart/form-data">
