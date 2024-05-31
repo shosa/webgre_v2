@@ -115,7 +115,7 @@ $nome = $stmtNome->fetchColumn(); ?>
                 </a>
                 <a class="dropdown-item" href="../../functions/users/log">
                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Log Attività
+                    Registro Attività
                 </a>
                 <a class="dropdown-item" href="../../functions/users/themes">
                     <i

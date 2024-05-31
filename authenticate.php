@@ -1,6 +1,7 @@
 <?php
-require_once 'config/config.php';
 session_start();
+require_once 'config/config.php';
+require_once BASE_PATH . '/utils/log_utilsLogin.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = filter_input(INPUT_POST, 'username');
@@ -35,10 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['username'] = $row['user_name'];
                 $_SESSION['tipo'] = $row['admin_type'];
                 $_SESSION['user_id'] = $row['id'];
-				$_SESSION['tema'] = $row['theme_color'];
+                $_SESSION['tema'] = $row['theme_color'];
 
                 // Recupera i permessi dalla tabella `permessi`
-                $permessi_statement = $pdo->prepare("SELECT riparazioni, cq, produzione, tabelle FROM permessi WHERE id_utente = :user_id");
+                $permessi_statement = $pdo->prepare("SELECT riparazioni, cq, produzione, tabelle, log  FROM permessi WHERE id_utente = :user_id");
                 $permessi_statement->bindParam(':user_id', $user_id);
                 $permessi_statement->execute();
                 $permessi = $permessi_statement->fetch(PDO::FETCH_ASSOC);
@@ -48,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['permessi_cq'] = $permessi['cq'];
                     $_SESSION['permessi_produzione'] = $permessi['produzione'];
                     $_SESSION['permessi_tabelle'] = $permessi['tabelle'];
+                    $_SESSION['permessi_log'] = $permessi['log'];
                 }
 
                 if ($remember) {
@@ -74,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 // Authentication successful, redirect user
+                logActivity($_SESSION['user_id'], 'LOGIN', 'ACCESSO', 'Accesso eseguito', '' . $del_id, '');
                 header('Location: index.php');
                 exit;
             } else {

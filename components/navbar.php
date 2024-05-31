@@ -82,33 +82,43 @@
 
     <!-- PRODUZIONE -->
     <?php if (isset($_SESSION['permessi_produzione']) && $_SESSION['permessi_produzione'] == 1): ?>
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProd" aria-expanded="true"
-            aria-controls="collapseProd">
-            <i class="far fa-calendar-alt"></i>
-            <span>Produzione</span>
-        </a>
-        <div id="collapseProd" class="collapse" aria-labelledby="headingProd" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Sezioni:</h6>
-                <a id="quality-new" class="collapse-item" href="../../functions/production/new"><i
-                        class="fa fa-plus"></i>
-                    Nuova</a>
-                <a id="quality-read" class="collapse-item" href="../../functions/production/calendario"><i
-                        class="far fa-calendar-alt"></i>
-                    Calendario</a>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProd" aria-expanded="true"
+                aria-controls="collapseProd">
+                <i class="far fa-calendar-alt"></i>
+                <span>Produzione</span>
+            </a>
+            <div id="collapseProd" class="collapse" aria-labelledby="headingProd" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Sezioni:</h6>
+                    <a id="quality-new" class="collapse-item" href="../../functions/production/new"><i
+                            class="fa fa-plus"></i>
+                        Nuova</a>
+                    <a id="quality-read" class="collapse-item" href="../../functions/production/calendario"><i
+                            class="far fa-calendar-alt"></i>
+                        Calendario</a>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
     <?php endif; ?>
-
     <!-- DIVISORE -->
     <hr class="sidebar-divider">
-
-    <!-- TITOLO SEZIONE -->
     <div class="sidebar-heading">
         Strumenti
     </div>
+    <!-- DIVISORE -->
+    <?php if (isset($_SESSION['permessi_log']) && $_SESSION['permessi_log'] == 1): ?>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="../../functions/users/log_admin" aria-expanded="true"
+                aria-controls="collapseProd">
+                <i class="far fa-monitor-heart-rate"></i>
+                <span>Log Attività</span>
+            </a>
+        </li>
+    <?php endif; ?>
+
+    <!-- TITOLO SEZIONE -->
+
 
     <!-- DIVISORE -->
     <hr class="sidebar-divider d-none d-md-block">
