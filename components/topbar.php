@@ -13,7 +13,8 @@ $nome = $stmtNome->fetchColumn(); ?>
 
     <!-- Sidebar Toggle (Topbar) -->
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-        <i class="fa fa-bars"></i>
+        <i
+            class="fa fa-bars text-<?php echo (isset($_SESSION["tema"]) && !empty($_SESSION["tema"])) ? $_SESSION["tema"] : "primary"; ?>"></i>
     </button>
 
     <form action="<?php BASE_PATH ?>/spotlight.php" method="GET"
@@ -39,12 +40,14 @@ $nome = $stmtNome->fetchColumn(); ?>
         <li class="nav-item dropdown no-arrow d-sm-none">
             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-search fa-fw"></i>
+                <i
+                    class="fas fa-search fa-fw text-<?php echo (isset($_SESSION["tema"]) && !empty($_SESSION["tema"])) ? $_SESSION["tema"] : "primary"; ?>"></i>
             </a>
             <!-- Dropdown - Messages -->
             <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
                 aria-labelledby="searchDropdown">
-                <form action="spotlight.php" method="GET" class="form-inline mr-auto w-100 navbar-search">
+                <form action="<?php BASE_PATH ?>/spotlight.php" method="GET"
+                    class="form-inline mr-auto w-100 navbar-search">
                     <div class="input-group">
                         <input type="text" name="terms" class="form-control bg-light border-0 small"
                             placeholder="Cerca..." aria-label="Search" aria-describedby="basic-addon2" required>

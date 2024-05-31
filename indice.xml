@@ -44,4 +44,12 @@
         <link>/functions/users/log</link>
         <icona>fas fa-monitor-heart-rate fa-2x text-gray-300</icona>
     </pagina>
+    <!-- PRODUZIONE -->
+    <pagina>
+        <tag>produzion;calendario</tag>
+        <nome>Calendario Produzione</nome>
+        <descrizione>Controllo produttivo</descrizione>
+        <link>/functions/produzione/calendario</link>
+        <icona>fas fa-calendar-alt fa-2x text-gray-300</icona>
+    </pagina>
 </indice>

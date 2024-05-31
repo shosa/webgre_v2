@@ -101,7 +101,7 @@ try {
                                             <tbody>
                                                 <?php foreach ($data as $record): ?>
                                                     <!-- MODALE CANCELLA  -->
-                                                    <div class="modal fade" style="z-index: 5000"
+                                                    <div class="modal fade" style="z-index: 90000"
                                                         id="confirm-delete-<?php echo $record['IDRIP']; ?>" role="dialog"
                                                         aria-labelledby="confirm-delete-modal-label" aria-hidden="true">
                                                         <div class="modal-dialog">

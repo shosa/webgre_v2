@@ -30,7 +30,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRiparazioni"
                 aria-expanded="true" aria-controls="collapseRiparazioni">
-                <i class="fas fa-fw fa-cog"></i>
+                <i class="fas fa-fw fa-hammer"></i>
                 <span>Riparazioni</span>
             </a>
             <div id="collapseRiparazioni" class="collapse" aria-labelledby="headingRiparazioni"

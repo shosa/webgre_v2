@@ -45,8 +45,7 @@ $monthNames = [
 
 <style>
     .future {
-        background-color: #f2a5a0;
-        color: white;
+        color: #f2a5a0;
         cursor: not-allowed;
     }
 
@@ -89,7 +88,7 @@ $monthNames = [
                                 </div>
                                 <div class="card-body">
                                     <div class="calendar">
-                                        <table class="table table-bordered table-sm">
+                                        <table class="table table-bordered table-sm table-condensed">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">Lun</th>
