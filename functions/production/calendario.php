@@ -169,9 +169,11 @@ $monthNames = [
                                     <h6 class="m-0 font-weight-bold text-primary">Strumenti</h6>
                                 </div>
                                 <div class="card-body text-center">
-                                    <a href="new" class="btn btn-success btn-block btn-lg">REGISTRA NUOVA</a>
+                                    <a href="new" class="btn btn-success btn-block btn-lg"><i class="fas fa-plus"></i>
+                                        REGISTRA NUOVA</a>
                                     <button class="btn btn-warning btn-block btn-lg"
-                                        onclick="generatePDFMese('<?= $monthNames[$currentMonth] ?>')">REPORT
+                                        onclick="generatePDFMese('<?= $monthNames[$currentMonth] ?>')"><i
+                                            class="fas fa-calendar-alt"></i> REPORT
                                         MENSILE</button>
                                 </div>
                             </div>
