@@ -13,17 +13,19 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Prepara la query SQL con le condizioni di ricerca se i criteri sono stati forniti
-    $sql = "SELECT * FROM cq_records";
+    $sql = "SELECT * FROM riparazioni";
     $params = [];
     if ($search_criteria) {
-        $sql .= " WHERE testid LIKE :search_criteria 
-                OR cartellino LIKE :search_criteria 
-                OR commessa LIKE :search_criteria 
-                OR articolo LIKE :search_criteria 
-                OR cod_articolo LIKE :search_criteria 
-                OR linea LIKE :search_criteria 
-                OR reparto LIKE :search_criteria 
-                OR data LIKE :search_criteria";
+        $sql .= " WHERE IDRIP LIKE :search_criteria 
+                OR CARTELLINO LIKE :search_criteria 
+                OR COMMESSA LIKE :search_criteria 
+                OR ARTICOLO LIKE :search_criteria 
+                OR CODICE LIKE :search_criteria 
+                OR LINEA LIKE :search_criteria 
+                OR REPARTO LIKE :search_criteria 
+                OR DATA LIKE :search_criteria
+                OR CLIENTE LIKE :search_criteria";
+
         $params[':search_criteria'] = '%' . $search_criteria . '%';
     }
 
@@ -56,21 +58,22 @@ try {
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Controllo Qualità</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Riparazioni</h1>
                 </div>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Cerca Inserimenti</li>
+                    <li class="breadcrumb-item active">Cerca Cedole</li>
                 </ol>
+                <?php require_once (BASE_PATH . "/utils/alerts.php"); ?>
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Ricerca inserimenti</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Ricerca Cedole</h6>
                     </div>
                     <div class="card-body">
                         <form method="get" action="">
                             <div class="form-group">
                                 <input type="text" name="search" class="form-control"
-                                    placeholder="Cerca per N° Test, Reparto, Cartellino, Commessa, Articolo, Linea o Data"
+                                    placeholder="Cerca per ID, Reparto, Cartellino, Linea, Data, Cliente .."
                                     value="<?php echo htmlspecialchars($search_criteria); ?>">
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">Cerca <i class="far fa-search"></i>
@@ -81,41 +84,67 @@ try {
                             <div class="col-lg-12">
                                 <?php if ($search_criteria && $data): ?>
                                     <div class="table-responsive">
-                                        <table class="table table-striped table-bordered table-condensed" id="dataTable">
+                                        <table class="table table-striped table-bordered table-condensed">
                                             <thead>
                                                 <tr>
-                                                    <th>N°</th>
-                                                    <th>Data</th>
-                                                    <th>Orario</th>
-                                                    <th>Cartellino</th>
-                                                    <th>Commessa</th>
-                                                    <th>Reparto</th>
-                                                    <th>Articolo</th>
-                                                    <th>Modello</th>
-                                                    <th>Calzata</th>
-                                                    <th>Esito</th>
-                                                    <th>Dettagli</th>
+                                                    <th width="5%">ID</th>
+                                                    <th width="15%">Codice</th>
+                                                    <th width="35%">Articolo</th>
+                                                    <th width="5%">Quantità</th>
+                                                    <th width="10%">Cartellino</th>
+                                                    <th width="5%">Data</th>
+                                                    <th width="10%">Reparto</th>
+                                                    <th width="5%">Linea</th>
+                                                    <th width="10%">Azioni</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php foreach ($data as $record): ?>
+                                                    <!-- MODALE CANCELLA  -->
+                                                    <div class="modal fade" style="z-index: 5000"
+                                                        id="confirm-delete-<?php echo $record['IDRIP']; ?>" role="dialog"
+                                                        aria-labelledby="confirm-delete-modal-label" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <form action="search_delete_riparazioni.php" method="POST">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="confirm-delete-modal-label">
+                                                                            Conferma
+                                                                        </h5>
+                                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                            aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body"
+                                                                        style="color: #f96363; background: #ffe9e9;">
+                                                                        <input type="hidden" name="del_id" id="del_id"
+                                                                            value="<?php echo $record['IDRIP']; ?>">
+                                                                        <p>Sicuro di voler procedere ad eliminare questa riga?
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="submit" class="btn btn-danger">Si</button>
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-dismiss="modal">No</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
                                                     <tr>
-                                                        <td><?php echo $record['testid']; ?></td>
-                                                        <td><?php echo $record['data']; ?></td>
-                                                        <td><?php echo $record['orario']; ?></td>
-                                                        <td><?php echo $record['cartellino']; ?></td>
-                                                        <td><?php echo $record['commessa']; ?></td>
-                                                        <td><?php echo $record['reparto']; ?></td>
-                                                        <td><?php echo $record['cod_articolo']; ?></td>
-                                                        <td><?php echo $record['articolo']; ?></td>
-                                                        <td><?php echo $record['calzata']; ?></td>
-                                                        <td <?php echo ($record['esito'] == 'V') ? 'style="text-align:center; background-color: #b8ffba; color: green;"' : 'style="text-align:center;background-color: #ffb8c1; color: red;"'; ?>>
-                                                            <?php echo ($record['esito'] == 'V') ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>'; ?>
-                                                        </td>
+                                                        <td><?php echo $record['IDRIP']; ?></td>
+                                                        <td><?php echo $record['CODICE']; ?></td>
+                                                        <td><?php echo $record['ARTICOLO']; ?></td>
+                                                        <td><?php echo $record['QTA']; ?></td>
+                                                        <td><?php echo $record['CARTELLINO']; ?></td>
+                                                        <td><?php echo $record['DATA']; ?></td>
+                                                        <td><?php echo $record['REPARTO']; ?></td>
+                                                        <td><?php echo $record['LINEA']; ?></td>
                                                         <td>
                                                             <button class="btn btn-info btn-detail"
-                                                                data-testid="<?php echo $record['testid']; ?>"
-                                                                data-toggle="modal" data-target="#detailModal">
+                                                                data-idrip="<?php echo $record['IDRIP']; ?>" data-toggle="modal"
+                                                                data-target="#detailModal">
                                                                 <i class="fal fa-search-plus"></i>
                                                             </button>
                                                         </td>
@@ -125,7 +154,7 @@ try {
                                         </table>
                                     </div>
                                 <?php elseif ($search_criteria): ?>
-                                    <div class="alert alert-warning">Nessuna registrazione trovata.</div>
+                                    <div class="alert alert-warning">Nessuna riparazione trovata.</div>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -137,7 +166,7 @@ try {
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="detailModalLabel">Dettagli del Record</h5>
+                                    <h5 class="modal-title" id="detailModalLabel">Dettagli</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -147,41 +176,32 @@ try {
                                         id="detail-cartellino"></span>
                                     <span class="badge bg-primary text-white" style="margin-left: 10px;"
                                         id="detail-commessa"></span>
-                                    <p><strong>Operatore:</strong> <span id="detail-operatore"></span></p>
-                                    <p><strong>Articolo:</strong> <span id="detail-articolo"></span></p>
-                                    <p><strong>Test:</strong> <span id="detail-test"></span></p>
-                                    <p><strong>Note:</strong> <span id="detail-note"></span></p>
-                                    <p><strong>Calzata:</strong> <span id="detail-calzata"></span></p>
+                                    <div id="detail-container"></div>
                                 </div>
                                 <div class="modal-footer">
+
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <script>
                         document.addEventListener('DOMContentLoaded', function () {
                             const buttons = document.querySelectorAll('.btn-detail');
                             buttons.forEach(button => {
                                 button.addEventListener('click', function () {
-                                    const testid = this.getAttribute('data-testid');
-                                    fetch('search_record_details.php?testid=' + testid)
-                                        .then(response => response.json())
+                                    const recordId = this.getAttribute('data-idrip');
+                                    fetch('search_record_details.php?id=' + recordId)
+                                        .then(response => response.text())
                                         .then(data => {
-                                            document.getElementById('detail-operatore').textContent = data.operatore;
-                                            document.getElementById('detail-articolo').textContent = data.articolo;
-                                            document.getElementById('detail-cartellino').textContent = data.cartellino;
-                                            document.getElementById('detail-commessa').textContent = data.commessa;
-                                            document.getElementById('detail-test').textContent = data.test;
-                                            document.getElementById('detail-note').textContent = data.note;
-                                            document.getElementById('detail-calzata').textContent = data.calzata;
+                                            document.getElementById('detail-container').innerHTML = data;
                                         })
                                         .catch(error => console.error('Errore:', error));
                                 });
                             });
                         });
                     </script>
+
 
 
                 </div>
@@ -200,7 +220,7 @@ try {
             <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
             <!-- Page level custom scripts -->
-            <script src="<?php BASE_PATH ?>/js/demo/datatables-demo.js"></script>
+
 
             <?php include_once BASE_PATH . '/components/footer.php'; ?>
 

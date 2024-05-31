@@ -11,7 +11,7 @@ $edit = ($operation == 'edit') ? true : false;
 try {
     // Handle update request
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Get customer id from query string parameter
+        // Get repair ID from query string parameter
         $riparazione_id = filter_input(INPUT_GET, 'riparazione_id', FILTER_VALIDATE_INT);
 
         // Get input data
@@ -22,15 +22,26 @@ try {
         $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Prepare update statement
-        $stmt = $pdo->prepare("UPDATE riparazioni SET column1 = :column1, column2 = :column2, ... WHERE IDRIP = :idrip");
+        // Start building the update query
+        $update_query = "UPDATE riparazioni SET ";
+        $update_fields = [];
+        $update_values = [];
 
-        // Bind parameters
-        $stmt->bindParam(':column1', $data_to_update['column1']);
-        $stmt->bindParam(':column2', $data_to_update['column2']);
-        // Bind other parameters as needed
+        // Loop through the data and prepare the query
+        foreach ($data_to_update as $field => $value) {
+            $update_fields[] = "$field = :$field";
+            $update_values[":$field"] = $value;
+        }
 
-        $stmt->bindParam(':idrip', $riparazione_id);
+        $update_query .= implode(", ", $update_fields);
+        $update_query .= " WHERE IDRIP = :idrip";
+        $update_values[':idrip'] = $riparazione_id;
+
+        // Prepare and execute the update statement
+        $stmt = $pdo->prepare($update_query);
+        foreach ($update_values as $param => $val) {
+            $stmt->bindValue($param, $val);
+        }
 
         // Execute the statement
         $stmt->execute();
@@ -42,6 +53,7 @@ try {
             header('location: riparazioni');
             exit();
         }
+
     }
 
     // If edit variable is set, we are performing the update operation

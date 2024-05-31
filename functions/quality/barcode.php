@@ -74,42 +74,44 @@ try {
                                     <h6 class="m-0 font-weight-bold text-primary">Associazioni Barcodes</h6>
                                 </div>
                                 <div class="card-body">
-                                    <table class="table table-bordered mt-4" id="dataTable">
-                                        <thead>
-                                            <tr>
-                                                <th width="30%">Codice</th>
-                                                <th width="65%">Test</th>
-                                                <th width="5%">Elimina</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($barcodes as $barcode): ?>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered mt-4" id="dataTable">
+                                            <thead>
                                                 <tr>
-                                                    <td class="align-middle">
-                                                        <?php echo htmlspecialchars($barcode['code']); ?>
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        <?php echo htmlspecialchars($barcode['test']); ?>
-                                                    </td>
-                                                    <td class="align-middle text-center">
-                                                        <form method="POST" action="" style="display: inline-block;">
-                                                            <input type="hidden" name="action" value="delete">
-                                                            <input type="hidden" name="code"
-                                                                value="<?php echo htmlspecialchars($barcode['code']); ?>">
-                                                            <button type="submit" class="btn btn-danger btn-sm"><i
-                                                                    class="fal fa-trash fa-l"></i></button>
-                                                        </form>
-
-                                                        <form method="POST" action="" style="display: inline-block;">
-                                                            <input type="hidden" name="action" value="edit">
-                                                            <input type="hidden" name="code"
-                                                                value="<?php echo htmlspecialchars($barcode['code']); ?>">
-                                                        </form>
-                                                    </td>
+                                                    <th width="30%">Codice</th>
+                                                    <th width="65%">Test</th>
+                                                    <th width="5%">Elimina</th>
                                                 </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($barcodes as $barcode): ?>
+                                                    <tr>
+                                                        <td class="align-middle">
+                                                            <?php echo htmlspecialchars($barcode['code']); ?>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <?php echo htmlspecialchars($barcode['test']); ?>
+                                                        </td>
+                                                        <td class="align-middle text-center">
+                                                            <form method="POST" action="" style="display: inline-block;">
+                                                                <input type="hidden" name="action" value="delete">
+                                                                <input type="hidden" name="code"
+                                                                    value="<?php echo htmlspecialchars($barcode['code']); ?>">
+                                                                <button type="submit" class="btn btn-danger btn-sm"><i
+                                                                        class="fal fa-trash fa-l"></i></button>
+                                                            </form>
+
+                                                            <form method="POST" action="" style="display: inline-block;">
+                                                                <input type="hidden" name="action" value="edit">
+                                                                <input type="hidden" name="code"
+                                                                    value="<?php echo htmlspecialchars($barcode['code']); ?>">
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -149,13 +151,14 @@ try {
 
                     </div>
                 </div>
+               
                 <script src="<?php BASE_PATH ?>/vendor/jquery/jquery.min.js"></script>
                 <script src="<?php BASE_PATH ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
                 <script src="<?php BASE_PATH ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
                 <script src="<?php BASE_PATH ?>/js/sb-admin-2.min.js"></script>
                 <script src="<?php BASE_PATH ?>/vendor/datatables/jquery.dataTables.min.js"></script>
                 <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-                <script src="<?php BASE_PATH ?>/js/demo/datatables-demo.js"></script>
+                <script src="<?php BASE_PATH ?>/js/datatables.js"></script>
                 <?php include_once BASE_PATH . '/components/footer.php'; ?>
             </div>
         </div>

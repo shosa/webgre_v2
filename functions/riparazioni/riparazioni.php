@@ -5,6 +5,7 @@ error_reporting(E_ALL);
 
 session_start();
 require_once '../../config/config.php';
+require_once '../../components/auth_validate.php';
 require_once '../../helpers/helpers.php';
 require_once '../../utils/log_utils.php';
 
@@ -99,8 +100,8 @@ function getUrgencyColor($urgency)
                                 <thead>
                                     <tr>
                                         <th width="5%">ID</th>
-                                        <th width="10%">Codice</th>
-                                        <th width="40%">Articolo</th>
+                                        <th width="15%">Codice</th>
+                                        <th width="35%">Articolo</th>
                                         <th width="5%">Quantità</th>
                                         <th width="10%">Cartellino</th>
                                         <th width="5%">Data</th>
@@ -247,10 +248,6 @@ function getUrgencyColor($urgency)
     <!-- Page level plugins -->
     <script src="<?php BASE_PATH ?>/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="<?php BASE_PATH ?>/js/datatables.js"></script>
-
     <?php include_once BASE_PATH . '/components/footer.php'; ?>
 </body>
 
@@ -279,6 +276,9 @@ function getUrgencyColor($urgency)
                 }
             });
 
+        });
+        $('#dataTable').DataTable({
+            "order": [[0, "desc"]]
         });
     });
 

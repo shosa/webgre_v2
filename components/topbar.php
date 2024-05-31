@@ -22,7 +22,9 @@ $nome = $stmtNome->fetchColumn(); ?>
             <input type="text" name="terms" class="form-control bg-light border-0 small" placeholder="Cerca..."
                 aria-label="Search" aria-describedby="basic-addon2" required>
             <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">
+                <button
+                    class="btn btn-<?php echo (isset($_SESSION["tema"]) && !empty($_SESSION["tema"])) ? $_SESSION["tema"] : "primary"; ?>"
+                    type="submit">
                     <i class="fas fa-search fa-sm"></i>
                 </button>
             </div>
@@ -47,7 +49,9 @@ $nome = $stmtNome->fetchColumn(); ?>
                         <input type="text" name="terms" class="form-control bg-light border-0 small"
                             placeholder="Cerca..." aria-label="Search" aria-describedby="basic-addon2" required>
                         <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit">
+                            <button
+                                class="btn btn-<?php echo (isset($_SESSION["tema"]) && !empty($_SESSION["tema"])) ? $_SESSION["tema"] : "primary"; ?>"
+                                type="submit">
                                 <i class="fas fa-search fa-sm"></i>
                             </button>
                         </div>
@@ -110,6 +114,12 @@ $nome = $stmtNome->fetchColumn(); ?>
                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                     Log Attività
                 </a>
+                <a class="dropdown-item" href="../../functions/users/themes">
+                    <i
+                        class="fas fa-circle fa-sm fa-fw mr-2 text-<?php echo (isset($_SESSION["tema"]) && !empty($_SESSION["tema"])) ? $_SESSION["tema"] : "primary"; ?>"></i>
+                    Tema
+                </a>
+
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="../../logout" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

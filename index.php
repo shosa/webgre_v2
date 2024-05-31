@@ -24,7 +24,24 @@ $queryNome = "SELECT nome FROM utenti WHERE user_name = :username";
 $stmtNome = $pdo->prepare($queryNome);
 $stmtNome->bindParam(':username', $_SESSION["username"], PDO::PARAM_STR);
 $stmtNome->execute();
-$nome = $stmtNome->fetchColumn(); ?>
+$nome = $stmtNome->fetchColumn();
+$data_oggi = date('d/m/Y');
+try {
+    // Query per contare i record con la data odierna
+    $sql = "SELECT COUNT(*) AS num_records FROM cq_records WHERE data = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$data_oggi]);
+
+    // Ottieni il risultato della query
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $num_cq_records = $row['num_records'];
+} catch (PDOException $e) {
+    // Gestione degli errori
+    echo "Errore durante l'esecuzione della query: " . $e->getMessage();
+    $num_cq_records = 0; // Imposta il numero di record a 0 in caso di errore
+}
+
+?>
 
 <?php include ("components/header.php"); ?>
 
@@ -55,38 +72,67 @@ $nome = $stmtNome->fetchColumn(); ?>
                                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
 
-                    <!-- Content Row -->
+                    <!-- INIZIO ROW CARDS -->
                     <div class="row">
-
-
-                        <!-- CARD RIPARAZIONI -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Riparazioni attive</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $numRiparazioni ?>
+                        <?php if (isset($_SESSION['permessi_riparazioni']) && $_SESSION['permessi_riparazioni'] == 1): ?>
+                            <!-- CARD RIPARAZIONI -->
+                            <div class="col-xl-2 col-md-4 mb-4">
+                                <div class="card border-left-warning shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                    Riparazioni attive</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                    <?php echo empty($numRiparazioni) ? '0' : $numRiparazioni; ?>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-hammer fa-2x text-gray-300"></i>
                                             </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-hammer fa-2x text-gray-300"></i>
+                                    </div>
+                                    <a href="../../functions/riparazioni/riparazioni"
+                                        class="card-footer text-white bg-white text-warning">
+                                        <span class="float-left">Apri Elenco</span>
+                                        <span class="float-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                        <div class="clearfix"></div>
+                                    </a>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (isset($_SESSION['permessi_cq']) && $_SESSION['permessi_cq'] == 1): ?>
+                            <!-- CARD CQ -->
+                            <div class="col-xl-2 col-md-4 mb-4">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                    Test eseguiti oggi</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <?php echo empty($num_cq_records) ? '0' : $num_cq_records; ?>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-box-check fa-2x text-gray-300"></i>
+                                            </div>
                                         </div>
                                     </div>
+                                    <a href="../../functions/quality/detail?date=<?php echo $data_oggi ?>"
+                                        class="card-footer text-white bg-white text-primary">
+                                        <span class="float-left">Visualizza</span>
+                                        <span class="float-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                        <div class="clearfix"></div>
+                                    </a>
                                 </div>
-                                <a href="../../functions/riparazioni/riparazioni"
-                                    class="card-footer text-white bg-white text-warning">
-                                    <span class="float-left">Apri Elenco</span>
-                                    <span class="float-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </a>
                             </div>
-                        </div>
+                        <?php endif; ?>
                     </div>
 
-                    <!-- Content Row -->
+
+                    <!-- CHIUSURA ROW CARDS -->
 
                     <div class="row">
 
@@ -177,31 +223,36 @@ $nome = $stmtNome->fetchColumn(); ?>
                                 </div>
                                 <div class="card-body">
                                     <h4 class="small font-weight-bold">Server Migration <span
-                                            class="float-right">20%</span></h4>
+                                            class="float-right">20%</span>
+                                    </h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
                                             aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     <h4 class="small font-weight-bold">Sales Tracking <span
-                                            class="float-right">40%</span></h4>
+                                            class="float-right">40%</span>
+                                    </h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-warning" role="progressbar" style="width: 40%"
                                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     <h4 class="small font-weight-bold">Customer Database <span
-                                            class="float-right">60%</span></h4>
+                                            class="float-right">60%</span>
+                                    </h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar" role="progressbar" style="width: 60%"
                                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     <h4 class="small font-weight-bold">Payout Details <span
-                                            class="float-right">80%</span></h4>
+                                            class="float-right">80%</span>
+                                    </h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-info" role="progressbar" style="width: 80%"
                                             aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     <h4 class="small font-weight-bold">Account Setup <span
-                                            class="float-right">Complete!</span></h4>
+                                            class="float-right">Complete!</span>
+                                    </h4>
                                     <div class="progress">
                                         <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
@@ -347,7 +398,7 @@ $nome = $stmtNome->fetchColumn(); ?>
         <i class="fas fa-angle-up"></i>
     </a>
 
-    
+
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

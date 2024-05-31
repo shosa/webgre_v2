@@ -79,9 +79,9 @@ include (BASE_PATH . "/components/header.php");
                                                 $conn = getDbInstance(); // Suppongo che questa funzione restituisca un'istanza di PDO già configurata
                                                 
                                                 if ($_SESSION['tipo'] == 'Admin' || $_SESSION['tipo'] == 'Super') {
-                                                    $sql = "SELECT * FROM activity_log WHERE user_id = :user_id ORDER BY created_at DESC";
+                                                    $sql = "SELECT * FROM activity_log WHERE user_id = :user_id ORDER BY id DESC";
                                                 } else {
-                                                    $sql = "SELECT id, category, activity_type, description, note, created_at FROM activity_log WHERE user_id = :user_id ORDER BY created_at DESC";
+                                                    $sql = "SELECT id, category, activity_type, description, note, created_at FROM activity_log WHERE user_id = :user_id ORDER BY id DESC";
                                                 }
 
                                                 $stmt = $conn->prepare($sql);
@@ -98,15 +98,17 @@ include (BASE_PATH . "/components/header.php");
                                                     echo "<td>{$log['description']}</td>";
                                                     echo "<td>{$log['note']}</td>";
 
-                                                    // Visualizza la colonna "Query" solo per Admin e Super
-                                                    if ($_SESSION['tipo'] == 'Admin' || $_SESSION['tipo'] == 'Super') {
+                                                    // Visualizza la colonna "Query" solo per Admin e Super se il campo "text_query" non è vuoto
+                                                    if (($_SESSION['tipo'] == 'Admin' || $_SESSION['tipo'] == 'Super') && !empty($log['text_query'])) {
+                                                        echo '<td class="text-center">';
+                                                        echo "<i class='fal fa-search view-query' style='cursor: pointer; color: #007bff;' data-query-id='{$log['id']}' data-toggle='modal' data-target='#queryModal'></i>";
+                                                        echo '</td>';
+                                                    }
+                                                    if (($_SESSION['tipo'] == 'Admin' || $_SESSION['tipo'] == 'Super') && empty($log['text_query'])) {
                                                         echo '<td>';
-                                                        echo "<button type='button' class='btn btn-primary view-query' data-query-id='{$log['id']}' data-toggle='modal' data-target='#queryModal'>";
-                                                        echo "<i class='fal fa-eye'></i>";
-                                                        echo "</button>";
+
                                                         echo "</td>";
                                                     }
-
                                                     echo "<td>{$log['created_at']}</td>";
                                                     echo "</tr>";
                                                 }
@@ -156,7 +158,7 @@ include (BASE_PATH . "/components/header.php");
     <script src="<?php BASE_PATH ?>/js/sb-admin-2.min.js"></script>
     <script src="<?php BASE_PATH ?>/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="<?php BASE_PATH ?>/js/datatables.js"></script>
+
 
 </body>
 <script>
@@ -179,6 +181,11 @@ include (BASE_PATH . "/components/header.php");
                     }
                 });
             });
+        });
+    });
+    $(document).ready(function () {
+        $('#dataTable').DataTable({
+            "order": [[0, "desc"]]
         });
     });
 </script>
