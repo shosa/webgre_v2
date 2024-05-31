@@ -25,7 +25,7 @@ if ($recordId) {
 
         if ($record) {
             // Formatta i dettagli del record come desideri (ad esempio, in formato HTML)
-            $details = '<table class="table table-bordered">';
+            $details = '<table class="table table-condensed table-responsive table-bordered">';
             $details .= '<tr><th>ID:</th><td>' . $record['IDRIP'] . '</td></tr>';
             $details .= '<tr><th>LINEA:</th><td>' . $record['LINEA'] . '</td></tr>';
             $details .= '<tr><th>CODICE:</th><td>' . $record['CODICE'] . '</td></tr>';
