@@ -193,8 +193,13 @@ require_once '../../utils/log_utils.php';
                         </div>
                     </div>
                 </div>
+
             </div>
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fas fa-angle-up"></i>
+            </a>
             <?php include_once (BASE_PATH . '/components/scripts.php'); ?>
+
             <?php include_once (BASE_PATH . '/components/footer.php'); ?>
         </div>
     </div>

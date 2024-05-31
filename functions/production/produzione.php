@@ -57,9 +57,6 @@ include (BASE_PATH . "/components/header.php");
 
 
 <script>
-    $(document).ready(function () {
-        $('.container').addClass('show');
-    });
 
     function generatePDF(month, day) {
         window.location.href = `generate_pdf.php?month=${month}&day=${day}`;

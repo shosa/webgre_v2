@@ -1,9 +1,14 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
+session_start();
+require_once '../../config/config.php';
+require_once BASE_PATH . '/components/auth_validate.php';
+require_once BASE_PATH . '/utils/log_utils.php';
 // Verifica se il modulo è stato inviato
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    // Recupera i dati dal modulo
     $month = $_POST["month"];
     $day = $_POST["day"];
     $manovia1 = $_POST["manovia1"];
@@ -22,18 +27,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $note6 = $_POST["note6"];
     $taglio2 = $_POST["taglio2"];
     $note7 = $_POST["note7"];
-
-    // Esegui la query di aggiornamento nel database (assicurati di avere una connessione al database)
-    require ("../../config/config.php");
-
     try {
         // Crea una connessione al database utilizzando PDO
         $pdo = getDbInstance();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sommataglio = $taglio1 + $taglio2;
-        $sommaorlatura = $orlatura1 + $orlatura2;
-        $sommamontaggio = $manovia1 + $manovia2 + $manovia3;
+        $sommataglio = (int) $taglio1 + (int) $taglio2;
+        $sommaorlatura = (int) $orlatura1 + (int) $orlatura2;
+        $sommamontaggio = (int) $manovia1 + (int) $manovia2 + (int) $manovia3;
 
         // Prepara la query di aggiornamento
         $sql = "UPDATE prod_mesi
@@ -73,6 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ]);
 
         echo "QUERY ESEGUITA: " . $sql;
+        logActivity($_SESSION['user_id'], 'PRODUZIONE', 'INSERIMENTO', 'Inserita produzione', $day . ' ' . $month, '');
     } catch (PDOException $e) {
         echo "Errore nell'aggiornamento dei dati nel database: " . $e->getMessage();
     }
