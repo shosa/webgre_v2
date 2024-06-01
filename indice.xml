@@ -49,7 +49,15 @@
         <tag>produzion;calendario</tag>
         <nome>Calendario Produzione</nome>
         <descrizione>Controllo produttivo</descrizione>
-        <link>/functions/produzione/calendario</link>
+        <link>/functions/production/calendario</link>
         <icona>fas fa-calendar-alt fa-2x text-gray-300</icona>
+    </pagina>
+    <!-- CQ -->
+    <pagina>
+        <tag>controllo;qualit</tag>
+        <nome>Report CQ</nome>
+        <descrizione>Consulta date</descrizione>
+        <link>/functions/quality/read</link>
+        <icona>fas fa-folder-tree fa-2x text-gray-300</icona>
     </pagina>
 </indice>
