@@ -91,12 +91,15 @@
             <div id="collapseProd" class="collapse" aria-labelledby="headingProd" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
-                    <a id="quality-new" class="collapse-item" href="../../functions/production/new"><i
+                    <a id="production-new" class="collapse-item" href="../../functions/production/new"><i
                             class="fa fa-plus"></i>
                         Nuova</a>
-                    <a id="quality-read" class="collapse-item" href="../../functions/production/calendario"><i
+                    <a id="production-calendario" class="collapse-item" href="../../functions/production/calendario"><i
                             class="far fa-calendar-alt"></i>
                         Calendario</a>
+                    <a id="production-settings" class="collapse-item" href="../../functions/production/settings"><i
+                            class="far fa-gear"></i>
+                        Impostazioni</a>
                 </div>
             </div>
         </li>
@@ -148,6 +151,9 @@
             '/functions/quality/read': 'quality-read',
             '/functions/quality/search': 'quality-search',
             '/functions/quality/barcode': 'quality-barcode',
+            '/functions/production/new': 'production-new',
+            '/functions/production/calendario': 'production-calendario',
+            '/functions/production/settings': 'production-settings',
             // Aggiungi qui altri link come necessario
         };
 
