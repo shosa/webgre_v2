@@ -11,13 +11,11 @@ require_once BASE_PATH . '/utils/log_utils.php';
 
 try {
     $conn = getDbInstance();
-    // Impostare l'attributo per segnalare gli errori
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $month = $_GET['month'];
     $day = $_GET['day'];
 
-    // Query SQL
     $sql = "SELECT * FROM prod_mesi WHERE MESE = :month AND GIORNO = :day";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':month', $month);
@@ -27,7 +25,6 @@ try {
     $row = $stmt->fetch();
 
     if ($row) {
-        // Estrai i valori desiderati dal risultato della query
         $MANOVIA1 = $row['MANOVIA1'];
         $MANOVIA1NOTE = $row['MANOVIA1NOTE'];
         $MANOVIA2 = $row['MANOVIA2'];
@@ -217,6 +214,44 @@ include (BASE_PATH . "/components/header.php");
                                 </div>
                             </div>
                         </div>
+                        <!-- MODALE MAIL -->
+                        <div class="modal fade" id="emailModal" tabindex="-1" role="dialog"
+                            aria-labelledby="emailModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="emailModalLabel">Invia Email</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="emailForm">
+                                            <div class="form-group">
+                                                <label for="to">Destinatari</label>
+                                                <input type="text" class="form-control" id="to" value="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cc">CC</label>
+                                                <input type="text" class="form-control" id="cc" value="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="subject">Oggetto</label>
+                                                <input type="text" class="form-control" id="subject"
+                                                    value="PRODUZIONE DEL <?php echo $day; ?> <?php echo $month; ?>">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="body">Corpo del messaggio</label>
+                                                <textarea class="form-control" id="body" rows="4"></textarea>
+                                            </div>
+                                            <button type="button" class="btn btn-primary"
+                                                id="sendEmailButton">Invia</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FINE MODALE MAIL -->
                         <div class="col-xl-3 col-lg-4">
                             <div class="card shadow mb-4">
                                 <div
@@ -228,7 +263,7 @@ include (BASE_PATH . "/components/header.php");
                                         onclick='generatePDF("<?php echo $month; ?>", "<?php echo $day; ?>")'>
                                         <i class="fas fa-file-pdf"></i> PDF
                                     </button>
-                                    <button class="btn btn-primary btn-lg btn-block shadow" onclick='#'>
+                                    <button class="btn btn-primary btn-lg btn-block shadow" id="sendEmailModalButton">
                                         <i class="fas fa-share-square"></i> INVIA MAIL
                                     </button>
                                 </div>
@@ -237,8 +272,50 @@ include (BASE_PATH . "/components/header.php");
                     </div>
                 </div>
             </div>
+            <script src="<?php BASE_PATH ?>/vendor/jquery/jquery.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+            <!-- Core plugin JavaScript-->
+            <script src="<?php BASE_PATH ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+            <!-- Custom scripts for all pages-->
+            <script src="<?php BASE_PATH ?>/js/sb-admin-2.min.js"></script>>
             <?php include_once BASE_PATH . '/components/footer.php'; ?>
-            <?php include_once BASE_PATH . '/components/scripts.php'; ?>
+
         </div>
     </div>
 </body>
+<script>
+    $(document).ready(function () {
+        // Apri il modale quando si clicca sul pulsante "INVIA MAIL"
+        $('#sendEmailModalButton').click(function () {
+            $('#emailModal').modal('show');
+        });
+
+        // Gestisci l'invio dell'email
+        $('#sendEmailButton').click(function () {
+            var to = $('#to').val();
+            var cc = $('#cc').val();
+            var subject = $('#subject').val();
+            var body = $('#body').val();
+
+            $.ajax({
+                url: 'send_email.php',
+                type: 'POST',
+                data: {
+                    to: to,
+                    cc: cc,
+                    subject: subject,
+                    body: body
+                },
+                success: function (response) {
+                    $('#emailModal').modal('hide');
+                    alert('Email inviata con successo!');
+                },
+                error: function (xhr, status, error) {
+                    alert('Errore nell\'invio dell\'email: ' + error);
+                }
+            });
+        });
+    });
+</script>
