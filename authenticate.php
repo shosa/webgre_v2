@@ -74,9 +74,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     // Execute SQL statement
                     $update_statement->execute();
                 }
+                $user_agent = $_SERVER['HTTP_USER_AGENT'];
 
-                // Authentication successful, redirect user
-                logActivity($_SESSION['user_id'], 'LOGIN', 'ACCESSO', 'Accesso eseguito', '' . $del_id, '');
+                // Definisci un array di stringhe che identificano i browser comuni
+                $browsers = array(
+                    'Chrome',
+                    'Firefox',
+                    'Safari',
+                    'Opera',
+                    'MSIE',
+                    'Trident'
+                );
+
+                // Inizializza le variabili per memorizzare il browser e il dispositivo
+                $browser = 'Sconosciuto';
+                $device = 'Sconosciuto';
+
+                // Cerca il browser nell'user agent
+                foreach ($browsers as $browser_string) {
+                    if (strpos($user_agent, $browser_string) !== false) {
+                        $browser = $browser_string;
+                        break;
+                    }
+                }
+
+                // Controlla il tipo di dispositivo
+                if (strpos($user_agent, 'Mobile') !== false) {
+                    $device = 'Mobile';
+                } else {
+                    $device = 'Desktop';
+                }
+                logActivity($_SESSION['user_id'], 'LOGIN', 'ACCESSO', 'Accesso eseguito', $device . ' / ' . $browser, '');
                 header('Location: index.php');
                 exit;
             } else {

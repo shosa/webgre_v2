@@ -215,12 +215,20 @@ include (BASE_PATH . "/components/header.php");
                             </div>
                         </div>
                         <!-- MODALE MAIL -->
+                        <?php
+                        require_once '../../config/config.php';
+
+                        // Recupera gli indirizzi email dei destinatari dalla tabella 'settings'
+                        $recipientSettings = $conn->query("SELECT value FROM settings WHERE item = 'production_recipients'")->fetchColumn();
+                        ?>
+
+                        <!-- Modale per comporre l'email -->
                         <div class="modal fade" id="emailModal" tabindex="-1" role="dialog"
                             aria-labelledby="emailModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="emailModalLabel">Invia Email</h5>
+                                        <h5 class="modal-title" id="emailModalLabel">Invia</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -229,11 +237,8 @@ include (BASE_PATH . "/components/header.php");
                                         <form id="emailForm">
                                             <div class="form-group">
                                                 <label for="to">Destinatari</label>
-                                                <input type="text" class="form-control" id="to" value="">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="cc">CC</label>
-                                                <input type="text" class="form-control" id="cc" value="">
+                                                <input type="text" class="form-control" id="to"
+                                                    value="<?= $recipientSettings ?>">
                                             </div>
                                             <div class="form-group">
                                                 <label for="subject">Oggetto</label>
@@ -244,9 +249,30 @@ include (BASE_PATH . "/components/header.php");
                                                 <label for="body">Corpo del messaggio</label>
                                                 <textarea class="form-control" id="body" rows="4"></textarea>
                                             </div>
+                                            <div class="form-group">
+                                                <input class="form-control" id="month" value=<?php echo $month ?>
+                                                    hidden></input>
+                                            </div>
+                                            <div class="form-group">
+                                                <input class="form-control" id="day" value=<?php echo $day ?>
+                                                    hidden></input>
+                                            </div>
                                             <button type="button" class="btn btn-primary"
                                                 id="sendEmailButton">Invia</button>
                                         </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog"
+                            aria-labelledby="loadingModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body text-center">
+                                        <div id="loadingIcon">
+                                            <!-- Aggiungi qui l'icona per mostrare l'esito dell'operazione -->
+                                        </div>
+                                        <p id="loadingMessage">Invio in corso</p>
                                     </div>
                                 </div>
                             </div>
@@ -259,11 +285,11 @@ include (BASE_PATH . "/components/header.php");
                                     <h6 class="m-0 font-weight-bold text-primary">Strumenti</h6>
                                 </div>
                                 <div class="card-body text-center">
-                                    <button class="btn btn-danger btn-lg btn-block shadow"
+                                    <button id="pdfButton" class="btn btn-danger btn-lg btn-block shadow"
                                         onclick='generatePDF("<?php echo $month; ?>", "<?php echo $day; ?>")'>
                                         <i class="fas fa-file-pdf"></i> PDF
                                     </button>
-                                    <button class="btn btn-primary btn-lg btn-block shadow" id="sendEmailModalButton">
+                                    <button id="sendEmailModalButton" class="btn btn-primary btn-lg btn-block shadow">
                                         <i class="fas fa-share-square"></i> INVIA MAIL
                                     </button>
                                 </div>
@@ -298,6 +324,14 @@ include (BASE_PATH . "/components/header.php");
             var cc = $('#cc').val();
             var subject = $('#subject').val();
             var body = $('#body').val();
+            var month = $('#month').val();
+            var day = $('#day').val();
+
+            // Apri il modale di caricamento
+            $('#loadingModal').modal('show');
+
+            // Aggiorna l'icona nel modale di caricamento
+            $('#loadingIcon').html('<i class="fas fa-spinner fa-spin fa-3x"></i>');
 
             $.ajax({
                 url: 'send_email.php',
@@ -306,16 +340,59 @@ include (BASE_PATH . "/components/header.php");
                     to: to,
                     cc: cc,
                     subject: subject,
-                    body: body
+                    body: body,
+                    month: month,
+                    day: day
                 },
                 success: function (response) {
-                    $('#emailModal').modal('hide');
-                    alert('Email inviata con successo!');
+                    // Aggiorna l'icona a una spunta verde
+                    $('#loadingIcon').html('<i class="fas fa-check-circle text-success fa-3x"></i>');
+                    $('#loadingMessage').text('Email inviata con successo!');
+                    setTimeout(function () {
+                        $('#loadingModal').modal('hide');
+                        $('#emailModal').modal('hide');
+                    }, 2000); // Nasconde il modale dopo 2 secondi
                 },
                 error: function (xhr, status, error) {
-                    alert('Errore nell\'invio dell\'email: ' + error);
+                    // Aggiorna l'icona a una X rossa
+                    $('#loadingIcon').html('<i class="fas fa-times-circle text-danger fa-3x"></i>');
+                    $('#loadingMessage').text('Errore nell\'invio dell\'email: ' + error);
+                    setTimeout(function () {
+                        $('#loadingModal').modal('hide');
+                        $('#emailModal').modal('hide');
+                    }, 2000); // Nasconde il modale dopo 2 secondi
                 }
             });
+        });
+        $(document).ready(function () {
+            // Funzione per verificare se tutti i valori sono vuoti o 0
+            function areAllValuesEmpty() {
+                var values = [
+                    '<?php echo $MANOVIA1; ?>',
+                    '<?php echo $MANOVIA2; ?>',
+                    '<?php echo $MANOVIA3; ?>',
+                    '<?php echo $ORLATURA1; ?>',
+                    '<?php echo $ORLATURA2; ?>',
+                    '<?php echo $ORLATURA3; ?>',
+                    '<?php echo $TAGLIO1; ?>',
+                    '<?php echo $TAGLIO2; ?>'
+                ];
+
+                // Itera sui valori e controlla se sono vuoti o 0
+                for (var i = 0; i < values.length; i++) {
+                    if (values[i] !== "" && values[i] !== "0") {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            // Controlla se tutti i valori sono vuoti o 0 e disabilita i pulsanti se necessario
+            if (areAllValuesEmpty()) {
+                // Disabilita i pulsanti PDF e INVIA MAIL
+                $('#pdfButton, #sendEmailModalButton').prop('disabled', true);
+            }
         });
     });
 </script>

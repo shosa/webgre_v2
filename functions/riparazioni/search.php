@@ -104,7 +104,7 @@ try {
                                                     <div class="modal fade" style="z-index: 90000"
                                                         id="confirm-delete-<?php echo $record['IDRIP']; ?>" role="dialog"
                                                         aria-labelledby="confirm-delete-modal-label" aria-hidden="true">
-                                                        <div class="modal-dialog">
+                                                        <div class="modal-dialog modal-dialog-centered ">
                                                             <form action="search_delete_riparazioni.php" method="POST">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
@@ -163,7 +163,7 @@ try {
                     <!-- Modale per i dettagli -->
                     <div class="modal fade" id="detailModal" tabindex="-1" role="dialog"
                         aria-labelledby="detailModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
+                        <div class="modal-dialog modal-dialog-centered " role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="detailModalLabel">Dettagli</h5>

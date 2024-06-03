@@ -117,7 +117,7 @@ function getUrgencyColor($urgency)
                                         <div class="modal fade" style="z-index: 5000"
                                             id="confirm-delete-<?php echo $row['IDRIP']; ?>" role="dialog"
                                             aria-labelledby="confirm-delete-modal-label" aria-hidden="true">
-                                            <div class="modal-dialog">
+                                            <div class="modal-dialog modal-dialog-centered ">
                                                 <form action="delete_riparazioni.php" method="POST">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -209,7 +209,7 @@ function getUrgencyColor($urgency)
     <!-- MODALE DETTAGLI -->
     <div class="modal fade" id="record-details-modal" tabindex="-1" role="dialog"
         aria-labelledby="record-details-modal-label" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="record-details-modal-label">Dettagli</h5>
