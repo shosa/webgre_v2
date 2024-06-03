@@ -50,9 +50,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt = $pdo->prepare($sql);
                 $insert_success = $stmt->execute($data);
                 $real_query = replacePlaceholders($pdo, $sql, $data);
-                logActivity($_SESSION['user_id'], 'CQ', 'FINE', 'Test', 'Cartellino ' . $_POST['cartellino']);
+
                 if ($insert_success) {
+                    logActivity($_SESSION['user_id'], 'CQ', 'FINE', 'Test #' . $new_testid, 'Cartellino ' . $_POST['cartellino']);
                     $new_testid++; // Incrementa testid per il prossimo inserimento
+
                 } else {
                     // Se c'è stato un errore nell'inserimento, mostra un messaggio di errore
                     $insert_success = false;
