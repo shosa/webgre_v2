@@ -109,13 +109,23 @@
     <div class="sidebar-heading">
         Strumenti
     </div>
-    <!-- DIVISORE -->
+    <!-- LOG ATTIVITA' -->
     <?php if (isset($_SESSION['permessi_log']) && $_SESSION['permessi_log'] == 1): ?>
         <li class="nav-item">
             <a class="nav-link collapsed" href="../../functions/users/log_admin" aria-expanded="true"
                 aria-controls="collapseProd">
                 <i class="far fa-monitor-heart-rate"></i>
                 <span>Log Attività</span>
+            </a>
+        </li>
+    <?php endif; ?>
+    <!-- ETICHETTE -->
+    <?php if (isset($_SESSION['permessi_etichette']) && $_SESSION['permessi_etichette'] == 1): ?>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="../../functions/tools/eti_index" aria-expanded="true"
+                aria-controls="collapseProd">
+                <i class="far fa-barcode-alt"></i>
+                <span>Etichette</span>
             </a>
         </li>
     <?php endif; ?>

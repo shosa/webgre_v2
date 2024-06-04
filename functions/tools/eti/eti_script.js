@@ -56,26 +56,19 @@
         if (myPrinter === undefined) return;
 
         var table = document.createElement("table");
-        table.classList.add("table", "table-bordered");
-
+        table.classList.add("table", "table-striped");
         createPrintersTableRow(table, 'Tipo di stampante', myPrinter['printerType']);
-        createPrintersTableRow(table, 'Nome Stampante', myPrinter['name']);
         createPrintersTableRow(table, 'Modello', myPrinter['modelName']);
-        createPrintersTableRow(table, 'Locale', myPrinter['isLocal']);
-        createPrintersTableRow(table, 'Connessione', myPrinter['isConnected']);
-
         dymo.label.framework.is550PrinterAsync(myPrinter.name).then(function (isRollStatusSupported) {
             if (isRollStatusSupported) {
                 dymo.label.framework.getConsumableInfoIn550PrinterAsync(myPrinter.name).then(function (consumableInfo) {
                     createPrintersTableRow(table, 'SKU-Etichette', consumableInfo['sku']);
                     createPrintersTableRow(table, 'Nome Etichette', consumableInfo['name']);
                     createPrintersTableRow(table, 'Etichette rimanenti', consumableInfo['labelsRemaining']);
-                    createPrintersTableRow(table, 'Roll inserito', consumableInfo['rollStatus']);
                 }).thenCatch(function (e) {
                     createPrintersTableRow(table, 'SKU-Etichette', 'n/a');
                     createPrintersTableRow(table, 'Nome Etichette', 'n/a');
                     createPrintersTableRow(table, 'Etichette rimanenti', 'n/a');
-                    createPrintersTableRow(table, 'Roll inserito', 'n/a');
                 });
             } else {
                 createPrintersTableRow(table, 'IsRollStatusSupported', 'False');

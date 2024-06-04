@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['tema'] = $row['theme_color'];
 
                 // Recupera i permessi dalla tabella `permessi`
-                $permessi_statement = $pdo->prepare("SELECT riparazioni, cq, produzione, tabelle, log  FROM permessi WHERE id_utente = :user_id");
+                $permessi_statement = $pdo->prepare("SELECT riparazioni, cq, produzione, tabelle, log, etichette  FROM permessi WHERE id_utente = :user_id");
                 $permessi_statement->bindParam(':user_id', $user_id);
                 $permessi_statement->execute();
                 $permessi = $permessi_statement->fetch(PDO::FETCH_ASSOC);
@@ -50,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['permessi_produzione'] = $permessi['produzione'];
                     $_SESSION['permessi_tabelle'] = $permessi['tabelle'];
                     $_SESSION['permessi_log'] = $permessi['log'];
+                    $_SESSION['permessi_etichette'] = $permessi['etichette'];
                 }
 
                 if ($remember) {
