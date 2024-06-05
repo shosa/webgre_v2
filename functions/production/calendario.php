@@ -52,6 +52,16 @@ $monthNames = [
     .future:hover {
         background-color: #f07067;
     }
+
+    .giorno:hover {
+        background-color: #DFF0FF;
+    }
+
+    .today {
+        background-color: #B4E8C9;
+        color: #439876;
+        font-weight: bolder;
+    }
 </style>
 
 <body id="page-top">
@@ -137,7 +147,7 @@ $monthNames = [
                                                     $clickAction = $isFutureDate
                                                         ? ""
                                                         : "onclick='generatePDF(\"$monthNames[$currentMonth]\", \"$day\")'";
-                                                    echo "<td style='height:4.5em;' class='$cellClass' $clickAction>$day</td>"; // Passa alla riga successiva dopo Domenica (7 giorni)
+                                                    echo "<td  style='height:4.5em; cursor:pointer;' class='giorno $cellClass' $clickAction>$day</td>"; // Passa alla riga successiva dopo Domenica (7 giorni)
                                                     if ($firstDayOfWeek == 7) {
                                                         echo "</tr>";
                                                         if (

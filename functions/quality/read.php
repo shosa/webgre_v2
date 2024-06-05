@@ -47,6 +47,9 @@ $monthNames = [
     .future:hover {
         background-color: #f07067;
     }
+    .giorno:hover {
+        background-color: #DFF0FF;
+    }
 
     .today {
         background-color: #B4E8C9;
@@ -140,7 +143,7 @@ $monthNames = [
                                                 $clickAction = $isFutureDate
                                                     ? ""
                                                     : "href='detail?date=$date'";
-                                                echo "<td style='height:4.5em;' class='$cellClass'><a style='text-decoration:none;color:inherit;display:block; height:100%' $clickAction>$day</td>"; // Passa alla riga successiva dopo Domenica (7 giorni)
+                                                echo "<td   style='height:4.5em;' class='giorno $cellClass'><a style='text-decoration:none;color:inherit;display:block; height:100%' $clickAction>$day</td>"; // Passa alla riga successiva dopo Domenica (7 giorni)
                                                 // Passa alla riga successiva dopo Domenica (7 giorni)
                                                 if ($firstDayOfWeek == 7) {
                                                     echo "</tr>";
