@@ -5,6 +5,7 @@ require_once BASE_PATH . '/components/auth_validate.php';
 require_once BASE_PATH . '/components/header.php';
 ?>
 
+
 <body id="page-top">
     <div id="wrapper">
         <?php include (BASE_PATH . "/components/navbar.php"); ?>
@@ -25,6 +26,7 @@ require_once BASE_PATH . '/components/header.php';
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex align-items-center">
                                     <h6 class="m-0 font-weight-bold text-primary">Tabelle</h6>
+                                    <a href="sql" class="btn btn-success ml-auto">SQL</a>
                                 </div>
                                 <div class="card-body">
                                     <ul id="tables-list" class="list-group"></ul>
@@ -43,6 +45,44 @@ require_once BASE_PATH . '/components/header.php';
                             </div>
                         </div>
                     </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="sqlModal" tabindex="-1" role="dialog" aria-labelledby="sqlModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="sqlModalLabel">SQL Console</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="btn-group mb-3" role="group" aria-label="Basic example">
+                                        <button type="button" class="btn btn-secondary"
+                                            onclick="insertText('SELECT * FROM ')">SELECT *</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            onclick="insertText('INSERT INTO ')">INSERT INTO</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            onclick="insertText('UPDATE ')">UPDATE</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            onclick="insertText('DELETE FROM ')">DELETE FROM</button>
+                                        <button type="button" class="btn btn-pink"
+                                            onclick="insertText(' WHERE ')">WHERE</button>
+                                        <button type="button" class="btn btn-success"
+                                            onclick="insertText(' ORDER BY ')">ORDER BY</button>
+                                    </div>
+                                    <textarea id="sqlQuery" class="form-control" rows="10"
+                                        placeholder="Scrivi l'SQL qui..."
+                                        style="background-color: #1e1e1e; color: #dcdcdc; font-family: monospace;"></textarea>
+                                    <div id="sqlResult" class="mt-3"></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                                    <button type="button" id="executeSql" class="btn btn-success">Esegui</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <script src="<?php BASE_PATH ?>/vendor/jquery/jquery.min.js"></script>
@@ -56,6 +96,15 @@ require_once BASE_PATH . '/components/header.php';
     </div>
 
     <script>
+        function insertText(text) {
+            var textarea = document.getElementById('sqlQuery');
+            var cursorPos = textarea.selectionStart;
+            var textBefore = textarea.value.substring(0, cursorPos);
+            var textAfter = textarea.value.substring(cursorPos, textarea.value.length);
+            textarea.value = textBefore + text + textAfter;
+            textarea.focus();
+            textarea.setSelectionRange(cursorPos + text.length, cursorPos + text.length);
+        }
         $(document).ready(function () {
             // Fetch table list
             $.ajax({
@@ -80,9 +129,13 @@ require_once BASE_PATH . '/components/header.php';
                 }
             });
 
-            // Fetch table data on table click
             $(document).on('click', '.table-item', function () {
                 const tableName = $(this).data('table');
+
+                // Remove 'active' class from all items and add to the clicked item
+                $('.table-item').removeClass('active');
+                $(this).addClass('active');
+
                 $.ajax({
                     url: 'get_table_data.php',
                     method: 'GET',
@@ -129,7 +182,60 @@ require_once BASE_PATH . '/components/header.php';
                     }
                 });
             });
-        });
 
+
+            // Open SQL Console modal
+            // Open SQL Console modal
+            $('a[href="sql"]').on('click', function (e) {
+                e.preventDefault();
+                $('#sqlModal').modal('show');
+            });
+
+            // Execute SQL query
+            $('#executeSql').on('click', function () {
+                const query = $('#sqlQuery').val();
+                $.ajax({
+                    url: 'execute_sql.php',
+                    method: 'POST',
+                    data: { query: query },
+                    success: function (response) {
+                        try {
+                            const result = JSON.parse(response);
+                            if (result.error) {
+                                $('#sqlResult').html(`<p class="text-danger">${result.error}</p>`);
+                            } else if (result.success) {
+                                $('#sqlResult').html(`<p class="text-success">${result.success}</p>`);
+                            } else {
+                                // Generate table from result
+                                let tableHtml = '<h6>Risultato:</h6><table class="table table-bordered table-responsive table-striped" id="sqlDataTable"><thead><tr>';
+                                const columns = result.columns;
+                                columns.forEach(column => {
+                                    tableHtml += `<th>${column}</th>`;
+                                });
+                                tableHtml += '</tr></thead><tbody>';
+                                const data = result.data;
+                                data.forEach(row => {
+                                    tableHtml += '<tr>';
+                                    columns.forEach(column => {
+                                        tableHtml += `<td>${row[column]}</td>`;
+                                    });
+                                    tableHtml += '</tr>';
+                                });
+                                tableHtml += '</tbody></table>';
+                                $('#sqlResult').html(tableHtml);
+                                $('#sqlDataTable').DataTable({
+                                    "order": [[0, "desc"]]
+                                });
+                            }
+                        } catch (e) {
+                            console.error("Failed to parse SQL response:", e);
+                        }
+                    },
+                    error: function () {
+                        console.error("Error executing SQL query.");
+                    }
+                });
+            });
+        });
     </script>
 </body>

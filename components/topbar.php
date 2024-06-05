@@ -122,7 +122,7 @@ $nome = $stmtNome->fetchColumn(); ?>
                         class="fas fa-circle fa-sm fa-fw mr-2 text-<?php echo (isset($_SESSION["tema"]) && !empty($_SESSION["tema"])) ? $_SESSION["tema"] : "primary"; ?>"></i>
                     Tema
                 </a>
-
+               
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="../../logout" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -154,3 +154,5 @@ $nome = $stmtNome->fetchColumn(); ?>
         </div>
     </div>
 </div>
+
+

@@ -10,7 +10,7 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-:root {
+ :root {
   --blue: #4e73df;
   --indigo: #6610f2;
   --purple: #6f42c1;
@@ -2698,6 +2698,12 @@ fieldset:disabled a.btn {
   border-color: #e83e8c;
 }
 
+.btn-pink:hover {
+  color: #fff;
+  background-color: #a1225d;
+  border-color: #a1225d;
+}
+
 .btn-yellow {
   color: #fff;
   background-color: #f6c23e;
@@ -2708,6 +2714,12 @@ fieldset:disabled a.btn {
   color: #fff;
   background-color: #6610f2;
   border-color: #6610f2;
+}
+
+.btn-indigo:hover {
+  color: #fff;
+  background-color: #5215b6;
+  border-color: #5215b6;
 }
 
 .btn-primary {
@@ -12663,4 +12675,19 @@ body.sidebar-toggled footer.sticky-footer {
 
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: #fafafa !important;
+}
+
+#tables-list .list-group-item {
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#tables-list .list-group-item:hover {
+  background-color: #89a5f9;
+  color: #fff;
+}
+
+#tables-list .list-group-item.active {
+  background-color: #4e73df;
+  color: #fff;
 }

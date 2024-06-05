@@ -137,7 +137,7 @@ $monthNames = [
                                                     $clickAction = $isFutureDate
                                                         ? ""
                                                         : "onclick='generatePDF(\"$monthNames[$currentMonth]\", \"$day\")'";
-                                                    echo "<td style='height:70px;' class='$cellClass' $clickAction>$day</td>"; // Passa alla riga successiva dopo Domenica (7 giorni)
+                                                    echo "<td style='height:4.5em;' class='$cellClass' $clickAction>$day</td>"; // Passa alla riga successiva dopo Domenica (7 giorni)
                                                     if ($firstDayOfWeek == 7) {
                                                         echo "</tr>";
                                                         if (

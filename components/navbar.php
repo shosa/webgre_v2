@@ -65,15 +65,16 @@
                     <a id="quality-new" class="collapse-item" href="../../functions/quality/new"><i class="fa fa-plus"></i>
                         Nuova</a>
                     <a id="quality-read" class="collapse-item" href="../../functions/quality/read"><i
-                            class="far fa-folder-tree"></i>
-                        Elenco</a>
+                            class="far fa-calendar-alt"></i>
+                        Consulta</a>
                     <a id="quality-search" class="collapse-item" href="../../functions/quality/search"><i
                             class="fa fa-search"></i>
                         Cerca</a>
                     <a id="quality-barcode" class="collapse-item" href="../../functions/quality/barcode"><i
                             class="fal fa-barcode-alt"></i>
                         Barcodes</a>
-                    <a class="collapse-item" href="#"><i class="far fa-chart-pie-alt"></i>
+                    <a id="quality-charts" class="collapse-item" href="../../functions/quality/chartsOverview"><i
+                            class="far fa-chart-pie-alt"></i>
                         Reportistica</a>
                 </div>
             </div>
@@ -171,6 +172,7 @@
             '/functions/quality/read': 'quality-read',
             '/functions/quality/search': 'quality-search',
             '/functions/quality/barcode': 'quality-barcode',
+            '/functions/quality/chartsOverview': 'quality-charts',
             '/functions/production/new': 'production-new',
             '/functions/production/calendario': 'production-calendario',
             '/functions/production/settings': 'production-settings',
