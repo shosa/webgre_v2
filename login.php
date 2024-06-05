@@ -80,7 +80,7 @@ include BASE_PATH . '/components/header.php';
 	}
 </style>
 
-<body class="bg-gradient-primary">
+<body class="bg-gradient-light">
 
 	<div class="container">
 
@@ -94,6 +94,7 @@ include BASE_PATH . '/components/header.php';
 				<div class="card">
 					<div class="card-header text-primary font-weight-bold">ACCEDI</div>
 					<div class="card-body">
+						<?php require_once (BASE_PATH . "/utils/alerts.php"); ?>
 						<div class="form-group">
 							<label class="control-label">USERNAME</label>
 							<input type="text" name="username" class="form-control" required="required">

@@ -129,6 +129,16 @@
             </a>
         </li>
     <?php endif; ?>
+    <?php if (isset($_SESSION['permessi_sql']) && $_SESSION['permessi_sql'] == 1): ?>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="../../functions/database/manager" aria-expanded="true"
+                aria-controls="collapseProd">
+                <i class="far fa-database"></i>
+                <span>Database</span>
+            </a>
+        </li>
+    <?php endif; ?>
+
 
     <!-- TITOLO SEZIONE -->
 
