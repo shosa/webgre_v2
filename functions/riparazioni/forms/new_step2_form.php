@@ -13,6 +13,32 @@
     $max_tabid = $stmt->fetch(PDO::FETCH_ASSOC)['max_id'];
     $new_id = $max_tabid + 1;
     ?>
+    <style>
+        /* Rimuove le freccette su e giù dai campi di input di tipo number */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Larghezza uniforme per i campi di input */
+        .input-number {
+            width: 100%;
+            /* Larghezza del campo di input */
+        }
+
+        /* Imposta la larghezza delle colonne della tabella */
+        .table th,
+        .table td {
+            min-width: 80px;
+            /* Larghezza minima delle colonne della tabella */
+        }
+    </style>
+
     <div name="intestazione" style="padding:10px;">
         <div class="row">
             <div class="col-md-9">
@@ -75,13 +101,13 @@
         <div class="form-group">
             <label>Numerata</label>
             <div class="table-responsive">
-                <table class="table table-bordered table-condensed text-center">
+                <table class="table table-bordered table-condensed text-center" style="border: solid 1pt black;">
                     <thead class="thead-dark">
                         <tr>
                             <?php
                             // Recupera i dati dalla tabella id_numerate utilizzando PDO
                             // Debug: Verifica il valore di $informazione['Nu']
-                            $nuValue = (string) $informazione['Nu'];  
+                            $nuValue = (string) $informazione['Nu'];
                             $query = "SELECT * FROM id_numerate WHERE ID = :id";
                             $stmt = $pdo->prepare($query);
                             $stmt->bindParam(':id', $nuValue, PDO::PARAM_STR);
@@ -111,7 +137,7 @@
                             <?php
                             for ($i = 1; $i <= 20; $i++) {
                                 $fieldName = 'P' . str_pad($i, 2, '0', STR_PAD_LEFT); // Costruisci il nome del campo P01, P02, ecc.
-                                echo '<td style="width:50px;"><input type="number" name="' . $fieldName . '" value="" class="form-control"></td>';
+                                echo '<td style="width:50px;"><input type="number" name="<?php echo $fieldName; ?>" value="" class="form-control input-number"></td>';
                             }
                             ?>
                         </tr>

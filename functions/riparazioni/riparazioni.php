@@ -87,9 +87,7 @@ function getUrgencyColor($urgency)
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex align-items-center">
                             <h6 class="m-0 font-weight-bold text-primary">Attive</h6>
-                            <a href="export_riparazioni" class="btn btn-success ml-auto"><i
-                                    class="fal fa-file-excel fa-l"></i> EXCEL</a>
-                            <a href="add_step1?operation=create" class="btn btn-info ml-right"
+                            <a href="add_step1?operation=create" class="btn btn-info ml-auto"
                                 style="margin-left:5px;"><i class="fal fa-plus-circle fa-l"></i> NUOVA</a>
                         </div>
 
@@ -238,48 +236,21 @@ function getUrgencyColor($urgency)
     <!-- Bootstrap core JavaScript-->
     <script src="<?php BASE_PATH ?>/vendor/jquery/jquery.min.js"></script>
     <script src="<?php BASE_PATH ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
     <script src="<?php BASE_PATH ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
     <script src="<?php BASE_PATH ?>/js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
     <script src="<?php BASE_PATH ?>/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.buttons.min.js"></script>
+    <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.bootstrap4.min.js"></script>
+    <script src="<?php BASE_PATH ?>/vendor/jszip/jszip.min.js"></script>
+    <script src="<?php BASE_PATH ?>/vendor/pdfmake/pdfmake.min.js"></script>
+    <script src="<?php BASE_PATH ?>/vendor/pdfmake/vfs_fonts.js"></script>
+    <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.html5.min.js"></script>
+    <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.print.min.js"></script>
+    <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.colVis.min.js"></script>
+    <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.colReorder.min.js"></script>
+    <script src="<?php BASE_PATH ?>/js/datatables.js"></script>
     <?php include_once BASE_PATH . '/components/footer.php'; ?>
 </body>
 
-<script>
-
-    $(document).ready(function () {
-        // Aggiungi un gestore di eventi al clic sul pulsante "fa-search"
-        $('.show-record-details').click(function () {
-            var recordId = $(this).data('record-id');
-
-            // Esegui una richiesta AJAX per ottenere i dettagli del record dal server
-
-            $.ajax({
-                url: 'get_riparazione_details.php',
-                type: 'GET',
-                data: { id: recordId },
-                success: function (response) {
-                    // Inserisci i dettagli nel modal
-                    $('#record-details').html(response);
-                    // Apri il modal
-                    $('#record-details-modal').modal('show');
-                },
-                error: function (xhr, status, error) {
-                    // Gestisci eventuali errori
-                    console.error(error);
-                }
-            });
-
-        });
-        $('#dataTable').DataTable({
-            "order": [[0, "desc"]]
-        });
-    });
-
-</script>
+<script></script>

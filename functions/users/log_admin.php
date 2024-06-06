@@ -120,6 +120,22 @@ include (BASE_PATH . "/components/header.php");
                 </div>
             </div>
             <!-- Footer -->
+            <script src="<?php BASE_PATH ?>/vendor/jquery/jquery.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
+            <script src="<?php BASE_PATH ?>/js/sb-admin-2.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/jquery.dataTables.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.buttons.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.bootstrap4.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/jszip/jszip.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/pdfmake/pdfmake.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/pdfmake/vfs_fonts.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.html5.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.print.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.colVis.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.colReorder.min.js"></script>
+            <script src="<?php BASE_PATH ?>/js/datatables.js"></script>
             <?php include (BASE_PATH . "/components/footer.php"); ?>
             <!-- End of Footer -->
         </div>
@@ -130,14 +146,6 @@ include (BASE_PATH . "/components/header.php");
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-    <script src="<?php BASE_PATH ?>/vendor/jquery/jquery.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="<?php BASE_PATH ?>/js/sb-admin-2.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -161,9 +169,5 @@ include (BASE_PATH . "/components/header.php");
             });
         });
     });
-    $(document).ready(function () {
-        $('#dataTable').DataTable({
-            "order": [[0, "desc"]]
-        });
-    });
+
 </script>

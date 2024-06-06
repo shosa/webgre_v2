@@ -1,4 +1,29 @@
 <hr>
+<style>
+    /* Rimuove le freccette su e giù dai campi di input di tipo number */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    /* Larghezza uniforme per i campi di input */
+    .input-number {
+        width: 100%;
+        /* Larghezza del campo di input */
+    }
+
+    /* Imposta la larghezza delle colonne della tabella */
+    .table th,
+    .table td {
+        min-width: 80px;
+        /* Larghezza minima delle colonne della tabella */
+    }
+</style>
 <fieldset>
     <div class="form-group">
         <label for="ID">ID</label>
@@ -25,8 +50,9 @@
 
         <label>Numerata</label>
         <div class="table-responsive ">
-            <table class="table table-bordered table-condensed border-left-info" style="border: solid 1pt black;">
-                <thead class="thead-dark">
+            <table class="table table-bordered table-condensed border-left-info text-center"
+                style="border: solid 1pt black;">
+                <thead>
                     <tr>
                         <?php
                         // Recupera i dati dalla tabella id_numerate utilizzando PDO
@@ -51,9 +77,10 @@
                         for ($i = 1; $i <= 20; $i++) {
                             $fieldName = 'P' . str_pad($i, 2, '0', STR_PAD_LEFT); // Costruisci il nome del campo P01, P02, ecc.
                             $fieldValue = isset($riparazione[$fieldName]) ? htmlspecialchars($riparazione[$fieldName], ENT_QUOTES, 'UTF-8') : '';
-                            echo '<td style="width:50px;"><input type="number" name="' . $fieldName . '" value="' . $fieldValue . '" class="form-control"></td>';
+                            echo '<td style="min-width: 100px;"><input type="number" name="' . $fieldName . '" value="' . $fieldValue . '" class="form-control input-number"></td>';
                         }
                         ?>
+
 
                     </tr>
                 </tbody>

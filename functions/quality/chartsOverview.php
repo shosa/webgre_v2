@@ -44,7 +44,7 @@ for ($i = 0; $i < 7; $i++) {
                     </div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Reportistica</li>
+                        <li class="breadcrumb-item active">Statistiche</li>
                     </ol>
                     <div class="row">
 

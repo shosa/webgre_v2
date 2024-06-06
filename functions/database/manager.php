@@ -91,7 +91,17 @@ require_once BASE_PATH . '/components/header.php';
             <script src="<?php BASE_PATH ?>/js/sb-admin-2.min.js"></script>
             <script src="<?php BASE_PATH ?>/vendor/datatables/jquery.dataTables.min.js"></script>
             <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-            <?php include_once BASE_PATH . '/components/footer.php'; ?>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.buttons.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.bootstrap4.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/jszip/jszip.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/pdfmake/pdfmake.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/pdfmake/vfs_fonts.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.html5.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.print.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.colVis.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.colReorder.min.js"></script>
+
+            <?php include (BASE_PATH . "/components/footer.php"); ?>
         </div>
     </div>
 
@@ -171,7 +181,22 @@ require_once BASE_PATH . '/components/header.php';
                             $('#table-data').html(tableHtml);
 
                             $('#dataTable').DataTable({
-                                "order": [[0, "desc"]]
+                                "columnDefs": [
+                                    { "type": "num-html", "targets": 0 }
+                                ],
+                                "info": true,
+                                "colReorder": true,
+                                "order": [[0, "desc"]],
+                                dom: '<"top"Bf>rt<"bottom"lip><"clear">',
+                                buttons: [
+                                    { extend: 'copy', text: '<i class="fas fa-copy"></i> COPIA', className: 'btn-info' },
+                                    { extend: 'excel', text: '<i class="fas fa-file-excel"></i> EXCEL', className: 'btn-success' },
+                                    { extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> PDF', className: 'btn-danger' },
+                                    { extend: 'print', text: '<i class="fas fa-print"></i> STAMPA', className: 'btn-warning' },
+                                ],
+                                language: {
+                                    url: "https://cdn.datatables.net/plug-ins/2.0.8/i18n/it-IT.json"
+                                },
                             });
                         } catch (e) {
                             console.error("Failed to parse table data response:", e);

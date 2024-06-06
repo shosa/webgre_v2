@@ -75,7 +75,7 @@
                         Barcodes</a>
                     <a id="quality-charts" class="collapse-item" href="../../functions/quality/chartsOverview"><i
                             class="far fa-chart-pie-alt"></i>
-                        Reportistica</a>
+                        Statistiche</a>
                 </div>
             </div>
         </li>
