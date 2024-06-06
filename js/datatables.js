@@ -13,10 +13,10 @@ $(document).ready(function () {
     "order": [[0, "desc"]],
     dom: '<"top"Bf>rt<"bottom"lip><"clear">',
     buttons: [
-      { extend: 'copy', text: '<i class="fas fa-copy"></i> COPIA', className: 'btn-info' },
-      { extend: 'excel', text: '<i class="fas fa-file-excel"></i> EXCEL', className: 'btn-success' },
-      { extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> PDF', className: 'btn-danger' },
-      { extend: 'print', text: '<i class="fas fa-print"></i> STAMPA', className: 'btn-warning' },
+      { extend: 'copy', text: '<i class="fas fa-copy"></i> COPIA', className: 'btn-primary' },
+      { extend: 'excel', text: '<i class="fas fa-file-excel"></i> EXCEL', className: 'btn-primary' },
+      { extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> PDF', className: 'btn-primary' },
+      { extend: 'print', text: '<i class="fas fa-print"></i> STAMPA', className: 'btn-primary' },
     ],
     language: {
       url: "https://cdn.datatables.net/plug-ins/2.0.8/i18n/it-IT.json"

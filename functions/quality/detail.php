@@ -40,7 +40,12 @@ try {
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Controllo Qualità</h1>
                     </div>
-
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="../../functions/quality/read">Consultazione Date<a></a>
+                        </li>
+                        <li class="breadcrumb-item active">Dettaglio</li>
+                    </ol>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex align-items-center">
                             <h6 class="m-0 font-weight-bold text-primary">Test effettuati in data

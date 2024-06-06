@@ -110,6 +110,16 @@
     <div class="sidebar-heading">
         Strumenti
     </div>
+    <!-- UTENTI -->
+    <?php if (isset($_SESSION['permessi_utenti']) && $_SESSION['permessi_utenti'] == 1): ?>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="../../functions/users/manageUsers" aria-expanded="true"
+                aria-controls="collapseProd">
+                <i class="far fa-users"></i>
+                <span>Utenti</span>
+            </a>
+        </li>
+    <?php endif; ?>
     <!-- LOG ATTIVITA' -->
     <?php if (isset($_SESSION['permessi_log']) && $_SESSION['permessi_log'] == 1): ?>
         <li class="nav-item">
@@ -176,6 +186,7 @@
             '/functions/production/new': 'production-new',
             '/functions/production/calendario': 'production-calendario',
             '/functions/production/settings': 'production-settings',
+
             // Aggiungi qui altri link come necessario
         };
 

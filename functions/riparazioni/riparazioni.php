@@ -12,7 +12,7 @@ require_once BASE_PATH . '/utils/log_utils.php';
 
 try {
     // Connessione al database utilizzando PDO
-    $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
+    $pdo = getDbInstance();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Get current page
@@ -76,7 +76,7 @@ function getUrgencyColor($urgency)
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <?php require_once (BASE_PATH . "/utils/alerts.php"); ?>
+                    <?php include (BASE_PATH . "/utils/alerts.php"); ?>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Riparazioni</h1>
                     </div>
