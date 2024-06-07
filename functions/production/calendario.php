@@ -183,7 +183,7 @@ $monthNames = [
                                     <button class="btn btn-warning btn-block btn-lg"
                                         onclick="generatePDFMese('<?= $monthNames[$currentMonth] ?>')"><i
                                             class="fas fa-calendar-alt"></i> REPORT
-                                        MENSILE</button>
+                                        <?php echo $monthNames[$currentMonth] ?></button>
                                 </div>
                             </div>
                         </div>
