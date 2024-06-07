@@ -1,5 +1,5 @@
 <?php
-// Includi il file di configurazione del database
+session_start();
 require_once '../../config/config.php';
 
 // Verifica se è stata inviata una richiesta POST
@@ -17,10 +17,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Esegui la query
         if ($stmt->execute()) {
             // Rispondi con un messaggio di successo
+            $_SESSION['warning'] = 'Password aggiornata.';
             echo json_encode(array("status" => "success"));
       
         } else {
             // Rispondi con un messaggio di errore
+            $_SESSION['danger'] = 'Errore.';
             echo json_encode(array("status" => "error", "message" => "Impossibile aggiornare la password."));
           
         }

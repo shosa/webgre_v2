@@ -196,6 +196,7 @@ require_once BASE_PATH . '/components/header.php';
                                 // Gestisci la risposta del server
                                 // Chiudi il modale e visualizza un messaggio di successo
                                 $('#editPasswordModal').modal('hide');
+                                location.reload();
 
                             }
                         });
@@ -209,7 +210,7 @@ require_once BASE_PATH . '/components/header.php';
     <!-- Modale per aggiungere un nuovo utente -->
     <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addUserModalLabel">Aggiungi Nuovo Utente</h5>
@@ -218,7 +219,7 @@ require_once BASE_PATH . '/components/header.php';
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="path/to/add_user_script.php" method="POST">
+                    <form action="add_user" method="POST">
                         <div class="form-group">
                             <label for="user_name">Nome Utente</label>
                             <input type="text" class="form-control" id="user_name" name="user_name" required>
@@ -251,10 +252,10 @@ require_once BASE_PATH . '/components/header.php';
     <!-- Modale per eliminare un utente -->
     <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteUserModalLabel">Elimina Utente</h5>
+                    <h5 class="modal-title text-danger " id="deleteUserModalLabel">Elimina Utente</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -283,7 +284,7 @@ require_once BASE_PATH . '/components/header.php';
 <!-- Modale per cambiare password -->
 <div class="modal fade" id="editPasswordModal" tabindex="-1" role="dialog" aria-labelledby="editPasswordModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog  modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editPasswordModalLabel">Modifica Password</h5>

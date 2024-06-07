@@ -17,7 +17,7 @@ $bin_percentage = array();
 $giorni_settimana = array('LUNEDÌ', 'MARTEDÌ', 'MERCOLEDÌ', 'GIOVEDÌ', 'VENERDÌ', 'SABATO', 'DOMENICA');
 
 // CICLO DIFETTI SETTIMANA
-for ($i = 0; $i < 7; $i++) {
+for ($i = 0; $i < 5; $i++) {
     // Calcola la data del giorno corrente
     $current_date = strtotime("+$i days", $monday);
     $formatted_date = date('d/m/Y', $current_date);
