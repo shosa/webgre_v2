@@ -105,7 +105,7 @@ include BASE_PATH . '/components/header.php';
 						</div>
 						<div class="form-check">
 							<input name="remember" type="checkbox" class="form-check-input" value="1">
-							<label class="form-check-label">Ricordami su questo computer.</label>
+							<label class="form-check-label">Ricordami su questo dispositivo.</label>
 						</div>
 						<?php if (isset($_SESSION['login_failure'])): ?>
 							<div class="alert alert-danger alert-dismissable fade show mt-3">

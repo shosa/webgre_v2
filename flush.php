@@ -10,6 +10,10 @@ if (session_status() === PHP_SESSION_ACTIVE) {
         foreach ($_SESSION as $key => $value) {
             echo "$key => $value<br>";
         }
+        echo "Contenuti della variabile \$_SERVER:<br>";
+        foreach ($_SERVER as $key => $value) {
+            echo "$key => $value<br>";
+        }
     } else {
         echo "La variabile \$_SESSION è vuota o non è impostata.";
     }
