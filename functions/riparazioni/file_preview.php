@@ -218,7 +218,7 @@ include (BASE_PATH . "/components/header.php");
                                     $pdf->Cell(80, 10, $row['UTENTE'], 0, 1, 'R');
                                     $pdf->Ln(3); // nuova riga.
                                     $pdf->SetFont('helvetica', '', 12);
-                                    $url = 'http://webgre.altervista.org/functions/mobile/mobile.php?idrip=' . $idrip;
+                                    $url = $dominio . '/functions/mobile/mobile.php?idrip=' . $idrip;
 
                                     // Genera il QR code
                                     $qrCodeSize = 20;  // Dimensione del QR code

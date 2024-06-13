@@ -4,17 +4,23 @@ session_start();
 require_once BASE_PATH . '/components/auth_validate.php';
 
 
+
 // Ottieni il tipo di utente dall'array di sessione
 $tipoUtente = $_SESSION['admin_type'];
 
 // Ottieni un'istanza del database utilizzando PDO
-$pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
+$pdo = getDbInstance();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Prepara le query per ottenere le informazioni del dashboard
 $queryNumRiparazioni = "SELECT SUM(QTA) FROM riparazioni";
 $stmtNumRiparazioni = $pdo->query($queryNumRiparazioni);
 $numRiparazioni = $stmtNumRiparazioni->fetchColumn();
+
+$queryNumRiparazioniPersonali = $pdo->prepare("SELECT SUM(QTA) FROM riparazioni WHERE utente = :username");
+$queryNumRiparazioniPersonali->execute([':username' => $_SESSION['username']]);
+$numRiparazioniPersonali = $queryNumRiparazioniPersonali->fetchColumn();
+
 
 $queryNumDaCompletare = "SELECT SUM(paia) FROM lanci WHERE stato = 'IN ATTESA'";
 $stmtNumDaCompletare = $pdo->query($queryNumDaCompletare);
@@ -64,7 +70,7 @@ try {
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
+                    <?php require_once BASE_PATH . "/utils/alerts.php"; ?>
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
@@ -99,6 +105,31 @@ try {
                                     </a>
                                 </div>
                             </div>
+                            <div class="col-xl-2 col-md-4 mb-4">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                    Riparazioni attive <u>Personali</u></div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                    <?php echo empty($numRiparazioniPersonali) ? '0' : $numRiparazioniPersonali; ?>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-user-clock fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a href="../../functions/riparazioni/riparazioni"
+                                        class="card-footer text-white bg-white text-success">
+                                        <span class="float-left">Apri Elenco</span>
+                                        <span class="float-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                        <div class="clearfix"></div>
+                                    </a>
+                                </div>
+                            </div>
+
                         <?php endif; ?>
 
                         <?php if (isset($_SESSION['permessi_cq']) && $_SESSION['permessi_cq'] == 1): ?>
@@ -154,4 +185,3 @@ try {
     <script src="js/sb-admin-2.min.js"></script>
 
 </body>
-
