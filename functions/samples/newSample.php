@@ -4,7 +4,8 @@ ini_set("display_startup_errors", 1);
 error_reporting(E_ALL);
 session_start();
 require_once "../../config/config.php";
-require_once "../../helpers/helpers.php";
+require_once BASE_PATH . "/helpers/helpers.php";
+require_once BASE_PATH . "/utils/log_utils.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nomeModello = $_POST['nome_modello'] ?? '';
@@ -66,7 +67,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bindParam(':immagine', $immagine); // Salva il nome del file nel database, anche se vuoto
 
     if ($stmt->execute()) {
+        $idInserito = $pdo->lastInsertId();
         $_SESSION['success'] = "Modello inserito con successo.";
+        logActivity($_SESSION['user_id'], 'CAMPIONARIO', 'CREA', 'Inserito nuovo modello', 'ID: ' . $idInserito);
         header('Location: ../../functions/samples/list');
         exit();
     } else {

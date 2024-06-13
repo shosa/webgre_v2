@@ -119,7 +119,7 @@
                     <h6 class="collapse-header">Sezioni:</h6>
                     <a id="samples-new" class="collapse-item" href="../../functions/samples/newSample"><i
                             class="fa fa-plus"></i>
-                        Nuova</a>
+                        Nuovo</a>
                     <a id="samples-list" class="collapse-item" href="../../functions/samples/list"><i
                             class="far fa-list"></i>
                         In corso</a>

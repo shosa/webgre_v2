@@ -4,6 +4,8 @@ ini_set("display_startup_errors", 1);
 error_reporting(E_ALL);
 session_start();
 require_once "../../config/config.php";
+require_once BASE_PATH . "/helpers/helpers.php";
+require_once BASE_PATH . "/utils/log_utils.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $modelId = $_POST['model_id'];
@@ -16,6 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pdo = getDbInstance();
     $pdo->beginTransaction();
 
+    $logMessage = "";
+
     try {
         // Verifica se non sono state inviate righe e cancella tutte le righe esistenti per il modello
         if (empty(array_filter($descrizioni, 'strlen'))) {
@@ -24,11 +28,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt = $pdo->prepare("UPDATE samples_modelli SET notify_edits = 1 WHERE id = :modelId");
             $stmt->bindParam(':modelId', $modelId);
             $stmt->execute();
+            $logMessage .= "Rimozione senza descrizioni";
         } else {
             // Recupera le voci esistenti della DiBa per il modello corrente
             $stmt = $pdo->prepare("SELECT * FROM samples_diba WHERE modello_id = :model_id");
             $stmt->execute(['model_id' => $modelId]);
             $existingEntries = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $aggiornamenti = [];
+            $inserimenti = [];
+            $rimozioni = [];
 
             // Loop sui dati inviati dal modulo
             foreach ($descrizioni as $key => $descrizione) {
@@ -45,9 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $stmt->bindParam(':posizione', $posizioni[$key]);
                         $stmt->bindParam(':id', $existingEntry['id']);
                         $stmt->execute();
-                        $stmt = $pdo->prepare("UPDATE samples_modelli SET notify_edits = 1 WHERE id = :modelId");
-                        $stmt->bindParam(':modelId', $modelId);
-                        $stmt->execute();
+                        $aggiornamenti[] = "[" . $posizioni[$key] . "]" . $descrizione;
                     } else {
                         // Inserisce una nuova riga
                         $stmt = $pdo->prepare("INSERT INTO samples_diba (modello_id, descrizione, note, unita_misura, consumo, posizione) VALUES (:modello_id, :descrizione, :note, :unita_misura, :consumo, :posizione)");
@@ -58,9 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $stmt->bindParam(':consumo', $consumo[$key]);
                         $stmt->bindParam(':posizione', $posizioni[$key]);
                         $stmt->execute();
-                        $stmt = $pdo->prepare("UPDATE samples_modelli SET notify_edits = 1 WHERE id = :modelId");
-                        $stmt->bindParam(':modelId', $modelId);
-                        $stmt->execute();
+                        $inserimenti[] = "[" . $posizioni[$key] . "]" . $descrizione;
                     }
                 }
             }
@@ -70,21 +75,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (!in_array($entry['id'], $_POST['entry_id'])) {
                     $stmt = $pdo->prepare("DELETE FROM samples_diba WHERE id = :id");
                     $stmt->execute(['id' => $entry['id']]);
-                    $stmt = $pdo->prepare("UPDATE samples_modelli SET notify_edits = 1 WHERE id = :modelId");
-                    $stmt->bindParam(':modelId', $modelId);
-                    $stmt->execute();
+                    $rimozioni[] = $entry['descrizione'];
                 }
+            }
+
+            // Costruisci il messaggio di log unificato
+            if (!empty($aggiornamenti)) {
+                $logMessage .= "Aggiornamenti: " . implode(', ', $aggiornamenti) . "; ";
+            }
+            if (!empty($inserimenti)) {
+                $logMessage .= "Inserimenti: " . implode(', ', $inserimenti) . "; ";
+            }
+            if (!empty($rimozioni)) {
+                $logMessage .= "Rimozioni: " . implode(', ', $rimozioni);
             }
         }
 
         // Conferma la transazione
         $pdo->commit();
-        $_SESSION['success'] = "DiBa aggiornata con successo!";
+        $_SESSION['success'] = "WorkSheet aggiornato con successo!";
     } catch (Exception $e) {
         // Annulla la transazione in caso di errore
         $pdo->rollBack();
         $_SESSION['error'] = "Errore nell'aggiornamento della DiBa: " . $e->getMessage();
     }
+
+    // Registra il log unificato
+    logActivity($_SESSION['user_id'], 'CAMPIONARIO', 'MODIFICA', 'WorkSheet', 'Dettagli in campo Query', $logMessage);
 
     header('Location: editDiba.php?model_id=' . $modelId);
     exit();
