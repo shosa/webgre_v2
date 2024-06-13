@@ -95,49 +95,85 @@ if (!empty($model['immagine']) && file_exists("../../functions/samples/img/" . $
     $pdf->SetX($textStartX);
     $pdf->Cell(0, $spacingY, htmlspecialchars($model['nome_modello']), 0, 1, 'L');
 
-    $pdf->SetXY($textStartX, $textStartY + $spacingY * 2);
+    $pdf->SetXY($textStartX, $textStartY);
     $pdf->SetFont('helvetica', 'B', 10);
-    $pdf->Cell(0, 6, 'DESCRIZIONE:', 0, 1, 'L');
+    $pdf->Cell(0, 6, 'FORMA:', 0, 1, 'R');
     $pdf->SetFont('helvetica', '', 15);
     $pdf->SetX($textStartX);
-    $pdf->MultiCell(0, $spacingY, htmlspecialchars($model['descrizione']), 0, 'L', 0, 1);
+    $pdf->Cell(0, $spacingY, htmlspecialchars($model['forma']), 0, 1, 'R');
+
+    $pdf->SetXY($textStartX, $textStartY + $spacingY * 2);
+    $pdf->SetFont('helvetica', 'B', 10);
+    $pdf->Cell(0, 6, 'VARIANTE:', 0, 1, 'L');
+    $pdf->SetFont('helvetica', '', 15);
+    $pdf->SetX($textStartX);
+    $pdf->MultiCell(0, $spacingY, htmlspecialchars($model['variante']), 0, 'L', 0, 1);
+
+    $pdf->SetXY($textStartX, $textStartY + $spacingY * 2);
+    $pdf->SetFont('helvetica', 'B', 10);
+    $pdf->Cell(0, 6, 'DATA DI CONSEGNA:', 0, 1, 'R');
+    $pdf->SetFont('helvetica', '', 15);
+    $pdf->SetX($textStartX);
+    $pdf->Cell(0, $spacingY, htmlspecialchars(date('d/m/Y', strtotime($model['consegna']))), 0, 1, 'R');
 
     $pdf->SetXY($textStartX, $textStartY + $spacingY * 4);
     $pdf->SetFont('helvetica', 'B', 10);
-    $pdf->Cell(0, 6, 'DATA DI CONSEGNA:', 0, 1, 'L');
-    $pdf->SetFont('helvetica', '', 15);
+    $pdf->Cell(0, 6, 'NOTE:', 0, 1, 'L');
+    $pdf->SetFont('helvetica', '', 12);
     $pdf->SetX($textStartX);
-    $pdf->Cell(0, $spacingY, htmlspecialchars($model['consegna']), 0, 1, 'L');
-
-
-
+    // Utilizza MultiCell per le note per consentire il wrap del testo
+    $pdf->MultiCell(85, $spacingY, htmlspecialchars($model['note']), 0, 'L');
 
     // Sposta il cursore sotto l'immagine per la sezione successiva
-    $pdf->SetY($currentY + $imageSize + 10);
+    $pdf->SetY($currentY + $imageSize);
 } else {
     // Se non c'è immagine, inserisci solo i dettagli
+    $currentY = $pdf->GetY();
+    $padding = 5; // Spazio tra l'immagine e il testo
+    $textStartX = 15 + $padding;
+    $textStartY = $currentY;
+    $pdf->SetXY($textStartX, $textStartY);
     $pdf->SetFont('helvetica', 'B', 10);
     $pdf->Cell(0, 6, 'MODELLO:', 0, 1, 'L');
     $pdf->SetFont('helvetica', '', 15);
-    $pdf->Cell(0, 8, htmlspecialchars($model['nome_modello']), 0, 1, 'L');
-    $pdf->Ln(2);
+    $pdf->SetX($textStartX);
+    $pdf->Cell(0, $spacingY, htmlspecialchars($model['nome_modello']), 0, 1, 'L');
 
+    $pdf->SetXY($textStartX, $textStartY);
     $pdf->SetFont('helvetica', 'B', 10);
-    $pdf->Cell(0, 6, 'DESCRIZIONE:', 0, 1, 'L');
+    $pdf->Cell(0, 6, 'FORMA:', 0, 1, 'R');
     $pdf->SetFont('helvetica', '', 15);
-    $pdf->MultiCell(0, 8, htmlspecialchars($model['descrizione']), 0, 'L', 0, 1);
-    $pdf->Ln(2);
+    $pdf->SetX($textStartX);
+    $pdf->Cell(0, $spacingY, htmlspecialchars($model['forma']), 0, 1, 'R');
 
+    $pdf->SetXY($textStartX, $textStartY + $spacingY * 2);
     $pdf->SetFont('helvetica', 'B', 10);
-    $pdf->Cell(0, 6, 'DATA DI CONSEGNA:', 0, 1, 'L');
+    $pdf->Cell(0, 6, 'VARIANTE:', 0, 1, 'L');
     $pdf->SetFont('helvetica', '', 15);
-    $pdf->Cell(0, 8, htmlspecialchars($model['consegna']), 0, 1, 'L');
+    $pdf->SetX($textStartX);
+    $pdf->MultiCell(0, $spacingY, htmlspecialchars($model['variante']), 0, 'L', 0, 1);
+
+    $pdf->SetXY($textStartX, $textStartY + $spacingY * 2);
+    $pdf->SetFont('helvetica', 'B', 10);
+    $pdf->Cell(0, 6, 'DATA DI CONSEGNA:', 0, 1, 'R');
+    $pdf->SetFont('helvetica', '', 15);
+    $pdf->SetX($textStartX);
+    $pdf->Cell(0, $spacingY, htmlspecialchars(date('d/m/Y', strtotime($model['consegna']))), 0, 1, 'R');
+
+ 
+    $pdf->SetXY($textStartX, $textStartY + $spacingY * 4);
+    $pdf->SetFont('helvetica', 'B', 10);
+    $pdf->Cell(0, 6, 'NOTE:', 0, 1, 'L');
+    $pdf->SetFont('helvetica', '', 12);
+    $pdf->SetX($textStartX);
+    // Utilizza MultiCell per le note per consentire il wrap del testo
+    $pdf->MultiCell(130, $spacingY, htmlspecialchars($model['note']), 0, 'L');
 }
-$pdf->SetXY($textStartX, $textStartY + $spacingY * 4);
+
 $pdf->SetFont('helvetica', 'B', 12);
 $pdf->Cell(0, 6, 'WORKSHEET #:', 0, 1, 'R');
 $pdf->SetFont('helvetica', '', 18);
-$pdf->SetX($textStartX);
+
 $pdf->Cell(0, $spacingY, htmlspecialchars($modelId), 0, 1, 'R');
 $pdf->Ln(1);
 
@@ -230,5 +266,5 @@ foreach ($labels as $index => $label) {
 }
 
 // Output del PDF
-$pdf->Output('Worksheet_' . $modelId . '.pdf', 'I');
+$pdf->Output('Worksheet_' . $modelId . '.pdf', 'D');
 ?>

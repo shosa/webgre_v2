@@ -52,8 +52,8 @@ $notifyEdits = $model['notify_edits'];
                     </div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Inserimento WorkSheet -
-                            <?php echo htmlspecialchars($model['nome_modello']); ?>
+                        <li class="breadcrumb-item active">Modifica WorkSheet -
+                            <?php echo htmlspecialchars($model['id']); ?>
                         </li>
                     </ol>
                     <?php if ($notifyEdits == 1): ?>
@@ -63,10 +63,15 @@ $notifyEdits = $model['notify_edits'];
                                 <strong>Attenzione:</strong> Questo WorkSheet presenta modifiche non comunicate.
                             </div>
                             <div>
-                                <button class="btn btn-primary" id="confirmNotify"><i class="fas fa-bell"></i> CONFERMA
-                                    NOTIFICA</button>
-                                <button class="btn btn-success" id="sendWhatsApp"><i class="fab fa-whatsapp"></i> INVIA
-                                    WHATSAPP</button>
+                                <!-- Pulsante per copiare l'URL -->
+                                <button class="btn btn-success" id="copyUrl"
+                                    data-url="<?php echo htmlspecialchars($dominio . '/functions/samples/printBolla?model_id=' . $modelId); ?>">
+                                    <i class="fal fa-clipboard"></i> LINK
+                                </button>
+                                <!-- Pulsante per confermare la notifica -->
+                                <button class="btn btn-primary" id="confirmNotify">
+                                    <i class="fal fa-bell"></i> CONFERMA NOTIFICA
+                                </button>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -137,7 +142,8 @@ $notifyEdits = $model['notify_edits'];
                                                                 class="form-control"></td>
                                                         <td class="text-center"><button type="button"
                                                                 class="btn btn-danger btn-sm remove-row"><i
-                                                                    class="fal fa-trash-alt"></i></button></td>
+                                                                    class="fal fa-trash-alt "></i></button>
+                                                        </td>
                                                     </tr>
                                                     <?php
                                                 endfor; ?>
@@ -157,8 +163,9 @@ $notifyEdits = $model['notify_edits'];
                                 </div>
                                 <div class="card-body">
 
-                                    <button type="submit" form="dibaForm" class="btn btn-success btn-block">Salva
-                                        DiBa</button>
+                                    <button type="submit" form="dibaForm" class="btn btn-success btn-block"><i
+                                            class="fal fa-save"></i> Salva
+                                    </button>
                                     <a class="btn btn-warning ml-auto btn-block"
                                         href="printBolla.php?model_id=<?php echo $modelId ?>">
                                         <i class="fal fa-download"></i> Scarica
@@ -185,9 +192,10 @@ $notifyEdits = $model['notify_edits'];
                                                 required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="descrizione">Descrizione</label>
-                                            <textarea name="descrizione" class="form-control"
-                                                rows="3"><?php echo htmlspecialchars($model['descrizione'] ?? ''); ?></textarea>
+                                            <label for="variante">Variante</label>
+                                            <input type="text" name="variante" class="form-control" rows="3"
+                                                value="<?php echo htmlspecialchars($model['variante'] ?? ''); ?>"
+                                                required>
                                         </div>
 
                                         <!-- New Row for Image and Date -->
@@ -212,16 +220,29 @@ $notifyEdits = $model['notify_edits'];
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
+                                                    <label for="forma">Forma</label>
+                                                    <input type="text" name="forma" class="form-control"
+                                                        value="<?php echo htmlspecialchars($model['forma'] ?? ''); ?>"
+                                                        required>
                                                     <label for="consegna">Data di Consegna</label>
                                                     <input type="date" name="consegna" class="form-control"
                                                         value="<?php echo htmlspecialchars($model['consegna'] ?? ''); ?>">
                                                 </div>
                                             </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="note">Note</label>
+                                                    <textarea name="note" class="form-control"
+                                                        rows="3"><?php echo htmlspecialchars($model['note'] ?? ''); ?></textarea>
+                                                </div>
+                                            </div>
                                         </div>
 
-                                        <div class="alert alert-warning">Attenzione: i dati non salvati del WorkSheet
+                                        <div class="alert alert-info"> <strong>Attenzione:</strong> i dati non salvati
+                                            del WorkSheet
                                             andranno persi.</div>
-                                        <button type="submit" class="btn btn-primary">Aggiorna Modello</button>
+                                        <button type="submit" class="btn btn-primary btn-block"><i
+                                                class="fal fa-save"></i> Conferma</button>
                                     </form>
                                 </div>
 
@@ -263,7 +284,7 @@ $notifyEdits = $model['notify_edits'];
         });
 
         // Rimuovi l'immagine del modello
-        document.getElementById('removeImage').addEventListener('click', function () {
+        document.getElementById('removeImage')?.addEventListener('click', function () {
             var removeImmagineInput = document.getElementById('remove_immagine');
             var immagineInput = document.getElementById('immagine');
             removeImmagineInput.value = '1';
@@ -272,51 +293,52 @@ $notifyEdits = $model['notify_edits'];
             imageContainer.parentNode.removeChild(imageContainer);
         });
 
-        document.getElementById('confirmNotify').addEventListener('click', function () {
-            updateNotifyEdits(0);
-        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const confirmNotifyButton = document.getElementById('confirmNotify');
+            const copyUrlButton = document.getElementById('copyUrl');
 
-        document.getElementById('sendWhatsApp').addEventListener('click', function () {
-            // Implementa la logica per inviare WhatsApp qui
-            // Ad esempio, puoi fare una chiamata AJAX a un endpoint che invia il messaggio WhatsApp
-
-            // Successivamente, aggiorna notify_edits
-            updateNotifyEdits(0);
-        });
-
-        function updateNotifyEdits(newValue) {
-            const modelId = "<?php echo $modelId; ?>";
-            const url = "updateNotify.php";
-            const params = new URLSearchParams();
-            params.append('model_id', modelId);
-            params.append('notify_edits', newValue);
-
-            fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: params.toString()
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById('notificationBanner').style.display = 'none';
-                        location.reload();
-                    } else {
-                        alert('Errore nell\'aggiornamento.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+            if (confirmNotifyButton) {
+                confirmNotifyButton.addEventListener('click', function () {
+                    updateNotifyEdits(0);
                 });
-        }
-        document.getElementById('sendWhatsApp').addEventListener('click', function () {
-            const phoneNumber = "3483318964"; // Numero di telefono
-            const message = "Il WorkSheet #<?php echo $modelId; ?> è stato aggiornato! Scaricalo da <?php echo $dominio; ?>/functions/samples/printBolla.php?model_id=<?php echo $modelId; ?>";
-            const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
+            }
 
-            // Successivamente, aggiorna notify_edits
-            updateNotifyEdits(0);
+            if (copyUrlButton) {
+                copyUrlButton.addEventListener('click', function () {
+                    const urlToCopy = copyUrlButton.getAttribute('data-url');
+                    navigator.clipboard.writeText(urlToCopy).then(() => {
+                        alert('Link WorkSheet copiato negli appunti!');
+                    }).catch(err => {
+                        console.error('Errore nella copia dell\'URL:', err);
+                    });
+                });
+            }
+
+            function updateNotifyEdits(newValue) {
+                const modelId = "<?php echo $modelId; ?>";
+                const url = "../../functions/samples/updateNotify.php"; // Assicurati che il percorso sia corretto
+                const params = new URLSearchParams();
+                params.append('model_id', modelId);
+                params.append('notify_edits', newValue);
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: params.toString()
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('notificationBanner').style.display = 'none';
+                            location.reload();
+                        } else {
+                            alert('Errore nell\'aggiornamento.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
         });
     </script>
 </body>

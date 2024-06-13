@@ -38,10 +38,12 @@ if (isset($_POST['remove_immagine']) && $_POST['remove_immagine'] == '1') {
 }
 
 // Aggiorna i dettagli del modello, inclusa la data di consegna
-$stmt = $pdo->prepare("UPDATE samples_modelli SET nome_modello = :nome_modello, descrizione = :descrizione, consegna = :consegna WHERE id = :model_id");
+$stmt = $pdo->prepare("UPDATE samples_modelli SET nome_modello = :nome_modello, variante = :variante, forma = :forma, note = :note, consegna = :consegna WHERE id = :model_id");
 $stmt->execute([
     'nome_modello' => $_POST['nome_modello'],
-    'descrizione' => $_POST['descrizione'],
+    'variante' => $_POST['variante'],
+    'note' => $_POST['note'],
+    'forma' => $_POST['forma'],
     'consegna' => $consegna,
     'model_id' => $modelId
 ]);
@@ -56,7 +58,9 @@ if (isset($_FILES['immagine']) && $_FILES['immagine']['error'] === UPLOAD_ERR_OK
     $stmt = $pdo->prepare("UPDATE samples_modelli SET immagine = :immagine WHERE id = :model_id");
     $stmt->execute(['immagine' => $immagineName, 'model_id' => $modelId]);
 }
-
+$stmt = $pdo->prepare("UPDATE samples_modelli SET notify_edits = 1 WHERE id = :modelId");
+$stmt->bindParam(':modelId', $modelId);
+$stmt->execute();
 $_SESSION['success'] = "Modello aggiornato con successo.";
 header('Location: editDiba.php?model_id=' . $modelId);
 exit();

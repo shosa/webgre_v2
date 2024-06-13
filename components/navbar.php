@@ -105,6 +105,33 @@
             </div>
         </li>
     <?php endif; ?>
+
+    <!-- CAMPIONARIO -->
+    <?php if (isset($_SESSION['permessi_campionario']) && $_SESSION['permessi_campionario'] == 1): ?>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSamples"
+                aria-expanded="true" aria-controls="collapseSamples">
+                <i class="fa-solid fa-cloud"></i>
+                <span>Campionario</span>
+            </a>
+            <div id="collapseSamples" class="collapse" aria-labelledby="headingSamples" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Sezioni:</h6>
+                    <a id="samples-new" class="collapse-item" href="../../functions/samples/newSample"><i
+                            class="fa fa-plus"></i>
+                        Nuova</a>
+                    <a id="samples-list" class="collapse-item" href="../../functions/samples/list"><i
+                            class="far fa-list"></i>
+                        In corso</a>
+                    <a id="samples-done" class="collapse-item" href="#"><i
+                            class="far fa-check"></i>
+                        Completi</a>
+                    <a id="samples-search" class="collapse-item" href="#"><i class="fa fa-search"></i>
+                        Cerca</a>
+                </div>
+            </div>
+        </li>
+    <?php endif; ?>
     <!-- DIVISORE -->
     <hr class="sidebar-divider">
     <div class="sidebar-heading">
@@ -186,6 +213,9 @@
             '/functions/production/new': 'production-new',
             '/functions/production/calendario': 'production-calendario',
             '/functions/production/settings': 'production-settings',
+            '/functions/samples/newSample': 'samples-new',
+            '/functions/samples/list': 'samples-list',
+            '/functions/samples/done': 'samples-done',
 
             // Aggiungi qui altri link come necessario
         };
