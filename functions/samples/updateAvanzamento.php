@@ -62,46 +62,55 @@ $actionToExecute = isset($_GET['action']) ? $_GET['action'] : null;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avanzamento Modello</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<style>
-    .square-image-container {
-        width: 150px;
-        /* Larghezza desiderata */
-        height: 150px;
-        /* Altezza desiderata */
-        overflow: hidden;
-        margin: auto;
-        /* Centrare l'immagine */
-        margin-bottom: 10px;
-        /* Margine inferiore */
-    }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <style>
+        .square-image-container {
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+            margin: auto;
+            margin-bottom: 10px;
+        }
 
-    .square-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+        .square-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-    .btn-block {
-        display: block;
-        width: 100%;
-    }
-</style>
+        .list-group-item.not-completed {
+            background-color: #f8f9fa;
+        }
+
+        .list-group-item.completed {
+            background-color: #d4edda;
+        }
+
+        .list-group-item.disabled {
+            /* Rimuovi lo stile che influisce sulla visualizzazione */
+            /* pointer-events: none;
+            opacity: 0.65; */
+            /* Puoi lasciare questo blocco vuoto o rimuoverlo */
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container mt-5">
-        <h1 class="mb-4">#<?php echo htmlspecialchars($modelId); ?></h1>
-
-        <!-- Immagine Modello -->
-
-
-        <!-- Riepilogo del Modello -->
+    <div class="container mt-2">
         <div class="card mb-4">
             <div class="card-header">
-                <p>MODELLO:</p>
-                <h2 class="card-title"><?php echo htmlspecialchars($model['nome_modello']); ?></h2>
+                <div class="row align-items-center">
+                    <div class="col">
+                        <p>MODELLO:</p>
+                        <h2 class="card-title"><?php echo htmlspecialchars($model['nome_modello']); ?></h2>
+                    </div>
+                    <div class="col-auto">
+                        <h3 class="mb-1 alert alert-primary" style="padding:5px !important;">
+                            <i>#<?php echo htmlspecialchars($modelId); ?></i></h3>
+                    </div>
+                </div>
             </div>
+
             <div class="card-body">
                 <div class="text-center">
                     <div class="square-image-container">
@@ -129,8 +138,8 @@ $actionToExecute = isset($_GET['action']) ? $_GET['action'] : null;
             <div class="list-group">
                 <?php foreach ($actions as $key => $action): ?>
                     <button type="button"
-                        class="list-group-item list-group-item-action <?php echo $avanzamento[$action['column']] ? 'list-group-item-success' : 'list-group-item-light'; ?>"
-                        data-action="<?php echo htmlspecialchars($key); ?>">
+                        class="list-group-item list-group-item-action <?php echo $avanzamento[$action['column']] ? 'completed' : 'not-completed'; ?>"
+                        data-action="<?php echo htmlspecialchars($key); ?>" <?php echo $avanzamento[$action['column']] ? 'disabled' : ''; ?>>
                         <?php echo htmlspecialchars($action['label']); ?>
                         <?php if ($avanzamento[$action['column']]): ?>
                             <span class="badge bg-success float-end">Completato</span>
@@ -138,29 +147,27 @@ $actionToExecute = isset($_GET['action']) ? $_GET['action'] : null;
                                 class="text-muted float-end me-3"><?php echo htmlspecialchars($avanzamento[$action['date_column']]); ?></small>
                         <?php else: ?>
                             <span class="badge bg-secondary float-end">Incompleto</span>
+                            <i class="far fa-hand-pointer float-end me-3 text-info"></i>
                         <?php endif; ?>
                     </button>
                 <?php endforeach; ?>
             </div>
         </form>
-
-        <!-- Campo Note -->
+        <div id="message" class="mt-4"></div>
         <div class="card mt-4">
             <div class="card-header">
                 <h5>Note</h5>
             </div>
             <div class="card-body">
-
                 <div class="form-group mb-3">
                     <p><?php echo htmlspecialchars($model['note']); ?></p>
                 </div>
-
             </div>
+
         </div>
 
-        <div id="message" class="mt-4"></div>
-        <a href="../../functions/samples/printBolla?model_id=<?php echo htmlspecialchars($modelId); ?>"
-            class="btn btn-warning btn-block">SCARICA WORKSHEET</a>
+
+
 
     </div>
 
@@ -188,42 +195,6 @@ $actionToExecute = isset($_GET['action']) ? $_GET['action'] : null;
                         console.error('Error:', error);
                     });
             }
-
-            // Funzione per salvare la nota
-            function saveNote() {
-                let note = document.getElementById('note').value;
-                let modelId = <?php echo $modelId; ?>;
-
-                fetch(`updateNoteHandler.php?id=${modelId}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ note: note })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        let message = document.getElementById('message');
-                        if (data.success) {
-                            message.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
-                        } else {
-                            message.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-            }
-
-            // Gestisci click sui bottoni
-            document.querySelectorAll('.list-group-item').forEach(function (button) {
-                button.addEventListener('click', function () {
-                    let action = this.dataset.action;
-                    let modelId = <?php echo $modelId; ?>;
-                    if (confirm(`Sei sicuro di voler aggiornare lo stato a ${action}?`)) {
-                        updateStatus(modelId, action);
-                    }
-                });
-            });
-
             // Verifica se un'azione è passata tramite query string
             let actionToExecute = '<?php echo $actionToExecute; ?>';
             if (actionToExecute) {
@@ -232,6 +203,17 @@ $actionToExecute = isset($_GET['action']) ? $_GET['action'] : null;
                     updateStatus(modelId, actionToExecute);
                 }
             }
+
+            // Gestisci click sui bottoni
+            document.querySelectorAll('.list-group-item.not-completed').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    let action = this.dataset.action;
+                    let modelId = <?php echo $modelId; ?>;
+                    if (confirm(`Sei sicuro di voler aggiornare lo stato a ${action}?`)) {
+                        updateStatus(modelId, action);
+                    }
+                });
+            });
         });
     </script>
 </body>
