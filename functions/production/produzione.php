@@ -37,6 +37,8 @@ try {
         $ORLATURA2NOTE = $row['ORLATURA2NOTE'];
         $ORLATURA3 = $row['ORLATURA3'];
         $ORLATURA3NOTE = $row['ORLATURA3NOTE'];
+        $ORLATURA4 = $row['ORLATURA4'];
+        $ORLATURA4NOTE = $row['ORLATURA4NOTE'];
         $TAGLIO1 = $row['TAGLIO1'];
         $TAGLIO1NOTE = $row['TAGLIO1NOTE'];
         $TAGLIO2 = $row['TAGLIO2'];
@@ -180,7 +182,18 @@ include (BASE_PATH . "/components/header.php");
                                                     </td>
                                                 </tr>
 
-
+                                                <tr>
+                                                    <td>ORLATURA 4</td>
+                                                    <td class="text-wrap text-center">
+                                                        <?php echo $ORLATURA4; ?>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NOTE</td>
+                                                    <td class="note text-wrap">
+                                                        <?php echo $ORLATURA4NOTE; ?>
+                                                    </td>
+                                                </tr>
                                                 <tr>
                                                     <td>TAGLIO 1</td>
                                                     <td class="text-wrap text-center">

@@ -65,8 +65,8 @@ if ($stmt->rowCount() > 0) {
         $pdf->Cell(0, 3, "RAPPORTO DI PRODUZIONE " . $row["NOMEGIORNO"] . " " . $row["GIORNO"] . " " . $row["MESE"] . " 2024", 0, 1, "C", true);
 
         $pdf->SetFillColor(255, 255, 255); //COLORE BIANCO
-        $pdf->Rect(7, 20, 196, 73, "DF"); // RIQUADRO PRODUZIONE
-        $pdf->Rect(7, 25, 196, 73, "DF"); // LINEA RETTANGOLO NERO
+        $pdf->Rect(7, 20, 196, 78, "DF"); // RIQUADRO PRODUZIONE
+    
         $pdf->SetFillColor(0, 0, 0);
 
         $pdf->Rect(7, 20, 62, 9.8, "DF"); //RETTANGOLO NERO
@@ -90,7 +90,7 @@ if ($stmt->rowCount() > 0) {
 
         $isGray = false; // Stato iniziale, alternando tra bianco e grigio
         $grayColor = [240, 240, 240]; // Colore grigio molto chiaro (personalizzabile)
-        for ($i = 0; $i < 8; $i++) {
+        for ($i = 0; $i < 9; $i++) {
             // Imposta il colore di riempimento in base allo stato
             if ($isGray) {
                 $pdf->SetFillColor($grayColor[0], $grayColor[1], $grayColor[2]);
@@ -100,7 +100,7 @@ if ($stmt->rowCount() > 0) {
             }
 
             // Disegna il riquadro con il colore di riempimento
-            $pdf->Rect(10, 30 + $i * 8, 190, 9, "DF");
+            $pdf->Rect(10, 30 + $i * 7, 190, 9, "DF");
 
             // Inverti lo stato per la prossima iterazione
             $isGray = !$isGray;
@@ -109,136 +109,152 @@ if ($stmt->rowCount() > 0) {
         $pdf->SetFillColor(255, 255, 255); // Bianco
         $pdf->SetLineWidth(0.5);
 
-        $pdf->SetFont("helvetica", "B", 10);
+        $pdf->SetFont("helvetica", "B", 9);
 
-        $pdf->Cell($col1Width, 8, "MANOVIA 1:", 0, 0);
+        $pdf->Cell($col1Width, 7, "MANOVIA 1:", 0, 0);
 
-        $pdf->SetFont("helvetica", "", 12);
+        $pdf->SetFont("helvetica", "", 11);
 
-        $pdf->Cell($col2Width, 8, $row["MANOVIA1"], 0, 0);
+        $pdf->Cell($col2Width, 7, $row["MANOVIA1"], 0, 0);
 
-        $pdf->SetFont("helvetica", "B", 10);
+        $pdf->SetFont("helvetica", "B", 9);
 
-        $pdf->Cell($col1Width, 8, "NOTE:", 0, 0);
+        $pdf->Cell($col1Width, 7, "NOTE:", 0, 0);
 
-        $pdf->SetFont("helvetica", "", 8);
+        $pdf->SetFont("helvetica", "", 7);
 
-        $pdf->Cell($col2Width, 8, $row["MANOVIA1NOTE"], 0, 1);
+        $pdf->Cell($col2Width, 7, $row["MANOVIA1NOTE"], 0, 1);
 
-        $pdf->SetFont("helvetica", "B", 10);
+        $pdf->SetFont("helvetica", "B", 9);
 
-        $pdf->Cell($col1Width, 8, "MANOVIA 2:", 0, 0);
+        $pdf->Cell($col1Width, 7, "MANOVIA 2:", 0, 0);
 
-        $pdf->SetFont("helvetica", "", 12);
+        $pdf->SetFont("helvetica", "", 11);
 
-        $pdf->Cell($col2Width, 8, $row["MANOVIA2"], 0, 0);
+        $pdf->Cell($col2Width, 7, $row["MANOVIA2"], 0, 0);
 
-        $pdf->SetFont("helvetica", "B", 10);
+        $pdf->SetFont("helvetica", "B", 9);
 
-        $pdf->Cell($col3Width, 8, "NOTE:", 0, 0);
+        $pdf->Cell($col3Width, 7, "NOTE:", 0, 0);
 
-        $pdf->SetFont("helvetica", "", 8);
+        $pdf->SetFont("helvetica", "", 7);
 
-        $pdf->Cell($col2Width, 8, $row["MANOVIA2NOTE"], 0, 1);
+        $pdf->Cell($col2Width, 7, $row["MANOVIA2NOTE"], 0, 1);
 
-        $pdf->SetFont("helvetica", "B", 10);
+        $pdf->SetFont("helvetica", "B", 9);
 
-        $pdf->Cell($col1Width, 8, "MANOVIA 3:", 0, 0);
+        $pdf->Cell($col1Width, 7, "MANOVIA 3:", 0, 0);
 
-        $pdf->SetFont("helvetica", "", 12);
+        $pdf->SetFont("helvetica", "", 11);
 
-        $pdf->Cell($col2Width, 8, $row["MANOVIA3"], 0, 0);
+        $pdf->Cell($col2Width, 7, $row["MANOVIA3"], 0, 0);
 
-        $pdf->SetFont("helvetica", "B", 10);
+        $pdf->SetFont("helvetica", "B", 9);
 
-        $pdf->Cell($col3Width, 8, "NOTE:", 0, 0);
+        $pdf->Cell($col3Width, 7, "NOTE:", 0, 0);
 
-        $pdf->SetFont("helvetica", "", 8);
+        $pdf->SetFont("helvetica", "", 7);
 
-        $pdf->Cell($col2Width, 8, $row["MANOVIA3NOTE"], 0, 1);
+        $pdf->Cell($col2Width, 7, $row["MANOVIA3NOTE"], 0, 1);
 
-        $pdf->SetFont("helvetica", "B", 10);
+        $pdf->SetFont("helvetica", "B", 9);
 
-        $pdf->Cell($col1Width, 8, "ORLATURA 1:", 0, 0);
+        $pdf->Cell($col1Width, 7, "ORLATURA 1:", 0, 0);
 
-        $pdf->SetFont("helvetica", "", 12);
+        $pdf->SetFont("helvetica", "", 11);
 
-        $pdf->Cell($col2Width, 8, $row["ORLATURA1"], 0, 0);
+        $pdf->Cell($col2Width, 7, $row["ORLATURA1"], 0, 0);
 
-        $pdf->SetFont("helvetica", "B", 10);
+        $pdf->SetFont("helvetica", "B", 9);
 
-        $pdf->Cell($col3Width, 8, "NOTE:", 0, 0);
+        $pdf->Cell($col3Width, 7, "NOTE:", 0, 0);
 
-        $pdf->SetFont("helvetica", "", 8);
+        $pdf->SetFont("helvetica", "", 7);
 
-        $pdf->Cell($col2Width, 8, $row["ORLATURA1NOTE"], 0, 1);
+        $pdf->Cell($col2Width, 7, $row["ORLATURA1NOTE"], 0, 1);
 
-        $pdf->SetFont("helvetica", "B", 10);
+        $pdf->SetFont("helvetica", "B", 9);
 
-        $pdf->Cell($col1Width, 8, "ORLATURA 2:", 0, 0);
+        $pdf->Cell($col1Width, 7, "ORLATURA 2:", 0, 0);
 
-        $pdf->SetFont("helvetica", "", 12);
+        $pdf->SetFont("helvetica", "", 11);
 
-        $pdf->Cell($col2Width, 8, $row["ORLATURA2"], 0, 0);
+        $pdf->Cell($col2Width, 7, $row["ORLATURA2"], 0, 0);
 
-        $pdf->SetFont("helvetica", "B", 10);
+        $pdf->SetFont("helvetica", "B", 9);
 
-        $pdf->Cell($col3Width, 8, "NOTE:", 0, 0);
+        $pdf->Cell($col3Width, 7, "NOTE:", 0, 0);
 
-        $pdf->SetFont("helvetica", "", 8);
+        $pdf->SetFont("helvetica", "", 7);
 
-        $pdf->Cell($col2Width, 8, $row["ORLATURA2NOTE"], 0, 1);
+        $pdf->Cell($col2Width, 7, $row["ORLATURA2NOTE"], 0, 1);
 
-        $pdf->SetFont("helvetica", "B", 10);
+        $pdf->SetFont("helvetica", "B", 9);
 
-        $pdf->Cell($col1Width, 8, "ORLATURA 3:", 0, 0);
+        $pdf->Cell($col1Width, 7, "ORLATURA 3:", 0, 0);
 
-        $pdf->SetFont("helvetica", "", 12);
+        $pdf->SetFont("helvetica", "", 11);
 
-        $pdf->Cell($col2Width, 8, $row["ORLATURA3"], 0, 0);
+        $pdf->Cell($col2Width, 7, $row["ORLATURA3"], 0, 0);
 
-        $pdf->SetFont("helvetica", "B", 10);
+        $pdf->SetFont("helvetica", "B", 9);
 
-        $pdf->Cell($col3Width, 8, "NOTE:", 0, 0);
+        $pdf->Cell($col3Width, 7, "NOTE:", 0, 0);
 
-        $pdf->SetFont("helvetica", "", 8);
+        $pdf->SetFont("helvetica", "", 7);
 
-        $pdf->Cell($col2Width, 8, $row["ORLATURA3NOTE"], 0, 1);
+        $pdf->Cell($col2Width, 7, $row["ORLATURA3NOTE"], 0, 1);
 
-        $pdf->SetFont("helvetica", "B", 10);
+        $pdf->SetFont("helvetica", "B", 9);
 
-        $pdf->Cell($col1Width, 8, "TAGLIO 1:", 0, 0);
+        $pdf->Cell($col1Width, 7, "ORLATURA 4:", 0, 0);
 
-        $pdf->SetFont("helvetica", "", 12);
+        $pdf->SetFont("helvetica", "", 11);
 
-        $pdf->Cell($col2Width, 8, $row["TAGLIO1"], 0, 0);
+        $pdf->Cell($col2Width, 7, $row["ORLATURA4"], 0, 0);
 
-        $pdf->SetFont("helvetica", "B", 10);
+        $pdf->SetFont("helvetica", "B", 9);
 
-        $pdf->Cell($col3Width, 8, "NOTE:", 0, 0);
+        $pdf->Cell($col3Width, 7, "NOTE:", 0, 0);
 
-        $pdf->SetFont("helvetica", "", 8);
+        $pdf->SetFont("helvetica", "", 7);
 
-        $pdf->Cell($col2Width, 8, $row["TAGLIO1NOTE"], 0, 1);
+        $pdf->Cell($col2Width, 7, $row["ORLATURA4NOTE"], 0, 1);
 
-        $pdf->SetFont("helvetica", "B", 10);
+        $pdf->SetFont("helvetica", "B", 9);
 
-        $pdf->Cell($col1Width, 8, "TAGLIO 2:", 0, 0);
+        $pdf->Cell($col1Width, 7, "TAGLIO 1:", 0, 0);
 
-        $pdf->SetFont("helvetica", "", 12);
+        $pdf->SetFont("helvetica", "", 11);
 
-        $pdf->Cell($col2Width, 8, $row["TAGLIO2"], 0, 0);
+        $pdf->Cell($col2Width, 7, $row["TAGLIO1"], 0, 0);
 
-        $pdf->SetFont("helvetica", "B", 10);
+        $pdf->SetFont("helvetica", "B", 9);
 
-        $pdf->Cell($col3Width, 8, "NOTE:", 0, 0);
+        $pdf->Cell($col3Width, 7, "NOTE:", 0, 0);
 
-        $pdf->SetFont("helvetica", "", 8);
+        $pdf->SetFont("helvetica", "", 7);
 
-        $pdf->Cell($col2Width, 8, $row["TAGLIO2NOTE"], 0, 1);
+        $pdf->Cell($col2Width, 7, $row["TAGLIO1NOTE"], 0, 1);
+
+        $pdf->SetFont("helvetica", "B", 9);
+
+        $pdf->Cell($col1Width, 7, "TAGLIO 2:", 0, 0);
+
+        $pdf->SetFont("helvetica", "", 11);
+
+        $pdf->Cell($col2Width, 7, $row["TAGLIO2"], 0, 0);
+
+        $pdf->SetFont("helvetica", "B", 9);
+
+        $pdf->Cell($col3Width, 7, "NOTE:", 0, 0);
+
+        $pdf->SetFont("helvetica", "", 7);
+
+        $pdf->Cell($col2Width, 7, $row["TAGLIO2NOTE"], 0, 1);
 
         $pdf->Rect(7, 100, 196, 147, "DF"); // RIQUADRO SETTIMANA
-        $pdf->Rect(7, 105, 196, 77, "DF"); // LINEA RETTANGOLO NERO
+    
         $pdf->SetFillColor(0, 0, 0);
 
         $pdf->Rect(7, 100, 77, 10, "DF"); //RETTANGOLO NERO
@@ -256,7 +272,7 @@ if ($stmt->rowCount() > 0) {
 
         $pdf->SetTextColor(0, 0, 0);
 
-        $sql2 = "SELECT ID, MESE, GIORNO, NOMEGIORNO, MANOVIA1, MANOVIA1NOTE, MANOVIA2, MANOVIA2NOTE, MANOVIA3, MANOVIA3NOTE, ORLATURA1, ORLATURA1NOTE, ORLATURA2, ORLATURA2NOTE, ORLATURA3, ORLATURA3NOTE, TAGLIO1, TAGLIO1NOTE, TAGLIO2, TAGLIO2NOTE, TOTALITAGLIO, TOTALIORLATURA, TOTALIMONTAGGIO
+        $sql2 = "SELECT ID, MESE, GIORNO, NOMEGIORNO, MANOVIA1, MANOVIA1NOTE, MANOVIA2, MANOVIA2NOTE, MANOVIA3, MANOVIA3NOTE, ORLATURA1, ORLATURA1NOTE, ORLATURA2, ORLATURA2NOTE, ORLATURA3, ORLATURA3NOTE, ORLATURA4, ORLATURA4NOTE, TAGLIO1, TAGLIO1NOTE, TAGLIO2, TAGLIO2NOTE, TOTALITAGLIO, TOTALIORLATURA, TOTALIMONTAGGIO
         FROM prod_mesi
         WHERE (((WEEK)='" . $week . "')) And Not NOMEGIORNO='DOMENICA'
         ORDER BY ID;";
@@ -290,11 +306,13 @@ if ($stmt->rowCount() > 0) {
 
             $pdf->Cell(18, 6, "MANOVIA 3", 1, 0, "C", 1);
 
-            $pdf->Cell(20, 6, "ORLATURA 1", 1, 0, "C", 1);
+            $pdf->Cell(15, 6, "ORL 1", 1, 0, "C", 1);
 
-            $pdf->Cell(20, 6, "ORLATURA 2", 1, 0, "C", 1);
+            $pdf->Cell(15, 6, "ORL 2", 1, 0, "C", 1);
 
-            $pdf->Cell(20, 6, "ORLATURA 3", 1, 0, "C", 1);
+            $pdf->Cell(15, 6, "ORL 3", 1, 0, "C", 1);
+
+            $pdf->Cell(15, 6, "ORL 4", 1, 0, "C", 1);
 
             $pdf->Cell(18, 6, "TAGLIO 1", 1, 0, "C", 1);
 
@@ -318,18 +336,20 @@ if ($stmt->rowCount() > 0) {
 
                 $pdf->Cell(18, 8, $row2["MANOVIA3"], 1, 0, "C");
 
-                $pdf->Cell(20, 8, $row2["ORLATURA1"], 1, 0, "C");
+                $pdf->Cell(15, 8, $row2["ORLATURA1"], 1, 0, "C");
 
-                $pdf->Cell(20, 8, $row2["ORLATURA2"], 1, 0, "C");
+                $pdf->Cell(15, 8, $row2["ORLATURA2"], 1, 0, "C");
 
-                $pdf->Cell(20, 8, $row2["ORLATURA3"], 1, 0, "C");
+                $pdf->Cell(15, 8, $row2["ORLATURA3"], 1, 0, "C");
+
+                $pdf->Cell(15, 8, $row2["ORLATURA4"], 1, 0, "C");
 
                 $pdf->Cell(18, 8, $row2["TAGLIO1"], 1, 0, "C");
 
                 $pdf->Cell(18, 8, $row2["TAGLIO2"], 1, 1, "C");
             }
 
-            $sql3 = "SELECT SUM(MANOVIA1) AS TOTALEMANOVIA1 , SUM(MANOVIA2) AS TOTALEMANOVIA2, SUM(MANOVIA3) AS TOTALEMANOVIA3, SUM(ORLATURA1) AS TOTALEORLATURA1, SUM(ORLATURA2) AS TOTALEORLATURA2, SUM(ORLATURA3) AS TOTALEORLATURA3, SUM(TAGLIO1) AS TOTALETAGLIO1, SUM(TAGLIO2) AS TOTALETAGLIO2
+            $sql3 = "SELECT SUM(MANOVIA1) AS TOTALEMANOVIA1 , SUM(MANOVIA2) AS TOTALEMANOVIA2, SUM(MANOVIA3) AS TOTALEMANOVIA3, SUM(ORLATURA1) AS TOTALEORLATURA1, SUM(ORLATURA2) AS TOTALEORLATURA2, SUM(ORLATURA3) AS TOTALEORLATURA3,SUM(ORLATURA4) AS TOTALEORLATURA4, SUM(TAGLIO1) AS TOTALETAGLIO1, SUM(TAGLIO2) AS TOTALETAGLIO2
 
             FROM prod_mesi
 
@@ -358,11 +378,13 @@ if ($stmt->rowCount() > 0) {
 
                 $pdf->Cell(18, 6, $row3["TOTALEMANOVIA3"], 1, 0, "C");
 
-                $pdf->Cell(20, 6, $row3["TOTALEORLATURA1"], 1, 0, "C");
+                $pdf->Cell(15, 6, $row3["TOTALEORLATURA1"], 1, 0, "C");
 
-                $pdf->Cell(20, 6, $row3["TOTALEORLATURA2"], 1, 0, "C");
+                $pdf->Cell(15, 6, $row3["TOTALEORLATURA2"], 1, 0, "C");
 
-                $pdf->Cell(20, 6, $row3["TOTALEORLATURA3"], 1, 0, "C");
+                $pdf->Cell(15, 6, $row3["TOTALEORLATURA3"], 1, 0, "C");
+
+                $pdf->Cell(15, 6, $row3["TOTALEORLATURA4"], 1, 0, "C");
 
                 $pdf->Cell(18, 6, $row3["TOTALETAGLIO1"], 1, 0, "C");
 
@@ -398,7 +420,7 @@ if ($stmt->rowCount() > 0) {
 
          Sum(ORLATURA1) AS TOTALEORLATURA1, Sum(ORLATURA2) AS TOTALEORLATURA2,
 
-         Sum(ORLATURA3) AS TOTALEORLATURA3, Sum(TAGLIO1) AS TOTALETAGLIO1,
+         Sum(ORLATURA3) AS TOTALEORLATURA3, Sum(ORLATURA4) AS TOTALEORLATURA4, Sum(TAGLIO1) AS TOTALETAGLIO1,
 
           Sum(TAGLIO2) AS TOTALETAGLIO2, Max(GIORNO) AS MaxDiGIORNO, Min(GIORNO) AS MinDiGIORNO
 
@@ -436,11 +458,13 @@ if ($stmt->rowCount() > 0) {
 
             $pdf->Cell(18, 6, "MANOVIA 3", 1, 0, "C", 1);
 
-            $pdf->Cell(20, 6, "ORLATURA 1", 1, 0, "C", 1);
+            $pdf->Cell(15, 6, "ORL 1", 1, 0, "C", 1);
 
-            $pdf->Cell(20, 6, "ORLATURA 2", 1, 0, "C", 1);
+            $pdf->Cell(15, 6, "ORL 2", 1, 0, "C", 1);
 
-            $pdf->Cell(20, 6, "ORLATURA 3", 1, 0, "C", 1);
+            $pdf->Cell(15, 6, "ORL 3", 1, 0, "C", 1);
+
+            $pdf->Cell(15, 6, "ORL 4", 1, 0, "C", 1);
 
             $pdf->Cell(18, 6, "TAGLIO 1", 1, 0, "C", 1);
 
@@ -463,11 +487,13 @@ if ($stmt->rowCount() > 0) {
 
                 $pdf->Cell(18, 8, $row2["TOTALEMANOVIA3"], 1, 0, "C");
 
-                $pdf->Cell(20, 8, $row2["TOTALEORLATURA1"], 1, 0, "C");
+                $pdf->Cell(15, 8, $row2["TOTALEORLATURA1"], 1, 0, "C");
 
-                $pdf->Cell(20, 8, $row2["TOTALEORLATURA2"], 1, 0, "C");
+                $pdf->Cell(15, 8, $row2["TOTALEORLATURA2"], 1, 0, "C");
 
-                $pdf->Cell(20, 8, $row2["TOTALEORLATURA3"], 1, 0, "C");
+                $pdf->Cell(15, 8, $row2["TOTALEORLATURA3"], 1, 0, "C");
+                
+                $pdf->Cell(15, 8, $row2["TOTALEORLATURA4"], 1, 0, "C");
 
                 $pdf->Cell(18, 8, $row2["TOTALETAGLIO1"], 1, 0, "C");
 
@@ -478,7 +504,7 @@ if ($stmt->rowCount() > 0) {
 
              SUM(MANOVIA3) AS TOTALEMANOVIA3, SUM(ORLATURA1) AS TOTALEORLATURA1,
 
-             SUM(ORLATURA2) AS TOTALEORLATURA2, SUM(ORLATURA3) AS TOTALEORLATURA3,
+             SUM(ORLATURA2) AS TOTALEORLATURA2, SUM(ORLATURA3) AS TOTALEORLATURA3, SUM(ORLATURA4) AS TOTALEORLATURA4,
 
               SUM(TAGLIO1) AS TOTALETAGLIO1, SUM(TAGLIO2) AS TOTALETAGLIO2
 
@@ -506,11 +532,13 @@ if ($stmt->rowCount() > 0) {
 
                 $pdf->Cell(18, 6, $row3["TOTALEMANOVIA3"], 1, 0, "C");
 
-                $pdf->Cell(20, 6, $row3["TOTALEORLATURA1"], 1, 0, "C");
+                $pdf->Cell(15, 6, $row3["TOTALEORLATURA1"], 1, 0, "C");
 
-                $pdf->Cell(20, 6, $row3["TOTALEORLATURA2"], 1, 0, "C");
+                $pdf->Cell(15, 6, $row3["TOTALEORLATURA2"], 1, 0, "C");
 
-                $pdf->Cell(20, 6, $row3["TOTALEORLATURA3"], 1, 0, "C");
+                $pdf->Cell(15, 6, $row3["TOTALEORLATURA3"], 1, 0, "C");
+
+                $pdf->Cell(15, 6, $row3["TOTALEORLATURA4"], 1, 0, "C");
 
                 $pdf->Cell(18, 6, $row3["TOTALETAGLIO1"], 1, 0, "C");
 

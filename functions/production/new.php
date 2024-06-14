@@ -145,6 +145,18 @@ require_once '../../utils/log_utils.php';
                                             </div>
                                         </div>
                                         <hr>
+                                        <div class="form-group row">
+                                            <div class="col-md-6">
+                                                <label for="orlatura4">ORLATURA4:</label>
+                                                <input type="number" id="orlatura4" name="orlatura4"
+                                                    class="form-control">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="note9" class="note">NOTE:</label>
+                                                <textarea id="note9" name="note9" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                        <hr>
                                         <!-- TAGLIO1 -->
                                         <div class="form-group row">
                                             <div class="col-md-6">
@@ -240,6 +252,8 @@ require_once '../../utils/log_utils.php';
         var note5 = $("#note5").val();
         var orlatura3 = $("#orlatura3").val();
         var note8 = $("#note8").val();
+        var orlatura4 = $("#orlatura4").val();
+        var note9 = $("#note9").val();
         var taglio1 = $("#taglio1").val();
         var note6 = $("#note6").val();
         var taglio2 = $("#taglio2").val();
@@ -263,6 +277,8 @@ require_once '../../utils/log_utils.php';
                 note5: note5,
                 orlatura3: orlatura3,
                 note8: note8,
+                orlatura4: orlatura4,
+                note9: note9,
                 taglio1: taglio1,
                 note6: note6,
                 taglio2: taglio2,

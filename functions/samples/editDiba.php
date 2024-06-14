@@ -86,7 +86,7 @@ $notifyEdits = $model['notify_edits'];
                                     <form action="updateDiba" method="POST" id="dibaForm">
                                         <input type="hidden" name="model_id"
                                             value="<?php echo htmlspecialchars($modelId); ?>">
-                                        <table class="table table-bordered" id="dibaTable">
+                                        <table class="table table-bordered table-responsive" id="dibaTable">
                                             <thead>
                                                 <tr>
                                                     <th>Posizione</th>

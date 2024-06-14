@@ -12,11 +12,11 @@ $month = $_GET['month'];
 
 try {
     // Crea una connessione al database utilizzando PDO
-    $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
+    $pdo = getDbInstance();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Esegui una query per ottenere i dati dal database
-    $sql = "SELECT ID, MESE, GIORNO, NOMEGIORNO, MANOVIA1, MANOVIA2, MANOVIA3, ORLATURA1, ORLATURA2, ORLATURA3, TAGLIO1, TAGLIO2, TOTALITAGLIO, TOTALIORLATURA, TOTALIMONTAGGIO
+    $sql = "SELECT ID, MESE, GIORNO, NOMEGIORNO, MANOVIA1, MANOVIA2, MANOVIA3, ORLATURA1, ORLATURA2, ORLATURA3,ORLATURA4, TAGLIO1, TAGLIO2, TOTALITAGLIO, TOTALIORLATURA, TOTALIMONTAGGIO
             FROM prod_mesi
             WHERE MESE = :month AND NOMEGIORNO <> 'DOMENICA'
             ORDER BY ID";
@@ -45,12 +45,13 @@ try {
     $pdf->SetFont('helvetica', 'B', 10);
 
     // Aggiungi le intestazioni della tabella
-    $pdf->Cell(46, 8, 'GIORNO', 1, 0, 'C', 1); // 'C' per centrare il testo
-    $pdf->Cell(18, 8, 'TAGLIO1', 1, 0, 'C', 1);
-    $pdf->Cell(18, 8, 'TAGLIO2', 1, 0, 'C', 1);
+    $pdf->Cell(28, 8, 'GIORNO', 1, 0, 'C', 1); // 'C' per centrare il testo
+    $pdf->Cell(18, 8, 'TAGL1', 1, 0, 'C', 1);
+    $pdf->Cell(18, 8, 'TAGL2', 1, 0, 'C', 1);
     $pdf->Cell(18, 8, 'ORL1', 1, 0, 'C', 1);
     $pdf->Cell(18, 8, 'ORL2', 1, 0, 'C', 1);
     $pdf->Cell(18, 8, 'ORL3', 1, 0, 'C', 1);
+    $pdf->Cell(18, 8, 'ORL4', 1, 0, 'C', 1);
     $pdf->Cell(18, 8, 'MONT1', 1, 0, 'C', 1);
     $pdf->Cell(18, 8, 'MONT2', 1, 0, 'C', 1);
     $pdf->Cell(18, 8, 'MONT3', 1, 0, 'C', 1);
@@ -65,6 +66,7 @@ try {
     $totOrlatura1 = 0;
     $totOrlatura2 = 0;
     $totOrlatura3 = 0;
+    $totOrlatura4 = 0;
     $totOrlato = 0;
     $totManovia1 = 0;
     $totManovia2 = 0;
@@ -94,21 +96,25 @@ try {
         $totOrlatura1 += (int) $row['ORLATURA1'];
         $totOrlatura2 += (int) $row['ORLATURA2'];
         $totOrlatura3 += (int) $row['ORLATURA3'];
-        $totOrlato = $totOrlatura1 + $totOrlatura2 + $totOrlatura3;
+        $totOrlatura4 += (int) $row['ORLATURA4'];
+        $totOrlato = $totOrlatura1 + $totOrlatura2 + $totOrlatura3 + $totOrlatura4;
         $totManovia1 += (int) $row['MANOVIA1'];
         $totManovia2 += (int) $row['MANOVIA2'];
         $totManovia3 += (int) $row['MANOVIA3'];
         $totMontato = $totManovia1 + $totManovia2 + $totManovia3;
 
         // Modifica questa parte per adattarla ai tuoi dati
+        $pdf->SetFont('helvetica', 'B', 9);
+        $pdf->Cell(6, 8, $row['GIORNO'], 1, 0, 'C', 1);
+        $pdf->SetFont('helvetica', '', 9);
+        $pdf->Cell(22, 8, $row['NOMEGIORNO'], 1, 0, 'C', 1);
         $pdf->SetFont('helvetica', '', 10);
-        $pdf->Cell(8, 8, $row['GIORNO'], 1, 0, 'C', 1);
-        $pdf->Cell(38, 8, $row['NOMEGIORNO'], 1, 0, 'C', 1);
         $pdf->Cell(18, 8, $row['TAGLIO1'], 1, 0, 'C', 1);
         $pdf->Cell(18, 8, $row['TAGLIO2'], 1, 0, 'C', 1);
         $pdf->Cell(18, 8, $row['ORLATURA1'], 1, 0, 'C', 1);
         $pdf->Cell(18, 8, $row['ORLATURA2'], 1, 0, 'C', 1);
         $pdf->Cell(18, 8, $row['ORLATURA3'], 1, 0, 'C', 1);
+        $pdf->Cell(18, 8, $row['ORLATURA4'], 1, 0, 'C', 1);
         $pdf->Cell(18, 8, $row['MANOVIA1'], 1, 0, 'C', 1);
         $pdf->Cell(18, 8, $row['MANOVIA2'], 1, 0, 'C', 1);
         $pdf->Cell(18, 8, $row['MANOVIA3'], 1, 0, 'C', 1);
@@ -118,7 +124,7 @@ try {
     $pdf->SetFillColor(0, 0, 0); // Sfondo nero
     $pdf->SetTextColor(255, 255, 255); // Testo bianco
     $pdf->SetFont('helvetica', 'B', 14);
-    $pdf->Cell(46, 8, 'TOTALI', 1, 0, 'C', 1); // 'C' per centrare il testo
+    $pdf->Cell(28, 8, 'TOTALI', 1, 0, 'C', 1); // 'C' per centrare il testo
     $pdf->SetFillColor(255, 255, 255); // Sfondo bianco
     $pdf->SetTextColor(0, 0, 0); // Testo nero
     $pdf->Cell(18, 8, $totTaglio1, 1, 0, 'C', 1);
@@ -126,6 +132,7 @@ try {
     $pdf->Cell(18, 8, $totOrlatura1, 1, 0, 'C', 1);
     $pdf->Cell(18, 8, $totOrlatura2, 1, 0, 'C', 1);
     $pdf->Cell(18, 8, $totOrlatura3, 1, 0, 'C', 1);
+    $pdf->Cell(18, 8, $totOrlatura4, 1, 0, 'C', 1);
     $pdf->Cell(18, 8, $totManovia1, 1, 0, 'C', 1);
     $pdf->Cell(18, 8, $totManovia2, 1, 0, 'C', 1);
     $pdf->Cell(18, 8, $totManovia3, 1, 0, 'C', 1);
