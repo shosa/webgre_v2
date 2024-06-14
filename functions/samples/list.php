@@ -7,17 +7,35 @@ require_once "../../config/config.php";
 require_once "../../helpers/helpers.php";
 
 $pdo = getDbInstance();
-$stmt = $pdo->query("SELECT * FROM samples_modelli");
+$stmt = $pdo->query("SELECT m.*, a.stato_taglio, a.stato_orlatura, a.stato_montaggio, a.stato_spedito 
+                     FROM samples_modelli m 
+                     LEFT JOIN samples_avanzamenti a ON m.id = a.modello_id");
 $modelli = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
 
+function calcolaAvanzamento($modello)
+{
+    $fasi = ['stato_taglio', 'stato_orlatura', 'stato_montaggio', 'stato_spedito'];
+    $completate = 0;
+    $faseAttuale = "Iniziale";
+
+    foreach ($fasi as $fase) {
+        if (!empty($modello[$fase])) {
+            $completate++;
+            $faseAttuale = ucfirst(strtolower(explode('_', $fase)[1])); // Estrarre il nome della fase
+        }
+    }
+
+    $percentuale = ($completate / count($fasi)) * 100;
+    return ['percentuale' => $percentuale, 'fase' => $faseAttuale];
+}
+
+?>
 <?php include BASE_PATH . "/components/header.php"; ?>
 <style>
     @keyframes blink {
         0% {
             background-color: white;
         }
-
 
         50% {
             background-color: #fffaab;
@@ -64,7 +82,9 @@ $modelli = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($modelli as $modello): ?>
+                                        <?php foreach ($modelli as $modello):
+                                            $avanzamento = calcolaAvanzamento($modello);
+                                            ?>
                                             <tr class="<?php echo $modello['notify_edits'] ? 'notify-row' : ''; ?>">
                                                 <td><?php echo htmlspecialchars($modello['id']); ?></td>
                                                 <td><?php echo htmlspecialchars($modello['nome_modello']); ?></td>
@@ -72,10 +92,19 @@ $modelli = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <td><?php echo htmlspecialchars($modello['forma']); ?></td>
                                                 <td><?php echo htmlspecialchars(date('d/m/Y', strtotime($modello['consegna']))); ?>
                                                 </td>
-                                                <td></td>
+                                                <td>
+                                                    <div class="progress ">
+                                                        <div class="progress-bar" role="progressbar"
+                                                            style="width: <?php echo $avanzamento['percentuale']; ?>%;"
+                                                            aria-valuenow="<?php echo $avanzamento['percentuale']; ?>"
+                                                            aria-valuemin="0" aria-valuemax="100">
+                                                            <?php echo htmlspecialchars($avanzamento['fase']) . " (" . round($avanzamento['percentuale'], 2) . "%)"; ?>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <a href="editDiba.php?model_id=<?php echo htmlspecialchars($modello['id']); ?>"
-                                                        class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                                                        class="btn btn-info btn-sm"><i class="fas fa-pencil-alt"></i></a>
                                                     <?php if ($modello['notify_edits']): ?>
                                                         <button class="btn btn-warning btn-sm ml-2"><i
                                                                 class="fas fa-bell-exclamation"></i></button>
@@ -106,7 +135,7 @@ $modelli = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.colVis.min.js"></script>
             <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.colReorder.min.js"></script>
             <script src="<?php BASE_PATH ?>/js/datatables.js"></script>
-            <?php include_once BASE_PATH . "/components/footer.php"; ?>
+            <?php include_once BASE_PATH . '/components/footer.php'; ?>
         </div>
     </div>
 </body>

@@ -10,7 +10,7 @@ require_once "../../utils/log_utils.php";
 // Verifica se l'ID del modello è passato tramite GET
 if (!isset($_GET['id'])) {
     $_SESSION['error'] = "ID del modello non fornito.";
-    header('Location: ../../index');
+    header('Location: ../../404?message=SampleUpdateAvanzamento');
     exit();
 }
 
@@ -24,7 +24,7 @@ $model = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$model) {
     $_SESSION['error'] = "Modello non trovato.";
-    header('Location: ../../login');
+    header('Location: ../../404?message=SampleUpdateAvanzamento');
     exit();
 }
 

@@ -135,7 +135,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <label for="immagine">Immagine</label>
                                             <input type="file" name="immagine" class="form-control-file" id="immagine">
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Inserisci Modello</button>
+                                        <button type="submit" class="btn btn-success btn-block ">Inserisci
+                                            Modello</button>
                                     </form>
                                 </div>
                             </div>
