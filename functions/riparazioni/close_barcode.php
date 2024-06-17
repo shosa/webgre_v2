@@ -1,73 +1,82 @@
 <?php
 session_start();
 require_once '../../config/config.php';
-require_once BASE_PATH . '/components/auth_validate.php';
 require_once BASE_PATH . '/components/header.php';
 
-// Connessione al database
-$db = getDbInstance();
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'downloadReports') {
+try {
+    // Connessione al database usando PDO
 
-    if ($idripArray !== null && !empty($idripArray)) {
-        // Crea un oggetto TCPDF
-        require_once ('../../assets/tcpdf/tcpdf.php');
-        $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
+    $pdo = getDbInstance();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Itera attraverso gli IDRIP e crea una pagina per ciascuno
-        foreach ($idripArray as $idrip) {
-            // Recupera i dati della riparazione dal database
-            $sql = "SELECT * FROM riparazioni WHERE IDRIP = $idrip";
-            $result = mysqli_query($conn, $sql);
-            $row = mysqli_fetch_assoc($result);
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+        $action = $_POST['action'];
 
-            // Aggiungi una nuova pagina
-            $pdf->AddPage();
+        if ($action === 'downloadReports' && isset($_POST['idripArray'])) {
+            $idripArray = json_decode($_POST['idripArray'], true);
 
-            // Aggiungi il contenuto della pagina (simile a quanto hai fatto per il singolo PDF)
-            // ...
+            if (!empty($idripArray)) {
+                // Crea un oggetto TCPDF
+                require_once ('../../assets/tcpdf/tcpdf.php');
+                $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
 
-            // Puoi anche aggiungere un'intestazione o un piè di pagina per distinguere le pagine
-            $pdf->Cell(0, 10, 'Pagina ' . $pdf->getPage(), 0, 1, 'C');
+                // Itera attraverso gli IDRIP e crea una pagina per ciascuno
+                $stmt = $pdo->prepare("SELECT * FROM riparazioni WHERE IDRIP = ?");
+                foreach ($idripArray as $idrip) {
+                    // Recupera i dati della riparazione dal database
+                    $stmt->execute([$idrip]);
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    // Aggiungi una nuova pagina
+                    $pdf->AddPage();
+
+                    // Aggiungi il contenuto della pagina
+                    // ...
+
+                    // Puoi anche aggiungere un'intestazione o un piè di pagina per distinguere le pagine
+                    $pdf->Cell(0, 10, 'Pagina ' . $pdf->getPage(), 0, 1, 'C');
+                }
+
+                // Output del PDF
+                $pdf->Output('reports.pdf', 'D');
+            }
+        } elseif ($action === 'chiudi' && isset($_POST['idripArray'])) {
+            chiudiRiparazioni($pdo, $_POST['idripArray']);
         }
-
-        // Output del PDF
-        $pdf->Output('reports.pdf', 'D');
     }
+} catch (PDOException $e) {
+    echo 'Errore di connessione: ' . $e->getMessage();
 }
 
-// Verifica se è stata inviata una richiesta POST per la chiusura
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'chiudi') {
-    chiudiRiparazioni($_POST['idripArray']);
-}
-
-function chiudiRiparazioni($idripArray)
+function chiudiRiparazioni($pdo, $idripArray)
 {
-    global $db;
-
-    if ($idripArray) {
-        // Decodifica la stringa JSON in un array PHP
+    try {
         $idArray = json_decode($idripArray, true);
 
-        // Verifica se la decodifica è riuscita correttamente
-        if ($idArray !== null) {
-            // Inserisci gli IDRIP nella tabella rip_chiuse
-            $db->where('IDRIP', $idArray, 'IN');
-            $riparazioni = $db->get('riparazioni');
+        if ($idArray !== null && !empty($idArray)) {
+            $placeholders = str_repeat('?,', count($idArray) - 1) . '?';
+            $querySelect = "SELECT * FROM riparazioni WHERE IDRIP IN ($placeholders)";
+            $queryInsert = "INSERT INTO rip_chiuse SELECT * FROM riparazioni WHERE IDRIP IN ($placeholders)";
+            $queryDelete = "DELETE FROM riparazioni WHERE IDRIP IN ($placeholders)";
 
-            if ($riparazioni) {
-                $db->insertMulti('rip_chiuse', $riparazioni);
-            }
+            // Inserisci gli IDRIP nella tabella rip_chiuse
+            $stmtInsert = $pdo->prepare($queryInsert);
+            $stmtInsert->execute($idArray);
 
             // Elimina le corrispondenti righe dalla tabella riparazioni
-            $db->where('IDRIP', $idArray, 'IN');
-            $db->delete('riparazioni');
+            $stmtDelete = $pdo->prepare($queryDelete);
+            $stmtDelete->execute($idArray);
+
+            echo 'Riparazioni chiuse con successo.';
         } else {
-            // Errore nella decodifica JSON
             echo 'Errore nella decodifica JSON degli IDRIP.';
         }
+    } catch (PDOException $e) {
+        echo 'Errore durante la chiusura delle riparazioni: ' . $e->getMessage();
     }
 }
 ?>
+
 
 <body id="page-top">
 
@@ -173,8 +182,24 @@ function chiudiRiparazioni($idripArray)
                         </div>
                     </div>
                 </div>
-                <?php include_once BASE_PATH . '/components/scripts.php'; ?>
             </div>
+            <script src="<?php BASE_PATH ?>/vendor/jquery/jquery.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
+            <script src="<?php BASE_PATH ?>/js/sb-admin-2.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/jquery.dataTables.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.buttons.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.bootstrap4.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/jszip/jszip.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/pdfmake/pdfmake.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/pdfmake/vfs_fonts.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.html5.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.print.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.colVis.min.js"></script>
+            <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.colReorder.min.js"></script>
+            <script src="<?php BASE_PATH ?>/js/datatables.js"></script>
+
             <?php include_once BASE_PATH . '/components/footer.php'; ?>
         </div>
     </div>
