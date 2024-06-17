@@ -121,7 +121,7 @@ try {
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="../../functions/riparazioni/riparazioni"
+                                    <a href="../../functions/riparazioni/myRiparazioni"
                                         class="card-footer text-white bg-white text-success">
                                         <span class="float-left">Apri Elenco</span>
                                         <span class="float-right"><i class="fa fa-arrow-circle-right"></i></span>

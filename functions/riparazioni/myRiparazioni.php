@@ -8,7 +8,7 @@ require_once '../../config/config.php';
 require_once BASE_PATH . '/components/auth_validate.php';
 require_once BASE_PATH . '/helpers/helpers.php';
 require_once BASE_PATH . '/utils/log_utils.php';
-
+$utente = $_SESSION["username"];
 
 try {
     // Connessione al database utilizzando PDO
@@ -28,7 +28,8 @@ try {
     $offset = ($page - 1) * $pagelimit;
 
     // Prepare SQL statement
-    $statement = $pdo->prepare("SELECT URGENZA, IDRIP, CODICE, ARTICOLO, QTA, CARTELLINO, DATA, REPARTO, LINEA, COMPLETA FROM riparazioni");
+    $statement = $pdo->prepare("SELECT URGENZA, IDRIP, CODICE, ARTICOLO, QTA, CARTELLINO, DATA, REPARTO, LINEA, COMPLETA FROM riparazioni WHERE UTENTE = :username");
+    $statement->bindParam(':username', $utente, PDO::PARAM_STR);
 
     // Execute SQL statement
     $statement->execute();
@@ -78,11 +79,13 @@ function getUrgencyColor($urgency)
                 <div class="container-fluid">
                     <?php include (BASE_PATH . "/utils/alerts.php"); ?>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Riparazioni</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Le mie Riparazioni</h1>
                     </div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Elenco Riparazioni</li>
+                        <li class="breadcrumb-item"><a href="../../functions/riparazioni/riparazioni">Elenco
+                                Riparazioni</a></li>
+                        <li class="breadcrumb-item active">Elenco Personale [<?php echo $utente; ?>]</li>
                     </ol>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex align-items-center">
@@ -105,7 +108,7 @@ function getUrgencyColor($urgency)
                                         <th width="5%">Data</th>
                                         <th width="10%">Reparto</th>
                                         <th width="5%">Linea</th>
-                                        <th class='notexport' width="10%">Azioni</th>
+                                        <th class="notexport" width="10%">Azioni</th>
 
                                     </tr>
                                 </thead>
@@ -152,8 +155,8 @@ function getUrgencyColor($urgency)
                                             <td class="align-middle"><?php echo $row['CARTELLINO']; ?></td>
                                             <td class="align-middle"><?php echo $row['DATA']; ?></td>
                                             <td class="align-middle"><?php echo $row['REPARTO']; ?></td>
-                                            <td class="align-middle"><?php echo $row['LINEA']; ?></td>
-                                            <td class="align-middle">
+                                            <td class="notexport align-middle"><?php echo $row['LINEA']; ?></td>
+                                            <td class="align-middle notexport">
                                                 <div class="btn-group">
                                                     <a href="#" class="btn btn-success show-record-details"
                                                         data-record-id="<?php echo htmlspecialchars($row['IDRIP']); ?>">
