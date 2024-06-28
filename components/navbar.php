@@ -81,7 +81,7 @@
         </li>
     <?php endif; ?>
 
-    <!-- PRODUZIONE -->
+    <!-- PRODUZIONE & SPEDIZIONE -->
     <?php if (isset($_SESSION['permessi_produzione']) && $_SESSION['permessi_produzione'] == 1): ?>
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProd" aria-expanded="true"
@@ -94,7 +94,10 @@
                     <h6 class="collapse-header">Sezioni:</h6>
                     <a id="production-new" class="collapse-item" href="../../functions/production/new"><i
                             class="fa fa-plus"></i>
-                        Nuova</a>
+                        Nuova Produzione</a>
+                    <a id="production-new" class="collapse-item" href="../../functions/production/newShipment"><i
+                            class="fa fa-truck-fast"></i>
+                        Nuova Spedizione</a>
                     <a id="production-calendario" class="collapse-item" href="../../functions/production/calendario"><i
                             class="far fa-calendar-alt"></i>
                         Calendario</a>
@@ -123,8 +126,7 @@
                     <a id="samples-list" class="collapse-item" href="../../functions/samples/list"><i
                             class="far fa-list"></i>
                         In corso</a>
-                    <a id="samples-done" class="collapse-item" href="#"><i
-                            class="far fa-check"></i>
+                    <a id="samples-done" class="collapse-item" href="#"><i class="far fa-check"></i>
                         Completi</a>
                     <a id="samples-search" class="collapse-item" href="#"><i class="fa fa-search"></i>
                         Cerca</a>

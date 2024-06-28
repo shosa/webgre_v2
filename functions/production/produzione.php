@@ -49,8 +49,29 @@ try {
 } catch (PDOException $e) {
     echo "Connessione al database fallita: " . $e->getMessage();
 }
+try {
+    $conn = getDbInstance();
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    // Recupero dei dati per sped_mesi
+    $sql_sped = "SELECT * FROM sped_mesi WHERE MESE = :month AND GIORNO = :day";
+    $stmt_sped = $conn->prepare($sql_sped);
+    $stmt_sped->bindParam(':month', $month);
+    $stmt_sped->bindParam(':day', $day);
+    $stmt_sped->execute();
+
+    $rows_sped = $stmt_sped->fetchAll(PDO::FETCH_ASSOC);
+
+    if (empty($rows_sped)) {
+        $sped_data_js = '[]';
+    } else {
+        $sped_data_js = json_encode($rows_sped);
+    }
+} catch (PDOException $e) {
+    echo "Connessione al database fallita: " . $e->getMessage();
+}
 include (BASE_PATH . "/components/header.php");
+
 ?>
 
 
@@ -291,6 +312,44 @@ include (BASE_PATH . "/components/header.php");
                             </div>
                         </div>
                         <!-- FINE MODALE MAIL -->
+                        <!-- INIZIO MODALE SPEDIZIONE -->
+                        <div class="modal fade" id="spedModal" tabindex="-1" role="dialog"
+                            aria-labelledby="spedModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="spedModalLabel">Dati Spedizioni</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="table-container">
+                                            <table class="table table-bordered table-striped table-sm" id="spedTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>MAN1</th>
+                                                        <th>MAN1 RESO</th>
+                                                        <th>MAN2</th>
+                                                        <th>MAN3</th>
+                                                        <th>ORL1</th>
+                                                        <th>ORL2</th>
+                                                        <th>ORL3</th>
+                                                        <th>ORL4</th>
+                                                        <th>TOM ESTERO</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Qui verranno inseriti i dati di sped_mesi -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FINE MODALE SPEDIZIONE -->
+
                         <div class="col-xl-3 col-lg-4">
                             <div class="card shadow mb-4">
                                 <div
@@ -304,6 +363,9 @@ include (BASE_PATH . "/components/header.php");
                                     </button>
                                     <button id="sendEmailModalButton" class="btn btn-primary btn-lg btn-block shadow">
                                         <i class="fas fa-share-square"></i> INVIA MAIL
+                                    </button>
+                                    <button id="spedModalButton" class="btn btn-warning btn-lg btn-block shadow">
+                                        <i class="fas fa-truck-fast"></i> VEDI SPEDIZIONE
                                     </button>
                                 </div>
                             </div>
@@ -407,5 +469,31 @@ include (BASE_PATH . "/components/header.php");
                 $('#pdfButton, #sendEmailModalButton').prop('disabled', true);
             }
         });
+        $('#spedModalButton').click(function () {
+            $('#spedModal').modal('show');
+            populateSpedTable();
+        });
+
+        // Funzione per popolare la tabella di sped_mesi
+        function populateSpedTable() {
+            var spedData = <?php echo $sped_data_js; ?>;
+            var tableBody = $('#spedTable tbody');
+            tableBody.empty(); // Svuota la tabella prima di popolarla
+
+            spedData.forEach(function (row) {
+                var tr = $('<tr>');
+                tr.append($('<td>').text(row.MANOVIA1));
+                tr.append($('<td>').text(row.MANOVIA1RESO));
+                tr.append($('<td>').text(row.MANOVIA2));
+                tr.append($('<td>').text(row.MANOVIA3));
+                tr.append($('<td>').text(row.ORLATURA1));
+                tr.append($('<td>').text(row.ORLATURA2));
+                tr.append($('<td>').text(row.ORLATURA3));
+                tr.append($('<td>').text(row.ORLATURA4));
+                tr.append($('<td>').text(row.TOMESTERO));
+                tableBody.append(tr);
+            });
+        }
+
     });
 </script>

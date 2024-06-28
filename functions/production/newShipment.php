@@ -22,12 +22,12 @@ require_once '../../utils/log_utils.php';
                 <div class="container-fluid">
                     <?php require_once (BASE_PATH . "/utils/alerts.php"); ?>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Produzione</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Spedizione</h1>
                     </div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="calendario">Calendario</a></li>
-                        <li class="breadcrumb-item active">Nuova Produzione</li>
+                        <li class="breadcrumb-item active">Nuova Spedizione</li>
                     </ol>
                     <div class="row">
                         <div class="col-xl-10 col-lg-9">
@@ -72,115 +72,78 @@ require_once '../../utils/log_utils.php';
 
                                         <!-- MANOVIA1 -->
                                         <div class="form-group row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <label for="manovia1">MANOVIA1:</label>
                                                 <input type="number" id="manovia1" name="manovia1" class="form-control">
                                             </div>
-                                            <div class="col-md-6">
-                                                <label for="note1" class="note">NOTE:</label>
-                                                <textarea id="note1" name="note1" class="form-control"></textarea>
+                                        </div>
+                                        <hr>
+                                        <div class="form-group row">
+                                            <div class="col-md-12">
+                                                <label for="manovia1">MANOVIA1 RESO:</label>
+                                                <input type="number" id="manovia1reso" name="manovia1reso"
+                                                    class="form-control">
                                             </div>
                                         </div>
                                         <hr>
                                         <!-- MANOVIA2 -->
                                         <div class="form-group row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <label for="manovia2">MANOVIA2:</label>
                                                 <input type="number" id="manovia2" name="manovia2" class="form-control">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="note2" class="note">NOTE:</label>
-                                                <textarea id="note2" name="note2" class="form-control"></textarea>
                                             </div>
                                         </div>
                                         <hr>
                                         <!-- MANOVIA3 -->
                                         <div class="form-group row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <label for="manovia3">MANOVIA3:</label>
                                                 <input type="number" id="manovia3" name="manovia3" class="form-control">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="note3" class="note">NOTE:</label>
-                                                <textarea id="note3" name="note3" class="form-control"></textarea>
                                             </div>
                                         </div>
                                         <hr>
                                         <!-- ORLATURA1 -->
                                         <div class="form-group row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <label for="orlatura1">ORLATURA1:</label>
                                                 <input type="number" id="orlatura1" name="orlatura1"
                                                     class="form-control">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="note4" class="note">NOTE:</label>
-                                                <textarea id="note4" name="note4" class="form-control"></textarea>
                                             </div>
                                         </div>
                                         <hr>
                                         <!-- ORLATURA2 -->
                                         <div class="form-group row border-bottom ">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <label for="orlatura2">ORLATURA2:</label>
                                                 <input type="number" id="orlatura2" name="orlatura2"
                                                     class="form-control">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="note5" class="note">NOTE:</label>
-                                                <textarea id="note5" name="note5" class="form-control"></textarea>
                                             </div>
                                         </div>
                                         <hr>
                                         <!-- ORLATURA3 -->
                                         <div class="form-group row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <label for="orlatura3">ORLATURA3:</label>
                                                 <input type="number" id="orlatura3" name="orlatura3"
                                                     class="form-control">
                                             </div>
-                                            <div class="col-md-6">
-                                                <label for="note8" class="note">NOTE:</label>
-                                                <textarea id="note8" name="note8" class="form-control"></textarea>
-                                            </div>
                                         </div>
                                         <hr>
                                         <div class="form-group row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <label for="orlatura4">ORLATURA4:</label>
                                                 <input type="number" id="orlatura4" name="orlatura4"
                                                     class="form-control">
                                             </div>
-                                            <div class="col-md-6">
-                                                <label for="note9" class="note">NOTE:</label>
-                                                <textarea id="note9" name="note9" class="form-control"></textarea>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-md-12">
+                                                <label for="orlatura4">TOMAIE ESTERO:</label>
+                                                <input type="number" id="tomaieEstero" name="tomaieEstero"
+                                                    class="form-control">
                                             </div>
                                         </div>
                                         <hr>
-                                        <!-- TAGLIO1 -->
-                                        <div class="form-group row">
-                                            <div class="col-md-6">
-                                                <label for="taglio1">TAGLIO1:</label>
-                                                <input type="number" id="taglio1" name="taglio1" class="form-control">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="note6" class="note">NOTE:</label>
-                                                <textarea id="note6" name="note6" class="form-control"></textarea>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <!-- TAGLIO2 -->
-                                        <div class="form-group row">
-                                            <div class="col-md-6">
-                                                <label for="taglio2">TAGLIO2:</label>
-                                                <input type="number" id="taglio2" name="taglio2" class="form-control">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="note7" class="note">NOTE:</label>
-                                                <textarea id="note7" name="note7" class="form-control"></textarea>
-                                            </div>
-                                        </div>
-
                                     </form>
                                 </div>
                             </div>
@@ -241,48 +204,29 @@ require_once '../../utils/log_utils.php';
         var month = $("#month").val();
         var day = $("#day").val();
         var manovia1 = $("#manovia1").val();
-        var note1 = $("#note1").val();
+        var manovia1reso = $("#manovia1reso").val();
         var manovia2 = $("#manovia2").val();
-        var note2 = $("#note2").val();
         var manovia3 = $("#manovia3").val();
-        var note3 = $("#note3").val();
         var orlatura1 = $("#orlatura1").val();
-        var note4 = $("#note4").val();
         var orlatura2 = $("#orlatura2").val();
-        var note5 = $("#note5").val();
         var orlatura3 = $("#orlatura3").val();
-        var note8 = $("#note8").val();
         var orlatura4 = $("#orlatura4").val();
-        var note9 = $("#note9").val();
-        var taglio1 = $("#taglio1").val();
-        var note6 = $("#note6").val();
-        var taglio2 = $("#taglio2").val();
-        var note7 = $("#note7").val();
-
+        var tomaieEstero = $("#tomaieEstero").val();
         $.ajax({
             type: "POST",
-            url: "process.php",
+            url: "processShipment.php",
             data: {
                 month: month,
                 day: day,
                 manovia1: manovia1,
-                note1: note1,
+                manovia1reso: manovia1reso,
                 manovia2: manovia2,
-                note2: note2,
                 manovia3: manovia3,
-                note3: note3,
                 orlatura1: orlatura1,
-                note4: note4,
                 orlatura2: orlatura2,
-                note5: note5,
                 orlatura3: orlatura3,
-                note8: note8,
                 orlatura4: orlatura4,
-                note9: note9,
-                taglio1: taglio1,
-                note6: note6,
-                taglio2: taglio2,
-                note7: note7
+                tomaieEstero: tomaieEstero,
             },
             success: function (response) {
                 console.log("Risposta del server: " + response);

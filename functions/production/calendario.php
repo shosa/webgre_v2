@@ -73,7 +73,7 @@ $monthNames = [
                 <div class="container-fluid">
                     <?php require_once BASE_PATH . "/utils/alerts.php"; ?>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Produzione</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Produzione & Spedizione</h1>
                     </div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
@@ -182,7 +182,11 @@ $monthNames = [
                                         REGISTRA NUOVA</a>
                                     <button class="btn btn-warning btn-block btn-lg"
                                         onclick="generatePDFMese('<?= $monthNames[$currentMonth] ?>')"><i
-                                            class="fas fa-calendar-alt"></i> REPORT
+                                            class="fas fa-calendar-alt"></i> PRODUZIONE
+                                        <?php echo $monthNames[$currentMonth] ?></button>
+                                    <button class="btn btn-indigo btn-block btn-lg"
+                                        onclick="generatePDFProdSped('<?= $monthNames[$currentMonth] ?>')"><i
+                                            class="fas fa-calendar-alt"></i> PROD E SPED
                                         <?php echo $monthNames[$currentMonth] ?></button>
                                 </div>
                             </div>
@@ -207,5 +211,10 @@ $monthNames = [
         // Esegui la logica per generare il PDF con i parametri month e day
         // Ad esempio, reindirizza a generate_pdf.php con i parametri appropriati
         window.location.href = `generate_pdf-mese?month=${month}`;
+    }
+    function generatePDFProdSped(month) {
+        // Esegui la logica per generare il PDF con i parametri month e day
+        // Ad esempio, reindirizza a generate_pdf.php con i parametri appropriati
+        window.location.href = `generate_prod_sped-mese?month=${month}`;
     }
 </script>
