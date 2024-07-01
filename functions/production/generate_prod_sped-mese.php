@@ -40,7 +40,7 @@ $pdf->Cell(0, 10, 'Produzione e Spedizione - ' . $month, 0, 1, 'C');
 $pdf->Ln(5);
 
 // Imposta il font
-$pdf->SetFont('helvetica', '', 7);
+$pdf->SetFont('helvetica', '', 9);
 
 // Inizializza i totali
 $totals = array_fill(0, 18, 0);
@@ -50,7 +50,7 @@ $html = '<table style="text-align: center;
     vertical-align: middle;"border="1" cellspacing="0" cellpadding="2">
     <thead>
         <tr style="background-color: #D3E2F4; text-align: center;">
-            <th rowspan="2" colspan="2" width="70"><b>GIORNO</b></th>
+            <th rowspan="2" colspan="2" width="80"><b>GIORNO</b></th>
             <th colspan="9" width="342"><b>PRODUZIONE</b></th>
             <th style="background-color:#FFE78F;" colspan="9" width="342"><b>SPEDIZIONE</b></th>
         </tr>
@@ -80,13 +80,19 @@ $html = '<table style="text-align: center;
 for ($i = 0; $i < max(count($prod_data), count($sped_data)); $i++) {
     $prod_row = $prod_data[$i] ?? [];
     $sped_row = $sped_data[$i] ?? [];
-
+    // Salta le righe che sono "DOMENICA"
+    if (isset($prod_row['NOMEGIORNO']) && $prod_row['NOMEGIORNO'] == 'DOMENICA') {
+        continue;
+    }
+    if (isset($sped_row['NOMEGIORNO']) && $sped_row['NOMEGIORNO'] == 'DOMENICA') {
+        continue;
+    }
     // Alterna il colore di sfondo delle righe
     $bg_color = ($i % 2 == 0) ? '#FFFFFF' : '#F0F0F0';
 
     $html .= '<tr style="background-color: ' . $bg_color . ';">';
     $html .= '<td width="20" align="center">' . ($prod_row['GIORNO'] ?? '') . '</td>';
-    $html .= '<td width="50">' . ($prod_row['NOMEGIORNO'] ?? '') . '</td>';
+    $html .= '<td width="60">' . ($prod_row['NOMEGIORNO'] ?? '') . '</td>';
 
     // Produzione
     for ($j = 0; $j < 9; $j++) {
