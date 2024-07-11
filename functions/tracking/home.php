@@ -39,7 +39,7 @@ require_once BASE_PATH . '/components/header.php';
                             <a href="multiSearch"
                                 class="btn btn-success btn-lg btn-block shadow d-flex align-items-center justify-content-center"
                                 style="height: 150px;">
-                                <i class="fas fa-magnifying-glass-plus fa-3x mr-3"></i>
+                                <i class="fal fa-magnifying-glass-plus fa-3x mr-3"></i>
                                 <div class="text-left">
                                     <h4><b>Associa per Ricerca</b></h4>
                                     <i>Utilizza i campi di ricerca per selezionare i cartellini da associare ai
@@ -51,7 +51,7 @@ require_once BASE_PATH . '/components/header.php';
                             <a href="orderSearch"
                                 class="btn btn-success btn-lg btn-block shadow d-flex align-items-center justify-content-center"
                                 style="height: 150px;">
-                                <i class="fas fa-link fa-3x mr-3"></i>
+                                <i class="fal fa-link fa-3x mr-3"></i>
                                 <div class="text-left">
                                     <h4><b>Associa per Cartellini</b></h4>
                                     <i>Inserisci manualmente i singoli da cartellini da associare ai lotti</i>
@@ -59,16 +59,40 @@ require_once BASE_PATH . '/components/header.php';
                             </a>
                         </div>
                         <div class="col-md-4 mb-4">
-                            <a href="makePackingList"
+                            <a href="#"
                                 class="btn btn-warning btn-lg btn-block shadow d-flex align-items-center justify-content-center"
                                 style="height: 150px;">
-                                <i class="fas fa-list fa-3x mr-3"></i>
+                                <i class="fal fa-list fa-3x mr-3"></i>
                                 <div class="text-left">
                                     <h4><b>Packing List</b></h4>
                                     <i>Genera un dettaglio dei lotti utilizzati per i cartellini richiesti</i>
                                 </div>
                             </a>
                         </div>
+                        <div class="col-md-4 mb-4">
+                            <a href="treeView"
+                                class="btn btn-info btn-lg btn-block shadow d-flex align-items-center justify-content-center"
+                                style="height: 150px;">
+                                <i class="fal fa-folder-tree fa-3x mr-3"></i>
+                                <div class="text-left">
+                                    <h4><b>Albero Dettagli</b></h4>
+                                    <i>Visualizza una mappatura dei lotti/cartellini utilizzati</i>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-md-4 mb-4">
+                            <a href="#"
+                                class="btn btn-indigo btn-lg btn-block shadow d-flex align-items-center justify-content-center"
+                                style="height: 150px;">
+                                <i class="fal fa-hammer fa-3x mr-3"></i>
+                                <div class="text-left">
+                                    <h4><b>Gestisci Riparazione</b></h4>
+                                    <i>Gestisci l'utilizzo di un lotto per riparazione</i>
+                                </div>
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             </div>
