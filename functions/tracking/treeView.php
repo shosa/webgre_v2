@@ -99,42 +99,44 @@ require_once BASE_PATH . '/components/header.php';
     }
 
     #treeViewPlaceholder li:before {
-        content: "\f054";
-        /* Icona freccia destra (FontAwesome) */
+        content: "\f054"; /* Icona freccia destra (FontAwesome) */
         font-family: FontAwesome;
         margin-right: 10px;
         color: #777;
     }
 
     #treeViewPlaceholder li.collapsed:before {
-        content: "\f054";
-        /* Icona freccia destra (FontAwesome) */
+        content: "\f054"; /* Icona freccia destra (FontAwesome) */
     }
 
     #treeViewPlaceholder li.expanded:before {
-        content: "\f078";
-        /* Icona freccia giù (FontAwesome) */
+        content: "\f078"; /* Icona freccia giù (FontAwesome) */
     }
 
     #treeViewPlaceholder li.leaf:before {
-        content: "\f111";
-        /* Icona foglia (FontAwesome) */
+        content: "\f111"; /* Icona foglia (FontAwesome) */
         color: #6c757d;
     }
 
     #treeViewPlaceholder li.collapsed.leaf:before {
-        content: "\f111";
-        /* Icona foglia (FontAwesome) */
+        content: "\f111"; /* Icona foglia (FontAwesome) */
     }
 
     #treeViewPlaceholder li.expanded.leaf:before {
-        content: "\f111";
-        /* Icona foglia (FontAwesome) */
+        content: "\f111"; /* Icona foglia (FontAwesome) */
     }
 
     /* Stili per rendere il testo del lotto non cliccabile */
     #treeViewPlaceholder li.leaf {
         cursor: default !important;
+    }
+
+    /* Stile per il timestamp */
+    #treeViewPlaceholder li .timestamp {
+        color: #777;
+        font-size: 90%;
+        float: right; /* Allinea il timestamp a destra */
+        margin-left: 10px;
     }
 </style>
 

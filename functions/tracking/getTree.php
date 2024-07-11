@@ -15,8 +15,8 @@ if (isset($_GET['search_query'])) {
 
     // Prepare SQL statement to fetch data
     $sql = "SELECT tl.*, tt.name AS type_name FROM track_links tl 
-            LEFT JOIN track_types tt ON tl.type_id = tt.id
-            WHERE tl.cartel = :search_query OR tl.lot = :search_query";
+    LEFT JOIN track_types tt ON tl.type_id = tt.id
+    WHERE tl.cartel = :search_query OR tl.lot = :search_query";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':search_query', $search_query, PDO::PARAM_STR);
     $stmt->execute();
@@ -31,7 +31,10 @@ if (isset($_GET['search_query'])) {
         foreach ($results as $result) {
             $tree[$result['cartel']]['cartel'] = $result['cartel'];
             $tree[$result['cartel']]['children'][$result['type_id']]['type_name'] = $result['type_name'];
-            $tree[$result['cartel']]['children'][$result['type_id']]['lots'][] = $result['lot'];
+            $tree[$result['cartel']]['children'][$result['type_id']]['lots'][] = [
+                'lot' => $result['lot'],
+                'timestamp' => $result['timestamp'] // Aggiungiamo il timestamp al lotto
+            ];
         }
 
         // Render the tree structure as HTML
@@ -44,7 +47,7 @@ if (isset($_GET['search_query'])) {
                 echo '<li class="text-dark" ><b>' . $type['type_name'] . '</b>';
                 echo '<ul >';
                 foreach ($type['lots'] as $lot) {
-                    echo '<i>#: ' . $lot . '</i></br>';
+                    echo '<i>#: ' . $lot['lot'] . '</i>' . '<span class="timestamp" style="color:#d1d1d1;">' . $lot['timestamp'] . '</span></li>' . '</br>';
                 }
                 echo '</ul>';
                 echo '</li>';
