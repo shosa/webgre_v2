@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
                 // Recupera i permessi dalla tabella `permessi`
-                $permessi_statement = $pdo->prepare("SELECT riparazioni, campionario, cq, produzione, tabelle, log, etichette,dbsql, utenti FROM permessi WHERE id_utente = :user_id");
+                $permessi_statement = $pdo->prepare("SELECT riparazioni, campionario, cq, produzione, tabelle, log,tracking, etichette,dbsql, utenti FROM permessi WHERE id_utente = :user_id");
                 $permessi_statement->bindParam(':user_id', $user_id);
                 $permessi_statement->execute();
                 $permessi = $permessi_statement->fetch(PDO::FETCH_ASSOC);
@@ -55,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['permessi_log'] = $permessi['log'];
                     $_SESSION['permessi_etichette'] = $permessi['etichette'];
                     $_SESSION['permessi_sql'] = $permessi['dbsql'];
+                    $_SESSION['permessi_tracking'] = $permessi['tracking'];
 
                 }
 

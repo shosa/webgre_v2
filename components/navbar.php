@@ -5,7 +5,7 @@
     <!-- SIDEBAR INTESTAZIONE -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../../index">
         <div class="sidebar-brand-icon">
-            <img src="<?php BASE_PATH ?>/img/roundLogo.png" alt="" width="40" height="40">
+            <img src="<?php echo BASE_URL?>/img/roundLogo.png" alt="" width="40" height="40">
         </div>
         <div class="sidebar-brand-text mx-3">WEBGRE </div>
     </a>
@@ -134,6 +134,24 @@
             </div>
         </li>
     <?php endif; ?>
+    <!-- TRACKING -->
+    <?php if (isset($_SESSION['permessi_tracking']) && $_SESSION['permessi_tracking'] == 1): ?>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTracking"
+                aria-expanded="true" aria-controls="collapseTracking">
+                <i class="fal fa-radar fa-lg"></i>
+                <span>Tracking Lotti</span>
+            </a>
+            <div id="collapseTracking" class="collapse" aria-labelledby="headingTracking" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Sezioni:</h6>
+                    <a id="tracking-home" class="collapse-item" href="../../functions/tracking/home"><i
+                            class="fa fa-home"></i>
+                        Home</a>
+                </div>
+            </div>
+        </li>
+    <?php endif; ?>
     <!-- DIVISORE -->
     <hr class="sidebar-divider">
     <div class="sidebar-heading">
@@ -218,6 +236,7 @@
             '/functions/samples/newSample': 'samples-new',
             '/functions/samples/list': 'samples-list',
             '/functions/samples/done': 'samples-done',
+            '/functions/tracking/home': 'tracking-home',
 
             // Aggiungi qui altri link come necessario
         };
