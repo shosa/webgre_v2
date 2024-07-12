@@ -22,9 +22,7 @@ $queryNumRiparazioniPersonali->execute([':username' => $_SESSION['username']]);
 $numRiparazioniPersonali = $queryNumRiparazioniPersonali->fetchColumn();
 
 
-$queryNumDaCompletare = "SELECT SUM(paia) FROM lanci WHERE stato = 'IN ATTESA'";
-$stmtNumDaCompletare = $pdo->query($queryNumDaCompletare);
-$numDaCompletare = $stmtNumDaCompletare->fetchColumn();
+
 
 $queryNome = "SELECT nome FROM utenti WHERE user_name = :username";
 $stmtNome = $pdo->prepare($queryNome);

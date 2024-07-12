@@ -210,7 +210,7 @@ function getUrgencyColor($urgency)
     <!-- MODALE DETTAGLI -->
     <div class="modal fade" id="record-details-modal" tabindex="-1" role="dialog"
         aria-labelledby="record-details-modal-label" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="record-details-modal-label">Dettagli</h5>
@@ -237,23 +237,42 @@ function getUrgencyColor($urgency)
     </a>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="<?php BASE_PATH ?>/vendor/jquery/jquery.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="<?php BASE_PATH ?>/js/sb-admin-2.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.buttons.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.bootstrap4.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/jszip/jszip.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/pdfmake/pdfmake.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/pdfmake/vfs_fonts.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.html5.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.print.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.colVis.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.colReorder.min.js"></script>
-    <script src="<?php BASE_PATH ?>/js/datatables.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/jquery/jquery.min.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?php echo BASE_URL?>/js/sb-admin-2.min.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/datatables/dataTables.buttons.min.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/datatables/buttons.bootstrap4.min.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/jszip/jszip.min.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/pdfmake/pdfmake.min.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/pdfmake/vfs_fonts.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/datatables/buttons.html5.min.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/datatables/buttons.print.min.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/datatables/buttons.colVis.min.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/datatables/dataTables.colReorder.min.js"></script>
+    <script src="<?php echo BASE_URL?>/js/datatables.js"></script>
     <?php include_once BASE_PATH . '/components/footer.php'; ?>
 </body>
 
-<script></script>
+<script>$(document).ready(function () {
+        $('.show-record-details').on('click', function (e) {
+            e.preventDefault();
+            var recordId = $(this).data('record-id');
+
+            // Effettua una richiesta AJAX per ottenere i dettagli del record
+            $.ajax({
+                url: 'get_riparazione_details.php', // URL del file PHP che restituisce i dettagli del record
+                type: 'GET',
+                data: { id: recordId },
+                success: function (response) {
+                    $('#record-details').html(response);
+                    $('#record-details-modal').modal('show');
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });</script>

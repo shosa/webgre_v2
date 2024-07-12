@@ -183,22 +183,22 @@ function chiudiRiparazioni($pdo, $idripArray)
                     </div>
                 </div>
             </div>
-            <script src="<?php BASE_PATH ?>/vendor/jquery/jquery.min.js"></script>
-            <script src="<?php BASE_PATH ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-            <script src="<?php BASE_PATH ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
-            <script src="<?php BASE_PATH ?>/js/sb-admin-2.min.js"></script>
-            <script src="<?php BASE_PATH ?>/vendor/datatables/jquery.dataTables.min.js"></script>
-            <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-            <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.buttons.min.js"></script>
-            <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.bootstrap4.min.js"></script>
-            <script src="<?php BASE_PATH ?>/vendor/jszip/jszip.min.js"></script>
-            <script src="<?php BASE_PATH ?>/vendor/pdfmake/pdfmake.min.js"></script>
-            <script src="<?php BASE_PATH ?>/vendor/pdfmake/vfs_fonts.js"></script>
-            <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.html5.min.js"></script>
-            <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.print.min.js"></script>
-            <script src="<?php BASE_PATH ?>/vendor/datatables/buttons.colVis.min.js"></script>
-            <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.colReorder.min.js"></script>
-            <script src="<?php BASE_PATH ?>/js/datatables.js"></script>
+            <script src="<?php echo BASE_URL?>/vendor/jquery/jquery.min.js"></script>
+            <script src="<?php echo BASE_URL?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="<?php echo BASE_URL?>/vendor/jquery-easing/jquery.easing.min.js"></script>
+            <script src="<?php echo BASE_URL?>/js/sb-admin-2.min.js"></script>
+            <script src="<?php echo BASE_URL?>/vendor/datatables/jquery.dataTables.min.js"></script>
+            <script src="<?php echo BASE_URL?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+            <script src="<?php echo BASE_URL?>/vendor/datatables/dataTables.buttons.min.js"></script>
+            <script src="<?php echo BASE_URL?>/vendor/datatables/buttons.bootstrap4.min.js"></script>
+            <script src="<?php echo BASE_URL?>/vendor/jszip/jszip.min.js"></script>
+            <script src="<?php echo BASE_URL?>/vendor/pdfmake/pdfmake.min.js"></script>
+            <script src="<?php echo BASE_URL?>/vendor/pdfmake/vfs_fonts.js"></script>
+            <script src="<?php echo BASE_URL?>/vendor/datatables/buttons.html5.min.js"></script>
+            <script src="<?php echo BASE_URL?>/vendor/datatables/buttons.print.min.js"></script>
+            <script src="<?php echo BASE_URL?>/vendor/datatables/buttons.colVis.min.js"></script>
+            <script src="<?php echo BASE_URL?>/vendor/datatables/dataTables.colReorder.min.js"></script>
+            <script src="<?php echo BASE_URL?>/js/datatables.js"></script>
 
             <?php include_once BASE_PATH . '/components/footer.php'; ?>
         </div>

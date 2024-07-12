@@ -1,5 +1,5 @@
 <?php
-require_once '../../config/config.php'; 
+require_once '../../config/config.php';
 
 // Ottieni l'ID del record dal parametro GET
 $recordId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
@@ -8,8 +8,7 @@ $recordId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 if ($recordId) {
     try {
         // Connessione al database utilizzando PDO
-        $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo = getDbInstance();
 
         // Prepare SQL statement
         $statement = $pdo->prepare("SELECT * FROM riparazioni WHERE IDRIP = :idrip");
@@ -37,10 +36,9 @@ if ($recordId) {
             $details .= '<tr><th>UTENTE:</th><td>' . $record['UTENTE'] . '</td></tr>';
             $details .= '<tr><th>DATA:</th><td>' . $record['DATA'] . '</td></tr>';
             $details .= '</table>';
-            $details .= '<a href="file_preview.php?riparazione_id=' . $recordId . '"
-            style="font-size:20pt; padding:10px; width: 48%; margin-right:4%;" class="btn btn-warning btn-lg"><i
+            $details .= '<a href="file_preview.php?riparazione_id=' . $recordId . '" class="btn btn-block btn-warning btn-lg"><i
                 class="fa-solid fa-print fa-lg"></i></a>';
-            $details .= '<a href="#" style="font-size:20pt; padding:10px; width: 48%;" class="btn btn-danger btn-lg delete_btn" data-toggle="modal"
+            $details .= '<a href="#" class="btn btn-danger btn-block btn-lg delete_btn" data-toggle="modal"
             data-target="#confirm-delete-' . $recordId . '"><i class="fa-solid fa-trash-alt fa-lg"></i></a>';
 
             echo $details; // Restituisci i dettagli al chiamante
