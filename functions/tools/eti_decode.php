@@ -23,11 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['barcodes'])) {
 
         // Prepare the SQL statement
         $placeholders = implode(',', array_fill(0, count($uniqueBarcodes), '?'));
-        $sql = "SELECT barcode, art, des FROM inv_anagrafiche WHERE barcode IN ($placeholders) GROUP BY art, des";
+        $sql = "SELECT DISTINCT barcode, art, des FROM inv_anagrafiche WHERE barcode IN ($placeholders)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute($uniqueBarcodes);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
         $azione = $_POST['azione'] ?? 'PRELIEVO'; // Default to 'PRELIEVO' if not specified
         $dicitura = ($azione === 'VERSAMENTO') ? 'Distinta di Versamento a Magazzino' : 'Distinta di Prelievo di Magazzino';
 
