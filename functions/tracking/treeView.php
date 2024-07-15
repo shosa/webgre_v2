@@ -1,9 +1,26 @@
 <?php
-
 session_start();
 require_once '../../config/config.php';
 require_once BASE_PATH . '/components/auth_validate.php';
 require_once '../../utils/log_utils.php';
+
+// Connessione al database con PDO
+$pdo = getDbInstance();
+
+// Query per ottenere il conteggio delle associazioni nella tabella track_links
+$sql = "SELECT COUNT(*) AS count FROM track_links";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+$assocCount = $row['count'];
+
+$sql2 = "SELECT COUNT(DISTINCT (cartel) ) AS count FROM track_links";
+$stmt2 = $pdo->prepare($sql2);
+$stmt2->execute();
+$row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+$cartelCount = $row2['count'];
+
+
 
 // Inclusione dell'header
 require_once BASE_PATH . '/components/header.php';
@@ -34,9 +51,11 @@ require_once BASE_PATH . '/components/header.php';
                             <form id="searchForm" method="GET" action="#">
                                 <div class="input-group">
                                     <input type="text" class="form-control"
-                                        placeholder="Inserisci cartellino o numero lotto" name="search_query">
+                                        placeholder="Inserisci cartellino o numero lotto (usa * per visualizzare tutto)"
+                                        name="search_query">
                                     <div class="input-group-append">
-                                        <button class="btn btn-primary" type="submit">Cerca</button>
+                                        <button class="btn btn-primary" type="submit"><i
+                                                class="fa-solid fa-magnifying-glass"></i></button>
                                     </div>
                                 </div>
                             </form>
@@ -46,7 +65,21 @@ require_once BASE_PATH . '/components/header.php';
                     <!-- Placeholder for tree view -->
                     <div class="row">
                         <div class="col-md-6 offset-md-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted">
+                                    Sono presenti
+                                    <span class="text-success font-weight-bold"><?php echo $assocCount; ?></span>
+                                    associazioni per
+                                    <span class="text-primary font-weight-bold"><?php echo $cartelCount; ?></span>
+                                    Cartellini.
+                                </span>
+
+                                <a href="getXlsx.php" class="btn btn-success">
+                                    <i class="fa-solid fa-download"></i> EXCEL
+                                </a>
+                            </div>
                             <div class="card">
+
                                 <div class="card-body">
                                     <div id="treeViewPlaceholder">
                                         <!-- Tree view results will be displayed here -->
@@ -153,11 +186,15 @@ require_once BASE_PATH . '/components/header.php';
         $('#searchForm').submit(function (event) {
             event.preventDefault(); // Previene la sottomissione predefinita del form
 
-            var formData = $(this).serialize(); // Serializza i dati del form
+            var searchQuery = $('input[name="search_query"]').val();
+            if (searchQuery.trim() === '') {
+                searchQuery = '*'; // Se la ricerca è vuota, impostiamo '*' per ottenere tutti i risultati
+            }
+
             $.ajax({
                 type: 'GET',
                 url: 'getTree.php', // Script PHP che gestisce la ricerca
-                data: formData,
+                data: { search_query: searchQuery },
                 dataType: 'html', // Si aspetta una risposta HTML
                 success: function (response) {
                     $('#treeViewPlaceholder').html(response); // Sostituisce il placeholder con i dati ricevuti

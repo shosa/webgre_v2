@@ -1,0 +1,16 @@
+{
+    "name": "shosa/webgre",
+    "description": "Gestione Relazioni Estese EMMEGIEMME",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Shosa\\Webgre\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Stefano Solidoro",
+            "email": "kishosa@me.com"
+        }
+    ]
+}

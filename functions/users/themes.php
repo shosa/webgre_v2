@@ -136,12 +136,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['colore'])) {
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-    <script src="<?php BASE_PATH ?>/vendor/jquery/jquery.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="<?php BASE_PATH ?>/js/sb-admin-2.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="<?php BASE_PATH ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="<?php BASE_PATH ?>/js/datatables.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/jquery/jquery.min.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?php echo BASE_URL?>/js/sb-admin-2.min.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="<?php echo BASE_URL?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="<?php echo BASE_URL?>/js/datatables.js"></script>
 
 </body>
