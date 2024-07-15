@@ -28,12 +28,7 @@ $day = $_POST["day"];
 // Sostituisci questi dettagli con le tue credenziali di connessione al database
 
 // Crea una connessione al database
-$conn = new mysqli($servername, $username, $password, $dbname);
 
-// Verifica la connessione al database
-if ($conn->connect_error) {
-    die("Connessione al database fallita: " . $conn->connect_error);
-}
 
 // Esegui una query per ottenere i dati dal database
 // Crea una connessione al database usando PDO

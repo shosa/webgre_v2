@@ -12,5 +12,9 @@
             "name": "Stefano Solidoro",
             "email": "kishosa@me.com"
         }
-    ]
+    ],
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.29",
+        "phpmailer/phpmailer": "^6.9"
+    }
 }
