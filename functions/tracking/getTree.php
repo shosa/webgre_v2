@@ -32,6 +32,7 @@ if (isset($_GET['search_query'])) {
             $tree[$result['cartel']]['cartel'] = $result['cartel'];
             $tree[$result['cartel']]['children'][$result['type_id']]['type_name'] = $result['type_name'];
             $tree[$result['cartel']]['children'][$result['type_id']]['lots'][] = [
+                'id' => $result['id'], // Aggiungi l'id del record
                 'lot' => $result['lot'],
                 'timestamp' => $result['timestamp'] // Aggiungiamo il timestamp al lotto
             ];
@@ -40,14 +41,17 @@ if (isset($_GET['search_query'])) {
         // Render the tree structure as HTML
         echo '<ul>';
         foreach ($tree as $cartelino) {
-            echo '<h5>Cartellino: </h5>';
+            echo '<h5 class="mt-1">Cartellino: </h5>';
             echo '<li class="text-primary">' . $cartelino['cartel'];
             echo '<ul>';
             foreach ($cartelino['children'] as $type_id => $type) {
                 echo '<li class="text-dark" ><b>' . $type['type_name'] . '</b>';
                 echo '<ul >';
                 foreach ($type['lots'] as $lot) {
-                    echo '<i>#: ' . $lot['lot'] . '</i>' . '<span class="timestamp" style="color:#d1d1d1;">' . $lot['timestamp'] . '</span></li>' . '</br>';
+                    echo '<i>' . $lot['lot'] . '</i>' . 
+                         '<span class="timestamp" style="color:#d1d1d1;">' . $lot['timestamp'] . '</span>' . 
+                         '<span class="ml-2"><i class="fa fa-pencil edit-lot text-primary" data-id="' . $lot['id'] . '"></i>' . 
+                         '<i class="fa fa-times ml-2 delete-lot text-danger" data-id="' . $lot['id'] . '"></i></span></li>' . '</br>';
                 }
                 echo '</ul>';
                 echo '</li>';

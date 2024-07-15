@@ -99,31 +99,37 @@ require_once BASE_PATH . '/components/header.php';
     }
 
     #treeViewPlaceholder li:before {
-        content: "\f054"; /* Icona freccia destra (FontAwesome) */
+        content: "\f054";
+        /* Icona freccia destra (FontAwesome) */
         font-family: FontAwesome;
         margin-right: 10px;
         color: #777;
     }
 
     #treeViewPlaceholder li.collapsed:before {
-        content: "\f054"; /* Icona freccia destra (FontAwesome) */
+        content: "\f054";
+        /* Icona freccia destra (FontAwesome) */
     }
 
     #treeViewPlaceholder li.expanded:before {
-        content: "\f078"; /* Icona freccia giù (FontAwesome) */
+        content: "\f078";
+        /* Icona freccia giù (FontAwesome) */
     }
 
     #treeViewPlaceholder li.leaf:before {
-        content: "\f111"; /* Icona foglia (FontAwesome) */
+        content: "\f111";
+        /* Icona foglia (FontAwesome) */
         color: #6c757d;
     }
 
     #treeViewPlaceholder li.collapsed.leaf:before {
-        content: "\f111"; /* Icona foglia (FontAwesome) */
+        content: "\f111";
+        /* Icona foglia (FontAwesome) */
     }
 
     #treeViewPlaceholder li.expanded.leaf:before {
-        content: "\f111"; /* Icona foglia (FontAwesome) */
+        content: "\f111";
+        /* Icona foglia (FontAwesome) */
     }
 
     /* Stili per rendere il testo del lotto non cliccabile */
@@ -135,7 +141,8 @@ require_once BASE_PATH . '/components/header.php';
     #treeViewPlaceholder li .timestamp {
         color: #777;
         font-size: 90%;
-        float: right; /* Allinea il timestamp a destra */
+        float: right;
+        /* Allinea il timestamp a destra */
         margin-left: 10px;
     }
 </style>
@@ -155,6 +162,7 @@ require_once BASE_PATH . '/components/header.php';
                 success: function (response) {
                     $('#treeViewPlaceholder').html(response); // Sostituisce il placeholder con i dati ricevuti
                     initializeTreeView(); // Inizializza la vista ad albero
+                    attachEventHandlers(); // Attacca gli handler per edit e delete
                 },
                 error: function () {
                     alert('Errore durante la ricerca.'); // Gestisce eventuali errori
@@ -175,6 +183,48 @@ require_once BASE_PATH . '/components/header.php';
                 if (!$(this).hasClass('leaf')) {
                     $(this).toggleClass('collapsed expanded'); // Alterna le classi "collapsed" e "expanded"
                     $(this).children('ul').slideToggle(); // Alterna la visibilità del sotto-albero
+                }
+            });
+        }
+
+        // Funzione per gestire le operazioni di edit e delete
+        function attachEventHandlers() {
+            $('.edit-lot').click(function (event) {
+                event.stopPropagation();
+                var lotId = $(this).data('id');
+                var newLotValue = prompt("Inserisci il nuovo valore del lotto:");
+                if (newLotValue) {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'updateLot.php',
+                        data: { id: lotId, lot: newLotValue },
+                        success: function (response) {
+                            alert('Lotto aggiornato con successo.');
+                            $('#searchForm').submit(); // Ricarica i risultati della ricerca
+                        },
+                        error: function () {
+                            alert('Errore durante l\'aggiornamento del lotto.');
+                        }
+                    });
+                }
+            });
+
+            $('.delete-lot').click(function (event) {
+                event.stopPropagation();
+                var lotId = $(this).data('id');
+                if (confirm("Sei sicuro di voler cancellare questo lotto?")) {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'deleteLot.php',
+                        data: { id: lotId },
+                        success: function (response) {
+                            alert('Lotto cancellato con successo.');
+                            $('#searchForm').submit(); // Ricarica i risultati della ricerca
+                        },
+                        error: function () {
+                            alert('Errore durante la cancellazione del lotto.');
+                        }
+                    });
                 }
             });
         }

@@ -59,7 +59,7 @@ require_once BASE_PATH . '/components/header.php';
                             </a>
                         </div>
                         <div class="col-md-4 mb-4">
-                            <a href="#"
+                            <a href="makePackingList"
                                 class="btn btn-warning btn-lg btn-block shadow d-flex align-items-center justify-content-center"
                                 style="height: 150px;">
                                 <i class="fal fa-list fa-3x mr-3"></i>
@@ -76,7 +76,7 @@ require_once BASE_PATH . '/components/header.php';
                                 <i class="fal fa-folder-tree fa-3x mr-3"></i>
                                 <div class="text-left">
                                     <h4><b>Albero Dettagli</b></h4>
-                                    <i>Visualizza una mappatura dei lotti/cartellini utilizzati</i>
+                                    <i>Visualizza e Modifica la mappatura dei lotti / cartellini</i>
                                 </div>
                             </a>
                         </div>
@@ -92,6 +92,19 @@ require_once BASE_PATH . '/components/header.php';
                                 </div>
                             </a>
                         </div>
+
+                        <div class="col-md-4 mb-4">
+                            <a href="#"
+                                class="btn btn-dark btn-lg btn-block shadow d-flex align-items-center justify-content-center"
+                                style="height: 150px;">
+                                <i class="fal fa-gear fa-3x mr-3"></i>
+                                <div class="text-left">
+                                    <h4><b>Impostazioni</b></h4>
+                                    <i>Gestione settaggi e variabili d'ambiente</i>
+                                </div>
+                            </a>
+                        </div>
+
 
                     </div>
                 </div>

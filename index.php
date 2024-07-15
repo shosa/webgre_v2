@@ -95,7 +95,7 @@ try {
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="../../functions/riparazioni/riparazioni"
+                                    <a href="<?php echo BASE_URL ?>/functions/riparazioni/riparazioni"
                                         class="card-footer text-white bg-white text-warning">
                                         <span class="float-left">Apri Elenco</span>
                                         <span class="float-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -119,7 +119,7 @@ try {
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="../../functions/riparazioni/myRiparazioni"
+                                    <a href="<?php echo BASE_URL ?>/functions/riparazioni/myRiparazioni"
                                         class="card-footer text-white bg-white text-success">
                                         <span class="float-left">Apri Elenco</span>
                                         <span class="float-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -148,7 +148,7 @@ try {
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="../../functions/quality/detail?date=<?php echo $data_oggi ?>"
+                                    <a href="<?php echo BASE_URL ?>/functions/quality/detail?date=<?php echo $data_oggi ?>"
                                         class="card-footer text-white bg-white text-primary">
                                         <span class="float-left">Visualizza</span>
                                         <span class="float-right"><i class="fa fa-arrow-circle-right"></i></span>

@@ -3,9 +3,9 @@
     id="accordionSidebar">
 
     <!-- SIDEBAR INTESTAZIONE -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../../index">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php echo BASE_URL ?>/index">
         <div class="sidebar-brand-icon">
-            <img src="<?php echo BASE_URL?>/img/roundLogo.png" alt="" width="40" height="40">
+            <img src="<?php echo BASE_URL ?>/img/roundLogo.png" alt="" width="40" height="40">
         </div>
         <div class="sidebar-brand-text mx-3">WEBGRE </div>
     </a>
@@ -13,7 +13,7 @@
     <!-- DIVISORE -->
     <hr class="sidebar-divider my-0">
     <li class="nav-item">
-        <a id="home" class="nav-link" href="../../index">
+        <a id="home" class="nav-link" href="<?php echo BASE_URL ?>/index">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -37,15 +37,15 @@
                 data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
-                    <a id="riparazioni-add-step1" class="collapse-item" href="../../functions/riparazioni/add_step1"><i
+                    <a id="riparazioni-add-step1" class="collapse-item" href="<?php echo BASE_URL ?>/functions/riparazioni/add_step1"><i
                             class="fa fa-plus fa-fw"></i> Nuova</a>
-                    <a id="riparazioni-elenco" class="collapse-item" href="../../functions/riparazioni/riparazioni"><i
+                    <a id="riparazioni-elenco" class="collapse-item" href="<?php echo BASE_URL ?>/functions/riparazioni/riparazioni"><i
                             class="fa fa-list fa-fw"></i> Elenco</a>
-                    <a id="riparazioni-cerca" class="collapse-item" href="../../functions/riparazioni/search"><i
+                    <a id="riparazioni-cerca" class="collapse-item" href="<?php echo BASE_URL ?>/functions/riparazioni/search"><i
                             class="fa fa-search fa-fw"></i> Cerca</a>
                     <a id="riparazioni-close-barcode" class="collapse-item"
-                        href="../../functions/riparazioni/close_barcode"><i class="far fa-scanner"></i> Chiudi Più</a>
-                    <a id="riparazioni-make-plist" class="collapse-item" href="../../functions/riparazioni/make_plist"><i
+                        href="<?php echo BASE_URL ?>/functions/riparazioni/close_barcode"><i class="far fa-scanner"></i> Chiudi Più</a>
+                    <a id="riparazioni-make-plist" class="collapse-item" href="<?php echo BASE_URL ?>/functions/riparazioni/make_plist"><i
                             class="fa fa-stream fa-fw"></i> Packing List</a>
                 </div>
             </div>
@@ -62,18 +62,18 @@
             <div id="collapseCQ" class="collapse" aria-labelledby="headingCQ" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
-                    <a id="quality-new" class="collapse-item" href="../../functions/quality/new"><i class="fa fa-plus"></i>
+                    <a id="quality-new" class="collapse-item" href="<?php echo BASE_URL ?>/functions/quality/new"><i class="fa fa-plus"></i>
                         Nuova</a>
-                    <a id="quality-read" class="collapse-item" href="../../functions/quality/read"><i
+                    <a id="quality-read" class="collapse-item" href="<?php echo BASE_URL ?>/functions/quality/read"><i
                             class="far fa-calendar-alt"></i>
                         Consulta</a>
-                    <a id="quality-search" class="collapse-item" href="../../functions/quality/search"><i
+                    <a id="quality-search" class="collapse-item" href="<?php echo BASE_URL ?>/functions/quality/search"><i
                             class="fa fa-search"></i>
                         Cerca</a>
-                    <a id="quality-barcode" class="collapse-item" href="../../functions/quality/barcode"><i
+                    <a id="quality-barcode" class="collapse-item" href="<?php echo BASE_URL ?>/functions/quality/barcode"><i
                             class="fal fa-barcode-alt"></i>
                         Barcodes</a>
-                    <a id="quality-charts" class="collapse-item" href="../../functions/quality/chartsOverview"><i
+                    <a id="quality-charts" class="collapse-item" href="<?php echo BASE_URL ?>/functions/quality/chartsOverview"><i
                             class="far fa-chart-pie-alt"></i>
                         Statistiche</a>
                 </div>
@@ -92,16 +92,16 @@
             <div id="collapseProd" class="collapse" aria-labelledby="headingProd" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
-                    <a id="production-new" class="collapse-item" href="../../functions/production/new"><i
+                    <a id="production-new" class="collapse-item" href="<?php echo BASE_URL ?>/functions/production/new"><i
                             class="fa fa-plus"></i>
                         Nuova Produzione</a>
-                    <a id="production-new" class="collapse-item" href="../../functions/production/newShipment"><i
+                    <a id="production-new" class="collapse-item" href="<?php echo BASE_URL ?>/functions/production/newShipment"><i
                             class="fa fa-truck-fast"></i>
                         Nuova Spedizione</a>
-                    <a id="production-calendario" class="collapse-item" href="../../functions/production/calendario"><i
+                    <a id="production-calendario" class="collapse-item" href="<?php echo BASE_URL ?>/functions/production/calendario"><i
                             class="far fa-calendar-alt"></i>
                         Calendario</a>
-                    <a id="production-settings" class="collapse-item" href="../../functions/production/settings"><i
+                    <a id="production-settings" class="collapse-item" href="<?php echo BASE_URL ?>/functions/production/settings"><i
                             class="far fa-gear"></i>
                         Impostazioni</a>
                 </div>
@@ -120,10 +120,10 @@
             <div id="collapseSamples" class="collapse" aria-labelledby="headingSamples" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
-                    <a id="samples-new" class="collapse-item" href="../../functions/samples/newSample"><i
+                    <a id="samples-new" class="collapse-item" href="<?php echo BASE_URL ?>/functions/samples/newSample"><i
                             class="fa fa-plus"></i>
                         Nuovo</a>
-                    <a id="samples-list" class="collapse-item" href="../../functions/samples/list"><i
+                    <a id="samples-list" class="collapse-item" href="<?php echo BASE_URL ?>/functions/samples/list"><i
                             class="far fa-list"></i>
                         In corso</a>
                     <a id="samples-done" class="collapse-item" href="#"><i class="far fa-check"></i>
@@ -145,9 +145,21 @@
             <div id="collapseTracking" class="collapse" aria-labelledby="headingTracking" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
-                    <a id="tracking-home" class="collapse-item" href="../../functions/tracking/home"><i
+                    <a id="tracking-home" class="collapse-item" href="<?php echo BASE_URL ?>/functions/tracking/home"><i
                             class="fa fa-home"></i>
-                        Home</a>
+                        Menu</a>
+                    <a id="tracking-multi" class="collapse-item" href="<?php echo BASE_URL ?>/functions/tracking/multiSearch"><i
+                            class="fa fa-magnifying-glass-plus"></i>
+                        Associa per Ricerca</a>
+                    <a id="tracking-order" class="collapse-item" href="<?php echo BASE_URL ?>/functions/tracking/orderSearch"><i
+                            class="fa fa-link"></i>
+                        Associa per Cartellini</a>
+                    <a id="tracking-pkl" class="collapse-item" href="<?php echo BASE_URL ?>/functions/tracking/makePackingList"><i
+                            class="fa fa-list"></i>
+                        Crea Packing List</a>
+                    <a id="tracking-tree" class="collapse-item" href="<?php echo BASE_URL ?>/functions/tracking/treeView"><i
+                            class="fa fa-folder-tree"></i>
+                        Albero Dettagli</a>
                 </div>
             </div>
         </li>
@@ -160,7 +172,7 @@
     <!-- UTENTI -->
     <?php if (isset($_SESSION['permessi_utenti']) && $_SESSION['permessi_utenti'] == 1): ?>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="../../functions/users/manageUsers" aria-expanded="true"
+            <a class="nav-link collapsed" href="<?php echo BASE_URL ?>/functions/users/manageUsers" aria-expanded="true"
                 aria-controls="collapseProd">
                 <i class="far fa-users"></i>
                 <span>Utenti</span>
@@ -170,7 +182,7 @@
     <!-- LOG ATTIVITA' -->
     <?php if (isset($_SESSION['permessi_log']) && $_SESSION['permessi_log'] == 1): ?>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="../../functions/users/log_admin" aria-expanded="true"
+            <a class="nav-link collapsed" href="<?php echo BASE_URL ?>/functions/users/log_admin" aria-expanded="true"
                 aria-controls="collapseProd">
                 <i class="far fa-monitor-heart-rate"></i>
                 <span>Log Attività</span>
@@ -180,7 +192,7 @@
     <!-- ETICHETTE -->
     <?php if (isset($_SESSION['permessi_etichette']) && $_SESSION['permessi_etichette'] == 1): ?>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="../../functions/tools/eti_index" aria-expanded="true"
+            <a class="nav-link collapsed" href="<?php echo BASE_URL ?>/functions/tools/eti_index" aria-expanded="true"
                 aria-controls="collapseProd">
                 <i class="far fa-barcode-alt"></i>
                 <span>Etichette</span>
@@ -189,7 +201,7 @@
     <?php endif; ?>
     <?php if (isset($_SESSION['permessi_sql']) && $_SESSION['permessi_sql'] == 1): ?>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="../../functions/database/manager" aria-expanded="true"
+            <a class="nav-link collapsed" href="<?php echo BASE_URL ?>/functions/database/manager" aria-expanded="true"
                 aria-controls="collapseProd">
                 <i class="far fa-database"></i>
                 <span>Database</span>
@@ -237,6 +249,10 @@
             '/functions/samples/list': 'samples-list',
             '/functions/samples/done': 'samples-done',
             '/functions/tracking/home': 'tracking-home',
+            '/functions/tracking/multiSearch': 'tracking-multi',
+            '/functions/tracking/orderSearch': 'tracking-order',
+            '/functions/tracking/makePackingList': 'tracking-pkl',
+            '/functions/tracking/treeView': 'tracking-tree',
 
             // Aggiungi qui altri link come necessario
         };
