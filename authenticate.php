@@ -2,6 +2,9 @@
 session_start();
 require_once 'config/config.php';
 require_once BASE_PATH . '/utils/log_utilsLogin.php';
+require_once BASE_PATH . '/utils/check_notifications.php';
+
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = filter_input(INPUT_POST, 'username');
@@ -112,6 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $device = 'Desktop';
                 }
                 logActivity($_SESSION['user_id'], 'LOGIN', 'ACCESSO', 'Accesso eseguito', $device . ' / ' . $browser, '');
+                checkRepairNotifications();
                 header('Location: index.php');
                 exit;
             } else {
@@ -131,4 +135,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     die('Method Not Allowed');
 }
-?>
+
+    ?>

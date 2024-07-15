@@ -171,21 +171,7 @@ function getUrgencyColor($urgency)
                                                             type="button" class="btn btn-warning">
                                                             <i class="fal fa-print"></i>
                                                         </a>
-                                                        <div class="btn-group">
-                                                            <button type="button"
-                                                                class="btn btn-warning dropdown-toggle btn-xs"
-                                                                data-toggle="dropdown" aria-haspopup="true"
-                                                                aria-expanded="false">
-                                                                <span class="caret"></span>
-                                                            </button>
-                                                            <div class="dropdown-menu">
-                                                                <a class="dropdown-item"
-                                                                    href="download_report.php?riparazione_id=<?php echo htmlspecialchars($row['IDRIP']); ?>">
-                                                                    <i class="fal fa-download"></i> Scarica
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                       
                                                     <a href="#" class="btn btn-danger delete_btn" data-toggle="modal"
                                                         data-target="#confirm-delete-<?php echo htmlspecialchars($row['IDRIP']); ?>">
                                                         <i class="fal fa-trash-alt"></i>

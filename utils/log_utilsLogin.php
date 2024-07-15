@@ -24,4 +24,5 @@ function replacePlaceholders($pdo, $query, $params)
     }
     return $query;
 }
+
 ?>

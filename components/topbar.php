@@ -97,7 +97,7 @@ $unreadCount = count($notifications);
                         $bgClass = '';
 
                         switch ($notification['type']) {
-                            case 'alert':
+                            case 'warning':
                                 $iconClass = 'fas fa-exclamation-triangle';
                                 $bgClass = 'warning';
                                 break;
@@ -171,18 +171,19 @@ $unreadCount = count($notifications);
                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                     Impostazioni
                 </a>
-                <a class="dropdown-item" href="../../functions/users/log">
+                <a class="dropdown-item" href="<?php echo BASE_URL ?>/functions/users/log">
                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                     Registro Attività
                 </a>
-                <a class="dropdown-item" href="../../functions/users/themes">
+                <a class="dropdown-item" href="<?php echo BASE_URL ?>/functions/users/themes">
                     <i
                         class="fas fa-circle fa-sm fa-fw mr-2 text-<?php echo (isset($_SESSION["tema"]) && !empty($_SESSION["tema"])) ? $_SESSION["tema"] : "primary"; ?>"></i>
                     Tema
                 </a>
 
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="../../logout" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" href="<?php echo BASE_URL ?>/logout" data-toggle="modal"
+                    data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Esci
                 </a>
@@ -207,7 +208,7 @@ $unreadCount = count($notifications);
             <div class="modal-body">Seleziona "Logout" per interrompere la sessione.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulla</button>
-                <a class="btn btn-primary" href="../../logout">Logout</a>
+                <a class="btn btn-primary" href="<?php echo BASE_URL ?>/logout">Logout</a>
             </div>
         </div>
     </div>

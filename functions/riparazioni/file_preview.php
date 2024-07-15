@@ -2,7 +2,7 @@
 session_start();
 require_once '../../config/config.php';
 require_once BASE_PATH . '/components/auth_validate.php';
-$pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
+$pdo = getDbInstance();
 $idrip = filter_input(INPUT_GET, 'riparazione_id');
 include (BASE_PATH . "/components/header.php");
 ?>
@@ -36,7 +36,7 @@ include (BASE_PATH . "/components/header.php");
 
                             try {
 
-                                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
                                 $stmt = $pdo->prepare("SELECT * FROM riparazioni
         LEFT JOIN id_numerate ON riparazioni.NU = id_numerate.ID
         WHERE IDRIP = :idrip");
