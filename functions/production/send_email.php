@@ -3,7 +3,7 @@ require_once '../../config/config.php';
 require_once BASE_PATH . '/vendor/phpmailer/src/PHPMailer.php';
 require_once BASE_PATH . '/vendor/phpmailer/src/SMTP.php';
 require_once BASE_PATH . '/vendor/phpmailer/src/Exception.php';
-require_once (BASE_PATH . "/assets/tcpdf/tcpdf.php");
+require_once (BASE_PATH . "/vendor/tcpdf/tcpdf.php");
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;

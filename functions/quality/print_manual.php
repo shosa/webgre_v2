@@ -2,8 +2,8 @@
 session_start();
 require_once '../../config/config.php';
 require_once '../../utils/log_utils.php';
-require_once BASE_PATH . '/assets/tcpdf/tcpdf.php';
-require_once BASE_PATH . '/assets/tcpdf/tcpdf_barcodes_1d.php';
+require_once BASE_PATH . '/vendor/tcpdf/tcpdf.php';
+require_once BASE_PATH . '/vendor/tcpdf/tcpdf_barcodes_1d.php';
 
 // Funzione per inizializzare il database
 function initializeDatabase()

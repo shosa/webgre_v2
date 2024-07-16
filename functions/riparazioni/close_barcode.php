@@ -17,7 +17,7 @@ try {
 
             if (!empty($idripArray)) {
                 // Crea un oggetto TCPDF
-                require_once ('../../assets/tcpdf/tcpdf.php');
+                require_once ('../../vendor/tcpdf/tcpdf.php');
                 $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
 
                 // Itera attraverso gli IDRIP e crea una pagina per ciascuno
