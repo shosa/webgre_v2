@@ -6,8 +6,23 @@ function createNotification($user_id, $type, $message, $dato)
     try {
         $pdo = getDbInstance();
 
-        // Prepara la query per inserire la notifica nel database
+        // Controlla se esiste già una notifica non letta per la stessa riparazione
+        $checkQuery = "SELECT COUNT(*) FROM notifications WHERE user_id = :user_id AND type = :type AND link = :link AND is_read = 0";
+        $stmt = $pdo->prepare($checkQuery);
         $link = BASE_URL . '/functions/riparazioni/file_preview.php?riparazione_id=' . $dato;
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':type', $type);
+        $stmt->bindParam(':link', $link);
+        $stmt->execute();
+        $exists = $stmt->fetchColumn();
+
+        if ($exists > 0) {
+            // Esiste già una notifica non letta per questa riparazione, quindi non crearne una nuova
+            error_log("Una notifica non letta per la riparazione $dato esiste già per l'utente $user_id");
+            return;
+        }
+
+        // Prepara la query per inserire la notifica nel database
         $query = "INSERT INTO notifications (user_id, type, message, timestamp, link, is_read) 
                   VALUES (:user_id, :type, :message, NOW(), :link, 0)";
         $stmt = $pdo->prepare($query);
