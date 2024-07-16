@@ -48,8 +48,8 @@ include (BASE_PATH . "/components/header.php");
                                 if ($stmt->rowCount() == 1) {
                                     $filename = 'CEDOLA_' . $idrip . '.pdf';
 
-                                    require_once (BASE_PATH . '/assets/tcpdf/tcpdf.php');
-                                    require_once (BASE_PATH . '/assets/tcpdf/tcpdf_barcodes_1d.php');
+                                    require_once (BASE_PATH . '/vendor/tcpdf/tcpdf.php');
+                                    require_once (BASE_PATH . '/vendor/tcpdf/tcpdf_barcodes_1d.php');
                                     $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
                                     $pdf->SetMargins(7, 7, 7);
                                     $pdf->SetAutoPageBreak(true, 10);

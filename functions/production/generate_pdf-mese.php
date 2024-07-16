@@ -1,7 +1,7 @@
 <?php
 // Include la libreria TCPDF
 require ("../../config/config.php");
-require_once (BASE_PATH . "/assets/tcpdf/tcpdf.php");
+require_once (BASE_PATH . "/vendor/tcpdf/tcpdf.php");
 
 // Ricevi i parametri month e day dalla richiesta GET
 $month = $_GET['month'];

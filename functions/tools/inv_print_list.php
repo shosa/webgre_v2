@@ -1,6 +1,6 @@
 <?php
 require_once('../../config/config.php');
-require_once(BASE_PATH . '/assets/tcpdf/tcpdf.php');
+require_once(BASE_PATH . '/vendor/tcpdf/tcpdf.php');
 
 // Crea un oggetto TCPDF
 $pdf = new TCPDF();

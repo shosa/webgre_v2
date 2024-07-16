@@ -4,7 +4,7 @@ ini_set("display_startup_errors", 1);
 error_reporting(E_ALL);
 session_start();
 require_once "../../config/config.php";
-require_once BASE_PATH . "/helpers/helpers.php";
+require_once BASE_PATH . "/utils/helpers.php";
 require_once BASE_PATH . "/utils/log_utils.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

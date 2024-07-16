@@ -26,8 +26,8 @@ foreach ($data as $record) {
 }
 
 // Include la libreria TCPDF
-require_once ('../../assets/tcpdf/tcpdf.php');
-require_once ('../../assets/tcpdf/tcpdf_barcodes_1d.php');
+require_once ('../../vendor/tcpdf/tcpdf.php');
+require_once ('../../vendor/tcpdf/tcpdf_barcodes_1d.php');
 
 // Crea il contenuto del PDF
 $pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false); // Orizzontale

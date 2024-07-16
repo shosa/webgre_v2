@@ -1,8 +1,8 @@
 <?php
 require_once '../../config/config.php';
-require_once (BASE_PATH . '/assets/tcpdf/tcpdf.php');
-require_once (BASE_PATH . '/assets/tcpdf/tcpdf_barcodes_1d.php');
-require_once BASE_PATH . '/helpers/helpers.php';
+require_once (BASE_PATH . '/vendor/tcpdf/tcpdf.php');
+require_once (BASE_PATH . '/vendor/tcpdf/tcpdf_barcodes_1d.php');
+require_once BASE_PATH . '/utils/helpers.php';
 require_once BASE_PATH . '/utils/log_utils.php';
 
 // Controllo se l'ID del modello è passato come GET

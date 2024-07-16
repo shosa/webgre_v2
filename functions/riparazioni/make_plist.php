@@ -29,8 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Ora hai i dati da utilizzare per generare il PDF con TCPDF
 
-            require_once (BASE_PATH . '/assets/tcpdf/tcpdf.php');
-            require_once (BASE_PATH . '/assets/tcpdf/tcpdf_barcodes_1d.php');
+            require_once (BASE_PATH . '/vendor/tcpdf/tcpdf.php');
+            require_once (BASE_PATH . '/vendor/tcpdf/tcpdf_barcodes_1d.php');
 
             // Inizializza un nuovo oggetto TCPDF con orientamento orizzontale
             $pdf = new TCPDF('L');

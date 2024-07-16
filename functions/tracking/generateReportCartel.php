@@ -2,7 +2,7 @@
 session_start();
 require_once '../../config/config.php';
 require_once BASE_PATH . '/utils/log_utils.php';
-require_once '../../assets/tcpdf/tcpdf.php';
+require_once '../../vendor/tcpdf/tcpdf.php';
 
 // Leggi il payload JSON inviato dal client
 $postdata = file_get_contents("php://input");

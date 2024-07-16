@@ -1,7 +1,7 @@
 <?php
 // Include la libreria TCPDF
 require ("../../config/config.php");
-require_once (BASE_PATH . "/assets/tcpdf/tcpdf.php");
+require_once (BASE_PATH . "/vendor/tcpdf/tcpdf.php");
 
 $pdf = new TCPDF("P", "mm", "A4", true, "UTF-8", false);
 

@@ -4,8 +4,8 @@ ini_set("display_startup_errors", 1);
 error_reporting(E_ALL);
 session_start();
 require_once "../../config/config.php";
-require_once "../../helpers/helpers.php";
-require_once "../../utils/log_utils.php";
+require_once BASE_PATH . "/utils/helpers.php";
+require_once BASE_PATH . "/utils/log_utils.php";
 
 // Imposta la data attuale
 $currentDate = new DateTime();
@@ -76,7 +76,7 @@ $monthNames = [
                         <h1 class="h3 mb-0 text-gray-800">Produzione & Spedizione</h1>
                     </div>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href=BASE_PATH . "/index">Dashboard</a></li>
                         <li class="breadcrumb-item active">Calendario</li>
                     </ol>
                     <div class="row">

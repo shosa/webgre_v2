@@ -4,7 +4,7 @@ ini_set("display_startup_errors", 1);
 error_reporting(E_ALL);
 
 require_once "../../config/config.php";
-require_once "../../helpers/helpers.php";
+require_once "../../utils/helpers.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pdo = getDbInstance();

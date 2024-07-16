@@ -4,7 +4,7 @@ ini_set("display_startup_errors", 1);
 error_reporting(E_ALL);
 session_start();
 require_once "../../config/config.php";
-require_once "../../helpers/helpers.php";
+require_once "../../utils/helpers.php";
 
 $pdo = getDbInstance();
 $stmt = $pdo->query("SELECT m.*, a.stato_taglio, a.stato_orlatura, a.stato_montaggio, a.stato_spedito 

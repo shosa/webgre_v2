@@ -4,7 +4,7 @@ ini_set("display_startup_errors", 1);
 error_reporting(E_ALL);
 session_start();
 require_once "../../config/config.php";
-require_once "../../helpers/helpers.php";
+require_once "../../utils/helpers.php";
 require_once "../../utils/log_utils.php";
 
 // Verifica se l'ID del modello è passato tramite GET
