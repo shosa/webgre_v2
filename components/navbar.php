@@ -37,16 +37,21 @@
                 data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
-                    <a id="riparazioni-add-step1" class="collapse-item" href="<?php echo BASE_URL ?>/functions/riparazioni/add_step1"><i
-                            class="fa fa-plus fa-fw"></i> Nuova</a>
-                    <a id="riparazioni-elenco" class="collapse-item" href="<?php echo BASE_URL ?>/functions/riparazioni/riparazioni"><i
-                            class="fa fa-list fa-fw"></i> Elenco</a>
-                    <a id="riparazioni-cerca" class="collapse-item" href="<?php echo BASE_URL ?>/functions/riparazioni/search"><i
-                            class="fa fa-search fa-fw"></i> Cerca</a>
+                    <a id="riparazioni-add-step1" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/riparazioni/add_step1"><i class="fa fa-plus fa-fw"></i>
+                        Nuova</a>
+                    <a id="riparazioni-elenco" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/riparazioni/riparazioni"><i class="fa fa-list fa-fw"></i>
+                        Elenco</a>
+                    <a id="riparazioni-cerca" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/riparazioni/search"><i class="fa fa-search fa-fw"></i>
+                        Cerca</a>
                     <a id="riparazioni-close-barcode" class="collapse-item"
-                        href="<?php echo BASE_URL ?>/functions/riparazioni/close_barcode"><i class="far fa-scanner"></i> Chiudi Più</a>
-                    <a id="riparazioni-make-plist" class="collapse-item" href="<?php echo BASE_URL ?>/functions/riparazioni/make_plist"><i
-                            class="fa fa-stream fa-fw"></i> Packing List</a>
+                        href="<?php echo BASE_URL ?>/functions/riparazioni/close_barcode"><i class="far fa-scanner"></i>
+                        Chiudi Più</a>
+                    <a id="riparazioni-make-plist" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/riparazioni/make_plist"><i class="fa fa-stream fa-fw"></i>
+                        Packing List</a>
                 </div>
             </div>
         </li>
@@ -62,7 +67,8 @@
             <div id="collapseCQ" class="collapse" aria-labelledby="headingCQ" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
-                    <a id="quality-new" class="collapse-item" href="<?php echo BASE_URL ?>/functions/quality/new"><i class="fa fa-plus"></i>
+                    <a id="quality-new" class="collapse-item" href="<?php echo BASE_URL ?>/functions/quality/new"><i
+                            class="fa fa-plus"></i>
                         Nuova</a>
                     <a id="quality-read" class="collapse-item" href="<?php echo BASE_URL ?>/functions/quality/read"><i
                             class="far fa-calendar-alt"></i>
@@ -73,8 +79,8 @@
                     <a id="quality-barcode" class="collapse-item" href="<?php echo BASE_URL ?>/functions/quality/barcode"><i
                             class="fal fa-barcode-alt"></i>
                         Barcodes</a>
-                    <a id="quality-charts" class="collapse-item" href="<?php echo BASE_URL ?>/functions/quality/chartsOverview"><i
-                            class="far fa-chart-pie-alt"></i>
+                    <a id="quality-charts" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/quality/chartsOverview"><i class="far fa-chart-pie-alt"></i>
                         Statistiche</a>
                 </div>
             </div>
@@ -95,14 +101,14 @@
                     <a id="production-new" class="collapse-item" href="<?php echo BASE_URL ?>/functions/production/new"><i
                             class="fa fa-plus"></i>
                         Nuova Produzione</a>
-                    <a id="production-new" class="collapse-item" href="<?php echo BASE_URL ?>/functions/production/newShipment"><i
-                            class="fa fa-truck-fast"></i>
+                    <a id="production-new" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/production/newShipment"><i class="fa fa-truck-fast"></i>
                         Nuova Spedizione</a>
-                    <a id="production-calendario" class="collapse-item" href="<?php echo BASE_URL ?>/functions/production/calendario"><i
-                            class="far fa-calendar-alt"></i>
+                    <a id="production-calendario" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/production/calendario"><i class="far fa-calendar-alt"></i>
                         Calendario</a>
-                    <a id="production-settings" class="collapse-item" href="<?php echo BASE_URL ?>/functions/production/settings"><i
-                            class="far fa-gear"></i>
+                    <a id="production-settings" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/production/settings"><i class="far fa-gear"></i>
                         Impostazioni</a>
                 </div>
             </div>
@@ -148,14 +154,15 @@
                     <a id="tracking-home" class="collapse-item" href="<?php echo BASE_URL ?>/functions/tracking/home"><i
                             class="fa fa-home"></i>
                         Menu</a>
-                    <a id="tracking-multi" class="collapse-item" href="<?php echo BASE_URL ?>/functions/tracking/multiSearch"><i
+                    <a id="tracking-multi" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/tracking/multiSearch"><i
                             class="fa fa-magnifying-glass-plus"></i>
                         Associa per Ricerca</a>
-                    <a id="tracking-order" class="collapse-item" href="<?php echo BASE_URL ?>/functions/tracking/orderSearch"><i
-                            class="fa fa-link"></i>
+                    <a id="tracking-order" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/tracking/orderSearch"><i class="fa fa-link"></i>
                         Associa per Cartellini</a>
-                    <a id="tracking-pkl" class="collapse-item" href="<?php echo BASE_URL ?>/functions/tracking/makePackingList"><i
-                            class="fa fa-list"></i>
+                    <a id="tracking-pkl" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/tracking/makePackingList"><i class="fa fa-list"></i>
                         Crea Packing List</a>
                     <a id="tracking-tree" class="collapse-item" href="<?php echo BASE_URL ?>/functions/tracking/treeView"><i
                             class="fa fa-folder-tree"></i>
@@ -205,6 +212,15 @@
                 aria-controls="collapseProd">
                 <i class="far fa-database"></i>
                 <span>Database</span>
+            </a>
+        </li>
+    <?php endif; ?>
+    <?php if (isset($_SESSION['permessi_settings']) && $_SESSION['permessi_settings'] == 1): ?>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="<?php echo BASE_URL ?>/functions/settings/settings" aria-expanded="true"
+                aria-controls="collapseProd">
+                <i class="far fa-cog"></i>
+                <span>Impostazioni</span>
             </a>
         </li>
     <?php endif; ?>

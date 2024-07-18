@@ -15,6 +15,7 @@
     ],
     "require": {
         "phpoffice/phpspreadsheet": "^1.29",
-        "phpmailer/phpmailer": "^6.9"
+        "phpmailer/phpmailer": "^6.9",
+        "tecnickcom/tcpdf": "^6.7"
     }
 }

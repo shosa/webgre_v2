@@ -2,7 +2,8 @@
 session_start();
 require_once '../../config/config.php';
 require_once BASE_PATH . '/utils/log_utils.php';
-require_once '../../vendor/tcpdf/tcpdf.php';
+require_once BASE_PATH . '/vendor/autoload.php'; // Path to PhpSpreadsheet autoload file
+
 
 // Leggi i dati inviati dalla richiesta POST
 $postdata = file_get_contents("php://input");
