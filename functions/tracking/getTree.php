@@ -57,7 +57,7 @@ if (isset($_GET['search_query'])) {
         }
 
         // Render the tree structure as HTML
-        echo '<ul>';
+        echo '<ul><h5>Risultati:</h5>';
         foreach ($tree as $cartelino) {
             echo '<li class="text-primary">' . $cartelino['cartel'] . ' (' . $cartelino['Commessa Cli'] . ')'; // Display Commessa Cli
             echo '<ul>';

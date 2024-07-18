@@ -79,7 +79,7 @@ $unreadCount = count($notifications);
         <li class="nav-item dropdown no-arrow mx-1">
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-bell fa-fw"></i>
+                <i class="fas fa-bell fa-fw <?php echo $unreadCount > 0 ? 'fa-bounce' : ''; ?>"></i>
                 <!-- Counter - Notifications -->
                 <span
                     class="badge badge-danger badge-counter"><?php echo $unreadCount > 0 ? $unreadCount : ''; ?></span>
