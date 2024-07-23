@@ -6,58 +6,185 @@
         <nome>Dashboard</nome>
         <descrizione>Pagina iniziale</descrizione>
         <link>/index</link>
-        <icona>fas fa-home fa-2x text-gray-300</icona>
+        <icona>fas fa-tachometer-alt fa-2x text-gray-300</icona>
     </pagina>
+
     <!-- RIPARAZIONI -->
     <pagina>
-        <tag>riparazioni;cedole;cedola</tag>
+        <tag>riparazioni;elenco;attive</tag>
         <nome>Riparazioni</nome>
         <descrizione>Elenco riparazioni attive</descrizione>
         <link>/functions/riparazioni/riparazioni</link>
         <icona>fas fa-hammer fa-2x text-gray-300</icona>
     </pagina>
     <pagina>
-        <tag>riparazioni;cedola;nuova;</tag>
+        <tag>riparazioni;nuova;cedola</tag>
         <nome>Nuova Riparazione</nome>
         <descrizione>Inserisci una nuova cedola</descrizione>
         <link>/functions/riparazioni/add_step1</link>
-        <icona>fas fa-plus fa-2x text-gray-300</icona>
+        <icona>fa fa-plus fa-2x text-gray-300</icona>
     </pagina>
     <pagina>
-        <tag>riparazioni;packing;list;</tag>
-        <nome>Crea Packing list</nome>
+        <tag>riparazioni;packing;list</tag>
+        <nome>Crea Packing List</nome>
         <descrizione>Genera elenco cedole</descrizione>
         <link>/functions/riparazioni/make_plist</link>
-        <icona>fas fa-stream fa-2x text-gray-300</icona>
+        <icona>fa fa-stream fa-2x text-gray-300</icona>
     </pagina>
     <pagina>
-        <tag>barcode;chiudi;chiudere;</tag>
-        <nome>Chiudi più</nome>
+        <tag>barcode;chiudi;cedole</tag>
+        <nome>Chiudi Più</nome>
         <descrizione>Chiudi cedole con Barcode</descrizione>
         <link>/functions/riparazioni/close_barcode</link>
-        <icona>fas fa-scanner fa-2x text-gray-300</icona>
+        <icona>far fa-scanner fa-2x text-gray-300</icona>
     </pagina>
     <pagina>
-        <tag>log;cronologia;</tag>
-        <nome>Log Attività</nome>
-        <descrizione>Cronologia operazioni</descrizione>
-        <link>/functions/users/log</link>
-        <icona>fas fa-monitor-heart-rate fa-2x text-gray-300</icona>
+        <tag>riparazioni;cerca;cedole</tag>
+        <nome>Cerca Cedole</nome>
+        <descrizione>Cerca cedole per criteri specifici</descrizione>
+        <link>/functions/riparazioni/search</link>
+        <icona>fa fa-search fa-2x text-gray-300</icona>
     </pagina>
+
+    <!-- CONTROLLO QUALITA' -->
+    <pagina>
+        <tag>controllo;qualita;nuova</tag>
+        <nome>Nuovo Controllo Qualità</nome>
+        <descrizione>Inserisci un nuovo controllo di qualità</descrizione>
+        <link>/functions/quality/new</link>
+        <icona>fa fa-plus fa-2x text-gray-300</icona>
+    </pagina>
+    <pagina>
+        <tag>controllo;qualita;consulta</tag>
+        <nome>Consulta Controllo Qualità</nome>
+        <descrizione>Consulta date di controllo qualità</descrizione>
+        <link>/functions/quality/read</link>
+        <icona>far fa-calendar-alt fa-2x text-gray-300</icona>
+    </pagina>
+    <pagina>
+        <tag>controllo;qualita;cerca</tag>
+        <nome>Cerca Controllo Qualità</nome>
+        <descrizione>Cerca controlli di qualità</descrizione>
+        <link>/functions/quality/search</link>
+        <icona>fa fa-search fa-2x text-gray-300</icona>
+    </pagina>
+    <pagina>
+        <tag>controllo;qualita;barcode</tag>
+        <nome>Controllo Barcode</nome>
+        <descrizione>Gestisci barcode per controllo qualità</descrizione>
+        <link>/functions/quality/barcode</link>
+        <icona>fal fa-barcode-alt fa-2x text-gray-300</icona>
+    </pagina>
+    <pagina>
+        <tag>controllo;qualita;statistiche</tag>
+        <nome>Statistiche Controllo Qualità</nome>
+        <descrizione>Visualizza statistiche di controllo qualità</descrizione>
+        <link>/functions/quality/chartsOverview</link>
+        <icona>far fa-chart-pie-alt fa-2x text-gray-300</icona>
+    </pagina>
+
     <!-- PRODUZIONE -->
     <pagina>
-        <tag>produzion;calendario</tag>
+        <tag>produzione;nuova;produzione</tag>
+        <nome>Nuova Produzione</nome>
+        <descrizione>Inserisci una nuova produzione</descrizione>
+        <link>/functions/production/new</link>
+        <icona>fa fa-plus fa-2x text-gray-300</icona>
+    </pagina>
+    <pagina>
+        <tag>produzione;nuova;spedizione</tag>
+        <nome>Nuova Spedizione</nome>
+        <descrizione>Inserisci una nuova spedizione</descrizione>
+        <link>/functions/production/newShipment</link>
+        <icona>fa fa-truck-fast fa-2x text-gray-300</icona>
+    </pagina>
+    <pagina>
+        <tag>produzione;calendario</tag>
         <nome>Calendario Produzione</nome>
         <descrizione>Controllo produttivo</descrizione>
         <link>/functions/production/calendario</link>
-        <icona>fas fa-calendar-alt fa-2x text-gray-300</icona>
+        <icona>far fa-calendar-alt fa-2x text-gray-300</icona>
     </pagina>
-    <!-- CQ -->
     <pagina>
-        <tag>controllo;qualit</tag>
-        <nome>Report CQ</nome>
-        <descrizione>Consulta date</descrizione>
-        <link>/functions/quality/read</link>
-        <icona>fas fa-folder-tree fa-2x text-gray-300</icona>
+        <tag>produzione;impostazioni</tag>
+        <nome>Impostazioni Produzione</nome>
+        <descrizione>Impostazioni relative alla produzione</descrizione>
+        <link>/functions/production/settings</link>
+        <icona>far fa-gear fa-2x text-gray-300</icona>
+    </pagina>
+
+    <!-- CAMPIONARIO -->
+    <pagina>
+        <tag>campionario;nuovo</tag>
+        <nome>Nuovo Campionario</nome>
+        <descrizione>Inserisci un nuovo campionario</descrizione>
+        <link>/functions/samples/newSample</link>
+        <icona>fa fa-plus fa-2x text-gray-300</icona>
+    </pagina>
+    <pagina>
+        <tag>campionario;in-corso</tag>
+        <nome>Campionari In Corso</nome>
+        <descrizione>Visualizza campionari in corso</descrizione>
+        <link>/functions/samples/list</link>
+        <icona>far fa-list fa-2x text-gray-300</icona>
+    </pagina>
+    <pagina>
+        <tag>campionario;completati</tag>
+        <nome>Campionari Completi</nome>
+        <descrizione>Visualizza campionari completati</descrizione>
+        <link>#</link> <!-- Sostituire con il link appropriato -->
+        <icona>far fa-check fa-2x text-gray-300</icona>
+    </pagina>
+    <pagina>
+        <tag>campionario;cerca</tag>
+        <nome>Cerca Campionari</nome>
+        <descrizione>Cerca campionari per criteri specifici</descrizione>
+        <link>#</link> <!-- Sostituire con il link appropriato -->
+        <icona>fa fa-search fa-2x text-gray-300</icona>
+    </pagina>
+
+    <!-- TRACKING -->
+    <pagina>
+        <tag>tracking;menu</tag>
+        <nome>Menu Tracking</nome>
+        <descrizione>Visualizza il menu di tracking</descrizione>
+        <link>/functions/tracking/home</link>
+        <icona>fa fa-home fa-2x text-gray-300</icona>
+    </pagina>
+    <pagina>
+        <tag>tracking;associa;ricerca</tag>
+        <nome>Associa per Ricerca</nome>
+        <descrizione>Associa lotti tramite ricerca</descrizione>
+        <link>/functions/tracking/multiSearch</link>
+        <icona>fa fa-magnifying-glass-plus fa-2x text-gray-300</icona>
+    </pagina>
+    <pagina>
+        <tag>tracking;associa;cartellini</tag>
+        <nome>Associa per Cartellini</nome>
+        <descrizione>Associa lotti tramite cartellini</descrizione>
+        <link>/functions/tracking/orderSearch</link>
+        <icona>fa fa-link fa-2x text-gray-300</icona>
+    </pagina>
+    <pagina>
+        <tag>tracking;packing;list</tag>
+        <nome>Crea Packing List</nome>
+        <descrizione>Genera packing list per i lotti</descrizione>
+        <link>/functions/tracking/makePackingList</link>
+        <icona>fa fa-list fa-2x text-gray-300</icona>
+    </pagina>
+    <pagina>
+        <tag>tracking;albero;dettagli</tag>
+        <nome>Albero Dettagli</nome>
+        <descrizione>Visualizza l'albero dei dettagli</descrizione>
+        <link>/functions/tracking/treeView</link>
+        <icona>fa fa-tree fa-2x text-gray-300</icona>
+    </pagina>
+    <!-- UTENTI -->
+    <pagina>
+        <tag>utenti;gestione</tag>
+        <nome>Gestione Utenti</nome>
+        <descrizione>Gestisci gli utenti della webapp</descrizione>
+        <link>/functions/users/manage</link>
+        <icona>fa fa-users-cog fa-2x text-gray-300</icona>
     </pagina>
 </indice>
