@@ -167,6 +167,12 @@
                     <a id="tracking-tree" class="collapse-item" href="<?php echo BASE_URL ?>/functions/tracking/treeView"><i
                             class="fa fa-folder-tree"></i>
                         Albero Dettagli</a>
+                    <a id="tracking-lots-details" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/tracking/lotDetailManager"><i class="fa fa-file-invoice"></i>
+                        Dettagli Lotti</a>
+                    <a id="tracking-fiches" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/tracking/makeFiches"><i class="fa fa-tag"></i>
+                        Stampa Fiches</a>
                 </div>
             </div>
         </li>
@@ -269,6 +275,8 @@
             '/functions/tracking/orderSearch': 'tracking-order',
             '/functions/tracking/makePackingList': 'tracking-pkl',
             '/functions/tracking/treeView': 'tracking-tree',
+            '/functions/tracking/lotDetailManager': 'tracking-lots-details',
+            '/functions/tracking/makeFiches': 'tracking-fiches',
 
             // Aggiungi qui altri link come necessario
         };

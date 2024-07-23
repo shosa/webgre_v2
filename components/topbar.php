@@ -167,10 +167,6 @@ $unreadCount = count($notifications);
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profilo
                 </a>
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Impostazioni
-                </a>
                 <a class="dropdown-item" href="<?php echo BASE_URL ?>/functions/users/log">
                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                     Registro Attività
