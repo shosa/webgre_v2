@@ -31,7 +31,7 @@
             })
             .then(data => {
                 console.log(data); // Debug: stampa i dati ricevuti per verificare
-                updateLabelContent(data.cm, data.barcode, data.des);
+                updateLabelContent(data.cm, data.barcode, data.des, data.art);
             })
             .catch(error => console.error('Errore nel recupero dei dettagli articolo:', error));
     }
@@ -57,9 +57,6 @@
 
         var table = document.createElement("table");
         table.classList.add("table", "table-bordered");
-
-        createPrintersTableRow(table, 'Tipo di stampante', myPrinter['printerType']);
-        createPrintersTableRow(table, 'Nome Stampante', myPrinter['name']);
         createPrintersTableRow(table, 'Modello', myPrinter['modelName']);
         createPrintersTableRow(table, 'Locale', myPrinter['isLocal']);
         createPrintersTableRow(table, 'Connessione', myPrinter['isConnected']);
@@ -70,12 +67,10 @@
                     createPrintersTableRow(table, 'SKU-Etichette', consumableInfo['sku']);
                     createPrintersTableRow(table, 'Nome Etichette', consumableInfo['name']);
                     createPrintersTableRow(table, 'Etichette rimanenti', consumableInfo['labelsRemaining']);
-                    createPrintersTableRow(table, 'Roll inserito', consumableInfo['rollStatus']);
                 }).thenCatch(function (e) {
                     createPrintersTableRow(table, 'SKU-Etichette', 'n/a');
                     createPrintersTableRow(table, 'Nome Etichette', 'n/a');
                     createPrintersTableRow(table, 'Etichette rimanenti', 'n/a');
-                    createPrintersTableRow(table, 'Roll inserito', 'n/a');
                 });
             } else {
                 createPrintersTableRow(table, 'IsRollStatusSupported', 'False');
@@ -87,20 +82,38 @@
         printerDetail.appendChild(table);
     }
 
+    function formatTextWithLineBreaks(text, maxLength) {
+        let formattedText = '';
+        while (text.length > maxLength) {
+            formattedText += text.substring(0, maxLength) + '\n';
+            text = text.substring(maxLength);
+        }
+        formattedText += text;
+        return formattedText;
+    }
+
     // Funzione per aggiornare il contenuto dell'etichetta
-    function updateLabelContent(categoriaText, codiceText, descrizioneText) {
+    function updateLabelContent(categoriaText, codiceText, descrizioneText, codiceArticoloText) {
         if (!label) {
             alert("Carica l'etichetta prima di aggiornare il contenuto");
             return;
         }
 
-        label.setObjectText("CATEGORIA", categoriaText);
-        label.setObjectText("CODICE", "MGM" + codiceText);
-        label.setObjectText("DESCRIZIONE", descrizioneText);
+        // Formattazione del testo della descrizione
+        let formattedDescrizioneText = formatTextWithLineBreaks(descrizioneText, 30);
 
+        // Aggiorna il contenuto dell'etichetta
+        label.setObjectText("CATEGORIA", categoriaText);
+        label.setObjectText("CODICE", codiceText);
+        label.setObjectText("CODICE_ARTICOLO", codiceArticoloText);
+        label.setObjectText("BARCODE", codiceText);
+        label.setObjectText("DESCRIZIONE", formattedDescrizioneText);
+
+        // Mostra un'anteprima dell'etichetta
         var preview = document.getElementById("labelPreview");
         preview.src = "data:image/png;base64," + label.render();
 
+        // Popola i dettagli della stampante
         populatePrinterDetail();
     }
 
@@ -124,88 +137,197 @@
             alert("Load Printers failed: " + e);
         });
         var testAddressLabelXml = '<?xml version="1.0" encoding="utf-8"?>\
-        <DieCutLabel Version="8.0" Units="twips">\
-            <PaperOrientation>Portrait</PaperOrientation>\
-            <Id>Small30334</Id>\
-            <PaperName>30334 2-1/4 in x 1-1/4 in</PaperName>\
-            <DrawCommands>\
-                <RoundRectangle X="0" Y="0" Width="3240" Height="1800" Rx="270" Ry="270" />\
-            </DrawCommands>\
-            <ObjectInfo>\
-                <TextObject>\
-                    <Name>CATEGORIA</Name>\
-                    <ForeColor Alpha="255" Red="255" Green="255" Blue="255" />\
-                    <BackColor Alpha="255" Red="0" Green="0" Blue="0" />\
-                    <LinkedObjectName></LinkedObjectName>\
-                    <Rotation>Rotation0</Rotation>\
-                    <IsMirrored>False</IsMirrored>\
-                    <IsVariable>False</IsVariable>\
-                    <HorizontalAlignment>Center</HorizontalAlignment>\
-                    <VerticalAlignment>Top</VerticalAlignment>\
-                    <TextFitMode>ShrinkToFit</TextFitMode>\
-                    <UseFullFontHeight>True</UseFullFontHeight>\
-                    <Verticalized>False</Verticalized>\
-                    <StyledText>\
-                        <Element>\
-                            <String>CATEGORIA</String>\
-                            <Attributes>\
-                                <Font Family="Arial" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
-                                <ForeColor Alpha="255" Red="255" Green="255" Blue="255" />\
-                            </Attributes>\
-                        </Element>\
-                    </StyledText>\
-                </TextObject>\
-                <Bounds X="250" Y="150" Width="2835" Height="240" />\
-            </ObjectInfo>\
-            <ObjectInfo>\
-                <BarcodeObject>\
-                    <Name>CODICE</Name>\
-                    <ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
-                    <BackColor Alpha="0" Red="255" Green="255" Blue="255" />\
-                    <LinkedObjectName></LinkedObjectName>\
-                    <Rotation>Rotation0</Rotation>\
-                    <IsMirrored>False</IsMirrored>\
-                    <IsVariable>True</IsVariable>\
-                    <Text>12345</Text>\
-                    <Type>Code128Auto</Type>\
-                    <Size>Small</Size>\
-                    <TextPosition>Bottom</TextPosition>\
-                    <TextFont Family="Arial" Size="8" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
-                    <CheckSumFont Family="Arial" Size="8" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
-                    <TextEmbedding>None</TextEmbedding>\
-                    <ECLevel>0</ECLevel>\
-                    <HorizontalAlignment>Center</HorizontalAlignment>\
-                    <QuietZonesPadding Left="0" Top="0" Right="0" Bottom="0" />\
-                </BarcodeObject>\
-                <Bounds X="250" Y="480" Width="2880" Height="720" />\
-            </ObjectInfo>\
-            <ObjectInfo>\
-                <TextObject>\
-                    <Name>DESCRIZIONE</Name>\
-                    <ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
-                    <BackColor Alpha="0" Red="255" Green="255" Blue="255" />\
-                    <LinkedObjectName></LinkedObjectName>\
-                    <Rotation>Rotation0</Rotation>\
-                    <IsMirrored>False</IsMirrored>\
-                    <IsVariable>True</IsVariable>\
-                    <HorizontalAlignment>Center</HorizontalAlignment>\
-                    <VerticalAlignment>Top</VerticalAlignment>\
-                    <TextFitMode>AlwaysFit</TextFitMode>\
-                    <UseFullFontHeight>True</UseFullFontHeight>\
-                    <Verticalized>False</Verticalized>\
-                    <StyledText>\
-                        <Element>\
-                            <String>DESCRIZIONE_ARTICOLO</String>\
-                            <Attributes>\
-                                <Font Family="Arial" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
-                                <ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
-                            </Attributes>\
-                        </Element>\
-                    </StyledText>\
-                </TextObject>\
-                <Bounds X="333" Y="1308" Width="2595" Height="330" />\
-            </ObjectInfo>\
-        </DieCutLabel>';
+<DieCutLabel Version="8.0" Units="twips">\
+	<PaperOrientation>Portrait</PaperOrientation>\
+	<Id>Small30334</Id>\
+	<PaperName>30334 2-1/4 in x 1-1/4 in</PaperName>\
+	<DrawCommands>\
+		<RoundRectangle X="0" Y="0" Width="3240" Height="1800" Rx="270" Ry="270" />\
+	</DrawCommands>\
+	<ObjectInfo>\
+		<TextObject>\
+			<Name>CATEGORIA</Name>\
+			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
+			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />\
+			<LinkedObjectName></LinkedObjectName>\
+			<Rotation>Rotation0</Rotation>\
+			<IsMirrored>False</IsMirrored>\
+			<IsVariable>False</IsVariable>\
+			<HorizontalAlignment>Center</HorizontalAlignment>\
+			<VerticalAlignment>Middle</VerticalAlignment>\
+			<TextFitMode>ShrinkToFit</TextFitMode>\
+			<UseFullFontHeight>True</UseFullFontHeight>\
+			<Verticalized>False</Verticalized>\
+			<StyledText>\
+				<Element>\
+					<String>CM</String>\
+					<Attributes>\
+						<Font Family="Lucida Console" Size="12" Bold="True" Italic="False" Underline="False" Strikeout="False" />\
+						<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
+					</Attributes>\
+				</Element>\
+			</StyledText>\
+		</TextObject>\
+		<Bounds X="2826.75" Y="1505.5" Width="281.25" Height="195.25" />\
+	</ObjectInfo>\
+	<ObjectInfo>\
+		<BarcodeObject>\
+			<Name>BARCODE</Name>\
+			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
+			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />\
+			<LinkedObjectName>CODICE</LinkedObjectName>\
+			<Rotation>Rotation0</Rotation>\
+			<IsMirrored>False</IsMirrored>\
+			<IsVariable>False</IsVariable>\
+			<Text>9000000000</Text>\
+			<Type>Code128Auto</Type>\
+			<Size>Large</Size>\
+			<TextPosition>None</TextPosition>\
+			<TextFont Family="Lucida Console" Size="8" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
+			<CheckSumFont Family="Lucida Console" Size="8" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
+			<TextEmbedding>None</TextEmbedding>\
+			<ECLevel>0</ECLevel>\
+			<HorizontalAlignment>Center</HorizontalAlignment>\
+			<QuietZonesPadding Left="0" Top="0" Right="0" Bottom="0" />\
+		</BarcodeObject>\
+		<Bounds X="106.75" Y="779.25" Width="3076.25" Height="686.25" />\
+	</ObjectInfo>\
+	<ObjectInfo>\
+		<AddressObject>\
+			<Name>DESCRIZIONE</Name>\
+			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
+			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />\
+			<LinkedObjectName></LinkedObjectName>\
+			<Rotation>Rotation0</Rotation>\
+			<IsMirrored>False</IsMirrored>\
+			<IsVariable>True</IsVariable>\
+			<HorizontalAlignment>Center</HorizontalAlignment>\
+			<VerticalAlignment>Middle</VerticalAlignment>\
+			<TextFitMode>ShrinkToFit</TextFitMode>\
+			<UseFullFontHeight>True</UseFullFontHeight>\
+			<Verticalized>False</Verticalized>\
+			<StyledText>\
+				<Element>\
+					<String>DESCRIZIONE_ARTICOLO</String>\
+					<Attributes>\
+						<Font Family="Lucida Console" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
+						<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
+					</Attributes>\
+				</Element>\
+			</StyledText>\
+			<ShowBarcodeFor9DigitZipOnly>False</ShowBarcodeFor9DigitZipOnly>\
+			<BarcodePosition>AboveAddress</BarcodePosition>\
+			<LineFonts>\
+				<Font Family="Lucida Console" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
+			</LineFonts>\
+		</AddressObject>\
+		<Bounds X="150" Y="127.5" Width="2913.75" Height="528.75" />\
+	</ObjectInfo>\
+	<ObjectInfo>\
+		<TextObject>\
+			<Name>CODICE</Name>\
+			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
+			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />\
+			<LinkedObjectName></LinkedObjectName>\
+			<Rotation>Rotation0</Rotation>\
+			<IsMirrored>False</IsMirrored>\
+			<IsVariable>False</IsVariable>\
+			<HorizontalAlignment>Left</HorizontalAlignment>\
+			<VerticalAlignment>Middle</VerticalAlignment>\
+			<TextFitMode>AlwaysFit</TextFitMode>\
+			<UseFullFontHeight>True</UseFullFontHeight>\
+			<Verticalized>False</Verticalized>\
+			<StyledText>\
+				<Element>\
+					<String>9000000000</String>\
+					<Attributes>\
+						<Font Family="Lucida Console" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
+						<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
+					</Attributes>\
+				</Element>\
+			</StyledText>\
+		</TextObject>\
+		<Bounds X="225" Y="1570.5" Width="866.25" Height="120" />\
+	</ObjectInfo>\
+	<ObjectInfo>\
+		<TextObject>\
+			<Name>CODICE_ARTICOLO</Name>\
+			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
+			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />\
+			<LinkedObjectName></LinkedObjectName>\
+			<Rotation>Rotation0</Rotation>\
+			<IsMirrored>False</IsMirrored>\
+			<IsVariable>False</IsVariable>\
+			<HorizontalAlignment>Center</HorizontalAlignment>\
+			<VerticalAlignment>Middle</VerticalAlignment>\
+			<TextFitMode>AlwaysFit</TextFitMode>\
+			<UseFullFontHeight>True</UseFullFontHeight>\
+			<Verticalized>False</Verticalized>\
+			<StyledText>\
+				<Element>\
+					<String>CODICE_ARTICOLO</String>\
+					<Attributes>\
+						<Font Family="Lucida Console" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
+						<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
+					</Attributes>\
+				</Element>\
+			</StyledText>\
+		</TextObject>\
+		<Bounds X="1222.5" Y="1566.75" Width="1492.5" Height="120" />\
+	</ObjectInfo>\
+	<ObjectInfo>\
+		<TextObject>\
+			<Name>TESTO</Name>\
+			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
+			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />\
+			<LinkedObjectName></LinkedObjectName>\
+			<Rotation>Rotation0</Rotation>\
+			<IsMirrored>False</IsMirrored>\
+			<IsVariable>False</IsVariable>\
+			<HorizontalAlignment>Left</HorizontalAlignment>\
+			<VerticalAlignment>Top</VerticalAlignment>\
+			<TextFitMode>ShrinkToFit</TextFitMode>\
+			<UseFullFontHeight>True</UseFullFontHeight>\
+			<Verticalized>False</Verticalized>\
+			<StyledText>\
+				<Element>\
+					<String>|</String>\
+					<Attributes>\
+						<Font Family="Lucida Console" Size="8" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
+						<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
+					</Attributes>\
+				</Element>\
+			</StyledText>\
+		</TextObject>\
+		<Bounds X="1105.5" Y="1563" Width="120" Height="135" />\
+	</ObjectInfo>\
+	<ObjectInfo>\
+		<TextObject>\
+			<Name>TESTO_1</Name>\
+			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
+			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />\
+			<LinkedObjectName></LinkedObjectName>\
+			<Rotation>Rotation0</Rotation>\
+			<IsMirrored>False</IsMirrored>\
+			<IsVariable>False</IsVariable>\
+			<HorizontalAlignment>Left</HorizontalAlignment>\
+			<VerticalAlignment>Top</VerticalAlignment>\
+			<TextFitMode>ShrinkToFit</TextFitMode>\
+			<UseFullFontHeight>True</UseFullFontHeight>\
+			<Verticalized>False</Verticalized>\
+			<StyledText>\
+				<Element>\
+					<String>|</String>\
+					<Attributes>\
+						<Font Family="Lucida Console" Size="8" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
+						<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
+					</Attributes>\
+				</Element>\
+			</StyledText>\
+		</TextObject>\
+		<Bounds X="2744.25" Y="1566.75" Width="120" Height="135" />\
+	</ObjectInfo>\
+</DieCutLabel>';
         label = dymo.label.framework.openLabelXml(testAddressLabelXml);
     }
 

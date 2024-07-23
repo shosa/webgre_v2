@@ -18,7 +18,7 @@ try {
 
     // Preparazione della query SQL per evitare SQL injection
 
-    $stmt = $pdo->prepare("SELECT cm, barcode, des FROM inv_anagrafiche WHERE art = :artCode");
+    $stmt = $pdo->prepare("SELECT cm, barcode, des , art FROM inv_anagrafiche WHERE art = :artCode");
 
     $stmt->bindParam(':artCode', $artCode, PDO::PARAM_STR);
 
