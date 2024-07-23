@@ -228,6 +228,50 @@ require_once BASE_PATH . '/components/header.php';
                             }
                         });
                     });
+
+                    $('#saveNewUserBtn').on('click', function () {
+                        var newUserName = $('#newUserName').val();
+                        var newNome = $('#newNome').val();
+                        var newPassword = $('#newPassword').val();
+                        var newAdminType = $('#newAdminType').val();
+
+                        $.ajax({
+                            url: 'add_user.php',
+                            method: 'POST',
+                            data: {
+                                user_name: newUserName,
+                                nome: newNome,
+                                password: newPassword,
+                                admin_type: newAdminType
+                            },
+                            success: function (response) {
+                                $('#addUserModal').modal('hide');
+                                location.reload();
+                            },
+                            error: function (xhr, status, error) {
+                                alert('Errore durante la creazione dell\'utente: ' + error);
+                            }
+                        });
+                    });
+                    $('#deleteUserBtn').on('click', function () {
+                        var userId = $('#selectUserDelete').val();
+                        if (confirm('Sei sicuro di voler eliminare questo utente?')) {
+                            $.ajax({
+                                url: 'delete_user.php',
+                                method: 'POST',
+                                data: {
+                                    id: userId
+                                },
+                                success: function (response) {
+                                    $('#deleteUserModal').modal('hide');
+                                    location.reload();
+                                },
+                                error: function (xhr, status, error) {
+                                    alert('Errore durante l\'eliminazione dell\'utente: ' + error);
+                                }
+                            });
+                        }
+                    });
                 });
             </script>
             <?php include_once BASE_PATH . '/components/footer.php'; ?>
@@ -278,5 +322,72 @@ require_once BASE_PATH . '/components/header.php';
         </div>
     </div>
 
-    <!-- Altri modali qui -->
+    <!-- Modale per Aggiungere Utente -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">Aggiungi Utente</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addUserForm">
+                        <div class="form-group">
+                            <label for="newUserName">Username</label>
+                            <input type="text" class="form-control" id="newUserName" name="user_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newNome">Nome</label>
+                            <input type="text" class="form-control" id="newNome" name="nome" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">Password</label>
+                            <input type="password" class="form-control" id="newPassword" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newAdminType">Tipo di Amministratore</label>
+                            <input type="text" class="form-control" id="newAdminType" name="admin_type" required>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-block" id="saveNewUserBtn">Salva</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale per eliminare utente -->
+    <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteUserModalLabel">Elimina Utente</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="deleteUserForm">
+                        <div class="form-group">
+                            <label for="selectUserDelete">Seleziona Utente</label>
+                            <select class="form-control" id="selectUserDelete" name="user_id" required>
+                                <?php
+                                $stmt = $pdo->query("SELECT id, user_name FROM utenti");
+                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<option value='" . htmlspecialchars($row['id']) . "'>" . htmlspecialchars($row['user_name']) . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-danger btn-block" id="deleteUserBtn">Elimina</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </body>
