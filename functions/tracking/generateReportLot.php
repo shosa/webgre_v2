@@ -44,7 +44,7 @@ WHERE tl.lot IN ($placeholders) ORDER BY Cartel ASC";
         $pdf->SetAuthor('Emmegiemme');
         $pdf->SetTitle('Packing List - Per Lotto');
         $pdf->SetSubject('Report');
-        $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+        $pdf->SetKeywords('PDF');
         $pdf->SetMargins(10, 10, 10);
         $pdf->SetHeaderMargin(0);
         $pdf->SetFooterMargin(0);

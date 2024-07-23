@@ -47,7 +47,7 @@ require_once BASE_PATH . '/components/header.php'; ?>
                         <div class="col-lg-7 col-xl-8">
                             <div class="mb-4 card shadow">
                                 <div class="align-items-center card-header d-flex py-3">
-                                    <h6 class="font-weight-bold m-0 text-primary">Packing List</h6>
+                                    <h6 class="font-weight-bold m-0 text-primary">Fiches</h6>
                                 </div>
                                 <div class="card-body" id="report-container"></div>
                             </div>
