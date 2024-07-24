@@ -63,7 +63,7 @@ try {
                         <?php if (isset($_SESSION['permessi_riparazioni']) && $_SESSION['permessi_riparazioni'] == 1): ?>
                             <!-- CARD RIPARAZIONI -->
                             <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-0 shadow-sm h-100 py-2 card-hover" style="border-radius: 15px;">
+                                <div class="card border-0 shadow-sm h-100 py-2 card-hover rounded border-bottom-primary">
                                     <a href="<?php echo BASE_URL ?>/functions/riparazioni/riparazioni"
                                         class="stretched-link text-decoration-none"></a>
                                     <div class="card-body d-flex flex-column justify-content-between">
@@ -74,6 +74,7 @@ try {
                                                 <div class="h3 mb-0 font-weight-bold text-gray-800">
                                                     <?php echo empty($numRiparazioni) ? '0' : $numRiparazioni; ?>
                                                 </div>
+
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fal fa-tools fa-3x text-primary"></i>
@@ -84,7 +85,7 @@ try {
                             </div>
                             <!-- CARD RIPARAZIONI PERSONALI -->
                             <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-0 shadow-sm h-100 py-2 card-hover" style="border-radius: 15px;">
+                                <div class="card border-0 shadow-sm h-100 py-2 card-hover rounded border-bottom-success">
                                     <a href="<?php echo BASE_URL ?>/functions/riparazioni/myRiparazioni"
                                         class="stretched-link text-decoration-none"></a>
                                     <div class="card-body d-flex flex-column justify-content-between">
@@ -107,7 +108,7 @@ try {
                         <?php if (isset($_SESSION['permessi_cq']) && $_SESSION['permessi_cq'] == 1): ?>
                             <!-- CARD CQ -->
                             <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-0 shadow-sm h-100 py-2 card-hover" style="border-radius: 15px;">
+                                <div class="card border-0 shadow-sm h-100 py-2 card-hover rounded border-bottom-info">
                                     <a href="<?php echo BASE_URL ?>/functions/quality/detail?date=<?php echo $data_oggi ?>"
                                         class="stretched-link text-decoration-none"></a>
                                     <div class="card-body d-flex flex-column justify-content-between">
