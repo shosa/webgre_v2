@@ -1,37 +1,30 @@
-<?php
-session_start();
-require_once '../../config/config.php';
-
-// Verifica se è stata inviata una richiesta POST
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Controlla se tutti i campi richiesti sono stati inviati
-    if (isset($_POST['id']) && isset($_POST['newPassword'])) {
-        // Connessione al database
-        $pdo = getDbInstance();
-
-        // Prepara e esegui la query per aggiornare la password dell'utente
-        $stmt = $pdo->prepare("UPDATE utenti SET password = :password WHERE id = :id");
-        $stmt->bindParam(':password', $_POST['newPassword']);
-        $stmt->bindParam(':id', $_POST['id']);
-
-        // Esegui la query
-        if ($stmt->execute()) {
-            // Rispondi con un messaggio di successo
-            $_SESSION['warning'] = 'Password aggiornata.';
-            echo json_encode(array("status" => "success"));
-      
-        } else {
-            // Rispondi con un messaggio di errore
-            $_SESSION['danger'] = 'Errore.';
-            echo json_encode(array("status" => "error", "message" => "Impossibile aggiornare la password."));
-          
-        }
-    } else {
-        // Rispondi con un messaggio di errore se i parametri non sono stati forniti
-        echo json_encode(array("status" => "error", "message" => "Parametri mancanti."));
-    }
-} else {
-    // Rispondi con un messaggio di errore se non è stata inviata una richiesta POST
-    echo json_encode(array("status" => "error", "message" => "Metodo non consentito."));
-}
+<?php
+require_once '../../config/config.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['id']) && isset($_POST['changePassword'])) {
+        $id = $_POST['id'];
+        $changePassword = $_POST['changePassword'];
+
+        // Connessione al database
+        $pdo = getDbInstance();
+
+        // Hash della password
+        $hashedPassword = password_hash($changePassword, PASSWORD_DEFAULT);
+
+        // Preparazione e esecuzione della query
+        $stmt = $pdo->prepare("UPDATE utenti SET password = ? WHERE id = ?");
+        $stmt->execute([$hashedPassword, $id]);
+
+        if ($stmt->rowCount()) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Nessun cambiamento effettuato']);
+        }
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Dati mancanti']);
+    }
+} else {
+    echo json_encode(['status' => 'error', 'message' => 'Richiesta non valida']);
+}
 ?>

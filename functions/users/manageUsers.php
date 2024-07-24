@@ -167,25 +167,33 @@ require_once BASE_PATH . '/components/header.php';
                         var $button = $(this);
                         var $row = $button.closest('tr');
                         var id = $row.find('td:eq(0)').text();
-                        $('#newPassword').val('');
-                        $('#editPasswordForm').submit(function (event) {
-                            event.preventDefault();
-                            var newPassword = $('#newPassword').val();
-                            $.ajax({
-                                url: 'update_password',
-                                method: 'POST',
-                                data: {
-                                    id: id,
-                                    newPassword: newPassword
-                                },
-                                success: function (response) {
-                                    $('#editPasswordModal').modal('hide');
-                                    location.reload();
-                                }
-                            });
-                        });
+                        $('#editPasswordModal').data('user-id', id); // Salva l'ID utente nel modale
+
+                        // Mostra il modale
+                        $('#editPasswordModal').modal('show');
                     });
 
+                    $('#editPasswordForm').submit(function (event) {
+                        event.preventDefault();
+                        var userId = $('#editPasswordModal').data('user-id');
+                        var changePassword = $('#changePassword').val();
+
+                        $.ajax({
+                            url: 'update_password.php',
+                            method: 'POST',
+                            data: {
+                                id: userId,
+                                changeassword: changePassword
+                            },
+                            success: function (response) {
+                                $('#editPasswordModal').modal('hide');
+                                location.reload();
+                            },
+                            error: function (xhr, status, error) {
+                                alert('Errore durante il cambiamento della password: ' + error);
+                            }
+                        });
+                    });
                     $('#dataTable').on('click', '.edit-permissions-btn', function () {
                         var userId = $(this).data('user-id');
                         $('#selectUserPermissions').val(userId).trigger('change');
@@ -357,6 +365,31 @@ require_once BASE_PATH . '/components/header.php';
             </div>
         </div>
     </div>
+
+    <!-- Modale per cambio password -->
+    <div class="modal fade" id="editPasswordModal" tabindex="-1" role="dialog" aria-labelledby="editPasswordModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPasswordModalLabel">Cambio Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editPasswordForm">
+                        <div class="form-group">
+                            <label for="changePassword">Nuova Password</label>
+                            <input type="password" class="form-control" id="changePassword" name="changePassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-warning btn-block">Salva</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Modale per eliminare utente -->
     <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel"

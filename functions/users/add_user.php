@@ -18,6 +18,10 @@ try {
     $stmt = $pdo->prepare("INSERT INTO permessi (id_utente) VALUES (?)");
     $stmt->execute([$user_id]);
 
+    
+    $stmt = $pdo->prepare("INSERT INTO utenti_preferenze (user_id) VALUES (?)");
+    $stmt->execute([$user_id]);
+
     $pdo->commit();
     echo json_encode(['success' => true]);
 } catch (Exception $e) {

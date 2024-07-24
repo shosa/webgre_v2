@@ -115,16 +115,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 logActivity($_SESSION['user_id'], 'LOGIN', 'ACCESSO', 'Accesso eseguito', $device . ' / ' . $browser, '');
                 checkRepairNotifications();
-                header('Location: index.php');
+                header('Location: index');
                 exit;
             } else {
                 $_SESSION['login_failure'] = "Username o password non validi.";
-                header('Location: login.php');
+                header('Location: login');
                 exit;
             }
         } else {
             $_SESSION['login_failure'] = "Username o password non validi.";
-            header('Location: login.php');
+            header('Location: login');
             exit;
         }
     } catch (PDOException $e) {

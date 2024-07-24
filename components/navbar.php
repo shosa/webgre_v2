@@ -4,7 +4,7 @@ $colore = (isset($_SESSION["tema"]) && !empty($_SESSION["tema"])) ? $_SESSION["t
 
 // Verifica se la sessione contiene lo stato della navbar, altrimenti imposta un valore predefinito
 if (!isset($_SESSION['navbar_toggled'])) {
-    $_SESSION['navbar_toggled'] = true; // Valore predefinito
+    $_SESSION['navbar_toggled'] = false; // Valore predefinito
 }
 
 // Gestione della modifica dello stato della navbar
@@ -329,7 +329,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
         }
 
         // Gestione speciale per la dashboard
-        if (currentUrl.endsWith('/index') || currentUrl === '/index' || currentUrl === '/') {
+        if (currentUrl.endsWith('/index') || currentUrl === '/index' || currentUrl === '/' || currentUrl.endsWith ('/index.php')) {
             var homeNavItem = document.getElementById('home');
             if (homeNavItem) {
                 homeNavItem.classList.add('active');
