@@ -1,7 +1,19 @@
 <!-- SIDEBAR -->
-<ul class="navbar-nav bg-gradient-<?php echo (isset($_SESSION["tema"]) && !empty($_SESSION["tema"])) ? $_SESSION["tema"] : "primary"; ?> sidebar sidebar-dark accordion toggled"
-    id="accordionSidebar">
+<?php
+$colore = (isset($_SESSION["tema"]) && !empty($_SESSION["tema"])) ? $_SESSION["tema"] : "primary";
 
+// Verifica se la sessione contiene lo stato della navbar, altrimenti imposta un valore predefinito
+if (!isset($_SESSION['navbar_toggled'])) {
+    $_SESSION['navbar_toggled'] = true; // Valore predefinito
+}
+
+// Gestione della modifica dello stato della navbar
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
+    $_SESSION['navbar_toggled'] = $_POST['toggle_navbar'] === 'true';
+}
+?>
+<ul class="navbar-nav shadow bg-gradient-<?php echo $colore; ?> sidebar sidebar-dark accordion <?php echo $_SESSION['navbar_toggled'] ? '' : 'toggled'; ?>"
+    id="accordionSidebar">
     <!-- SIDEBAR INTESTAZIONE -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php echo BASE_URL ?>/index">
         <div class="sidebar-brand-icon">
@@ -246,6 +258,19 @@
 </ul>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        var sidebarToggleButton = document.getElementById('sidebarToggle');
+
+        if (sidebarToggleButton) {
+            sidebarToggleButton.addEventListener('click', function () {
+                var isToggled = document.getElementById('accordionSidebar').classList.contains('toggled');
+
+                // Invia una richiesta AJAX al server per aggiornare lo stato della navbar
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', window.location.href, true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send('toggle_navbar=' + !isToggled);
+            });
+        }
         var currentUrl = window.location.pathname;
 
         // Rimuove eventuali prefissi e normalizza l'URL
@@ -287,6 +312,9 @@
                 var navItem = document.getElementById(navLinks[url]);
                 if (navItem) {
                     navItem.classList.add('active');
+                    navItem.classList.add('text-<?php echo $colore; ?>');
+  
+                    
                     var parentNavLink = navItem.closest('.nav-item').querySelector('.nav-link');
                     if (parentNavLink) {
                         parentNavLink.classList.remove('collapsed');
@@ -305,6 +333,7 @@
             var homeNavItem = document.getElementById('home');
             if (homeNavItem) {
                 homeNavItem.classList.add('active');
+                homeNavItem.classList.remove('text-<?php echo $colore; ?>');
             }
         }
     });

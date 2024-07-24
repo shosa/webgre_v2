@@ -1,8 +1,8 @@
 <!-- Topbar Search -->
 <?php
 
-$pdoTopbar = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
-$pdoTopbar->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$pdoTopbar = getDbInstance();
+
 $queryNome = "SELECT nome FROM utenti WHERE user_name = :username";
 $stmtNome = $pdoTopbar->prepare($queryNome);
 $stmtNome->bindParam(':username', $_SESSION["username"], PDO::PARAM_STR);
@@ -87,7 +87,7 @@ $unreadCount = count($notifications);
             <!-- Dropdown - Notifications -->
             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                 aria-labelledby="alertsDropdown">
-                <h6 class="dropdown-header">
+                <h6 class="dropdown-header bg-<?php echo $colore; ?> border-<?php echo $colore; ?>">
                     Centro Notifiche
                 </h6>
                 <?php if ($unreadCount > 0): ?>
@@ -119,7 +119,8 @@ $unreadCount = count($notifications);
                                 break;
                         }
                         ?>
-                        <a class="dropdown-item d-flex align-items-center" href="<?php echo $notification['link']; ?>">
+                        <a class=" dropdown-item d-flex align-items-center"
+                            href="<?php echo $notification['link']; ?>">
                             <div class="mr-3">
                                 <div class="icon-circle bg-<?php echo $bgClass; ?>">
                                     <i class="<?php echo $iconClass; ?> text-white"></i>
@@ -131,23 +132,23 @@ $unreadCount = count($notifications);
                             </div>
                             <button class="btn btn-sm text-danger ml-auto mark-as-read font-weight-bold"
                                 data-id="<?php echo $notification['id']; ?>">X</button>
-                        </a>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="mr-3">
-                            <div class="icon-circle bg-warning">
-                                <i class="fas fa-exclamation-triangle text-white"></i>
+                            </a>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <div class="mr-3">
+                                <div class="icon-circle bg-warning">
+                                    <i class="fas fa-exclamation-triangle text-white"></i>
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <div class="small text-gray-500">Oggi</div>
-                            Nessuna nuova notifica è presente.
-                        </div>
-                    </a>
-                <?php endif; ?>
-                <a class="dropdown-item text-center small text-gray-500"
-                    href="<?php echo BASE_URL ?>/functions/users/notifications.php">Mostra tutte</a>
+                            <div>
+                                <div class="small text-gray-500">Oggi</div>
+                                Nessuna nuova notifica è presente.
+                            </div>
+                        </a>
+                    <?php endif; ?>
+                    <a class="dropdown-item text-center small text-gray-500"
+                        href="<?php echo BASE_URL ?>/functions/users/notifications.php">Mostra tutte</a>
             </div>
         </li>
 

@@ -3,7 +3,7 @@
         'name' => 'shosa/webgre',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'e9729ad84e18da405fb50dac8ad1f23f7ed57e9c',
+        'reference' => '4fd3be566b98f5469377b139f57c4362fe3d19c3',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -112,7 +112,7 @@
         'shosa/webgre' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'e9729ad84e18da405fb50dac8ad1f23f7ed57e9c',
+            'reference' => '4fd3be566b98f5469377b139f57c4362fe3d19c3',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

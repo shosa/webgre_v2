@@ -2,28 +2,18 @@
 include ("config/config.php");
 session_start();
 require_once BASE_PATH . '/components/auth_validate.php';
-
-
-
 // Ottieni il tipo di utente dall'array di sessione
 $tipoUtente = $_SESSION['admin_type'];
-
 // Ottieni un'istanza del database utilizzando PDO
 $pdo = getDbInstance();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
 // Prepara le query per ottenere le informazioni del dashboard
 $queryNumRiparazioni = "SELECT SUM(QTA) FROM riparazioni";
 $stmtNumRiparazioni = $pdo->query($queryNumRiparazioni);
 $numRiparazioni = $stmtNumRiparazioni->fetchColumn();
-
 $queryNumRiparazioniPersonali = $pdo->prepare("SELECT SUM(QTA) FROM riparazioni WHERE utente = :username");
 $queryNumRiparazioniPersonali->execute([':username' => $_SESSION['username']]);
 $numRiparazioniPersonali = $queryNumRiparazioniPersonali->fetchColumn();
-
-
-
-
 $queryNome = "SELECT nome FROM utenti WHERE user_name = :username";
 $stmtNome = $pdo->prepare($queryNome);
 $stmtNome->bindParam(':username', $_SESSION["username"], PDO::PARAM_STR);
@@ -46,35 +36,22 @@ try {
 }
 
 ?>
-
 <?php include ("components/header.php"); ?>
 
 <body id="page-top">
 
-    <!-- Page Wrapper -->
     <div id="wrapper">
-
         <?php include ("components/navbar.php"); //INCLUSIONE NAVBAR ?>
-
-        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
             <div id="content">
+                <?php include ("components/topbar.php"); ?>
 
-                <!-- Topbar -->
-
-                <?php include ("components/topbar.php"); //INCLUSIONE TOPBAR ?>
-
-                <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <?php require_once BASE_PATH . "/utils/alerts.php"; ?>
-                    <!-- Page Heading -->
+
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-
                     </div>
-
                     <!-- INIZIO ROW CARDS -->
                     <div class="row">
                         <?php if (isset($_SESSION['permessi_riparazioni']) && $_SESSION['permessi_riparazioni'] == 1): ?>
@@ -127,9 +104,7 @@ try {
                                     </a>
                                 </div>
                             </div>
-
                         <?php endif; ?>
-
                         <?php if (isset($_SESSION['permessi_cq']) && $_SESSION['permessi_cq'] == 1): ?>
                             <!-- CARD CQ -->
                             <div class="col-xl-2 col-md-4 mb-4">
@@ -161,25 +136,13 @@ try {
                     <!-- CHIUSURA ROW CARDS -->
                 </div>
             </div>
-            <!-- End of Main Content -->
             <?php include (BASE_PATH . "/components/footer.php"); ?>
         </div>
     </div>
-
-
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
 
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <?php include (BASE_PATH . "/components/scripts.php"); ?>
 
 </body>

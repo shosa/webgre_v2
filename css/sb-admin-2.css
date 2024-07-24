@@ -2694,8 +2694,8 @@ fieldset:disabled a.btn {
 
 .btn-pink {
   color: #fff;
-  background-color: #e83e8c;
-  border-color: #e83e8c;
+  background-color: var(--pink);
+  border-color: var(--pink);
 }
 
 .btn-pink:hover {
@@ -2706,20 +2706,38 @@ fieldset:disabled a.btn {
 
 .btn-yellow {
   color: #fff;
-  background-color: #f6c23e;
-  border-color: #f6c23e;
+  background-color: var(--yellow);
+  border-color: var(--yellow);
+}
+
+.btn-yellow:hover {
+  color: #fff;
+  background-color: #d59d0e;
+  border-color: #d59d0e
 }
 
 .btn-indigo {
   color: #fff;
-  background-color: #6610f2;
-  border-color: #6610f2;
+  background-color: var(--indigo);
+  border-color: var(--indigo);
 }
 
 .btn-indigo:hover {
   color: #fff;
   background-color: #5215b6;
   border-color: #5215b6;
+}
+
+.btn-orange {
+  color: #fff;
+  background-color: var(--orange);
+  border-color: var(--orange);
+}
+
+.btn-orange:hover {
+  color: #fff;
+  background-color: #d5680f;
+  border-color: #d5680f;
 }
 
 .btn-primary {
@@ -10794,15 +10812,19 @@ button.bg-dark:focus {
 }
 
 .text-yellow {
-  color: #f6c23e !important;
+  color: var(--yellow) !important;
 }
 
 .text-pink {
-  color: #e83e8c !important;
+  color: var(--pink) !important;
 }
 
 .text-indigo {
-  color: #6610f2 !important;
+  color: var(--indigo) !important;
+}
+
+.text-orange {
+  color: var(--orange) !important;
 }
 
 a.text-primary:hover,
@@ -11156,15 +11178,40 @@ a:focus {
 }
 
 .bg-gradient-yellow {
-  background-color: #f6c23e;
+  background-color: var(--yellow);
   background-image: linear-gradient(180deg, #f6c23e 10%, #f09d37 100%);
   background-size: cover;
 }
 
-.bg-gradient-indigo {
-  background-color: #6610f2;
-  background-image: linear-gradient(180deg, #6610f2 10%, #6f42c1 100%);
+.bg-gradient-orange {
+  background-color: var(--orange);
+  background-image: linear-gradient(180deg, var(--orange) 10%, #ff9842 100%);
   background-size: cover;
+}
+
+
+.bg-gradient-indigo {
+  background-color: var(--indigo);
+  background-image: linear-gradient(180deg, var(--indigo) 10%, #b488fc 100%);
+  background-size: cover;
+}
+
+.bg-pink {
+  background-color: #e83e8c;
+
+}
+
+.bg-yellow {
+  background-color: var(--yellow);
+}
+
+.bg-orange {
+  background-color: var(--orange);
+}
+
+
+.bg-indigo {
+  background-color: var(--indigo);
 }
 
 .bg-gradient-secondary {
@@ -11493,8 +11540,6 @@ a:focus {
 }
 
 .topbar .dropdown-list .dropdown-header {
-  background-color: #4e73df;
-  border: 1px solid #4e73df;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
   color: #fff;

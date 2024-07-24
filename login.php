@@ -84,7 +84,7 @@ include BASE_PATH . '/components/header.php';
 
 	<div class="container">
 
-		<div class="card o-hidden border-0 shadow-lg my-5 bg-gray-100">
+		<div class="card o-hidden border-0 shadow-lg my-5 bg-gray-100  align-center">
 			<div class="card-body p-0"></div>
 			<div class="logo">
 				<img src="img/logoMini.png" alt="Logo">
@@ -118,7 +118,7 @@ include BASE_PATH . '/components/header.php';
 								?>
 							</div>
 						<?php endif; ?>
-						<button type="submit" class="btn btn-primary mt-3" style="width:100%;">Accedi</button>
+						<button type="submit" class="btn btn-orange mt-3" style="width:100%;">Accedi</button>
 					</div>
 				</div>
 
