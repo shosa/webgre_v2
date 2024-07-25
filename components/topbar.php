@@ -44,6 +44,11 @@ $unreadCount = count($notifications);
         </div>
     </form>
 
+    <?php if (isset($debug) && $debug == true): ?>
+        <div class="mx-auto">
+            <span class="h3 text-danger text-center font-weight-bold">** AMBIENTE DI TEST **</span>
+        </div>
+    <?php endif; ?>
 
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
@@ -72,11 +77,14 @@ $unreadCount = count($notifications);
                         </div>
                     </div>
                 </form>
+
             </div>
+
         </li>
 
         <!-- Nav Item - Notifications -->
         <li class="nav-item dropdown no-arrow mx-1">
+
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw <?php echo $unreadCount > 0 ? 'fa-bounce' : ''; ?>"></i>
@@ -119,8 +127,7 @@ $unreadCount = count($notifications);
                                 break;
                         }
                         ?>
-                        <a class=" dropdown-item d-flex align-items-center"
-                            href="<?php echo $notification['link']; ?>">
+                        <a class=" dropdown-item d-flex align-items-center" href="<?php echo $notification['link']; ?>">
                             <div class="mr-3">
                                 <div class="icon-circle bg-<?php echo $bgClass; ?>">
                                     <i class="<?php echo $iconClass; ?> text-white"></i>
@@ -132,23 +139,23 @@ $unreadCount = count($notifications);
                             </div>
                             <button class="btn btn-sm text-danger ml-auto mark-as-read font-weight-bold"
                                 data-id="<?php echo $notification['id']; ?>">X</button>
-                            </a>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
-                            <div class="mr-3">
-                                <div class="icon-circle bg-warning">
-                                    <i class="fas fa-exclamation-triangle text-white"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="small text-gray-500">Oggi</div>
-                                Nessuna nuova notifica è presente.
-                            </div>
                         </a>
-                    <?php endif; ?>
-                    <a class="dropdown-item text-center small text-gray-500"
-                        href="<?php echo BASE_URL ?>/functions/users/notifications.php">Mostra tutte</a>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="mr-3">
+                            <div class="icon-circle bg-warning">
+                                <i class="fas fa-exclamation-triangle text-white"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="small text-gray-500">Oggi</div>
+                            Nessuna nuova notifica è presente.
+                        </div>
+                    </a>
+                <?php endif; ?>
+                <a class="dropdown-item text-center small text-gray-500"
+                    href="<?php echo BASE_URL ?>/functions/users/notifications.php">Mostra tutte</a>
             </div>
         </li>
 

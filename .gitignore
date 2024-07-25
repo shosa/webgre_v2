@@ -1,2 +1,4 @@
 /functions/samples/img/
 /vendor/
+/config/database.php
+/config/url.php

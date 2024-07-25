@@ -3,24 +3,14 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
-// Ottieni la directory del file config.php
-define('BASE_PATH', dirname(__DIR__));
+require ("url.php");
 
-// Determina la tua cartella app in modo statico
-define('APP_FOLDER', '');
-
-// URL base dell'app
-$base_url = 'http://' . $_SERVER['HTTP_HOST'] . APP_FOLDER;
-define('BASE_URL', $base_url);
-
-// Define the URL of the dominio
-$dominio = BASE_URL;
-
+require ("database.php");
+/*
 define('DB_HOST', "localhost");
 define('DB_USER', "root");
 define('DB_PASSWORD', "");
 define('DB_NAME', "my_webgre");
-
 
 function getDbInstance()
 {
@@ -33,3 +23,5 @@ function getDbInstance()
 	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $pdo;
 }
+*/
+$debug = true;
