@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file'])) {
         array_shift($data);
 
         // Prepara la query di inserimento
-        $sql = "INSERT INTO dati (St, Ordine, Rg, CCli, `Ragione Sociale`, Cartel, `Commessa Cli`, Articolo, `Descrizione Articolo`, Nu, Consegna, `Marca Etich`, Ln, P01, P02, P03, P04, P05, P06, P07, P08, P09, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20, Tot) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO dati (St, Ordine, Rg, CCli, `Ragione Sociale`, Cartel, `Commessa Cli`, PO , Articolo, `Descrizione Articolo`, Nu, `Marca Etich`, Ln, P01, P02, P03, P04, P05, P06, P07, P08, P09, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20, Tot) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $pdo->prepare($sql);
 

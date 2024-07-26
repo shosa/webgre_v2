@@ -114,25 +114,6 @@ require_once BASE_PATH . '/components/header.php';
 
                         </div>
 
-                        <div class="col-md-4 mb-4">
-
-                            <a href="makePackingList"
-                                class="btn btn-warning btn-lg btn-block shadow d-flex align-items-center justify-content-center"
-                                style="height: 150px;">
-
-                                <i class="fal fa-list fa-3x mr-3"></i>
-
-                                <div class="text-left">
-
-                                    <h4><b>Packing List</b></h4>
-
-                                    <i>Genera un dettaglio dei lotti utilizzati per i cartellini richiesti</i>
-
-                                </div>
-
-                            </a>
-
-                        </div>
 
                         <div class="col-md-4 mb-4">
 
@@ -177,6 +158,65 @@ require_once BASE_PATH . '/components/header.php';
 
                         </div>
 
+                        <div class="col-md-4 mb-4">
+
+                            <a href="skuManager"
+                                class="btn btn-dark btn-lg btn-block shadow d-flex align-items-center justify-content-center"
+                                style="height: 150px;">
+
+                                <i class="fal fa-barcode fa-3x mr-3"></i>
+
+                                <div class="text-left">
+
+                                    <h4><b>Dettagli SKU</b></h4>
+
+                                    <i>Aggiungi i riferimenti dell'articolo cliente (SKU)</i>
+
+                                </div>
+
+                            </a>
+
+                        </div>
+                        <div class="col-md-4 mb-4">
+
+                            <a href="orderDateManager"
+                                class="btn btn-dark btn-lg btn-block shadow d-flex align-items-center justify-content-center"
+                                style="height: 150px;">
+
+                                <i class="fal fa-calendar fa-3x mr-3"></i>
+
+                                <div class="text-left">
+
+                                    <h4><b>Dettagli Ordini/Date</b></h4>
+
+                                    <i>Aggiungi i riferimenti della data degli ordini.</i>
+
+                                </div>
+
+                            </a>
+
+                        </div>
+
+
+                        <div class="col-md-4 mb-4">
+
+                            <a href="makePackingList"
+                                class="btn btn-warning btn-lg btn-block shadow d-flex align-items-center justify-content-center"
+                                style="height: 150px;">
+
+                                <i class="fal fa-list fa-3x mr-3"></i>
+
+                                <div class="text-left">
+
+                                    <h4><b>Packing List</b></h4>
+
+                                    <i>Genera un dettaglio dei lotti utilizzati per i cartellini richiesti</i>
+
+                                </div>
+
+                            </a>
+
+                        </div>
 
 
                         <div class="col-md-4 mb-4">

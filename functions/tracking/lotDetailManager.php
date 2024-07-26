@@ -74,9 +74,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save_references'])) {
     }
 }
 
+// Gestione dell'aggiornamento dei dettagli del lotto
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_lot_details'])) {
+    $lot = $_POST['lot'];
+    $doc = $_POST['doc'];
+    $date = $_POST['date'];
+    $note = $_POST['note'];
+
+    // Verifica se esiste già una riga per questo lotto
+    $query = "SELECT id FROM track_lots_info WHERE lot = :lot";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':lot', $lot);
+    $stmt->execute();
+    $id = $stmt->fetchColumn();
+
+    if ($id) {
+        // Aggiorna la riga esistente
+        $query = "UPDATE track_lots_info SET doc = :doc, date = :date, note = :note WHERE id = :id";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':doc', $doc);
+        $stmt->bindParam(':date', $date);
+        $stmt->bindParam(':note', $note);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+    } else {
+        // Inserisci una nuova riga
+        $query = "INSERT INTO track_lots_info (lot, doc, date, note) VALUES (:lot, :doc, :date, :note)";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':lot', $lot);
+        $stmt->bindParam(':doc', $doc);
+        $stmt->bindParam(':date', $date);
+        $stmt->bindParam(':note', $note);
+        $stmt->execute();
+    }
+}
+
 $lotsWithoutReferences = getLotsWithoutReferences($pdo);
 ?>
-
 
 <body id="page-top">
     <div id="wrapper">
@@ -103,54 +137,60 @@ $lotsWithoutReferences = getLotsWithoutReferences($pdo);
                                 </div>
                                 <div class="card-body">
                                     <form method="POST" action="">
-                                        <table class="table table-bordered table-sm table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 20%;">Tipo</th>
-                                                    <th style="width: 30%;">Lotto</th>
-                                                    <th style="width: 20%;">DDT</th>
-                                                    <th style="width: 25%;">Data</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php foreach ($lotsWithoutReferences as $lot): ?>
+                                        <?php if (empty($lotsWithoutReferences)): ?>
+                                            <div class="alert alert-info text-center" role="alert">
+                                                Tutti i Lotti per i quali è presente almeno 1
+                                                associazione hanno dei riferimenti, per modificarli usa il campo ricerca.
+                                            </div>
+
+                                        <?php else: ?>
+                                            <table class="table table-bordered table-sm table-striped">
+                                                <thead>
                                                     <tr>
-                                                        <td>
-                                                            <?php echo htmlspecialchars($lot['type_name']); ?>
-                                                        </td>
-                                                        <td>
-                                                            <i><?php echo htmlspecialchars($lot['lot']); ?>
-                                                                <input type="hidden"
-                                                                    name="lots[<?php echo $lot['lot']; ?>][number]"
-                                                                    value="<?php echo htmlspecialchars($lot['lot']); ?>"></i>
-                                                        </td>
-                                                        <td>
-                                                            <?php
-                                                            $docValue = htmlspecialchars($lot['doc']);
-                                                            $docClass = empty($docValue) ? 'bg-yellow' : '';
-                                                            ?>
-                                                            <input type="text"
-                                                                class="form-control form-control-sm <?php echo $docClass; ?>"
-                                                                name="lots[<?php echo $lot['lot']; ?>][doc]"
-                                                                placeholder="Doc" value="<?php echo $docValue; ?>">
-                                                        </td>
-                                                        <td>
-                                                            <?php
-                                                            $dateValue = htmlspecialchars($lot['date']);
-                                                            $dateClass = "empty($dateValue)" ? 'bg-yellow' : '';
-                                                            $dateClass = "00-00-0000" ? 'bg-yellow' : '';
-                                                            ?>
-                                                            <input type="date"
-                                                                class="form-control form-control-sm <?php echo $dateClass; ?>"
-                                                                name="lots[<?php echo $lot['lot']; ?>][date]"
-                                                                placeholder="Date" value="<?php echo $dateValue; ?>">
-                                                        </td>
+                                                        <th style="width: 20%;">Tipo</th>
+                                                        <th style="width: 30%;">Lotto</th>
+                                                        <th style="width: 20%;">DDT</th>
+                                                        <th style="width: 25%;">Data</th>
                                                     </tr>
-                                                <?php endforeach; ?>
-                                            </tbody>
-                                        </table>
-                                        <button type="submit" name="save_references"
-                                            class="btn btn-pink btn-block">Salva</button>
+                                                </thead>
+                                                <tbody>
+                                                    <?php foreach ($lotsWithoutReferences as $lot): ?>
+                                                        <tr>
+                                                            <td><?php echo htmlspecialchars($lot['type_name']); ?></td>
+                                                            <td>
+                                                                <i><?php echo htmlspecialchars($lot['lot']); ?>
+                                                                    <input type="hidden"
+                                                                        name="lots[<?php echo $lot['lot']; ?>][number]"
+                                                                        value="<?php echo htmlspecialchars($lot['lot']); ?>"></i>
+                                                            </td>
+                                                            <td>
+                                                                <?php
+                                                                $docValue = htmlspecialchars($lot['doc']);
+                                                                $docClass = empty($docValue) ? 'bg-yellow' : '';
+                                                                ?>
+                                                                <input type="text"
+                                                                    class="form-control form-control-sm <?php echo $docClass; ?>"
+                                                                    name="lots[<?php echo $lot['lot']; ?>][doc]"
+                                                                    placeholder="Doc" value="<?php echo $docValue; ?>">
+                                                            </td>
+                                                            <td>
+                                                                <?php
+                                                                $dateValue = htmlspecialchars($lot['date']);
+                                                                $dateClass = empty($dateValue) || $dateValue == '0000-00-00' ? 'bg-yellow' : '';
+                                                                ?>
+                                                                <input type="date"
+                                                                    class="form-control form-control-sm <?php echo $dateClass; ?>"
+                                                                    name="lots[<?php echo $lot['lot']; ?>][date]"
+                                                                    placeholder="Date" value="<?php echo $dateValue; ?>">
+                                                            </td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                </tbody>
+                                            </table>
+                                            <button type="submit" name="save_references"
+                                                class="btn btn-pink btn-block">Salva</button>
+                                        <?php endif; ?>
+
                                     </form>
                                 </div>
                             </div>
@@ -158,7 +198,12 @@ $lotsWithoutReferences = getLotsWithoutReferences($pdo);
                         <div class="col-xl-7 col-lg-6">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex align-items-center">
-                                    <h6 class="m-0 font-weight-bold text-primary">Ricerca</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Lotti utilizzati senza riferimenti
+                                    </h6>
+                                    <a class="btn text-info btn-sm ml-auto font-weight-bold" data-toggle="modal"
+                                        data-target="#lotsModal">
+                                        Vedi tutto <i class="fas fa-expand-arrows"></i>
+                                    </a>
                                 </div>
                                 <div class="card-body">
                                     <form method="GET" action="">
@@ -175,37 +220,22 @@ $lotsWithoutReferences = getLotsWithoutReferences($pdo);
                                         if ($lotDetails) {
                                             echo '<form method="POST" action="" class="mt-2">';
                                             echo '<div class="form-group">';
+                                            echo '<label for="lot" class="mr-2">Lotto:</label>';
+                                            echo '<input type="text" class="form-control form-control-sm" name="lot" value="' . htmlspecialchars($lotDetails['lot']) . '" readonly>';
+                                            echo '</div>';
+                                            echo '<div class="form-group">';
                                             echo '<label for="doc" class="mr-2">DDT:</label>';
-                                            echo '<div class="input-group">';
-                                            echo '<input type="text" class="form-control form-control-sm" id="doc" name="doc" value="' . htmlspecialchars($lotDetails['doc']) . '" disabled>';
-                                            echo '<div class="input-group-append">';
-                                            echo '<button type="button" class="btn btn-sm btn-primary" onclick="enableEdit(\'doc\')"><i class="fas fa-pencil-alt"></i></button>';
+                                            echo '<input type="text" class="form-control form-control-sm" id="doc" name="doc" value="' . htmlspecialchars($lotDetails['doc']) . '">';
                                             echo '</div>';
-                                            echo '</div>';
-                                            echo '</div>';
-
                                             echo '<div class="form-group">';
                                             echo '<label for="date" class="mr-2">Data:</label>';
-                                            echo '<div class="input-group">';
-                                            echo '<input type="date" class="form-control form-control-sm" id="date" name="date" value="' . htmlspecialchars($lotDetails['date']) . '" disabled>';
-                                            echo '<div class="input-group-append">';
-                                            echo '<button type="button" class="btn btn-sm btn-primary" onclick="enableEdit(\'date\')"><i class="fas fa-pencil-alt"></i></button>';
+                                            echo '<input type="date" class="form-control form-control-sm" id="date" name="date" value="' . htmlspecialchars($lotDetails['date']) . '">';
                                             echo '</div>';
-                                            echo '</div>';
-                                            echo '</div>';
-
                                             echo '<div class="form-group">';
                                             echo '<label for="note" class="mr-2">Note:</label>';
-                                            echo '<div class="input-group">';
-                                            echo '<textarea class="form-control" id="note" name="note" disabled>' . htmlspecialchars($lotDetails['note']) . '</textarea>';
-                                            echo '<div class="input-group-append">';
-                                            echo '<button type="button" class="btn btn-sm btn-primary" onclick="enableEdit(\'note\')"><i class="fas fa-pencil-alt"></i></button>';
+                                            echo '<textarea class="form-control" id="note" name="note">' . htmlspecialchars($lotDetails['note']) . '</textarea>';
                                             echo '</div>';
-                                            echo '</div>';
-                                            echo '</div>';
-
-                                            echo '<input type="hidden" name="lot" value="' . htmlspecialchars($lotDetails['lot']) . '">';
-                                            echo '<button type="submit" name="update_lot_details" class="btn btn-block btn-success ml-2">Aggiorna</button>';
+                                            echo '<button type="submit" name="update_lot_details" class="btn btn-block btn-success">Aggiorna</button>';
                                             echo '</form>';
                                         } else {
                                             echo '<i><p class="text-danger mt-3">Nessun dettaglio trovato per il lotto ' . htmlspecialchars($_GET["search_lot"]) . '</p></i>';
@@ -218,11 +248,6 @@ $lotsWithoutReferences = getLotsWithoutReferences($pdo);
                     </div>
                 </div>
                 <?php include_once BASE_PATH . '/components/scripts.php'; ?>
-                <script>
-                    function enableEdit(field) {
-                        document.getElementById(field).removeAttribute('disabled');
-                    }
-                </script>
             </div>
             <?php include_once BASE_PATH . '/components/footer.php'; ?>
         </div>
@@ -232,6 +257,60 @@ $lotsWithoutReferences = getLotsWithoutReferences($pdo);
 <style>
     .bg-yellow {
         background-color: #ffeeba;
-        /* Utilizza il colore giallo di tua scelta */
     }
 </style>
+
+<!-- Modale per visualizzare tutti i lotti -->
+<div class="modal fade" id="lotsModal" tabindex="-1" role="dialog" aria-labelledby="lotsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="lotsModalLabel">Tutti i Lotti</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-sm table-striped">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Lotto</th>
+                            <th>DDT</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        // Funzione per ottenere tutti i lotti
+                        function getAllLots($pdo)
+                        {
+                            $query = "
+                                SELECT DISTINCT(tl.lot), tt.name AS type_name, tli.doc, tli.date
+                                FROM track_lots_info tli
+                                LEFT JOIN track_links tl ON tli.lot = tl.lot
+                                LEFT JOIN track_types tt ON tl.type_id = tt.id
+                            ";
+                            $stmt = $pdo->prepare($query);
+                            $stmt->execute();
+                            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        }
+
+                        $allLots = getAllLots($pdo);
+                        foreach ($allLots as $lot): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($lot['type_name']); ?></td>
+                                <td><?php echo htmlspecialchars($lot['lot']); ?></td>
+                                <td><?php echo htmlspecialchars($lot['doc']); ?></td>
+                                <td><?php echo htmlspecialchars($lot['date']); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>

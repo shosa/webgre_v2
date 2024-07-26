@@ -179,6 +179,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                     <a id="tracking-lots-details" class="collapse-item"
                         href="<?php echo BASE_URL ?>/functions/tracking/lotDetailManager"><i class="fa fa-file-invoice"></i>
                         Dettagli Lotti</a>
+                    <a id="tracking-sku" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/tracking/skuManager"><i class="fa fa-barcode"></i>
+                        Dettagli SKU</a>
                     <a id="tracking-fiches" class="collapse-item"
                         href="<?php echo BASE_URL ?>/functions/tracking/makeFiches"><i class="fa fa-tag"></i>
                         Stampa Fiches</a>
@@ -298,6 +301,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             '/functions/tracking/treeView': 'tracking-tree',
             '/functions/tracking/lotDetailManager': 'tracking-lots-details',
             '/functions/tracking/makeFiches': 'tracking-fiches',
+            '/functions/tracking/skuManager': 'tracking-sku',
 
             // Aggiungi qui altri link come necessario
         };
