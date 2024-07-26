@@ -1,4 +1,4 @@
-<form id="uploadForm" action="importDatiXlsx.php" method="post" enctype="multipart/form-data"
+<form id="uploadForm" action="forms/processing_uploadXLSX.php" method="post" enctype="multipart/form-data"
     class="p-4 border rounded shadow-sm bg-light">
     <div class="form-group">
         <label for="file" class="font-weight-bold">Seleziona il file XLSX:</label>

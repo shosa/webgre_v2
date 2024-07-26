@@ -12737,3 +12737,7 @@ body.sidebar-toggled footer.sticky-footer {
   background-color: #4e73df;
   color: #fff;
 }
+
+.no-cursor {
+  cursor: default !important;
+}

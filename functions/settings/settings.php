@@ -33,12 +33,17 @@ include (BASE_PATH . "/components/header.php");
                                 </div>
                                 <div class="card-body">
                                     <ul id="tables-list" class="list-group">
+                                        <li class="list-group-item active p-1 pl-2 no-cursor">
+                                            Database</li>
                                         <span class="list-group-item" href="#" id="uploadXLSX"><i
-                                                class="fal fa-database"></i> Aggiornamento Database Cartellini</span>
+                                                class="fal fa-database"></i> Aggiornamento Cartellini</span>
+                                        <li class="list-group-item active p-1 pl-2 no-cursor">Email</li>
                                         <span class="list-group-item" href="#" id="productionSmtp"><i
                                                 class="fal fa-envelope-open-text"></i> SMTP E-mail Produzione</span>
+                                        <li class="list-group-item active p-1 pl-2 no-cursor">Tabelle</li>
                                         <span class="list-group-item" href="#" id="manageLines"><i
-                                                class="fal fa-tasks"></i> Gestione Linee</span>
+                                                class="fal fa-tasks"></i> Linee</span>
+
                                         <!-- Altre voci di menu possono essere aggiunte qui -->
                                     </ul>
                                 </div>
@@ -87,16 +92,17 @@ include (BASE_PATH . "/components/header.php");
 
     document.getElementById('uploadXLSX').addEventListener('click', function (event) {
         event.preventDefault();
-        loadForm('form_UploadXLSX');
+        loadForm('form_uploadXLSX');
     });
     document.getElementById('productionSmtp').addEventListener('click', function (event) {
         event.preventDefault();
-        loadForm('form_ProductionSmtp');
+        loadForm('form_productionSmtp');
     });
     document.getElementById('manageLines').addEventListener('click', function (event) {
         event.preventDefault();
-        loadForm('form_ManageLines');
+        loadForm('form_manageLines');
     });
+
     <?php if (isset($_SESSION['message'])): ?>
         Swal.fire({
             icon: 'success',

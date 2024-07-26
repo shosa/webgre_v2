@@ -2,9 +2,8 @@
 
 session_start();
 
-require_once '../../config/config.php';
+require_once '../../../config/config.php';
 require_once BASE_PATH . '/utils/helpers.php';
-require_once BASE_PATH . '/utils/log_utils.php';
 require BASE_PATH . '/vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -41,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file'])) {
                 $row = array_slice($row, 0, 34);
             }
 
-          
+
 
             $stmt->execute($row);
         }
@@ -52,11 +51,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file'])) {
         $_SESSION['message'] = "Errore durante l'importazione del file: " . $e->getMessage();
     }
 
-    header('Location: settings.php');
+    header('Location: ../settings');
     exit;
 } else {
     $_SESSION['message'] = "Errore durante l'importazione del file!";
-    header('Location: settings.php');
+    header('Location: ../settings');
     exit;
 }
 ?>
