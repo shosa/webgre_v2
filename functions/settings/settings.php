@@ -9,7 +9,6 @@ require_once BASE_PATH . '/utils/log_utils.php';
 include (BASE_PATH . "/components/header.php");
 ?>
 
-
 <body id="page-top">
     <div id="wrapper">
         <?php include (BASE_PATH . "/components/navbar.php"); ?>
@@ -29,7 +28,7 @@ include (BASE_PATH . "/components/header.php");
                         <div class="col-xl-3 col-lg-3">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex align-items-center">
-                                    <h6 class="m-0 font-weight-bold text-primary">Menu</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary" id="card-title">Menu</h6>
                                 </div>
                                 <div class="card-body">
                                     <ul id="tables-list" class="list-group">
@@ -52,7 +51,7 @@ include (BASE_PATH . "/components/header.php");
                         <div class="col-xl-9 col-lg-9">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex align-items-center">
-                                    <h6 class="m-0 font-weight-bold text-primary">Azioni</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary" id="card-titleName"></h6>
                                 </div>
                                 <div class="card-body">
                                     <div id="action-content" class="table-responsive">
@@ -72,11 +71,13 @@ include (BASE_PATH . "/components/header.php");
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
-    function loadForm(formName) {
+    function loadForm(formName, cardTitle) {
         fetch('forms/' + formName + '.php')
             .then(response => response.text())
             .then(html => {
                 document.getElementById('action-content').innerHTML = html;
+                document.getElementById('card-titleName').textContent = cardTitle; // Aggiorna il titolo della card
+
                 // Carica lo script associato al form, se esiste
                 var scriptPath = 'forms/script_' + formName + '.js';
                 fetch(scriptPath)
@@ -92,15 +93,15 @@ include (BASE_PATH . "/components/header.php");
 
     document.getElementById('uploadXLSX').addEventListener('click', function (event) {
         event.preventDefault();
-        loadForm('form_uploadXLSX');
+        loadForm('form_uploadXLSX', 'Aggiornamento Cartellini');
     });
     document.getElementById('productionSmtp').addEventListener('click', function (event) {
         event.preventDefault();
-        loadForm('form_productionSmtp');
+        loadForm('form_productionSmtp', 'SMTP E-mail Produzione');
     });
     document.getElementById('manageLines').addEventListener('click', function (event) {
         event.preventDefault();
-        loadForm('form_manageLines');
+        loadForm('form_manageLines', 'Linee');
     });
 
     <?php if (isset($_SESSION['message'])): ?>

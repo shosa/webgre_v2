@@ -23,7 +23,7 @@ function isSiglaInDati($conn, $sigla)
 $lines = getLines($conn);
 ?>
 
-<div class="container p-4 border rounded shadow-sm bg-light" id="formManageLines">
+<div class="container p-4 border rounded bg-light" id="formManageLines">
 
     <table class="table table-bordered bg-white">
         <thead>
