@@ -9,6 +9,7 @@ require_once BASE_PATH . '/utils/log_utils.php';
 include (BASE_PATH . "/components/header.php");
 ?>
 
+
 <body id="page-top">
     <div id="wrapper">
         <?php include (BASE_PATH . "/components/navbar.php"); ?>
@@ -32,8 +33,12 @@ include (BASE_PATH . "/components/header.php");
                                 </div>
                                 <div class="card-body">
                                     <ul id="tables-list" class="list-group">
-                                        <span class="list-group-item" href="#" id="uploadXLSX">Aggiornamento Database
-                                            Cartellini</span>
+                                        <span class="list-group-item" href="#" id="uploadXLSX"><i
+                                                class="fal fa-database"></i> Aggiornamento Database Cartellini</span>
+                                        <span class="list-group-item" href="#" id="productionSmtp"><i
+                                                class="fal fa-envelope-open-text"></i> SMTP E-mail Produzione</span>
+                                        <span class="list-group-item" href="#" id="manageLines"><i
+                                                class="fal fa-tasks"></i> Gestione Linee</span>
                                         <!-- Altre voci di menu possono essere aggiunte qui -->
                                     </ul>
                                 </div>
@@ -46,13 +51,12 @@ include (BASE_PATH . "/components/header.php");
                                 </div>
                                 <div class="card-body">
                                     <div id="action-content" class="table-responsive">
-                                        <!-- Il form di upload verrà caricato qui -->
+                                        <!-- Il form verrà caricato qui -->
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <?php include (BASE_PATH . "/components/footer.php"); ?>
@@ -63,38 +67,44 @@ include (BASE_PATH . "/components/header.php");
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
+    function loadForm(formName) {
+        fetch('forms/' + formName + '.php')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('action-content').innerHTML = html;
+                // Carica lo script associato al form, se esiste
+                var scriptPath = 'forms/script_' + formName + '.js';
+                fetch(scriptPath)
+                    .then(response => {
+                        if (response.ok) {
+                            var script = document.createElement('script');
+                            script.src = scriptPath;
+                            document.body.appendChild(script);
+                        }
+                    });
+            });
+    }
+
     document.getElementById('uploadXLSX').addEventListener('click', function (event) {
         event.preventDefault();
-        document.getElementById('action-content').innerHTML = `
-            <form id="uploadForm" action="form_ImportDatiXlsx.php" method="post" enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-light">
-    <div class="form-group">
-        <label for="file" class="font-weight-bold">Seleziona il file XLSX:</label>
-        <div class="custom-file">
-            <input type="file" class="custom-file-input" id="file" name="file" accept=".xlsx" required>
-            <label class="custom-file-label" for="file">Scegli file...</label>
-        </div>
-    </div>
-    <div class="d-flex justify-content-between align-items-center">
-        <button type="submit" class="btn btn-block btn-primary mt-3">Importa</button>
-        <div id="loader" class="spinner-border text-primary ml-3 mt-3" style="display: none;" role="status">
-            <span class="sr-only">Caricamento in corso...</span>
-        </div>
-    </div>
-</form>
-
-        `;
-
-        document.getElementById('uploadForm').addEventListener('submit', function () {
-            document.getElementById('loader').style.display = 'block';
-        });
+        loadForm('form_UploadXLSX');
     });
-
+    document.getElementById('productionSmtp').addEventListener('click', function (event) {
+        event.preventDefault();
+        loadForm('form_ProductionSmtp');
+    });
+    document.getElementById('manageLines').addEventListener('click', function (event) {
+        event.preventDefault();
+        loadForm('form_ManageLines');
+    });
     <?php if (isset($_SESSION['message'])): ?>
         Swal.fire({
             icon: 'success',
             title: 'Successo',
             text: '<?php echo $_SESSION['message']; ?>',
         });
-        <?php unset($_SESSION['message']); ?>
+        <?php
+        $_SESSION["info"] = $_SESSION['message'];
+        unset($_SESSION['message']); ?>
     <?php endif; ?>
 </script>

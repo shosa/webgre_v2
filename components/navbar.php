@@ -119,9 +119,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                     <a id="production-calendario" class="collapse-item"
                         href="<?php echo BASE_URL ?>/functions/production/calendario"><i class="far fa-calendar-alt"></i>
                         Calendario</a>
-                    <a id="production-settings" class="collapse-item"
-                        href="<?php echo BASE_URL ?>/functions/production/settings"><i class="far fa-gear"></i>
-                        Impostazioni</a>
                 </div>
             </div>
         </li>
@@ -291,7 +288,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             '/functions/quality/chartsOverview': 'quality-charts',
             '/functions/production/new': 'production-new',
             '/functions/production/calendario': 'production-calendario',
-            '/functions/production/settings': 'production-settings',
             '/functions/samples/newSample': 'samples-new',
             '/functions/samples/list': 'samples-list',
             '/functions/samples/done': 'samples-done',
@@ -313,8 +309,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 if (navItem) {
                     navItem.classList.add('active');
                     navItem.classList.add('text-<?php echo $colore; ?>');
-  
-                    
+
+
                     var parentNavLink = navItem.closest('.nav-item').querySelector('.nav-link');
                     if (parentNavLink) {
                         parentNavLink.classList.remove('collapsed');
@@ -329,7 +325,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
         }
 
         // Gestione speciale per la dashboard
-        if (currentUrl.endsWith('/index') || currentUrl === '/index' || currentUrl === '/' || currentUrl.endsWith ('/index.php')) {
+        if (currentUrl.endsWith('/index') || currentUrl === '/index' || currentUrl === '/' || currentUrl.endsWith('/index.php')) {
             var homeNavItem = document.getElementById('home');
             if (homeNavItem) {
                 homeNavItem.classList.add('active');
