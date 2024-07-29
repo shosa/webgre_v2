@@ -182,6 +182,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                     <a id="tracking-sku" class="collapse-item"
                         href="<?php echo BASE_URL ?>/functions/tracking/skuManager"><i class="fa fa-barcode"></i>
                         Dettagli SKU</a>
+                    <a id="tracking-dates" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/tracking/orderDateManager"><i class="fa fa-calendar"></i>
+                        Dettagli SKU</a>
                     <a id="tracking-fiches" class="collapse-item"
                         href="<?php echo BASE_URL ?>/functions/tracking/makeFiches"><i class="fa fa-tag"></i>
                         Stampa Fiches</a>
@@ -302,6 +305,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             '/functions/tracking/lotDetailManager': 'tracking-lots-details',
             '/functions/tracking/makeFiches': 'tracking-fiches',
             '/functions/tracking/skuManager': 'tracking-sku',
+            '/functions/tracking/orderDateManager': 'tracking-dates',
 
             // Aggiungi qui altri link come necessario
         };

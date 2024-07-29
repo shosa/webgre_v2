@@ -82,7 +82,7 @@ require_once BASE_PATH . '/components/header.php';
 
                                 <div class="text-left">
 
-                                    <h4><b>Associa per Ricerca</b></h4>
+                                    <h5><b>Associa per Ricerca</b></h5>
 
                                     <i>Utilizza i campi di ricerca per selezionare i cartellini da associare ai
 
@@ -104,7 +104,7 @@ require_once BASE_PATH . '/components/header.php';
 
                                 <div class="text-left">
 
-                                    <h4><b>Associa per Cartellini</b></h4>
+                                    <h5><b>Associa per Cartellini</b></h5>
 
                                     <i>Inserisci manualmente i singoli da cartellini da associare ai lotti</i>
 
@@ -125,7 +125,7 @@ require_once BASE_PATH . '/components/header.php';
 
                                 <div class="text-left">
 
-                                    <h4><b>Albero Dettagli</b></h4>
+                                    <h5><b>Albero Dettagli</b></h5>
 
                                     <i>Visualizza e Modifica la mappatura dei lotti / cartellini</i>
 
@@ -168,7 +168,7 @@ require_once BASE_PATH . '/components/header.php';
 
                                 <div class="text-left">
 
-                                    <h4><b>Dettagli SKU</b></h4>
+                                    <h5><b>Dettagli SKU</b></h5>
 
                                     <i>Aggiungi i riferimenti dell'articolo cliente (SKU)</i>
 
@@ -187,7 +187,7 @@ require_once BASE_PATH . '/components/header.php';
 
                                 <div class="text-left">
 
-                                    <h4><b>Dettagli Ordini/Date</b></h4>
+                                    <h5><b>Dettagli Ordini/Date</b></h5>
 
                                     <i>Aggiungi i riferimenti della data degli ordini.</i>
 
@@ -208,7 +208,7 @@ require_once BASE_PATH . '/components/header.php';
 
                                 <div class="text-left">
 
-                                    <h4><b>Packing List</b></h4>
+                                    <h5><b>Packing List</b></h5>
 
                                     <i>Genera un dettaglio dei lotti utilizzati per i cartellini richiesti</i>
 
@@ -229,7 +229,7 @@ require_once BASE_PATH . '/components/header.php';
 
                                 <div class="text-left">
 
-                                    <h4><b>Stampa Fiches</b></h4>
+                                    <h5><b>Stampa Fiches</b></h5>
 
                                     <i>Genera le fiches da stampare su i retro dei Cartellini.</i>
 
