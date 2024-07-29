@@ -36,8 +36,9 @@ if (isset($_GET['message'])) {
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 5rem;
             margin-bottom: 10px;
+            color:black;
         }
 
         p {
