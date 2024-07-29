@@ -6,6 +6,7 @@ session_start();
 require_once '../../config/config.php';
 require_once BASE_PATH . '/utils/helpers.php';
 require_once BASE_PATH . '/utils/log_utils.php';
+
 include (BASE_PATH . "/components/header.php");
 ?>
 
@@ -32,14 +33,14 @@ include (BASE_PATH . "/components/header.php");
                                 </div>
                                 <div class="card-body">
                                     <ul id="tables-list" class="list-group">
-                                        <li class="list-group-item active p-1 pl-2 no-cursor">
+                                        <li class="list-group-item active p-1 pl-2 no-cursor bg-light text-<?php echo $colore; ?> font-weight-bold border">
                                             Database</li>
                                         <span class="list-group-item" href="#" id="uploadXLSX"><i
                                                 class="fal fa-database"></i> Aggiornamento Cartellini</span>
-                                        <li class="list-group-item active p-1 pl-2 no-cursor">Email</li>
+                                        <li class="list-group-item active p-1 pl-2 no-cursor bg-light text-<?php echo $colore; ?> font-weight-bold border">Email</li>
                                         <span class="list-group-item" href="#" id="productionSmtp"><i
                                                 class="fal fa-envelope-open-text"></i> SMTP E-mail Produzione</span>
-                                        <li class="list-group-item active p-1 pl-2 no-cursor">Tabelle</li>
+                                        <li class="list-group-item active p-1 pl-2 no-cursor bg-light text-<?php echo $colore; ?> font-weight-bold border">Tabelle</li>
                                         <span class="list-group-item" href="#" id="manageLines"><i
                                                 class="fal fa-tasks"></i> Linee</span>
 
@@ -93,15 +94,15 @@ include (BASE_PATH . "/components/header.php");
 
     document.getElementById('uploadXLSX').addEventListener('click', function (event) {
         event.preventDefault();
-        loadForm('form_uploadXLSX', 'Aggiornamento Cartellini');
+        loadForm('form_UploadXLSX', 'Aggiornamento Cartellini');
     });
     document.getElementById('productionSmtp').addEventListener('click', function (event) {
         event.preventDefault();
-        loadForm('form_productionSmtp', 'SMTP E-mail Produzione');
+        loadForm('form_ProductionSmtp', 'SMTP E-mail Produzione');
     });
     document.getElementById('manageLines').addEventListener('click', function (event) {
         event.preventDefault();
-        loadForm('form_manageLines', 'Linee');
+        loadForm('form_ManageLines', 'Linee');
     });
 
     <?php if (isset($_SESSION['message'])): ?>
