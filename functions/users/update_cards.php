@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdo = getDbInstance();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $queryUpdatePreferenze = "UPDATE utenti_preferenze SET 
+        $queryUpdatePreferenze = "UPDATE utenti_cards SET 
             card_riparazioni = :card_riparazioni, 
             card_myRiparazioni = :card_myRiparazioni, 
             card_quality = :card_quality ,

@@ -184,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                         Dettagli SKU</a>
                     <a id="tracking-dates" class="collapse-item"
                         href="<?php echo BASE_URL ?>/functions/tracking/orderDateManager"><i class="fa fa-calendar"></i>
-                        Dettagli SKU</a>
+                        Dettagli Date</a>
                     <a id="tracking-fiches" class="collapse-item"
                         href="<?php echo BASE_URL ?>/functions/tracking/makeFiches"><i class="fa fa-tag"></i>
                         Stampa Fiches</a>
