@@ -10,7 +10,7 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-:root {
+ :root {
   --blue: #4e73df;
   --indigo: #6610f2;
   --purple: #6f42c1;
@@ -5918,6 +5918,7 @@ a.badge-dark.focus {
   padding: 0.75rem 1.25rem;
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.125);
+  z-index: index auto;
 }
 
 .list-group-item:first-child {
@@ -5938,7 +5939,7 @@ a.badge-dark.focus {
 }
 
 .list-group-item.active {
-  z-index: 2;
+
   color: #fff;
   background-color: #4e73df;
   border-color: #4e73df;

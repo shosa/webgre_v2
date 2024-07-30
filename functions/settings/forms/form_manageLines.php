@@ -29,10 +29,10 @@ $lines = getLines($conn);
         <p class="text-warning font-weight-bold">* Invio per salvare le modifiche</p>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Sigla</th>
+            <th width="3%">ID</th>
+                <th width="10%">Sigla</th>
                 <th>Descrizione</th>
-                <th></th>
+                <th width="5%"></th>
             </tr>
         </thead>
         <tbody class="text-center">

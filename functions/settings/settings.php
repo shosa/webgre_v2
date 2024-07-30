@@ -42,7 +42,14 @@ include (BASE_PATH . "/components/header.php");
                                                 class="fal fa-envelope-open-text"></i> SMTP E-mail Produzione</span>
                                         <li class="list-group-item active p-1 pl-2 no-cursor bg-light text-<?php echo $colore; ?> font-weight-bold border">Tabelle</li>
                                         <span class="list-group-item" href="#" id="manageLines"><i
-                                                class="fal fa-tasks"></i> Linee</span>
+                                        class="fal fa-tasks"></i> Linee</span>
+                                        <span class="list-group-item" href="#" id="manageLaboratory"><i
+                                        class="fal fa-digging"></i> Laboratori</span>
+                                        <span class="list-group-item" href="#" id="manageDepartment"><i
+                                        class="fal fa-building"></i> Reparti</span>
+                                        <span class="list-group-item" href="#" id="manageTabId"><i
+                                        class="fal fa-forward"></i> Progressivo Cedole</span>
+
 
                                         <!-- Altre voci di menu possono essere aggiunte qui -->
                                     </ul>
@@ -103,6 +110,18 @@ include (BASE_PATH . "/components/header.php");
     document.getElementById('manageLines').addEventListener('click', function (event) {
         event.preventDefault();
         loadForm('form_ManageLines', 'Linee');
+    });
+    document.getElementById('manageLaboratory').addEventListener('click', function (event) {
+        event.preventDefault();
+        loadForm('form_ManageLaboratory', 'Laboratori');
+    });
+    document.getElementById('manageDepartment').addEventListener('click', function (event) {
+        event.preventDefault();
+        loadForm('form_ManageDepartment', 'Reparti');
+    });
+    document.getElementById('manageTabId').addEventListener('click', function (event) {
+        event.preventDefault();
+        loadForm('form_ManageTabId', 'Progressivo Cedole');
     });
 
     <?php if (isset($_SESSION['message'])): ?>
