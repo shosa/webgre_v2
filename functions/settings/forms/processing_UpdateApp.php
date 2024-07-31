@@ -91,13 +91,13 @@ function rrmdir($dir) {
             }
         } else {
             if (!unlink($file)) {
-                echo "Errore durante l'eliminazione di: $file\n";
+                echo "<span style='background-color: red; color: white;'>Errore durante l'eliminazione di: $file</span>\n";
                 $success = false;  // Se il file non può essere eliminato
             }
         }
     }
     if (is_dir($dir) && !rmdir($dir)) {
-        echo "Errore durante l'eliminazione della directory: $dir\n";
+        echo "<span style='background-color: red; color: white;'>Errore durante l'eliminazione della directory: $dir</span>\n";
         $success = false;  // Se la directory non può essere eliminata
     }
     return $success;  // Restituisce false se ci sono stati errori
@@ -107,10 +107,10 @@ function rrmdir($dir) {
 if (rrmdir($tempDir)) {
     echo "Contenuto temporaneo eliminato.\n";
 } else {
-    echo "Errore durante l'eliminazione del contenuto temporaneo.\n";
+    echo "<span style='background-color: red; color: white;'>Errore durante l'eliminazione del contenuto temporaneo.</span>\n";
 }
 unlink($zipFile);
 echo "Eliminato: $zipFile\n";
 
-echo "Aggiornamento completato con successo.\n";
+echo "<span style='background-color: lime; color: black;'>Aggiornamento completato con successo.</span>\n";
 ?>
