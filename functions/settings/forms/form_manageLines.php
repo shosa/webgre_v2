@@ -26,7 +26,7 @@ $lines = getLines($conn);
 <div class="p-4 border rounded shadow-sm bg-light" id="formManageLines">
 
     <table class="table table-bordered bg-white">
-        <p class="text-warning font-weight-bold">* Invio per salvare le modifiche</p>
+        <p class="text-info font-weight-bold">* Invio per salvare le modifiche</p>
         <thead>
             <tr>
             <th width="3%">ID</th>
