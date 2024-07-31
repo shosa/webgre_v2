@@ -2,18 +2,7 @@
 require_once '../../../config/config.php';
 header('Content-Type: text/plain');  // Set header to plain text for better logging output
 
-// Recupera il token dal database
-$pdo = getDbInstance();  // Assicurati che questa funzione restituisca un'istanza PDO
-$query = "SELECT value FROM settings WHERE item = 'github_token'";
-$stmt = $pdo->prepare($query);
-$stmt->execute();
-$accessToken = $stmt->fetchColumn();
-
-if (!$accessToken) {
-    echo "Token di accesso non trovato nel database.\n";
-    exit;
-}
-
+$pdo = getDbInstance();
 $repoOwner = 'shosa';
 $repoName = 'webgre_v2';
 $branch = "main";
@@ -26,6 +15,7 @@ echo "Log aggiornamento:\n";
 $zipUrl = "https://api.github.com/repos/$repoOwner/$repoName/zipball/$branch";
 
 // Crea un contesto di stream per includere l'header di autenticazione
+$accessToken = $pdo->query("SELECT value FROM settings WHERE item = 'github_token'")->fetchColumn();
 $options = [
     'http' => [
         'header' => "User-Agent: PHP\r\n" .
@@ -37,7 +27,9 @@ $context = stream_context_create($options);
 $zipFile = 'latest.zip';
 
 // Scarica l'archivio zip del branch
+echo "Scaricamento dell'archivio...\n";
 file_put_contents($zipFile, fopen($zipUrl, 'r', false, $context));
+echo "Download completato.\n";
 
 // Estrai il contenuto dell'archivio zip nella directory temporanea
 $zip = new ZipArchive;
