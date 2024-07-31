@@ -80,7 +80,7 @@ function getRandomColor()
                                 <?php $counter = 0; ?>
                                 <div class="row">
                                     <?php foreach ($results as $result): ?>
-                                        <div class="col-xl-3 col-md-6 mb-4">
+                                        <div class="col-xl-2 col-md-4 mb-4">
                                             <div class="card border-left-<?php echo $result['color']; ?> shadow h-100 py-2">
                                                 <div class="card-body">
                                                     <div class="row no-gutters align-items-center">
@@ -105,7 +105,7 @@ function getRandomColor()
                                             </div>
                                         </div>
                                         <?php $counter++; ?>
-                                        <?php if ($counter % 4 == 0): ?>
+                                        <?php if ($counter % 6 == 0): ?>
                                             </div><div class="row">
                                         <?php endif; ?>
                                     <?php endforeach; ?>
