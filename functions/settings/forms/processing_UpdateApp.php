@@ -83,20 +83,32 @@ updateFiles($extractedDir, $baseDir);
 
 // Rimuovi la directory temporanea e il file zip scaricato
 function rrmdir($dir) {
+    $success = true;  // Variabile per tenere traccia del successo
     foreach (glob($dir . '/{,.}[!.,!..]*', GLOB_MARK | GLOB_BRACE) as $file) {
         if (is_dir($file)) {
-            rrmdir($file);
+            if (!rrmdir($file)) {
+                $success = false;  // Se la rimozione di una sottodirectory fallisce
+            }
         } else {
-            unlink($file);
-            echo "Eliminato: $file\n";
+            if (!unlink($file)) {
+                echo "Errore durante l'eliminazione di: $file\n";
+                $success = false;  // Se il file non può essere eliminato
+            }
         }
     }
-    rmdir($dir);
-    echo "Eliminata directory: $dir\n";
+    if (is_dir($dir) && !rmdir($dir)) {
+        echo "Errore durante l'eliminazione della directory: $dir\n";
+        $success = false;  // Se la directory non può essere eliminata
+    }
+    return $success;  // Restituisce false se ci sono stati errori
 }
 
 // Utilizza la funzione migliorata per rimuovere la directory temporanea
-rrmdir($tempDir);
+if (rrmdir($tempDir)) {
+    echo "Contenuto temporaneo eliminato.\n";
+} else {
+    echo "Errore durante l'eliminazione del contenuto temporaneo.\n";
+}
 unlink($zipFile);
 echo "Eliminato: $zipFile\n";
 
