@@ -49,8 +49,8 @@ include (BASE_PATH . "/components/header.php");
                                         class="fal fa-building"></i> Reparti</span>
                                         <span class="list-group-item" href="#" id="manageTabId"><i
                                         class="fal fa-forward"></i> Progressivo Cedole</span>
-
-
+                                        <li class="list-group-item active p-1 pl-2 no-cursor bg-light text-<?php echo $colore; ?> font-weight-bold border">Generale</li>
+                                        <span class="list-group-item" href="#" id="updateApp"><i class="fal fa-sync-alt"></i> Aggiornamento App</span>
                                         <!-- Altre voci di menu possono essere aggiunte qui -->
                                     </ul>
                                 </div>
@@ -123,6 +123,11 @@ include (BASE_PATH . "/components/header.php");
         event.preventDefault();
         loadForm('form_ManageTabId', 'Progressivo Cedole');
     });
+
+    document.getElementById('updateApp').addEventListener('click', function (event) {
+    event.preventDefault();
+    loadForm('form_UpdateApp', 'Aggiornamento App');
+});
 
     <?php if (isset($_SESSION['message'])): ?>
         Swal.fire({
