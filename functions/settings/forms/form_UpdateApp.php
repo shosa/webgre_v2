@@ -1,7 +1,7 @@
 <style>
     .spinner {
         border: 4px solid rgba(0, 0, 0, 0.1);
-        border-left: 4px solid #00ff00; /* Lime color */
+        border-left: 4px solid #4e73df; 
         border-radius: 50%;
         width: 24px;
         height: 24px;
