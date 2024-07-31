@@ -5,7 +5,7 @@
         <label for="progressBar">Stato:</label>
         <progress id="progressBar" value="0" max="100" style="width: 100%;"></progress>
         <span id="progressText" class="font-italic">In attesa di avvio...</span>
-        <pre id="updateLog" class="mt-2" style="display: none; background-color: black; color:lime; padding: 10px; border: 1px solid #e0e0e0; max-height: 300px; overflow-y: auto;"></pre>
+        <pre id="updateLog" class="mt-2 rounded" style="display: none; background-color: black; color:lime; padding: 10px; border: 1px solid #e0e0e0; max-height: 300px; overflow-y: auto;"></pre>
     </div>
 </div>
 
