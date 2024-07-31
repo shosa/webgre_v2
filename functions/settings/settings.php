@@ -49,7 +49,7 @@ include (BASE_PATH . "/components/header.php");
                                         class="fal fa-building"></i> Reparti</span>
                                         <span class="list-group-item" href="#" id="manageTabId"><i
                                         class="fal fa-forward"></i> Progressivo Cedole</span>
-                                        <li class="list-group-item active p-1 pl-2 no-cursor bg-light text-<?php echo $colore; ?> font-weight-bold border">Ciao</li>
+                                        <li class="list-group-item active p-1 pl-2 no-cursor bg-light text-<?php echo $colore; ?> font-weight-bold border">Generale</li>
                                         <span class="list-group-item" href="#" id="updateApp"><i class="fal fa-sync-alt"></i> Aggiornamento App</span>
                                         <!-- Altre voci di menu possono essere aggiunte qui -->
                                     </ul>
