@@ -2,23 +2,21 @@
 require_once '../../../config/config.php';
 header('Content-Type: text/plain');  // Set header to plain text for better logging output
 
-// Recupera il token dal database
-$pdo = getDbInstance();  // Assicurati che questa funzione restituisca un'istanza PDO
-$query = "SELECT value FROM settings WHERE item = 'github_token'";
-$stmt = $pdo->prepare($query);
-$stmt->execute();
-$accessToken = $stmt->fetchColumn();
-
-if (!$accessToken) {
-    echo "Token di accesso non trovato nel database.\n";
-    exit;
-}
-
+$pdo = getDbInstance();
 $repoOwner = 'shosa';
 $repoName = 'webgre_v2';
 $branch = "main";
 $tempDir = 'temp_update'; 
 $baseDir = BASE_PATH;  // Usa BASE_PATH per puntare alla root della web app
+
+// Recupera il token dal database
+$stmt = $pdo->prepare("SELECT value FROM settings WHERE item = 'github_token'");
+$stmt->execute();
+$accessToken = $stmt->fetchColumn();
+if (!$accessToken) {
+    echo "Token non trovato nel database.\n";
+    exit;
+}
 
 echo "Log aggiornamento:\n";
 
@@ -48,8 +46,10 @@ if ($zip->open($zipFile) === TRUE) {
     $zip->extractTo($tempDir);
     $zip->close();
     echo "Estrazione completata con successo.\n";
+    flush();
 } else {
     echo "Errore durante l'apertura del file zip.\n";
+    flush();
     exit;
 }
 
@@ -66,6 +66,7 @@ function updateFiles($source, $dest) {
                     if (!is_dir($destPath)) {
                         mkdir($destPath);
                         echo "Creata directory: $destPath\n";
+                        flush();
                     }
                     updateFiles($srcPath, $destPath);
                 }
@@ -73,11 +74,14 @@ function updateFiles($source, $dest) {
                 if (!file_exists($destPath)) {
                     copy($srcPath, $destPath);
                     echo "Aggiunto: $destPath\n";
+                    flush();
                 } else if (md5_file($srcPath) != md5_file($destPath)) {
                     copy($srcPath, $destPath);
                     echo "Sovrascritto: $destPath\n";
+                    flush();
                 } else {
                     echo "Non modificato: $destPath\n";
+                    flush();
                 }
             }
         }
@@ -97,16 +101,20 @@ function rrmdir($dir) {
         } else {
             unlink($file);
             echo "Eliminato: $file\n";
+            flush();
         }
     }
     rmdir($dir);
     echo "Eliminata directory: $dir\n";
+    flush();
 }
 
 // Utilizza la funzione migliorata per rimuovere la directory temporanea
 rrmdir($tempDir);
 unlink($zipFile);
 echo "Eliminato: $zipFile\n";
+flush();
 
 echo "Aggiornamento completato con successo.\n";
+flush();
 ?>
