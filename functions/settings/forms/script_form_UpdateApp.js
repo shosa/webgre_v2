@@ -1,31 +1,26 @@
-document
-  .getElementById("updateAppBtn")
-  .addEventListener("click", function (event) {
+document.getElementById("updateAppBtn").addEventListener("click", function (event) {
     event.preventDefault();
-
+  
     // Mostra il log e la barra di progresso
     document.getElementById("updateLog").style.display = "block";
     document.getElementById("progressBar").value = 0;
-    document.getElementById("progressText").textContent =
-      "Aggiornamento in corso...";
-
+    document.getElementById("progressText").textContent = "Aggiornamento in corso...";
+  
     // Avvia l'aggiornamento
     fetch("forms/processing_UpdateApp.php", {
       method: "POST",
     })
       .then((response) => response.text())
       .then((text) => {
-        // Mostra il log di aggiornamento
-        document.getElementById("updateLog").textContent = text;
-        document.getElementById("progressText").textContent =
-          "Aggiornamento completato.";
+        // Mostra il log di aggiornamento, trasformando HTML
+        document.getElementById("updateLog").innerHTML = text;
+        document.getElementById("progressText").textContent = "Aggiornamento completato.";
       })
       .catch((error) => {
         console.error("Errore:", error);
-        document.getElementById("progressText").textContent =
-          "Errore durante l'aggiornamento.";
+        document.getElementById("progressText").textContent = "Errore durante l'aggiornamento.";
       });
-
+  
     // Simula l'aggiornamento della progress bar
     let progress = 0;
     const interval = setInterval(() => {
@@ -36,3 +31,4 @@ document
       }
     }, 1000); // Aggiorna ogni secondo
   });
+  

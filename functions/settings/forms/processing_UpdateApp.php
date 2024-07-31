@@ -57,17 +57,17 @@ function updateFiles($source, $dest) {
                 if ($file != 'vendor' && $file != 'config') {
                     if (!is_dir($destPath)) {
                         mkdir($destPath);
-                        echo "Creata directory: $destPath\n";
+                        echo "<span style='background-color: lime; color: black;'>Creata directory: $destPath</span>\n";
                     }
                     updateFiles($srcPath, $destPath);
                 }
             } else {
                 if (!file_exists($destPath)) {
+                    echo "<span style='background-color: lime; color: black;'>Aggiunto: $destPath</span>\n";
                     copy($srcPath, $destPath);
-                    echo "Aggiunto: $destPath\n";
                 } else if (md5_file($srcPath) != md5_file($destPath)) {
+                    echo "<span style='background-color: lime; color: black;'>Sovrascritto: $destPath</span>\n";
                     copy($srcPath, $destPath);
-                    echo "Sovrascritto: $destPath\n";
                 } else {
                     echo "Non modificato: $destPath\n";
                 }
