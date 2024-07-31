@@ -3,7 +3,7 @@ require_once '../../../config/config.php';
 header('Content-Type: text/plain');  // Set header to plain text for better logging output
 
 // Recupera il token dal database
-$pdo = getDbIstance();  // Assicurati che questa funzione restituisca un'istanza PDO
+$pdo = getDbInstance();  // Assicurati che questa funzione restituisca un'istanza PDO
 $query = "SELECT value FROM settings WHERE item = 'github_token'";
 $stmt = $pdo->prepare($query);
 $stmt->execute();
