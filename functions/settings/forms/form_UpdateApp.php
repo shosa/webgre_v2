@@ -19,7 +19,7 @@
 <div>
     <p>Clicca il bottone qui sotto per aggiornare l'app alla versione più recente.</p>
     <button id="updateAppBtn" class="btn btn-success ml-2">Aggiorna</button>   <div id="spinner" class="spinner" style="display: none;"></div>
-    <div class="mt-4 p-4 border rounded shadow-sm bg-light">
+    <div class="mt-4 p-4 border rounded shadow-sm m-2 bg-light">
         <label for="progressBar">Stato:</label>
         <progress id="progressBar" value="0" max="100" style="width: 100%;"></progress>
         <span id="progressText" class="font-italic">In attesa dell'avvio da parte del Utente...</span>
