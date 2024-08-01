@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../../../config/config.php';
 
 function logActivity($user_id, $category, $activity_type, $description, $note = '', $text_query = '')
