@@ -26,6 +26,7 @@ if (isset($request['cartellini'])) {
         $placeholders = rtrim(str_repeat('?, ', count($cartellini)), ', ');
         $query = "
             SELECT 
+                DISTINCT tl.id,
                 d.`Descrizione Articolo`,
                 d.`Commessa Cli`,
                 d.`Tot`,
@@ -78,7 +79,7 @@ if (isset($request['cartellini'])) {
         $columnIndex = ord($typeColumnStart);
 
         // Prendi tutti i nomi dei tipi unici
-        $typeNames = array_unique(array_merge(...array_map(function($v) {
+        $typeNames = array_unique(array_merge(...array_map(function ($v) {
             return array_keys($v['types']);
         }, $groupedResults)));
 
@@ -99,10 +100,8 @@ if (isset($request['cartellini'])) {
             foreach ($data['types'] as $typeName => $lots) {
                 $column = $typeColumns[$typeName] ?? null;
                 if ($column) {
-                    // Imposta il formato della cella come testo per evitare la visualizzazione in formato scientifico
-                    foreach ($lots as $index => $lot) {
-                        $sheet->setCellValueExplicit($column . $row, $lot, DataType::TYPE_STRING);
-                    }
+                    // Concatenate the lots with " + " and set the cell value
+                    $sheet->setCellValueExplicit($column . $row, implode(' + ', $lots), DataType::TYPE_STRING);
                 }
             }
 

@@ -18,14 +18,14 @@ if (isset($_GET['search_query'])) {
     // Prepare SQL statement to fetch data
     if ($search_query === '*') {
         // Se la ricerca è '*', otteniamo tutti i record
-        $sql = "SELECT tl.*, dati.`Commessa Cli`, tt.name AS type_name 
+        $sql = "SELECT DISTINCT tl.id ,tl.lot , tl.cartel ,tl.id ,tl.type_id, tl.note, tl.timestamp, dati.`Commessa Cli`, tt.name AS type_name
                 FROM track_links tl 
                 LEFT JOIN track_types tt ON tl.type_id = tt.id
                 LEFT JOIN dati ON dati.Cartel = tl.cartel";
         $stmt = $pdo->query($sql);
     } else {
         // Altrimenti, esegui la query normale con LIKE per ricerca iniziale
-        $sql = "SELECT tl.*, dati.`Commessa Cli`, tt.name AS type_name 
+        $sql = "SELECT DISTINCT tl.id ,tl.lot , tl.cartel ,tl.id ,tl.type_id, tl.note, tl.timestamp, dati.`Commessa Cli`, tt.name AS type_name 
                 FROM track_links tl 
                 LEFT JOIN track_types tt ON tl.type_id = tt.id
                 LEFT JOIN dati ON dati.Cartel = tl.cartel
@@ -63,15 +63,16 @@ if (isset($_GET['search_query'])) {
             echo '<ul>';
             foreach ($cartelino['children'] as $type_id => $type) {
                 echo '<li class="text-dark"><b>' . $type['type_name'] . '</b>';
+              
                 echo '<ul>';
                 foreach ($type['lots'] as $lot) {
-                    echo '<li>' . $lot['lot'] .
+                    echo '<p class="mt-1 border-bottom">' . $lot['lot'] .
                         '<span class="timestamp" style="color:#d1d1d1;">' . $lot['timestamp'] . '</span>' .
                         '<span class="ml-2"><i class="fa fa-pencil edit-lot text-primary" data-id="' . $lot['id'] . '"></i>' .
                         '<i class="fa fa-times ml-2 delete-lot text-danger" data-id="' . $lot['id'] . '"></i></span></li>';
                 }
                 echo '</ul>';
-                echo '</li>';
+                echo '</p>';
             }
             echo '</ul>';
             echo '</li>';
