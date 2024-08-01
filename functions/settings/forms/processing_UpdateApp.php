@@ -120,6 +120,7 @@ function rrmdir($dir)
     }
     return $success;
 }
+echo "<span style='background-color: yellow; color: black;'>IMPORTANTE: Le Directory CONFIG e VENDOR non sono state alterate, se necessario intervenire manualmente.</span>\n";
 
 if (rrmdir($tempDir)) {
     echo "Contenuto temporaneo eliminato.\n";
@@ -127,10 +128,9 @@ if (rrmdir($tempDir)) {
     echo "<span style='background-color: red; color: white;'>Errore durante l'eliminazione del contenuto temporaneo.</span>\n";
 }
 unlink($zipFile);
-echo "Eliminato: $zipFile\n";
 
 $fileList = !empty($modifiedFiles) ? implode(", ", $modifiedFiles) : "Nessuno";
 logActivity($_SESSION['user_id'], 'APP', 'AGGIORNAMENTO', 'Lanciato aggiornamento', "Dettaglio File Modificati", "$fileList");
-
+echo "<span style='background-color: fuchsia; color: white;'>Eliminato: $zipFile</span>\n";
 echo "<span style='background-color: lime; color: black;'>Aggiornamento completato con successo.</span>\n";
 ?>
