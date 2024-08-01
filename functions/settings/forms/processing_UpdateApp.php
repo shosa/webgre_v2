@@ -4,17 +4,14 @@ require_once '../../../config/config.php';
 
 function logActivity($user_id, $category, $activity_type, $description, $note = '', $text_query = '')
 {
-    // Prepara la query SQL per l'inserimento del record nel log delle attività
     $db = getDbInstance();
     $sql = "INSERT INTO activity_log (user_id, category, activity_type, description, note, text_query) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $db->prepare($sql);
-
-    // Esegui la query con i parametri forniti
     $stmt->execute([$user_id, $category, $activity_type, $description, $note, $text_query]);
 
-    // Aggiungi un log in console
     echo "<script>console.log('Evento di tipo $activity_type registrato nel log delle attività. Dettagli: $description');</script>";
 }
+
 function replacePlaceholders($pdo, $query, $params)
 {
     foreach ($params as $key => $value) {
@@ -22,21 +19,19 @@ function replacePlaceholders($pdo, $query, $params)
     }
     return $query;
 }
-header('Content-Type: text/plain');  // Set header to plain text for better logging output
+
+header('Content-Type: text/plain');
 
 $pdo = getDbInstance();
 $repoOwner = 'shosa';
 $repoName = 'webgre_v2';
 $branch = "main";
 $tempDir = 'temp_update';
-$baseDir = BASE_PATH;  // Usa BASE_PATH per puntare alla root della web app
+$baseDir = BASE_PATH;
 
 echo "Log aggiornamento:\n";
 
-// URL per ottenere l'ultima release
 $zipUrl = "https://api.github.com/repos/$repoOwner/$repoName/zipball/$branch";
-logActivity($_SESSION['user_id'], 'APP', 'AGGIORNAMENTO', 'Lanciato aggiornamento', "", '');
-// Crea un contesto di stream per includere l'header di autenticazione
 $accessToken = $pdo->query("SELECT value FROM settings WHERE item = 'github_token'")->fetchColumn();
 $options = [
     'http' => [
@@ -48,12 +43,10 @@ $options = [
 $context = stream_context_create($options);
 $zipFile = 'latest.zip';
 
-// Scarica l'archivio zip del branch
 echo "Scaricamento dell'archivio...\n";
 file_put_contents($zipFile, fopen($zipUrl, 'r', false, $context));
 echo "Download completato.\n";
 
-// Estrai il contenuto dell'archivio zip nella directory temporanea
 $zip = new ZipArchive;
 if ($zip->open($zipFile) === TRUE) {
     if (!is_dir($tempDir)) {
@@ -67,8 +60,9 @@ if ($zip->open($zipFile) === TRUE) {
     exit;
 }
 
-// Funzione per confrontare e aggiornare i file
-function updateFiles($source, $dest)
+$modifiedFiles = [];  // Array per memorizzare i file modificati
+
+function updateFiles($source, $dest, &$modifiedFiles)
 {
     $dir = opendir($source);
     while (($file = readdir($dir)) !== false) {
@@ -82,15 +76,17 @@ function updateFiles($source, $dest)
                         mkdir($destPath);
                         echo "<span style='background-color: lime; color: black;'>Creata directory: $destPath</span>\n";
                     }
-                    updateFiles($srcPath, $destPath);
+                    updateFiles($srcPath, $destPath, $modifiedFiles);
                 }
             } else {
                 if (!file_exists($destPath)) {
                     echo "<span style='background-color: lime; color: black;'>Aggiunto: $destPath</span>\n";
                     copy($srcPath, $destPath);
+                    $modifiedFiles[] = $destPath;
                 } else if (md5_file($srcPath) != md5_file($destPath)) {
                     echo "<span style='background-color: lime; color: black;'>Sovrascritto: $destPath</span>\n";
                     copy($srcPath, $destPath);
+                    $modifiedFiles[] = $destPath;
                 } else {
                     echo "Non modificato: $destPath\n";
                 }
@@ -100,34 +96,31 @@ function updateFiles($source, $dest)
     closedir($dir);
 }
 
-// Inizia l'aggiornamento dei file
-$extractedDir = glob($tempDir . '/*', GLOB_ONLYDIR)[0];  // Trova la directory estratta
-updateFiles($extractedDir, $baseDir);
+$extractedDir = glob($tempDir . '/*', GLOB_ONLYDIR)[0];
+updateFiles($extractedDir, $baseDir, $modifiedFiles);
 
-// Rimuovi la directory temporanea e il file zip scaricato
 function rrmdir($dir)
 {
-    $success = true;  // Variabile per tenere traccia del successo
+    $success = true;
     foreach (glob($dir . '/{,.}[!.,!..]*', GLOB_MARK | GLOB_BRACE) as $file) {
         if (is_dir($file)) {
             if (!rrmdir($file)) {
-                $success = false;  // Se la rimozione di una sottodirectory fallisce
+                $success = false;
             }
         } else {
             if (!unlink($file)) {
                 echo "<span style='background-color: red; color: white;'>Errore durante l'eliminazione di: $file</span>\n";
-                $success = false;  // Se il file non può essere eliminato
+                $success = false;
             }
         }
     }
     if (is_dir($dir) && !rmdir($dir)) {
         echo "<span style='background-color: red; color: white;'>Errore durante l'eliminazione della directory: $dir</span>\n";
-        $success = false;  // Se la directory non può essere eliminata
+        $success = false;
     }
-    return $success;  // Restituisce false se ci sono stati errori
+    return $success;
 }
 
-// Utilizza la funzione migliorata per rimuovere la directory temporanea
 if (rrmdir($tempDir)) {
     echo "Contenuto temporaneo eliminato.\n";
 } else {
@@ -135,6 +128,9 @@ if (rrmdir($tempDir)) {
 }
 unlink($zipFile);
 echo "Eliminato: $zipFile\n";
+
+$fileList = !empty($modifiedFiles) ? implode(", ", $modifiedFiles) : "Nessuno";
+logActivity($_SESSION['user_id'], 'APP', 'AGGIORNAMENTO', 'Lanciato aggiornamento', "File Modificati: $fileList", '');
 
 echo "<span style='background-color: lime; color: black;'>Aggiornamento completato con successo.</span>\n";
 ?>
