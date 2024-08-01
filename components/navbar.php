@@ -141,10 +141,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                     <a id="samples-list" class="collapse-item" href="<?php echo BASE_URL ?>/functions/samples/list"><i
                             class="far fa-list"></i>
                         In corso</a>
-                    <a id="samples-done" class="collapse-item" href="#"><i class="far fa-check"></i>
-                        Completi</a>
-                    <a id="samples-search" class="collapse-item" href="#"><i class="fa fa-search"></i>
-                        Cerca</a>
                 </div>
             </div>
         </li>

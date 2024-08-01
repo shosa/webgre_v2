@@ -74,9 +74,6 @@ require_once BASE_PATH . '/components/header.php';
                                         data-toggle="modal">
                                         <i class="far fa-user-plus"></i> AGGIUNGI
                                     </button>
-                                    <button class="btn btn-block btn-warning" id="manageRoles">
-                                        <i class="far fa-user-tag"></i> GESTIONE RUOLI
-                                    </button>
                                     <button class="btn btn-block btn-danger" id="deleteUser"
                                         data-target="#deleteUserModal" data-toggle="modal">
                                         <i class="far fa-trash"></i> ELIMINA
