@@ -94,13 +94,9 @@ include (BASE_PATH . "/components/header.php");
 
                                                 <th>Descrizione</th>
 
+                                                <th>Descrizione</th>
+
                                                 <th>Note</th>
-
-                                                <?php if ($_SESSION['tipo'] == 'Admin' || $_SESSION['tipo'] == 'Super') {
-
-                                                    echo " <th>Query</th>";
-
-                                                } ?>
 
                                                 <th>Timestamp</th>
 
@@ -154,7 +150,7 @@ include (BASE_PATH . "/components/header.php");
 
                                                 // Visualizza la colonna "Query" solo per Admin e Super se il campo "text_query" non è vuoto
 
-                                                if (($_SESSION['tipo'] == 'Admin' || $_SESSION['tipo'] == 'Super') && !empty($log['text_query'])) {
+                                                if (!empty($log['text_query'])) {
 
                                                     echo '<td class="text-center">';
 
@@ -164,7 +160,7 @@ include (BASE_PATH . "/components/header.php");
 
                                                 }
 
-                                                if (($_SESSION['tipo'] == 'Admin' || $_SESSION['tipo'] == 'Super') && empty($log['text_query'])) {
+                                                if (empty($log['text_query'])) {
 
                                                     echo '<td>';
 
@@ -212,7 +208,7 @@ include (BASE_PATH . "/components/header.php");
 
                         <div class="modal-header">
 
-                            <h5 class="modal-title" id="queryModalLabel">Query Dettagliata</h5>
+                            <h5 class="modal-title" id="queryModalLabel">Dettagli</h5>
 
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 
