@@ -130,7 +130,7 @@ unlink($zipFile);
 echo "Eliminato: $zipFile\n";
 
 $fileList = !empty($modifiedFiles) ? implode(", ", $modifiedFiles) : "Nessuno";
-logActivity($_SESSION['user_id'], 'APP', 'AGGIORNAMENTO', 'Lanciato aggiornamento', "File Modificati: $fileList", '');
+logActivity($_SESSION['user_id'], 'APP', 'AGGIORNAMENTO', 'Lanciato aggiornamento', "Dettaglio File Modificati", "$fileList");
 
 echo "<span style='background-color: lime; color: black;'>Aggiornamento completato con successo.</span>\n";
 ?>
