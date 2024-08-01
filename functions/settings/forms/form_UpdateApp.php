@@ -22,7 +22,7 @@
     }
 </style>
 <div>
-    <p>Clicca il bottone qui sotto per aggiornare l'app alla versione più recente.</p>
+    <p>Clicca il bottone per aggiornare l'app alla versione più recente.</p>
     <button id="updateAppBtn" class="btn btn-success ml-2">Aggiorna</button>
     <div id="spinner" class="spinner" style="display: none;"></div>
     <div class="mt-4 p-4 border rounded shadow-sm m-2 bg-light">
