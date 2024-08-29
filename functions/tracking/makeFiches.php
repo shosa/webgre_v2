@@ -28,7 +28,7 @@ require_once BASE_PATH . '/components/header.php'; ?>
                     <ol class="mb-4 breadcrumb">
                         <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="home">Tracking</a></li>
-                        <li class="breadcrumb-item active">Packing List</li>
+                        <li class="breadcrumb-item active">Fiches Cartellini</li>
                     </ol>
                     <div class="row">
                         <div class="col-lg-5 col-xl-4">
