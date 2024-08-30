@@ -148,7 +148,7 @@ require_once BASE_PATH . '/components/header.php';
 
                                 <div class="text-left">
 
-                                    <h4><b>Dettagli Lotti</b></h4>
+                                    <h5><b>Dettagli Lotti</b></h5>
 
                                     <i>Aggiungi i riferimenti di consegna per i lotti memorizzati</i>
 
