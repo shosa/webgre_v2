@@ -2,7 +2,8 @@
 session_start();
 require_once '../../config/config.php';
 require_once BASE_PATH . '/components/auth_validate.php';
-require_once BASE_PATH . '/components/header.php'; ?>
+require_once BASE_PATH . '/components/header.php';
+header('Access-Control-Allow-Origin: *'); ?>
 <style>
     #suggestions-container {
         max-height: 150px;
