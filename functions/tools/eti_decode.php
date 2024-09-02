@@ -1,5 +1,6 @@
 <?php 
 ob_start();
+header('Access-Control-Allow-Origin: *');
 session_start();
 require_once '../../config/config.php';
 require_once BASE_PATH . '/vendor/autoload.php';
