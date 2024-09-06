@@ -1,13 +1,13 @@
 const CACHE_NAME = 'webgre';
 const urlsToCache = [
-  '/',
-  '/css/sb-admin-2.css',
-  '/css/sb-admin-2.min.css',
-  '/vendor/fontawesome-free/css/all.min.css',
-  '/vendor/datatables/dataTables.bootstrap4.min.css',
-  '/img/logo.png',
-  '/img/logoMini.png',
-  '/img/roundLogo.png'
+  '/webgre/',
+  '/webgre/css/sb-admin-2.css',
+  '/webgre/css/sb-admin-2.min.css',
+  '/webgre/vendor/fontawesome-free/css/all.min.css',
+  '/webgre/vendor/datatables/dataTables.bootstrap4.min.css',
+  '/webgre/img/logo.png',
+  '/webgre/img/logoMini.png',
+  '/webgre/img/roundLogo.png'
     // Aggiungi altre risorse che vuoi cacheare
 ];
 
