@@ -1,5 +1,5 @@
 <?php
-include ("config/config.php");
+include("config/config.php");
 session_start();
 require_once BASE_PATH . '/components/auth_validate.php';
 $pdo = getDbInstance();
@@ -31,14 +31,14 @@ if ($preferenzeEsistenti == 0) {
     $stmtInsertPreferenze->execute([':user_id' => $idUtente]);
 }
 ?>
-<?php include ("components/header.php"); ?>
+<?php include("components/header.php"); ?>
 
 <body id="page-top">
     <div id="wrapper">
-        <?php include ("components/navbar.php"); //INCLUSIONE NAVBAR ?>
+        <?php include("components/navbar.php"); //INCLUSIONE NAVBAR ?>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                <?php include ("components/topbar.php"); ?>
+                <?php include("components/topbar.php"); ?>
                 <div class="container-fluid">
                     <?php require_once BASE_PATH . "/utils/alerts.php"; ?>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -46,12 +46,13 @@ if ($preferenzeEsistenti == 0) {
 
                     </div>
                     <!-- INIZIO ROW CARDS -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
                         <h3 class="h3 mb-0 text-<?php echo $colore; ?>">Contatori</h3>
                         <hr>
                         <div class="dropdown">
-                            <button class="btn btn-light dropdown-toggle text-<?php echo $colore; ?>" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn btn-light dropdown-toggle text-<?php echo $colore; ?>" type="button"
+                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
                                 <i class="fal fa-sliders-h fa-2x text-<?php echo $colore; ?>"></i>
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -97,18 +98,18 @@ if ($preferenzeEsistenti == 0) {
 
                     </div>
                     <hr>
-                    <?php include ("components/homeCards.php"); ?>
+                    <?php include("components/homeCards.php"); ?>
                     <!-- CHIUSURA ROW CARDS -->
 
                 </div>
             </div>
-            <?php include (BASE_PATH . "/components/footer.php"); ?>
+            <?php include(BASE_PATH . "/components/footer.php"); ?>
         </div>
     </div>
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-    <?php include (BASE_PATH . "/components/scripts.php"); ?>
+    <?php include(BASE_PATH . "/components/scripts.php"); ?>
     <style>
         .card-hover {
             position: relative;

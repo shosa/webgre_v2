@@ -46,7 +46,7 @@ $unreadCount = count($notifications);
 
     <?php if (isset($debug) && $debug == true): ?>
         <div class="mx-auto">
-            <span class="h3 text-danger text-center font-weight-bold">** AMBIENTE DI TEST **</span>
+            <span class="h6 text-danger text-center font-weight-bold">** AMBIENTE DI TEST **</span>
         </div>
     <?php endif; ?>
 
