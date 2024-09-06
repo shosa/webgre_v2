@@ -58,12 +58,12 @@ if ($preferenzeEsistenti == 0) {
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <form id="preferencesForm" class="px-2 py-2">
                                     <?php if (isset($_SESSION['permessi_riparazioni']) && $_SESSION['permessi_riparazioni'] == 1): ?>
-                                        <div class="form-check form-switch mb-2">
+                                        <div class="h5 form-check form-switch mb-2">
                                             <input class="form-check-input" type="checkbox" id="cardRiparazioni"
                                                 name="cardRiparazioni" <?php echo $mostraCardRiparazioni ? 'checked' : ''; ?>>
                                             <label class="form-check-label" for="cardRiparazioni">Riparazioni</label>
                                         </div>
-                                        <div class="form-check form-switch mb-2">
+                                        <div class="h5 form-check form-switch mb-2">
                                             <input class="form-check-input" type="checkbox" id="cardMyRiparazioni"
                                                 name="cardMyRiparazioni" <?php echo $mostraCardMyRiparazioni ? 'checked' : ''; ?>>
                                             <label class="form-check-label" for="cardMyRiparazioni">Riparazioni
@@ -71,19 +71,19 @@ if ($preferenzeEsistenti == 0) {
                                         </div>
                                     <?php endif; ?>
                                     <?php if (isset($_SESSION['permessi_cq']) && $_SESSION['permessi_cq'] == 1): ?>
-                                        <div class="form-check form-switch mb-2">
+                                        <div class="h5 form-check form-switch mb-2">
                                             <input class="form-check-input" type="checkbox" id="cardQuality"
                                                 name="cardQuality" <?php echo $mostraCardQuality ? 'checked' : ''; ?>>
                                             <label class="form-check-label" for="cardQuality">Controllo Qualità</label>
                                         </div>
                                     <?php endif; ?>
                                     <?php if (isset($_SESSION['permessi_produzione']) && $_SESSION['permessi_produzione'] == 1): ?>
-                                        <div class="form-check form-switch mb-2">
+                                        <div class="h5 form-check form-switch mb-2">
                                             <input class="form-check-input" type="checkbox" id="cardProduction"
                                                 name="cardProduction" <?php echo $mostraCardProduzione ? 'checked' : ''; ?>>
                                             <label class="form-check-label" for="cardProduction">Produzione di Oggi</label>
                                         </div>
-                                        <div class="form-check form-switch mb-2">
+                                        <div class="h5 form-check form-switch mb-2">
                                             <input class="form-check-input" type="checkbox" id="cardProductionMonth"
                                                 name="cardProductionMonth" <?php echo $mostraCardProduzioneMese ? 'checked' : ''; ?>>
                                             <label class="form-check-label" for="cardProductionMonth">Produzione del
