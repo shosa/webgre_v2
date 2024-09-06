@@ -2,6 +2,7 @@ const CACHE_NAME = 'myMicaApp';
 const urlsToCache = [
   '/',
   '/css/sb-admin-2.css',
+  '/css/sb-admin-2.min.css',
   '/vendor/fontawesome-free/css/all.min.css',
   '/vendor/datatables/dataTables.bootstrap4.min.css',
   '/img/logo.png',
