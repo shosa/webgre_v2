@@ -1,4 +1,4 @@
-const CACHE_NAME = 'myMicaApp';
+const CACHE_NAME = 'webgre';
 const urlsToCache = [
   '/',
   '/css/sb-admin-2.css',
