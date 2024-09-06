@@ -97,7 +97,7 @@ function getRandomColor()
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <a href="<?php echo $result['link']; ?>" class="card-footer text-white bg-white text-<?php echo $result['color']; ?>">
+                                                <a href="/webgre/<?php echo $result['link']; ?>" class="card-footer text-white bg-white text-<?php echo $result['color']; ?>">
                                                     <span class="float-left">Vai alla pagina</span>
                                                     <span class="float-right"><i class="fa fa-arrow-circle-right"></i></span>
                                                     <div class="clearfix"></div>
