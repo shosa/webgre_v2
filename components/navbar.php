@@ -334,6 +334,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             if (homeNavItem) {
                 homeNavItem.classList.add('active');
                 homeNavItem.classList.remove('text-<?php echo $colore; ?>');
+
             }
         }
     });

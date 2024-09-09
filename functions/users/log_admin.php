@@ -11,7 +11,7 @@ session_start();
 require_once '../../config/config.php';
 
 include (BASE_PATH . "/components/header.php");
-
+require_once BASE_PATH . '/components/auth_validate.php';
 ?>
 
 
