@@ -17,7 +17,7 @@
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex align-items-center">
                                     <h6 class="m-0 font-weight-bold text-primary">Tabelle</h6> <a href="sql"
-                                        class="btn btn-success ml-auto">SQL</a>
+                                        class="btn btn-indigo ml-auto">Console</a>
                                 </div>
                                 <div class="card-body">
                                     <ul id="tables-list" class="list-group"></ul>
