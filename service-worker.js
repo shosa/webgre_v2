@@ -1,6 +1,5 @@
-const CACHE_NAME = 'webgre';
+const CACHE_NAME = 'webgre-v2';
 const urlsToCache = [
-  '/webgre/',
   '/webgre/css/sb-admin-2.css',
   '/webgre/css/sb-admin-2.min.css',
   '/webgre/vendor/fontawesome-free/css/all.min.css',

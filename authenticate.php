@@ -3,7 +3,7 @@ session_start();
 require_once 'config/config.php';
 require_once BASE_PATH . '/utils/log_utilsLogin.php';
 require_once BASE_PATH . '/utils/check_notifications.php';
-
+require_once BASE_PATH . '/utils/helpers.php';
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
