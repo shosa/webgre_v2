@@ -7,12 +7,12 @@ require_once BASE_PATH . '/components/header.php';
 
 <body id="page-top">
     <div id="wrapper">
-        <?php include (BASE_PATH . "/components/navbar.php"); ?>
+        <?php include(BASE_PATH . "/components/navbar.php"); ?>
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
-                <?php include (BASE_PATH . "/components/topbar.php"); ?>
+                <?php include(BASE_PATH . "/components/topbar.php"); ?>
                 <div class="container-fluid">
-                    <?php require_once (BASE_PATH . "/utils/alerts.php"); ?>
+                    <?php require_once(BASE_PATH . "/utils/alerts.php"); ?>
                     <div class="mb-4 align-items-center d-sm-flex justify-content-between">
                         <h1 class="h3 mb-0 text-gray-800">Utenti</h1>
                     </div>
@@ -378,7 +378,8 @@ require_once BASE_PATH . '/components/header.php';
                     <form id="editPasswordForm">
                         <div class="form-group">
                             <label for="changePassword">Nuova Password</label>
-                            <input type="password" class="form-control" id="changePassword" name="changePassword" required>
+                            <input type="password" class="form-control" id="changePassword" name="changePassword"
+                                required>
                         </div>
                         <button type="submit" class="btn btn-warning btn-block">Salva</button>
                     </form>
