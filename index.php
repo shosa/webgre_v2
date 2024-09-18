@@ -32,7 +32,6 @@ if ($preferenzeEsistenti == 0) {
 }
 ?>
 <?php include("components/header.php"); ?>
-
 <body id="page-top">
     <div id="wrapper">
         <?php include("components/navbar.php"); //INCLUSIONE NAVBAR ?>
@@ -43,7 +42,6 @@ if ($preferenzeEsistenti == 0) {
                     <?php require_once BASE_PATH . "/utils/alerts.php"; ?>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-
                     </div>
                     <!-- INIZIO ROW CARDS -->
                     <div class="d-flex align-items-center justify-content-between mb-4">
@@ -95,12 +93,10 @@ if ($preferenzeEsistenti == 0) {
                                 </form>
                             </div>
                         </div>
-
                     </div>
                     <hr>
                     <?php include("components/homeCards.php"); ?>
                     <!-- CHIUSURA ROW CARDS -->
-
                 </div>
             </div>
             <?php include(BASE_PATH . "/components/footer.php"); ?>
@@ -114,15 +110,11 @@ if ($preferenzeEsistenti == 0) {
         .card-hover {
             position: relative;
             transition: transform 0.3s, box-shadow 0.3s;
-
         }
-
         .card-hover:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-
         }
-
         .card-hover a {
             position: absolute;
             top: 0;
@@ -132,7 +124,6 @@ if ($preferenzeEsistenti == 0) {
             z-index: 1;
         }
     </style>
-
 </body>
 <script>
     document.getElementById('preferencesForm').addEventListener('submit', function (event) {
@@ -148,7 +139,6 @@ if ($preferenzeEsistenti == 0) {
         const cardQuality = cardQualityElement ? cardQualityElement.checked ? 1 : 0 : 0;
         const cardProduction = cardProductionElement ? cardProductionElement.checked ? 1 : 0 : 0;
         const cardProductionMonth = cardProductionMonthElement ? cardProductionMonthElement.checked ? 1 : 0 : 0;
-
         fetch('functions/users/update_cards.php', {
             method: 'POST',
             headers: {

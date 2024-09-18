@@ -168,7 +168,6 @@
                 "November" => "NOVEMBRE",
                 "December" => "DICEMBRE"
             );
-
             // Traduci il mese in italiano
             $mese_odierno = $mesi[$mese_odierno_inglese];
             $sqlTotali = "SELECT SUM(TOTALITAGLIO), SUM(TOTALIORLATURA), SUM(TOTALIMONTAGGIO) FROM prod_mesi WHERE MESE = ? ";

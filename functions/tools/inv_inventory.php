@@ -16,7 +16,6 @@ try {
     if ($deposito) {
         $dep = htmlspecialchars($deposito['dep']);
         $des = htmlspecialchars($deposito['des']);
-
     } else {
         echo "Nessun deposito trovato per il valore selezionato.";
     }
@@ -29,7 +28,6 @@ try {
         padding: 8px;
         margin-bottom: 10px
     }
-
     #suggestions-container {
         max-height: 150px;
         overflow-y: auto;
@@ -37,39 +35,32 @@ try {
         background-color: #f0f0f0;
         border-bottom-left-radius: 10px
     }
-
     .suggestion-item {
         padding: 8px;
         cursor: pointer
     }
-
     .suggestion-item:hover {
         background-color: #6610f2;
         color: #fff
     }
-
     .result-info {
         font-size: 18px;
         margin-bottom: 15px
     }
-
     .toggle-container {
         display: flex;
         align-items: center;
         margin-bottom: 15px
     }
-
     .toggle-label {
         margin-right: 10px
     }
-
     .toggle-switch {
         position: relative;
         display: inline-block;
         width: 60px;
         height: 34px
     }
-
     .toggle-slider {
         position: absolute;
         cursor: pointer;
@@ -82,7 +73,6 @@ try {
         transition: .4s;
         border-radius: 34px
     }
-
     .toggle-slider:before {
         position: absolute;
         content: "";
@@ -95,45 +85,37 @@ try {
         transition: .4s;
         border-radius: 50%
     }
-
     .toggle-input:checked+.toggle-slider {
         background-color: #2196f3
     }
-
     .toggle-input:checked+.toggle-slider:before {
         -webkit-transform: translateX(26px);
         -ms-transform: translateX(26px);
         transform: translateX(26px)
     }
-
     .numerata-container {
         margin-top: 20px
     }
-
     .numerata-row {
         display: flex;
         margin-bottom: 0
     }
-
     .numerata-label {
         margin-right: 10px;
         flex: 0 0 50px;
         text-align: right;
         line-height: 28px
     }
-
     .numerata-input {
         flex: 1;
         margin-right: 5px;
         width: 40px
     }
-
     #numerata-container input {
         text-align: center;
         padding: 2px
     }
 </style><?php include (BASE_PATH . "/components/header.php"); ?>
-
 <body id="page-top">
     <div id="wrapper"><?php include (BASE_PATH . "/components/navbar.php"); ?>
         <div class="d-flex flex-column" id="content-wrapper">
@@ -226,428 +208,191 @@ try {
         </div>
     </div>
 </body>
-
-
 <script>
-
     document.addEventListener("DOMContentLoaded", function () {
-
         const form = document.getElementById("addArticoloForm");
-
         const input = document.getElementById("codice_articolo");
-
         const suggestionsContainer = document.getElementById("suggestions-container");
-
         const resultContainer = document.getElementById("result-container");
-
         const numerataContainer = document.getElementById("numerata-container");
-
         const taglieFieldsContainer = document.getElementById("taglie-fields");
-
         const quantitaFieldsContainer = document.getElementById("quantita-fields");
-
         const toggleNumerata = document.getElementById("toggleNumerata");
-
         const btnInserisci = document.getElementById("insertItemBtn");
-
         const btnDettagli = document.getElementById("dettagliItemBtn");
-
         const btnAnnulla = document.getElementById("annullaItemBtn");
-
         const generatePdfBtn = document.getElementById("generatePdfBtn");
-
-
-
         let selectedDetails = null;
-
         let isNumerata; // Dichiarazione spostata qui
-
-
-
         input.addEventListener("input", function () {
-
             suggestionsContainer.innerHTML = "";
-
             resultContainer.innerHTML = "";
-
             const inputValue = input.value.trim();
-
-
-
             if (inputValue !== "") {
-
                 fetch(`inv_get_suggestions.php?q=${inputValue}`)
-
                     .then(response => response.json())
-
                     .then(data => showSuggestions(data));
-
             }
-
         });
-
-
-
         btnAnnulla.addEventListener("click", function () {
-
             resetForm();
-
         });
-
-
-
         function resetForm() {
-
             // Ripristina il campo del modulo e i container
-
             input.value = "";
-
             suggestionsContainer.innerHTML = "";
-
             resultContainer.innerHTML = "";
-
             numerataContainer.style.display = "none";
-
             taglieFieldsContainer.innerHTML = "";
-
             quantitaFieldsContainer.innerHTML = "";
-
-
-
             // Nascondi o mostra i pulsanti e container come all'inizio
-
             btnAnnulla.style.display = "none";
-
             btnInserisci.style.display = "none";
-
             btnDettagli.style.display = "inline";
-
             input.focus();
-
         }
-
         document.getElementById('editList').addEventListener('click', function () {
-
             // Naviga a inv_all_items.php
-
             window.location.href = 'inv_all_items.php';
-
         });
-
         function showSuggestions(suggestions) {
-
             suggestionsContainer.innerHTML = "";
-
             suggestions.forEach(suggestion => {
-
                 const suggestionItem = document.createElement("div");
-
                 suggestionItem.className = "suggestion-item";
-
                 suggestionItem.innerHTML = `<strong>${suggestion.art}</strong> | ${suggestion.des}`;
-
                 suggestionItem.addEventListener("click", function () {
-
                     input.value = suggestion.art;
-
                     suggestionsContainer.innerHTML = "";
-
                 });
-
                 suggestionsContainer.appendChild(suggestionItem);
-
             });
-
         }
-
-
-
         form.addEventListener("submit", function (event) {
-
             event.preventDefault();
-
-
-
             const selectedArticolo = input.value;
-
             isNumerata = toggleNumerata.checked; // Assegna il valore qui
-
-
-
             fetch(`inv_get_details.php?art=${selectedArticolo}`)
-
                 .then(response => response.json())
-
                 .then(details => {
-
                     selectedDetails = details;
-
                     resultContainer.innerHTML = `
-
             <label for="selected_des">Descrizione:</label>
-
             <input type="text" style="width:100%" id="selected_des" name="selected_des" value="${details.des}" readonly>
-
         `;
-
-
-
                     if (selectedDetails) {
-
                         if (isNumerata) {
-
                             numerataContainer.style.display = toggleNumerata.checked ? "block" : "none";
-
                             // Aggiungi i campi numerati per le taglie e quantità
-
                             for (let i = 1; i <= 20; i++) {
-
                                 const tagliaField = document.createElement("div");
-
                                 tagliaField.className = "form-group numerata-input";
-
                                 tagliaField.innerHTML = `
-
                         <input type="text" id="numerataTaglia${i}" name="numerataTaglia${i}" class="form-control" placeholder="">
-
                     `;
-
                                 taglieFieldsContainer.appendChild(tagliaField);
-
-
-
                                 const quantitaField = document.createElement("div");
-
                                 quantitaField.className = "form-group numerata-input";
-
                                 quantitaField.innerHTML = `
-
                         <input type="text" id="numerataQuantita${i}" name="numerataQuantita${i}" class="form-control" placeholder="">
-
                     `;
-
                                 quantitaFieldsContainer.appendChild(quantitaField);
-
                             }
-
                         } else {
-
                             taglieFieldsContainer.innerHTML = "";
-
                             quantitaFieldsContainer.innerHTML = "";
-
                             resultContainer.innerHTML += `
-
                     <label for="quantita">Quantità:</label>
-
                     <input type="text" id="quantita" name="quantita" placeholder="Inserisci la quantità" required>
-
                 `;
-
                             document.getElementById('quantita').focus();
-
                         }
-
-
-
                         // Aggiungi il pulsante "Inserisci Articolo"
-
                         btnAnnulla.style.display = "inline";
-
                         btnInserisci.style.display = "inline";
-
                         btnDettagli.style.display = "none";
-
-
-
-
-
                     }
-
                 })
-
                 .catch(error => {
-
                     console.error("Errore durante la richiesta dei dettagli dell'articolo:", error);
-
                 });
-
         });
-
         const insertItemBtn = document.getElementById("insertItemBtn");
-
         insertItemBtn.removeEventListener("click", handleInsertItem); // Rimuovi il vecchio listener
-
         insertItemBtn.addEventListener("click", handleInsertItem);
-
-
-
         function handleInsertItem() {
-
             insertItem(isNumerata);
-
         }
-
         function insertItem(isNumerata) {
-
             const formData = new FormData(form);
-
-
-
             // Se l'opzione numerata è abilitata, ottieni tutti i valori dei campi numerati
-
             if (isNumerata) {
-
                 const numerataTaglie = [];
-
                 const numerataQuantita = [];
-
-
-
                 for (let i = 1; i <= 20; i++) {
-
                     numerataTaglie.push(formData.get(`numerataTaglia${i}`));
-
                     numerataQuantita.push(formData.get(`numerataQuantita${i}`));
-
                 }
-
-
-
                 // Concatena i valori separati da ";"
-
                 formData.set('num', numerataTaglie.join(';'));
-
                 formData.set('qta', numerataQuantita.join(';'));
-
                 formData.set('valueNumerata', '1');
-
             } else {
-
                 formData.set('num', 'X');
-
                 formData.set('qta', formData.get(`quantita`));
-
                 formData.set('valueNumerata', '0');
-
             }
-
-
-
             fetch("inv_upload_item.php", {
-
                 method: "POST",
-
                 body: formData
-
             })
-
                 .then(response => response.json()) // Modificato da 'response.text()' a 'response.json()'
-
                 .then(data => {
-
                     console.log("Risposta dal server:", data);
-
-
-
                     // Verifica lo status della risposta
-
                     if (data.status === 'success') {
-
                         showAlert('success', data.message);
-
                         resetForm();
-
                     } else if (data.status === 'warning') {
-
                         showAlert('warning', data.message);
-
                         resetForm();
-
                         // Puoi aggiungere qui ulteriori azioni in base al tuo scenario di avviso
-
                     } else {
-
                         showAlert('danger', 'Si è verificato un errore durante l\'inserimento dell\'articolo.');
-
                         resetForm();
-
                     }
-
                 })
-
                 .catch(error => {
-
                     console.error("Errore durante la chiamata Ajax:", error);
-
                     console.error("Risposta completa del server:", error.responseText); // Aggiunto log per la risposta completa
-
                     showAlert('danger', 'Si è verificato un errore durante l\'inserimento dell\'articolo.');
-
                     resetForm();
-
                 });
-
         }
-
         function showAlert(type, message) {
-
             // Crea l'elemento alert
-
             const alertDiv = document.createElement('div');
-
             alertDiv.className = `alert alert-${type} alert-dismissible fade show mt-3`;
-
             alertDiv.innerHTML = `
-
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-
                     <span aria-hidden="true">&times;</span>
-
                 </button>
-
                 ${message}
-
             `;
-
-
-
             // Inserisci l'alert prima del form
-
             form.parentNode.insertBefore(alertDiv, form);
-
-
-
             // Imposta un timer per rimuovere l'alert dopo 2 secondi
-
             setTimeout(function () {
-
                 alertDiv.remove();
-
             }, 10000);
-
         }
-
         generatePdfBtn.addEventListener("click", function () {
-
             // Ottieni il deposito selezionato
-
             const depositoSelezionato = "<?php echo $deposito_selezionato; ?>";
-
-
-
             // Costruisci l'URL per lo script PHP con il parametro del deposito
-
             const url = `inv_print_list.php?deposito=${encodeURIComponent(depositoSelezionato)}`;
-
-
-
             // Apri una nuova finestra o scheda del browser con l'URL
-
             window.open(url, '_blank');
-
         });
-
     });
-
 </script>

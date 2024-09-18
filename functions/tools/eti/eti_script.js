@@ -1,7 +1,6 @@
 (function () {
     var label;
     var _printers = [];
-
     // Funzione per mostrare i suggerimenti di ricerca
     function showSuggestions(suggestions, container, inputField) {
         container.innerHTML = "";
@@ -17,7 +16,6 @@
             container.appendChild(suggestionItem);
         });
     }
-
     // Funzione per recuperare e aggiornare i dettagli dell'articolo
     function fetchAndUpdateArticleDetails(artCode) {
         const url = `eti_get_article_details.php?art=${artCode}`;
@@ -35,7 +33,6 @@
             })
             .catch(error => console.error('Errore nel recupero dei dettagli articolo:', error));
     }
-
     // Funzione per creare una riga di dettaglio della stampante
     function createPrintersTableRow(table, name, value) {
         var row = document.createElement("tr");
@@ -47,20 +44,17 @@
         row.appendChild(cell2);
         table.appendChild(row);
     }
-
     // Funzione per popolare i dettagli della stampante
     function populatePrinterDetail() {
         var printerDetail = document.getElementById("printerDetail");
         printerDetail.innerHTML = "";
         var myPrinter = _printers[document.getElementById("printersSelect").value];
         if (myPrinter === undefined) return;
-
         var table = document.createElement("table");
         table.classList.add("table", "table-bordered");
         createPrintersTableRow(table, 'Modello', myPrinter['modelName']);
         createPrintersTableRow(table, 'Locale', myPrinter['isLocal']);
         createPrintersTableRow(table, 'Connessione', myPrinter['isConnected']);
-
         dymo.label.framework.is550PrinterAsync(myPrinter.name).then(function (isRollStatusSupported) {
             if (isRollStatusSupported) {
                 dymo.label.framework.getConsumableInfoIn550PrinterAsync(myPrinter.name).then(function (consumableInfo) {
@@ -78,10 +72,8 @@
         }).thenCatch(function (e) {
             createPrintersTableRow(table, 'IsRollStatusSupported', e.message);
         });
-
         printerDetail.appendChild(table);
     }
-
     function formatTextWithLineBreaks(text, maxLength) {
         let formattedText = '';
         while (text.length > maxLength) {
@@ -91,32 +83,26 @@
         formattedText += text;
         return formattedText;
     }
-
     // Funzione per aggiornare il contenuto dell'etichetta
     function updateLabelContent(categoriaText, codiceText, descrizioneText, codiceArticoloText) {
         if (!label) {
             alert("Carica l'etichetta prima di aggiornare il contenuto");
             return;
         }
-
         // Formattazione del testo della descrizione
         let formattedDescrizioneText = formatTextWithLineBreaks(descrizioneText, 30);
-
         // Aggiorna il contenuto dell'etichetta
         label.setObjectText("CATEGORIA", categoriaText);
         label.setObjectText("CODICE", codiceText);
         label.setObjectText("CODICE_ARTICOLO", codiceArticoloText);
         label.setObjectText("BARCODE", codiceText);
         label.setObjectText("DESCRIZIONE", formattedDescrizioneText);
-
         // Mostra un'anteprima dell'etichetta
         var preview = document.getElementById("labelPreview");
         preview.src = "data:image/png;base64," + label.render();
-
         // Popola i dettagli della stampante
         populatePrinterDetail();
     }
-
     // Funzione per caricare in modo asincrono le stampanti
     function loadPrintersAsync() {
         _printers = [];
@@ -330,11 +316,9 @@
 </DieCutLabel>';
         label = dymo.label.framework.openLabelXml(testAddressLabelXml);
     }
-
     // Funzione chiamata al completamento del caricamento del documento
     function onload() {
         loadPrintersAsync();
-
         document.getElementById('printButton').onclick = function () {
             try {
                 if (!label) {
@@ -346,9 +330,7 @@
                 alert(e.message || e);
             }
         };
-
         document.getElementById('printersSelect').onchange = populatePrinterDetail;
-
         document.getElementById("codice_articolo").addEventListener("input", function () {
             const inputValue = this.value.trim();
             if (inputValue !== "") {
@@ -360,12 +342,10 @@
             }
         });
     }
-
     // Inizializza e registra l'evento di caricamento
     if (dymo.label.framework.init) {
         dymo.label.framework.init(onload);
     } else {
         onload();
     }
-
 }());

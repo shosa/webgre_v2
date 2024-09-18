@@ -4,7 +4,6 @@ require_once '../../config/config.php';
 require_once BASE_PATH . '/components/auth_validate.php';
 require_once BASE_PATH . '/components/header.php';
 ?>
-
 <body id="page-top">
     <div id="wrapper">
         <?php include(BASE_PATH . "/components/navbar.php"); ?>
@@ -123,7 +122,6 @@ require_once BASE_PATH . '/components/header.php';
                             url: "https://cdn.datatables.net/plug-ins/2.0.8/i18n/it-IT.json"
                         },
                     });
-
                     $('#dataTable').on('click', '.edit-btn', function () {
                         var $button = $(this);
                         var $row = $button.closest('tr');
@@ -159,22 +157,18 @@ require_once BASE_PATH . '/components/header.php';
                             $button.addClass('editing btn-success').html('<i class="far fa-save"></i>');
                         }
                     });
-
                     $('#dataTable').on('click', '.edit-password-btn', function () {
                         var $button = $(this);
                         var $row = $button.closest('tr');
                         var id = $row.find('td:eq(0)').text();
                         $('#editPasswordModal').data('user-id', id); // Salva l'ID utente nel modale
-
                         // Mostra il modale
                         $('#editPasswordModal').modal('show');
                     });
-
                     $('#editPasswordForm').submit(function (event) {
                         event.preventDefault();
                         var userId = $('#editPasswordModal').data('user-id');
                         var changePassword = $('#changePassword').val();
-
                         $.ajax({
                             url: 'update_password.php',
                             method: 'POST',
@@ -196,7 +190,6 @@ require_once BASE_PATH . '/components/header.php';
                         $('#selectUserPermissions').val(userId).trigger('change');
                         $('#managePermissionsModal').modal('show');
                     });
-
                     $('#selectUserPermissions').on('change', function () {
                         var userId = $(this).val();
                         $.ajax({
@@ -212,7 +205,6 @@ require_once BASE_PATH . '/components/header.php';
                             }
                         });
                     });
-
                     $('#savePermissionsBtn').on('click', function () {
                         var userId = $('#selectUserPermissions').val();
                         var permissions = {};
@@ -233,13 +225,11 @@ require_once BASE_PATH . '/components/header.php';
                             }
                         });
                     });
-
                     $('#saveNewUserBtn').on('click', function () {
                         var newUserName = $('#newUserName').val();
                         var newNome = $('#newNome').val();
                         var newPassword = $('#newPassword').val();
                         var newAdminType = $('#newAdminType').val();
-
                         $.ajax({
                             url: 'add_user.php',
                             method: 'POST',
@@ -282,7 +272,6 @@ require_once BASE_PATH . '/components/header.php';
             <?php include_once BASE_PATH . '/components/footer.php'; ?>
         </div>
     </div>
-
     <!-- Modale per gestione permessi -->
     <div class="modal fade" id="managePermissionsModal" tabindex="-1" role="dialog"
         aria-labelledby="managePermissionsModalLabel" aria-hidden="true">
@@ -326,7 +315,6 @@ require_once BASE_PATH . '/components/header.php';
             </div>
         </div>
     </div>
-
     <!-- Modale per Aggiungere Utente -->
     <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel"
         aria-hidden="true">
@@ -362,7 +350,6 @@ require_once BASE_PATH . '/components/header.php';
             </div>
         </div>
     </div>
-
     <!-- Modale per cambio password -->
     <div class="modal fade" id="editPasswordModal" tabindex="-1" role="dialog" aria-labelledby="editPasswordModalLabel"
         aria-hidden="true">
@@ -387,8 +374,6 @@ require_once BASE_PATH . '/components/header.php';
             </div>
         </div>
     </div>
-
-
     <!-- Modale per eliminare utente -->
     <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel"
         aria-hidden="true">
@@ -419,6 +404,4 @@ require_once BASE_PATH . '/components/header.php';
             </div>
         </div>
     </div>
-
-
 </body>

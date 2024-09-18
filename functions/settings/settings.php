@@ -6,10 +6,8 @@ session_start();
 require_once '../../config/config.php';
 require_once BASE_PATH . '/utils/helpers.php';
 require_once BASE_PATH . '/utils/log_utils.php';
-
 include (BASE_PATH . "/components/header.php");
 ?>
-
 <body id="page-top">
     <div id="wrapper">
         <?php include (BASE_PATH . "/components/navbar.php"); ?>
@@ -76,7 +74,6 @@ include (BASE_PATH . "/components/header.php");
     </div>
     <?php include (BASE_PATH . "/components/scripts.php"); ?>
 </body>
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     function loadForm(formName, cardTitle) {
@@ -85,7 +82,6 @@ include (BASE_PATH . "/components/header.php");
             .then(html => {
                 document.getElementById('action-content').innerHTML = html;
                 document.getElementById('card-titleName').textContent = cardTitle; // Aggiorna il titolo della card
-
                 // Carica lo script associato al form, se esiste
                 var scriptPath = 'forms/script_' + formName + '.js';
                 fetch(scriptPath)
@@ -98,7 +94,6 @@ include (BASE_PATH . "/components/header.php");
                     });
             });
     }
-
     document.getElementById('uploadXLSX').addEventListener('click', function (event) {
         event.preventDefault();
         loadForm('form_UploadXLSX', 'Aggiornamento Cartellini');
@@ -123,12 +118,10 @@ include (BASE_PATH . "/components/header.php");
         event.preventDefault();
         loadForm('form_ManageTabId', 'Progressivo Cedole');
     });
-
     document.getElementById('updateApp').addEventListener('click', function (event) {
     event.preventDefault();
     loadForm('form_UpdateApp', 'Aggiornamento App');
 });
-
     <?php if (isset($_SESSION['message'])): ?>
         Swal.fire({
             icon: 'success',

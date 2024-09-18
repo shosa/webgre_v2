@@ -1,5 +1,4 @@
 <?php session_start(); require_once '../../config/config.php'; require_once BASE_PATH . '/components/auth_validate.php'; require_once BASE_PATH . '/components/header.php'; ?>
-
 <body id="page-top">
     <div id="wrapper"> <?php include (BASE_PATH . "/components/navbar.php"); ?> <div id="content-wrapper"
             class="d-flex flex-column">

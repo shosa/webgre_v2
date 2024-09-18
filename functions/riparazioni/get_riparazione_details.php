@@ -15,7 +15,6 @@ if ($recordId) {
             $details .= '<tr><th>CODICE:</th><td>' . $record['CODICE'] . '</td></tr>';
             $details .= '<tr><th>ARTICOLO:</th><td>' . $record['ARTICOLO'] . '</td></tr>';
             $details .= '<tr><th>QTA:</th><td>' . $record['QTA'] . '</td></tr>';
-
             // Tabella per PXX e NXX
             $details .= '<tr><td colspan="2">';
             $details .= '<div class="table-responsive">';
@@ -39,7 +38,6 @@ if ($recordId) {
             $details .= '</tr></table>';
             $details .= '</div>';
             $details .= '</td></tr>';
-
             $details .= '<tr><th>REPARTO:</th><td>' . $record['REPARTO'] . '</td></tr>';
             $details .= '<tr><th>NOTE:</th><td>' . $record['CAUSALE'] . '</td></tr>';
             $details .= '<tr><th>LABORATORIO:</th><td>' . $record['LABORATORIO'] . '</td></tr>';

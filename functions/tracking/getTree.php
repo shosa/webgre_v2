@@ -1,20 +1,14 @@
 <?php
-
 session_start();
-
 require_once '../../config/config.php';
-
 // Check if user is authenticated
 require_once BASE_PATH . '/components/auth_validate.php';
-
 // Include necessary utilities or functions
 require_once '../../utils/log_utils.php';
-
 // Check if search query is set
 if (isset($_GET['search_query'])) {
     $search_query = $_GET['search_query'];
     $pdo = getDbInstance();
-
     // Prepare SQL statement to fetch data
     if ($search_query === '*') {
         // Se la ricerca è '*', otteniamo tutti i record
@@ -36,14 +30,11 @@ if (isset($_GET['search_query'])) {
         $stmt->bindValue(':search_queryInfix', '%' . $search_query . '%', PDO::PARAM_STR);
         $stmt->execute();
     }
-
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
     // Process and display results as tree view
     if ($results) {
         // Initialize an empty array to store the nested tree structure
         $tree = [];
-
         // Build the tree structure
         foreach ($results as $result) {
             $tree[$result['cartel']]['cartel'] = $result['cartel'];
@@ -55,7 +46,6 @@ if (isset($_GET['search_query'])) {
                 'timestamp' => $result['timestamp'] // Aggiungiamo il timestamp al lotto
             ];
         }
-
         // Render the tree structure as HTML
         echo '<ul><h5>Risultati:</h5>';
         foreach ($tree as $cartelino) {
@@ -84,4 +74,3 @@ if (isset($_GET['search_query'])) {
 } else {
     echo '<div class="alert alert-warning mt-4">Inserisci una query di ricerca.</div>';
 }
-

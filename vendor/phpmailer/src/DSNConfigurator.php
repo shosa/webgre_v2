@@ -1,5 +1,4 @@
 <?php
-
 /**
  * PHPMailer - PHP email creation and transport class.
  * PHP Version 5.5.
@@ -18,9 +17,7 @@
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.
  */
-
 namespace PHPMailer\PHPMailer;
-
 /**
  * Configure PHPMailer with DSN string.
  *
@@ -41,14 +38,11 @@ class DSNConfigurator
     public static function mailer($dsn, $exceptions = null)
     {
         static $configurator = null;
-
         if (null === $configurator) {
             $configurator = new DSNConfigurator();
         }
-
         return $configurator->configure(new PHPMailer($exceptions), $dsn);
     }
-
     /**
      * Configure PHPMailer instance with DSN string.
      *
@@ -60,12 +54,9 @@ class DSNConfigurator
     public function configure(PHPMailer $mailer, $dsn)
     {
         $config = $this->parseDSN($dsn);
-
         $this->applyConfig($mailer, $config);
-
         return $mailer;
     }
-
     /**
      * Parse DSN string.
      *
@@ -78,18 +69,14 @@ class DSNConfigurator
     private function parseDSN($dsn)
     {
         $config = $this->parseUrl($dsn);
-
         if (false === $config || !isset($config['scheme']) || !isset($config['host'])) {
             throw new Exception('Malformed DSN');
         }
-
         if (isset($config['query'])) {
             parse_str($config['query'], $config['query']);
         }
-
         return $config;
     }
-
     /**
      * Apply configuration to mailer.
      *
@@ -123,12 +110,10 @@ class DSNConfigurator
                     )
                 );
         }
-
         if (isset($config['query'])) {
             $this->configureOptions($mailer, $config['query']);
         }
     }
-
     /**
      * Configure SMTP.
      *
@@ -138,30 +123,23 @@ class DSNConfigurator
     private function configureSMTP($mailer, $config)
     {
         $isSMTPS = 'smtps' === $config['scheme'];
-
         if ($isSMTPS) {
             $mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         }
-
         $mailer->Host = $config['host'];
-
         if (isset($config['port'])) {
             $mailer->Port = $config['port'];
         } elseif ($isSMTPS) {
             $mailer->Port = SMTP::DEFAULT_SECURE_PORT;
         }
-
         $mailer->SMTPAuth = isset($config['user']) || isset($config['pass']);
-
         if (isset($config['user'])) {
             $mailer->Username = $config['user'];
         }
-
         if (isset($config['pass'])) {
             $mailer->Password = $config['pass'];
         }
     }
-
     /**
      * Configure options.
      *
@@ -173,7 +151,6 @@ class DSNConfigurator
     private function configureOptions(PHPMailer $mailer, $options)
     {
         $allowedOptions = get_object_vars($mailer);
-
         unset($allowedOptions['Mailer']);
         unset($allowedOptions['SMTPAuth']);
         unset($allowedOptions['Username']);
@@ -181,9 +158,7 @@ class DSNConfigurator
         unset($allowedOptions['Hostname']);
         unset($allowedOptions['Port']);
         unset($allowedOptions['ErrorInfo']);
-
         $allowedOptions = \array_keys($allowedOptions);
-
         foreach ($options as $key => $value) {
             if (!in_array($key, $allowedOptions)) {
                 throw new Exception(
@@ -194,7 +169,6 @@ class DSNConfigurator
                     )
                 );
             }
-
             switch ($key) {
                 case 'AllowEmpty':
                 case 'SMTPAutoTLS':
@@ -216,7 +190,6 @@ class DSNConfigurator
             }
         }
     }
-
     /**
      * Parse a URL.
      * Wrapper for the built-in parse_url function to work around a bug in PHP 5.5.
@@ -230,7 +203,6 @@ class DSNConfigurator
         if (\PHP_VERSION_ID >= 50600 || false === strpos($url, '?')) {
             return parse_url($url);
         }
-
         $chunks = explode('?', $url);
         if (is_array($chunks)) {
             $result = parse_url($chunks[0]);
@@ -239,7 +211,6 @@ class DSNConfigurator
             }
             return $result;
         }
-
         return false;
     }
 }

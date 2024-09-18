@@ -12,23 +12,19 @@ header('Access-Control-Allow-Origin: *'); ?>
         background-color: #f0f0f0;
         border-bottom-left-radius: 10px
     }
-
     .suggestion-item {
         padding: 8px;
         cursor: pointer
     }
-
     .suggestion-item:hover {
         background-color: #6610f2;
         color: #fff
     }
 </style>
-
 <head>
     <script charset="UTF-8" src="eti/dymo.js" type="text/javascript"></script>
     <script charset="UTF-8" src="eti/eti_script.js" type="text/javascript"></script>
 </head>
-
 <body id="page-top">
     <div id="wrapper"><?php include (BASE_PATH . "/components/navbar.php"); ?>
         <div class="d-flex flex-column" id="content-wrapper">
@@ -92,13 +88,8 @@ header('Access-Control-Allow-Origin: *'); ?>
         </div>
     </div>
 </body>
-
 <script>
-
     document.getElementById('decodePageButton').addEventListener('click', function () {
-
         window.location.href = 'eti_decode'; // Cambia con il percorso corretto se necessario
-
     });
-
 </script>

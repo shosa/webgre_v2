@@ -2,10 +2,8 @@ document
   .querySelector('input[data-field="ID"]')
   .addEventListener("change", function () {
     const value = this.value;
-
     const formData = new FormData();
     formData.append("value", value);
-
     fetch("forms/processing_ManageTabId.php", {
       method: "POST",
       body: formData,

@@ -1,8 +1,6 @@
 document.getElementById('settingsEmailForm').addEventListener('submit', function (event) {
     event.preventDefault();
-
     const formData = new FormData(this);
-
     fetch('forms/processing_SettingsEmail.php', {
         method: 'POST',
         body: formData

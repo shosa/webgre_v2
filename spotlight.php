@@ -3,20 +3,16 @@
 session_start();
 require_once 'config/config.php';
 $terms = filter_input(INPUT_GET, 'terms', FILTER_UNSAFE_RAW);
-
 // Inizializza un array per memorizzare i risultati della ricerca
 $results = [];
-
 // Carica e analizza il file XML
 $xml = simplexml_load_file('indice.xml');
-
 if ($xml) {
     // Itera attraverso ogni elemento 'pagina' nel file XML
     foreach ($xml->pagina as $pagina) {
         // Recupera e separa i tag
         $tags = explode(';', (string) $pagina->tag);
         $found = false;
-
         // Verifica se il termine di ricerca è presente nei tag
         foreach ($tags as $tag) {
             if (stripos($tag, $terms) !== false) {
@@ -24,7 +20,6 @@ if ($xml) {
                 break;
             }
         }
-
         // Verifica se il termine di ricerca è presente nei campi 'nome' o 'link'
         if ($found || stripos((string) $pagina->nome, $terms) !== false || stripos((string) $pagina->link, $terms) !== false) {
             // Aggiungi il risultato della ricerca all'array dei risultati
@@ -39,9 +34,7 @@ if ($xml) {
         }
     }
 }
-
 include (BASE_PATH . "/components/header.php");
-
 function getRandomColor()
 {
     $colors = array('primary', 'success', 'info', 'warning', 'danger');
@@ -49,32 +42,24 @@ function getRandomColor()
     return $colors[$index];
 }
 ?>
-
 <body id="page-top">
-
     <!-- Page Wrapper -->
     <div id="wrapper">
-
         <?php include (BASE_PATH . "/components/navbar.php"); ?>
-
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-
             <!-- Main Content -->
             <div id="content">
                 <?php include (BASE_PATH . "/components/topbar.php"); ?>
-
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Ricerca Universale</h1>
                     </div>
-
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex align-items-center">
                             <h6 class="m-0 font-weight-bold text-primary">Risultati per "<?php echo $terms; ?>"</h6>
                         </div>
-
                         <?php if (!empty($results)): ?>
                             <div class="card-body">
                                 <?php $counter = 0; ?>
@@ -121,7 +106,6 @@ function getRandomColor()
             </div>
         </div>
     </div>
-
     <?php include_once BASE_PATH . '/components/scripts.php'; ?>
     <?php include_once BASE_PATH . '/components/footer.php'; ?>
 </body>

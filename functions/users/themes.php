@@ -22,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['colore'])) {
         $_SESSION['danger'] = "Tema Aggiornato!";
     }
 } ?>
-
 <body id="page-top">
     <div id="wrapper"><?php include (BASE_PATH . "/components/navbar.php"); ?>
         <div class="d-flex flex-column" id="content-wrapper">
@@ -35,7 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['colore'])) {
                         <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
                         <li class="breadcrumb-item active">Scelta Tema</li>
                     </ol>
-
                     <div class="col-lg-12 col-xl-12">
                         <div class="mb-4 card shadow">
                             <div class="align-items-center justify-content-between card-header d-flex flex-row py-3">

@@ -1,12 +1,10 @@
 <!-- SIDEBAR -->
 <?php
 $colore = (isset($_SESSION["tema"]) && !empty($_SESSION["tema"])) ? $_SESSION["tema"] : "primary";
-
 // Verifica se la sessione contiene lo stato della navbar, altrimenti imposta un valore predefinito
 if (!isset($_SESSION['navbar_toggled'])) {
     $_SESSION['navbar_toggled'] = false; // Valore predefinito
 }
-
 // Gestione della modifica dello stato della navbar
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
     $_SESSION['navbar_toggled'] = $_POST['toggle_navbar'] === 'true';
@@ -21,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
         </div>
         <div class="sidebar-brand-text mx-3">WEBGRE </div>
     </a>
-
     <!-- DIVISORE -->
     <hr class="sidebar-divider my-0">
     <li class="nav-item">
@@ -29,10 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
-
     <!-- DIVISORE -->
     <hr class="sidebar-divider">
-
     <!-- TITOLO SEZIONE -->
     <div class="sidebar-heading">
         Funzioni
@@ -98,7 +93,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             </div>
         </li>
     <?php endif; ?>
-
     <!-- PRODUZIONE & SPEDIZIONE -->
     <?php if (isset($_SESSION['permessi_produzione']) && $_SESSION['permessi_produzione'] == 1): ?>
         <li class="nav-item">
@@ -123,7 +117,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             </div>
         </li>
     <?php endif; ?>
-
     <!-- CAMPIONARIO -->
     <?php if (isset($_SESSION['permessi_campionario']) && $_SESSION['permessi_campionario'] == 1): ?>
         <li class="nav-item">
@@ -241,28 +234,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             </a>
         </li>
     <?php endif; ?>
-
-
     <!-- TITOLO SEZIONE -->
-
-
     <!-- DIVISORE -->
     <hr class="sidebar-divider d-none d-md-block">
-
     <!-- TOGGLE SIDEBAR -->
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>
-
 </ul>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var sidebarToggleButton = document.getElementById('sidebarToggle');
-
         if (sidebarToggleButton) {
             sidebarToggleButton.addEventListener('click', function () {
                 var isToggled = document.getElementById('accordionSidebar').classList.contains('toggled');
-
                 // Invia una richiesta AJAX al server per aggiornare lo stato della navbar
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', window.location.href, true);
@@ -271,10 +256,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             });
         }
         var currentUrl = window.location.pathname;
-
         // Rimuove eventuali prefissi e normalizza l'URL
         currentUrl = currentUrl.replace(/\/$/, ''); // Rimuove l'eventuale barra finale
-
         // Mappa degli URL alle classi degli elementi di navigazione
         var navLinks = {
             '/index': 'home',
@@ -302,10 +285,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             '/functions/tracking/makeFiches': 'tracking-fiches',
             '/functions/tracking/skuManager': 'tracking-sku',
             '/functions/tracking/orderDateManager': 'tracking-dates',
-
             // Aggiungi qui altri link come necessario
         };
-
         // Controlla se l'URL corrente corrisponde a uno degli URL nel menu
         for (var url in navLinks) {
             if (navLinks.hasOwnProperty(url) && currentUrl.includes(url)) {
@@ -313,8 +294,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 if (navItem) {
                     navItem.classList.add('active');
                     navItem.classList.add('text-<?php echo $colore; ?>');
-
-
                     var parentNavLink = navItem.closest('.nav-item').querySelector('.nav-link');
                     if (parentNavLink) {
                         parentNavLink.classList.remove('collapsed');
@@ -327,18 +306,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 }
             }
         }
-
         // Gestione speciale per la dashboard
         if (currentUrl.endsWith('/index') || currentUrl === '/index' || currentUrl === '/' || currentUrl.endsWith('/index.php')) {
             var homeNavItem = document.getElementById('home');
             if (homeNavItem) {
                 homeNavItem.classList.add('active');
                 homeNavItem.classList.remove('text-<?php echo $colore; ?>');
-
             }
         }
     });
-
 </script>
-
 <!-- FINE SIDEBAR -->

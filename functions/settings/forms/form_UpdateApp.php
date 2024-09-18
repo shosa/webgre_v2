@@ -10,12 +10,10 @@
         vertical-align: middle;
         margin-left: 10px;
     }
-
     @keyframes spin {
         0% {
             transform: rotate(0deg);
         }
-
         100% {
             transform: rotate(360deg);
         }
@@ -29,7 +27,6 @@
         <label for="progressBar">Stato:</label>
         <progress id="progressBar" value="0" max="100" style="width: 100%;"></progress>
         <span id="progressText" class="font-italic">In attesa dell'avvio da parte del Utente...</span>
-
         <pre id="updateLog" class="mt-2 rounded"
             style="display: none; background-color: black; color:lime; padding: 10px; border: 1px solid #e0e0e0; max-height: 300px; overflow-y: auto;"></pre>
     </div>

@@ -61,7 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['barcodes'])) {
         echo "Errore di connessione: " . $e->getMessage();
     }
 } ?>
-
 <body id="page-top">
     <div id="wrapper"> <?php include BASE_PATH . "/components/navbar.php"; ?>
         <div id="content-wrapper" class="d-flex flex-column">

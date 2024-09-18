@@ -9,14 +9,12 @@ require_once BASE_PATH . '/components/header.php'; ?>
         align-items: flex-end;
         justify-content: space-between
     }
-
     .btn-block {
         display: inline-block;
         width: 100%;
         margin-right: 10px
     }
 </style>
-
 <body id="page-top">
     <div id="wrapper"><?php include BASE_PATH . "/components/navbar.php"; ?>
         <div class="d-flex flex-column" id="content-wrapper">

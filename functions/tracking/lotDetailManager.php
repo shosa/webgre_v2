@@ -4,9 +4,7 @@ require_once '../../config/config.php';
 require_once BASE_PATH . '/components/auth_validate.php';
 require_once '../../utils/log_utils.php';
 require_once BASE_PATH . '/components/header.php';
-
 $pdo = getDbInstance();
-
 // Funzione per ottenere i lotti senza riferimenti con il tipo di lotto
 function getLotsWithoutReferences($pdo)
 {
@@ -22,14 +20,11 @@ function getLotsWithoutReferences($pdo)
        WHERE tli.doc IS NULL OR tli.date IS NULL 
        OR tli.doc = '' OR tli.date = '0000-00-00';
     ";
-
     $stmt = $pdo->prepare($query);
     $stmt->execute();
     $lots = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
     return $lots;
 }
-
 // Funzione per ottenere i dettagli di un lotto specifico
 function getLotDetails($pdo, $lot)
 {
@@ -39,21 +34,18 @@ function getLotDetails($pdo, $lot)
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-
 // Gestione del salvataggio dei riferimenti
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save_references'])) {
     foreach ($_POST['lots'] as $lot) {
         $lot_number = $lot['number'];
         $doc = $lot['doc'];
         $date = $lot['date'];
-
         // Verifica se esiste già una riga per questo lotto
         $query = "SELECT id FROM track_lots_info WHERE lot = :lot";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':lot', $lot_number);
         $stmt->execute();
         $id = $stmt->fetchColumn();
-
         if ($id) {
             // Aggiorna la riga esistente
             $query = "UPDATE track_lots_info SET doc = :doc, date = :date WHERE id = :id";
@@ -73,21 +65,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save_references'])) {
         }
     }
 }
-
 // Gestione dell'aggiornamento dei dettagli del lotto
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_lot_details'])) {
     $lot = $_POST['lot'];
     $doc = $_POST['doc'];
     $date = $_POST['date'];
     $note = $_POST['note'];
-
     // Verifica se esiste già una riga per questo lotto
     $query = "SELECT id FROM track_lots_info WHERE lot = :lot";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':lot', $lot);
     $stmt->execute();
     $id = $stmt->fetchColumn();
-
     if ($id) {
         // Aggiorna la riga esistente
         $query = "UPDATE track_lots_info SET doc = :doc, date = :date, note = :note WHERE id = :id";
@@ -108,10 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_lot_details']))
         $stmt->execute();
     }
 }
-
 $lotsWithoutReferences = getLotsWithoutReferences($pdo);
 ?>
-
 <body id="page-top">
     <div id="wrapper">
         <?php include BASE_PATH . "/components/navbar.php"; ?>
@@ -142,7 +129,6 @@ $lotsWithoutReferences = getLotsWithoutReferences($pdo);
                                                 Tutti i Lotti per i quali è presente almeno 1
                                                 associazione hanno dei riferimenti, per modificarli usa il campo ricerca.
                                             </div>
-
                                         <?php else: ?>
                                             <table class="table table-bordered table-sm table-striped">
                                                 <thead>
@@ -190,7 +176,6 @@ $lotsWithoutReferences = getLotsWithoutReferences($pdo);
                                             <button type="submit" name="save_references"
                                                 class="btn btn-pink btn-block">Salva</button>
                                         <?php endif; ?>
-
                                     </form>
                                 </div>
                             </div>
@@ -253,13 +238,11 @@ $lotsWithoutReferences = getLotsWithoutReferences($pdo);
         </div>
     </div>
 </body>
-
 <style>
     .bg-yellow {
         background-color: #ffeeba;
     }
 </style>
-
 <!-- Modale per visualizzare tutti i lotti -->
 <div class="modal fade" id="lotsModal" tabindex="-1" role="dialog" aria-labelledby="lotsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -295,7 +278,6 @@ $lotsWithoutReferences = getLotsWithoutReferences($pdo);
                             $stmt->execute();
                             return $stmt->fetchAll(PDO::FETCH_ASSOC);
                         }
-
                         $allLots = getAllLots($pdo);
                         foreach ($allLots as $lot): ?>
                             <tr>

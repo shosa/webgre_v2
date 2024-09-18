@@ -9,7 +9,6 @@ const urlsToCache = [
   '/webgre/img/roundLogo.png'
     // Aggiungi altre risorse che vuoi cacheare
 ];
-
 // Installa il service worker e cachea le risorse
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -19,7 +18,6 @@ self.addEventListener('install', (event) => {
     })
   );
 });
-
 // Gestisce le richieste di rete
 self.addEventListener('fetch', (event) => {
   event.respondWith(

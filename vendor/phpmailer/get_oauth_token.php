@@ -1,5 +1,4 @@
 <?php
-
 /**
  * PHPMailer - PHP email creation and transport class.
  * PHP Version 5.5
@@ -17,7 +16,6 @@
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.
  */
-
 /**
  * Get an OAuth2 token from an OAuth2 provider.
  * * Install this script on your server so that it's accessible
@@ -29,9 +27,7 @@
  * If no refresh token is obtained when running this file,
  * revoke access to your app and run the script again.
  */
-
 namespace PHPMailer\PHPMailer;
-
 /**
  * Aliases for League Provider Classes
  * Make sure you have added these to your composer.json and run `composer install`
@@ -46,7 +42,6 @@ use Hayageek\OAuth2\Client\Provider\Yahoo;
 use Stevenmaguire\OAuth2\Client\Provider\Microsoft;
 //@see https://github.com/greew/oauth2-azure-provider
 use Greew\OAuth2\Client\Provider\Azure;
-
 if (!isset($_GET['code']) && !isset($_POST['provider'])) {
     ?>
 <html>
@@ -74,16 +69,12 @@ if (!isset($_GET['code']) && !isset($_POST['provider'])) {
     <?php
     exit;
 }
-
 require 'vendor/autoload.php';
-
 session_start();
-
 $providerName = '';
 $clientId = '';
 $clientSecret = '';
 $tenantId = '';
-
 if (array_key_exists('provider', $_POST)) {
     $providerName = $_POST['provider'];
     $clientId = $_POST['clientId'];
@@ -99,25 +90,20 @@ if (array_key_exists('provider', $_POST)) {
     $clientSecret = $_SESSION['clientSecret'];
     $tenantId = $_SESSION['tenantId'];
 }
-
 //If you don't want to use the built-in form, set your client id and secret here
 //$clientId = 'RANDOMCHARS-----duv1n2.apps.googleusercontent.com';
 //$clientSecret = 'RANDOMCHARS-----lGyjPcRtvP';
-
 //If this automatic URL doesn't work, set it yourself manually to the URL of this script
 $redirectUri = (isset($_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
 //$redirectUri = 'http://localhost/PHPMailer/redirect';
-
 $params = [
     'clientId' => $clientId,
     'clientSecret' => $clientSecret,
     'redirectUri' => $redirectUri,
     'accessType' => 'offline'
 ];
-
 $options = [];
 $provider = null;
-
 switch ($providerName) {
     case 'Google':
         $provider = new Google($params);
@@ -141,7 +127,6 @@ switch ($providerName) {
         break;
     case 'Azure':
         $params['tenantId'] = $tenantId;
-
         $provider = new Azure($params);
         $options = [
             'scope' => [
@@ -151,11 +136,9 @@ switch ($providerName) {
         ];
         break;
 }
-
 if (null === $provider) {
     exit('Provider missing');
 }
-
 if (!isset($_GET['code'])) {
     //If we don't have an authorization code then get one
     $authUrl = $provider->getAuthorizationUrl($options);

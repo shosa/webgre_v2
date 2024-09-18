@@ -1,17 +1,14 @@
 <?php
 session_start();
 require_once '../../../config/config.php';
-
 function logActivity($user_id, $category, $activity_type, $description, $note = '', $text_query = '')
 {
     $db = getDbInstance();
     $sql = "INSERT INTO activity_log (user_id, category, activity_type, description, note, text_query) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $db->prepare($sql);
     $stmt->execute([$user_id, $category, $activity_type, $description, $note, $text_query]);
-
     echo "<script>console.log('Evento di tipo $activity_type registrato nel log delle attività. Dettagli: $description');</script>";
 }
-
 function replacePlaceholders($pdo, $query, $params)
 {
     foreach ($params as $key => $value) {
@@ -19,18 +16,14 @@ function replacePlaceholders($pdo, $query, $params)
     }
     return $query;
 }
-
 header('Content-Type: text/plain');
-
 $pdo = getDbInstance();
 $repoOwner = 'shosa';
 $repoName = 'webgre_v2';
 $branch = "main";
 $tempDir = 'temp_update';
 $baseDir = BASE_PATH;
-
 echo "Log aggiornamento:\n";
-
 $zipUrl = "https://api.github.com/repos/$repoOwner/$repoName/zipball/$branch";
 $accessToken = $pdo->query("SELECT value FROM settings WHERE item = 'github_token'")->fetchColumn();
 $options = [
@@ -39,14 +32,11 @@ $options = [
             "Authorization: token $accessToken\r\n"
     ]
 ];
-
 $context = stream_context_create($options);
 $zipFile = 'latest.zip';
-
 echo "Scaricamento dell'archivio...\n";
 file_put_contents($zipFile, fopen($zipUrl, 'r', false, $context));
 echo "Download completato.\n";
-
 $zip = new ZipArchive;
 if ($zip->open($zipFile) === TRUE) {
     if (!is_dir($tempDir)) {
@@ -59,9 +49,7 @@ if ($zip->open($zipFile) === TRUE) {
     echo "Errore durante l'apertura del file zip.\n";
     exit;
 }
-
 $modifiedFiles = [];  // Array per memorizzare i file modificati
-
 function updateFiles($source, $dest, &$modifiedFiles)
 {
     $dir = opendir($source);
@@ -69,7 +57,6 @@ function updateFiles($source, $dest, &$modifiedFiles)
         if ($file != '.' && $file != '..') {
             $srcPath = $source . '/' . $file;
             $destPath = $dest . '/' . $file;
-
             if (is_dir($srcPath)) {
                 if ($file != 'vendor' && $file != 'config') {
                     if (!is_dir($destPath)) {
@@ -95,10 +82,8 @@ function updateFiles($source, $dest, &$modifiedFiles)
     }
     closedir($dir);
 }
-
 $extractedDir = glob($tempDir . '/*', GLOB_ONLYDIR)[0];
 updateFiles($extractedDir, $baseDir, $modifiedFiles);
-
 function rrmdir($dir)
 {
     $success = true;
@@ -121,16 +106,13 @@ function rrmdir($dir)
     return $success;
 }
 echo "<span style='background-color: yellow; color: black;'>IMPORTANTE: Le Directory CONFIG e VENDOR non sono state alterate, se necessario intervenire manualmente.</span>\n";
-
 if (rrmdir($tempDir)) {
     echo "<span style='color: fuchsia;'>Contenuto temporaneo eliminato ($zipFile).\n";
 } else {
     echo "<span style='background-color: red; color: white;'>Errore durante l'eliminazione del contenuto temporaneo.</span>\n";
 }
 unlink($zipFile);
-
 $fileList = !empty($modifiedFiles) ? implode(", ", $modifiedFiles) : "Nessuno";
 logActivity($_SESSION['user_id'], 'APP', 'AGGIORNAMENTO', 'Lanciato aggiornamento', "Dettaglio File Modificati", "$fileList");
-
 echo "<span style='background-color: lime; color: black;'>Aggiornamento completato con successo.</span>\n";
 ?>

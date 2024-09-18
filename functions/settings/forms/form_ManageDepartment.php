@@ -1,8 +1,6 @@
 <?php
 require_once '../../../config/config.php';
-
 $conn = getDbInstance();
-
 function getLines($conn)
 {
     $sql = "SELECT * FROM reparti";
@@ -10,7 +8,6 @@ function getLines($conn)
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
 function isDepartmentInRiparazioni($conn, $nome)
 {
     $sql = "SELECT COUNT(*) FROM riparazioni WHERE REPARTO = :nome";
@@ -19,12 +16,9 @@ function isDepartmentInRiparazioni($conn, $nome)
     $stmt->execute();
     return $stmt->fetchColumn() > 0;
 }
-
 $departments = getLines($conn);
 ?>
-
 <div class="p-4 border rounded shadow-sm bg-light" id="formManageDepartment">
-
     <table class="table table-bordered bg-white">
         <p class="text-info font-weight-bold">* Invio per salvare le modifiche</p>
         <thead>

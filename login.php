@@ -1,26 +1,21 @@
 <?php
 session_start();
 require_once 'config/config.php';
-
 $token = bin2hex(openssl_random_pseudo_bytes(16));
-
 // Se l'utente è già loggato, reindirizza alla dashboard
 if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === TRUE) {
     header('Location:index.php');
     exit;
 }
-
 // Se l'utente ha selezionato l'opzione "ricordami"
 if (!empty($_COOKIE['series_id']) && !empty($_COOKIE['remember_token'])) {
     $series_id = filter_var($_COOKIE['series_id'], FILTER_SANITIZE_STRING);
     $remember_token = filter_var($_COOKIE['remember_token'], FILTER_SANITIZE_STRING);
-
     $pdo = getDbInstance();
     $stmt = $pdo->prepare("SELECT * FROM utenti WHERE series_id = :series_id");
     $stmt->bindParam(':series_id', $series_id);
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
     if ($row && password_verify($remember_token, $row['remember_token'])) {
         $expires = strtotime($row['expires']);
         if (strtotime(date('Y-m-d H:i:s')) > $expires) {
@@ -28,7 +23,6 @@ if (!empty($_COOKIE['series_id']) && !empty($_COOKIE['remember_token'])) {
             header('Location:login.php');
             exit;
         }
-
         $_SESSION['user_logged_in'] = TRUE;
         $_SESSION['admin_type'] = $row['admin_type'];
         $_SESSION['nome'] = $row['nome'];
@@ -41,7 +35,6 @@ if (!empty($_COOKIE['series_id']) && !empty($_COOKIE['remember_token'])) {
         exit;
     }
 }
-
 include BASE_PATH . '/components/header.php';
 ?>
 <style>
@@ -49,7 +42,6 @@ include BASE_PATH . '/components/header.php';
         margin: 5%;
         text-align: center;
     }
-
     @media screen and (max-width: 768px) {
         .logo img {
             width: 60%;
@@ -63,7 +55,6 @@ include BASE_PATH . '/components/header.php';
             <div class="logo">
                 <img src="img/logoMini.png" alt="Logo">
             </div>
-
             <form class="form loginform" method="POST" action="authenticate.php" style="padding:5%;">
                 <div class="card">
                     <div class="card-header text-primary font-weight-bold">ACCEDI</div>

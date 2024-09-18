@@ -1,34 +1,26 @@
 <!-- Topbar Search -->
 <?php
-
 $pdoTopbar = getDbInstance();
-
 $queryNome = "SELECT nome FROM utenti WHERE user_name = :username";
 $stmtNome = $pdoTopbar->prepare($queryNome);
 $stmtNome->bindParam(':username', $_SESSION["username"], PDO::PARAM_STR);
 $stmtNome->execute();
 $nome = $stmtNome->fetchColumn();
-
 // Query per ottenere le notifiche non lette per l'utente corrente
 $queryNotifications = "SELECT * FROM notifications WHERE user_id = :user_id AND is_read = 0 ORDER BY timestamp DESC LIMIT 3";
 $stmtNotifications = $pdoTopbar->prepare($queryNotifications);
 $stmtNotifications->bindParam(':user_id', $_SESSION["user_id"], PDO::PARAM_INT);
 $stmtNotifications->execute();
 $notifications = $stmtNotifications->fetchAll(PDO::FETCH_ASSOC);
-
 // Conta il numero di notifiche non lette
 $unreadCount = count($notifications);
-
 ?>
-
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
     <!-- Sidebar Toggle (Topbar) -->
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
         <i
             class="fa fa-bars text-<?php echo (isset($_SESSION["tema"]) && !empty($_SESSION["tema"])) ? $_SESSION["tema"] : "primary"; ?>"></i>
     </button>
-
     <form action="<?php echo BASE_URL ?>/spotlight.php" method="GET"
         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
         <div class="input-group">
@@ -43,16 +35,13 @@ $unreadCount = count($notifications);
             </div>
         </div>
     </form>
-
     <?php if (isset($debug) && $debug == true): ?>
         <div class="mx-auto">
             <span class="h6 text-danger text-center font-weight-bold">** AMBIENTE DI TEST **</span>
         </div>
     <?php endif; ?>
-
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
-
         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
         <li class="nav-item dropdown no-arrow d-sm-none">
             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"
@@ -77,14 +66,10 @@ $unreadCount = count($notifications);
                         </div>
                     </div>
                 </form>
-
             </div>
-
         </li>
-
         <!-- Nav Item - Notifications -->
         <li class="nav-item dropdown no-arrow mx-1">
-
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw <?php echo $unreadCount > 0 ? 'fa-bounce' : ''; ?>"></i>
@@ -103,7 +88,6 @@ $unreadCount = count($notifications);
                         <?php
                         $iconClass = '';
                         $bgClass = '';
-
                         switch ($notification['type']) {
                             case 'warning':
                                 $iconClass = 'fas fa-exclamation-triangle';
@@ -158,10 +142,7 @@ $unreadCount = count($notifications);
                     href="<?php echo BASE_URL ?>/functions/users/notifications.php">Mostra tutte</a>
             </div>
         </li>
-
-
         <div class="topbar-divider d-none d-sm-block"></div>
-
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
@@ -184,7 +165,6 @@ $unreadCount = count($notifications);
                         class="fas fa-circle fa-sm fa-fw mr-2 text-<?php echo (isset($_SESSION["tema"]) && !empty($_SESSION["tema"])) ? $_SESSION["tema"] : "primary"; ?>"></i>
                     Tema
                 </a>
-
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="<?php echo BASE_URL ?>/logout" data-toggle="modal"
                     data-target="#logoutModal">
@@ -193,9 +173,7 @@ $unreadCount = count($notifications);
                 </a>
             </div>
         </li>
-
     </ul>
-
 </nav>
 <!-- End of Topbar -->
 <!-- Logout Modal-->
@@ -217,7 +195,6 @@ $unreadCount = count($notifications);
         </div>
     </div>
 </div>
-
 <script>
     // Funzione per marcare la notifica come letta
     document.querySelectorAll('.mark-as-read').forEach(button => {
@@ -225,7 +202,6 @@ $unreadCount = count($notifications);
             event.preventDefault();
             event.stopPropagation(); // Evita la propagazione dell'evento al dropdown
             const notificationId = this.getAttribute('data-id');
-
             fetch('<?php echo BASE_URL ?>/utils/mark_notification_read.php', {  // Utilizza BASE_URL definito in config.php
                 method: 'POST',
                 headers: {

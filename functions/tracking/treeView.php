@@ -14,7 +14,6 @@ $stmt2->execute();
 $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
 $cartelCount = $row2['count'];
 require_once BASE_PATH . '/components/header.php'; ?>
-
 <body id="page-top">
     <div id="wrapper"><?php include (BASE_PATH . "/components/navbar.php"); ?>
         <div class="d-flex flex-column" id="content-wrapper">
@@ -53,9 +52,7 @@ require_once BASE_PATH . '/components/header.php'; ?>
                                     <div class="spinner"></div>
                                 </div>
                                 <div class="card-body">
-
                                     <div id="treeViewPlaceholder">
-
                                     </div>
                                 </div>
                             </div>
@@ -78,79 +75,64 @@ require_once BASE_PATH . '/components/header.php'; ?>
         border-top-color: #333;
         animation: spin 1s infinite linear
     }
-
     @keyframes spin {
         to {
             transform: rotate(360deg)
         }
     }
-
     .card {
         margin-top: 20px;
         border: 1px solid #ddd;
         border-radius: 8px;
         box-shadow: 0 0 10px rgba(0, 0, 0, .1)
     }
-
     .card-body {
         padding: 20px
     }
-
     #treeViewPlaceholder ul {
         list-style-type: none;
         padding-left: 0;
         margin-bottom: 0
     }
-
     #treeViewPlaceholder ul ul {
         display: none;
         margin-left: 20px;
         padding-left: 20px
     }
-
     #treeViewPlaceholder li {
         cursor: pointer;
         padding: 8px 10px;
         border-bottom: 1px solid #ddd;
         position: relative
     }
-
     #treeViewPlaceholder li:last-child {
         border-bottom: none
     }
-
     #treeViewPlaceholder li:before {
         content: "\f054";
         font-family: FontAwesome;
         margin-right: 10px;
         color: #777
     }
-
     #treeViewPlaceholder li.collapsed:before {
         content: "\f054"
     }
-
     #treeViewPlaceholder li.expanded:before {
         content: "\f078"
     }
-
     #treeViewPlaceholder li.leaf:before {
         content: "\f111";
         color: #6c757d
     }
-
     #treeViewPlaceholder li.collapsed.leaf:before {
         content: "\f111"
     }
-
     #treeViewPlaceholder li.expanded.leaf:before {
         content: "\f111"
     }
-
     #treeViewPlaceholder li.leaf {
         cursor: default !important
     }
-
     #treeViewPlaceholder li .timestamp {
         color: #777;
         font-size: 90%;

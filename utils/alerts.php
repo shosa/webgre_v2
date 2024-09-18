@@ -2,7 +2,6 @@
 if (isset($_SESSION['success'])) {
     echo '<div class="alert alert-success">' . htmlspecialchars($_SESSION['success'], ENT_QUOTES, 'UTF-8') . '</div>';
     unset($_SESSION['success']);
-
 }
 if (isset($_SESSION['danger'])) {
     echo '<div class="alert alert-danger">' . htmlspecialchars($_SESSION['danger'], ENT_QUOTES, 'UTF-8') . '</div>';

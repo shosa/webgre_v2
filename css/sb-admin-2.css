@@ -3,7 +3,6 @@
  * Copyright 2013-2021 Start Bootstrap
  * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-sb-admin-2/blob/master/LICENSE)
  */
-
 /*!
  * Bootstrap v4.6.0 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
@@ -5894,7 +5893,6 @@ a.badge-dark.focus {
 }
 
 .list-group-item.active {
-
   color: #fff;
   background-color: #4e73df;
   border-color: #4e73df;

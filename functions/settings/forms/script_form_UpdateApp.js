@@ -2,14 +2,12 @@ document
   .getElementById("updateAppBtn")
   .addEventListener("click", function (event) {
     event.preventDefault();
-
     // Mostra il log, la barra di progresso e la rotella di caricamento
     document.getElementById("updateLog").style.display = "block";
     document.getElementById("progressBar").value = 0;
     document.getElementById("progressText").textContent =
       "Aggiornamento in corso...";
     document.getElementById("spinner").style.display = "inline-block";
-
     // Avvia l'aggiornamento
     fetch("forms/processing_UpdateApp.php", {
       method: "POST",
@@ -28,7 +26,6 @@ document
           "Errore durante l'aggiornamento.";
         document.getElementById("spinner").style.display = "none";
       });
-
     // Simula l'aggiornamento della progress bar
     let progress = 0;
     const interval = setInterval(() => {

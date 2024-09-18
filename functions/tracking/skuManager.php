@@ -4,9 +4,7 @@ require_once '../../config/config.php';
 require_once BASE_PATH . '/components/auth_validate.php';
 require_once '../../utils/log_utils.php';
 require_once BASE_PATH . '/components/header.php';
-
 $pdo = getDbInstance();
-
 // Funzione per ottenere i lotti senza riferimenti con il tipo di lotto
 function getArtsWithoutSku($pdo)
 {
@@ -25,12 +23,10 @@ function getArtsWithoutSku($pdo)
         LEFT JOIN dati dt ON tsk.art = dt.Articolo 
         WHERE tsk.sku IS NULL OR tsk.sku = ''
     ";
-
     $stmt = $pdo->prepare($query);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
 // Funzione per ottenere i dettagli di un articolo specifico
 function getArtDetails($pdo, $art)
 {
@@ -40,19 +36,16 @@ function getArtDetails($pdo, $art)
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-
 // Gestione del salvataggio dei riferimenti
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save_references'])) {
     foreach ($_POST['arts'] as $artCode => $art) {
         $sku = $art['sku'];
-
         // Verifica se esiste già una riga per questo articolo
         $query = "SELECT id FROM track_sku WHERE art = :art";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':art', $artCode);
         $stmt->execute();
         $id = $stmt->fetchColumn();
-
         if ($id) {
             // Aggiorna la riga esistente
             $query = "UPDATE track_sku SET sku = :sku WHERE id = :id";
@@ -70,19 +63,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save_references'])) {
         }
     }
 }
-
 // Gestione dell'aggiornamento dei dettagli dell'articolo
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_art_details'])) {
     $artCode = $_POST['lot'];
     $sku = $_POST['sku'];
-
     // Verifica se esiste già una riga per questo articolo
     $query = "SELECT id FROM track_sku WHERE art = :art";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':art', $artCode);
     $stmt->execute();
     $id = $stmt->fetchColumn();
-
     if ($id) {
         // Aggiorna la riga esistente
         $query = "UPDATE track_sku SET sku = :sku WHERE id = :id";
@@ -99,10 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_art_details']))
         $stmt->execute();
     }
 }
-
 $artsWithoutReferences = getArtsWithoutSku($pdo);
 ?>
-
 <body id="page-top">
     <div id="wrapper">
         <?php include BASE_PATH . "/components/navbar.php"; ?>
@@ -128,15 +116,11 @@ $artsWithoutReferences = getArtsWithoutSku($pdo);
                                 </div>
                                 <div class="card-body">
                                     <form method="POST" action="">
-
                                         <?php if (empty($artsWithoutReferences)): ?>
-
-
                                             <div class="alert alert-info text-center" role="alert">
                                                 Tutti gli articoli per i quali è presente almeno 1
                                                 associazione hanno un SKU associato, per modificarlo usa il campo ricerca.
                                             </div>
-
                                         <?php else: ?>
                                             <table class="table table-bordered table-sm table-striped align-items-center">
                                                 <thead>
@@ -155,7 +139,6 @@ $artsWithoutReferences = getArtsWithoutSku($pdo);
                                                             <input type="hidden"
                                                                 name="arts[<?php echo htmlspecialchars($art['Articolo']); ?>][code]"
                                                                 value="<?php echo htmlspecialchars($art['Articolo']); ?>">
-
                                                             <?php
                                                             $skuValue = htmlspecialchars($art['sku']);
                                                             $skuClass = empty($skuValue) ? 'bg-yellow' : '';
@@ -173,8 +156,6 @@ $artsWithoutReferences = getArtsWithoutSku($pdo);
                                             <button type="submit" name="save_references"
                                                 class="btn btn-success btn-block">Salva</button>
                                         <?php endif; ?>
-
-
                                     </form>
                                 </div>
                             </div>
@@ -212,7 +193,6 @@ $artsWithoutReferences = getArtsWithoutSku($pdo);
                                             echo '<input type="text" class="form-control form-control-sm" id="sku" name="sku" value="' . htmlspecialchars($artDetails['sku']) . '">';
                                             echo '</div>';
                                             echo '</div>';
-
                                             echo '<button type="submit" name="update_art_details" class="btn btn-block btn-info">Aggiorna</button>';
                                             echo '</form>';
                                         } else {
@@ -231,14 +211,12 @@ $artsWithoutReferences = getArtsWithoutSku($pdo);
         </div>
     </div>
 </body>
-
 <style>
     .bg-yellow {
         background-color: #ffeeba;
         /* Utilizza il colore giallo di tua scelta */
     }
 </style>
-
 <!-- Modale per visualizzare tutte le SKU -->
 <div class="modal fade" id="skuModal" tabindex="-1" role="dialog" aria-labelledby="skuModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -267,7 +245,6 @@ $artsWithoutReferences = getArtsWithoutSku($pdo);
                             $stmt->execute();
                             return $stmt->fetchAll(PDO::FETCH_ASSOC);
                         }
-
                         $allSkus = getAllSku($pdo);
                         foreach ($allSkus as $sku): ?>
                             <tr>

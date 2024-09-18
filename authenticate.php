@@ -4,32 +4,24 @@ require_once 'config/config.php';
 require_once BASE_PATH . '/utils/log_utilsLogin.php';
 require_once BASE_PATH . '/utils/check_notifications.php';
 require_once BASE_PATH . '/utils/helpers.php';
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = filter_input(INPUT_POST, 'username');
     $passwd = filter_input(INPUT_POST, 'passwd');
     $remember = filter_input(INPUT_POST, 'remember');
-
     try {
         // Connessione al database utilizzando PDO
         $pdo = getDbInstance();
         // Prepare SQL statement
         $statement = $pdo->prepare("SELECT * FROM utenti WHERE user_name = :username");
-
         // Bind the parameter
         $statement->bindParam(':username', $username);
-
         // Execute SQL statement
         $statement->execute();
-
         // Fetch the record
         $row = $statement->fetch(PDO::FETCH_ASSOC);
-
         if ($statement->rowCount() >= 1) {
             $db_password = $row['password'];
             $user_id = $row['id'];
-
             if (password_verify($passwd, $db_password)) {
                 $_SESSION['user_logged_in'] = TRUE;
                 $_SESSION['admin_type'] = $row['admin_type'];
@@ -38,14 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['tipo'] = $row['admin_type'];
                 $_SESSION['user_id'] = $row['id'];
                 $_SESSION['tema'] = $row['theme_color'];
-
-
                 // Recupera i permessi dalla tabella `permessi`
                 $permessi_statement = $pdo->prepare("SELECT riparazioni, campionario, cq, produzione, tabelle, log,tracking, etichette,dbsql, settings, utenti FROM permessi WHERE id_utente = :user_id");
                 $permessi_statement->bindParam(':user_id', $user_id);
                 $permessi_statement->execute();
                 $permessi = $permessi_statement->fetch(PDO::FETCH_ASSOC);
-
                 if ($permessi) {
                     $_SESSION['permessi_riparazioni'] = $permessi['riparazioni'];
                     $_SESSION['permessi_campionario'] = $permessi['campionario'];
@@ -58,33 +47,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['permessi_sql'] = $permessi['dbsql'];
                     $_SESSION['permessi_tracking'] = $permessi['tracking'];
                     $_SESSION['permessi_settings'] = $permessi['settings'];
-
                 }
-
                 if ($remember) {
                     $series_id = randomString(16);
                     $remember_token = getSecureRandomToken(20);
                     $encrypted_remember_token = password_hash($remember_token, PASSWORD_DEFAULT);
                     $expiry_time = date('Y-m-d H:i:s', strtotime(' + 30 days'));
                     $expires = strtotime($expiry_time);
-
                     setcookie('series_id', $series_id, $expires, "/");
                     setcookie('remember_token', $remember_token, $expires, "/");
-
                     // Prepare SQL statement for updating remember details
                     $update_statement = $pdo->prepare("UPDATE utenti SET series_id = :series_id, remember_token = :remember_token, expires = :expires WHERE id = :user_id");
-
                     // Bind parameters
                     $update_statement->bindParam(':series_id', $series_id);
                     $update_statement->bindParam(':remember_token', $encrypted_remember_token);
                     $update_statement->bindParam(':expires', $expiry_time);
                     $update_statement->bindParam(':user_id', $user_id);
-
                     // Execute SQL statement
                     $update_statement->execute();
                 }
                 $user_agent = $_SERVER['HTTP_USER_AGENT'];
-
                 // Definisci un array di stringhe che identificano i browser comuni
                 $browsers = array(
                     'Chrome',
@@ -94,11 +76,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'MSIE',
                     'Trident'
                 );
-
                 // Inizializza le variabili per memorizzare il browser e il dispositivo
                 $browser = 'Sconosciuto';
                 $device = 'Sconosciuto';
-
                 // Cerca il browser nell'user agent
                 foreach ($browsers as $browser_string) {
                     if (strpos($user_agent, $browser_string) !== false) {
@@ -106,7 +86,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         break;
                     }
                 }
-
                 // Controlla il tipo di dispositivo
                 if (strpos($user_agent, 'Mobile') !== false) {
                     $device = 'Mobile';
@@ -134,5 +113,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     die('Method Not Allowed');
 }
-
 ?>

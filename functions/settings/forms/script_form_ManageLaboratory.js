@@ -3,13 +3,11 @@ document.querySelectorAll('input[data-field="Nome"]').forEach((input) => {
     const id = this.dataset.id;
     const value = this.value;
     const field = this.dataset.field;
-
     const formData = new FormData();
     formData.append("action", "update");
     formData.append("id", id);
     formData.append("field", field);
     formData.append("value", value);
-
     fetch("forms/processing_ManageLaboratory.php", {
       method: "POST",
       body: formData,
@@ -32,11 +30,9 @@ document.querySelectorAll('input[data-field="Nome"]').forEach((input) => {
       });
   });
 });
-
 document.querySelectorAll(".btn-delete-lab").forEach((button) => {
   button.addEventListener("click", function () {
     const id = this.dataset.id;
-
     Swal.fire({
       title: "Sei sicuro?",
       text: "Questa azione non può essere annullata!",
@@ -51,7 +47,6 @@ document.querySelectorAll(".btn-delete-lab").forEach((button) => {
         const formData = new FormData();
         formData.append("action", "delete");
         formData.append("id", id);
-
         fetch("forms/processing_ManageLaboratory.php", {
           method: "POST",
           body: formData,
@@ -76,7 +71,6 @@ document.querySelectorAll(".btn-delete-lab").forEach((button) => {
     });
   });
 });
-
 document.getElementById("addLabBtn").addEventListener("click", function () {
   Swal.fire({
     title: "Aggiungi Laboratorio",
@@ -86,7 +80,6 @@ document.getElementById("addLabBtn").addEventListener("click", function () {
     cancelButtonText: "Annulla",
     preConfirm: () => {
       const nome = Swal.getPopup().querySelector("#nome").value;
-
       if (!nome) {
         Swal.showValidationMessage(
           "Per favore, inserisci il nome del laboratorio."
@@ -99,7 +92,6 @@ document.getElementById("addLabBtn").addEventListener("click", function () {
       const formData = new FormData();
       formData.append("action", "add");
       formData.append("nome", result.value.nome);
-
       fetch("forms/processing_ManageLaboratory.php", {
         method: "POST",
         body: formData,
@@ -123,7 +115,6 @@ document.getElementById("addLabBtn").addEventListener("click", function () {
     }
   });
 });
-
 function reloadForm() {
   fetch("forms/form_ManageLaboratory.php")
     .then((response) => response.text())
@@ -135,20 +126,17 @@ function reloadForm() {
       console.error("Errore durante il ricaricamento del modulo:", error);
     });
 }
-
 function initializeEventListeners() {
   document.querySelectorAll('input[data-field="Nome"]').forEach((input) => {
     input.addEventListener("change", function () {
       const id = this.dataset.id;
       const value = this.value;
       const field = this.dataset.field;
-
       const formData = new FormData();
       formData.append("action", "update");
       formData.append("id", id);
       formData.append("field", field);
       formData.append("value", value);
-
       fetch("forms/processing_ManageLaboratory.php", {
         method: "POST",
         body: formData,
@@ -171,11 +159,9 @@ function initializeEventListeners() {
         });
     });
   });
-
   document.querySelectorAll(".btn-delete-lab").forEach((button) => {
     button.addEventListener("click", function () {
       const id = this.dataset.id;
-
       Swal.fire({
         title: "Sei sicuro?",
         text: "Questa azione non può essere annullata!",
@@ -190,7 +176,6 @@ function initializeEventListeners() {
           const formData = new FormData();
           formData.append("action", "delete");
           formData.append("id", id);
-
           fetch("forms/processing_ManageLaboratory.php", {
             method: "POST",
             body: formData,
@@ -215,7 +200,6 @@ function initializeEventListeners() {
       });
     });
   });
-
   document.getElementById("addLabBtn").addEventListener("click", function () {
     Swal.fire({
       title: "Aggiungi Laboratorio",
@@ -225,7 +209,6 @@ function initializeEventListeners() {
       cancelButtonText: "Annulla",
       preConfirm: () => {
         const nome = Swal.getPopup().querySelector("#nome").value;
-
         if (!nome) {
           Swal.showValidationMessage(
             "Per favore, inserisci il nome del laboratorio."
@@ -238,7 +221,6 @@ function initializeEventListeners() {
         const formData = new FormData();
         formData.append("action", "add");
         formData.append("nome", result.value.nome);
-
         fetch("forms/processing_ManageLaboratory.php", {
           method: "POST",
           body: formData,

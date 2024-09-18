@@ -9,14 +9,12 @@ require_once BASE_PATH . '/components/header.php'; ?>
         align-items: flex-end;
         justify-content: space-between
     }
-
     .btn-block {
         display: inline-block;
         width: 100%;
         margin-right: 10px
     }
 </style>
-
 <body id="page-top">
     <div id="wrapper"><?php include BASE_PATH . "/components/navbar.php"; ?>
         <div class="d-flex flex-column" id="content-wrapper">
@@ -60,17 +58,13 @@ require_once BASE_PATH . '/components/header.php'; ?>
             document.getElementById('generateReportBtn').addEventListener('click', function () {
                 var inputText = document.getElementById('cartellini-input').value.trim();
                 var lines = inputText.split('\n').filter(Boolean);
-
                 var dataToSend = {
                     cartellini: lines
                 };
-
                 var xhr = new XMLHttpRequest();
                 var url = 'generateReportFiches.php'; // Utilizza sempre generateReportCartel.php
-
                 xhr.open('POST', url, true);
                 xhr.setRequestHeader('Content-Type', 'application/json');
-
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
                         var blob = new Blob([xhr.response], { type: 'application/pdf' });
@@ -79,7 +73,6 @@ require_once BASE_PATH . '/components/header.php'; ?>
                         reportContainer.innerHTML = '<iframe src="' + url + '" width="100%" height="500px"></iframe>';
                     }
                 };
-
                 xhr.responseType = 'blob';
                 xhr.send(JSON.stringify(dataToSend));
             });

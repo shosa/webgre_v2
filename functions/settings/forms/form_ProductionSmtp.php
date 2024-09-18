@@ -1,8 +1,6 @@
 <?php
 require_once '../../../config/config.php';
-
 $conn = getDbInstance();
-
 function getSetting($conn, $item) {
     $sql = "SELECT value FROM settings WHERE item = :item";
     $stmt = $conn->prepare($sql);
@@ -10,14 +8,12 @@ function getSetting($conn, $item) {
     $stmt->execute();
     return $stmt->fetchColumn();
 }
-
 $production_senderEmail = getSetting($conn, 'production_senderEmail');
 $production_senderPassword = getSetting($conn, 'production_senderPassword');
 $production_senderSMTP = getSetting($conn, 'production_senderSMTP');
 $production_senderPORT = getSetting($conn, 'production_senderPORT');
 $production_recipients = getSetting($conn, 'production_recipients');
 ?>
-
 <form method="post" id="settingsEmailForm" class="p-4 border rounded shadow-sm bg-light">
     <div class="form-group">
         <label for="production_senderEmail">Indirizzo E-Mail del Mittente</label>

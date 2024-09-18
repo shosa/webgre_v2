@@ -4,9 +4,7 @@ require_once '../../config/config.php';
 require_once BASE_PATH . '/components/auth_validate.php';
 require_once '../../utils/log_utils.php';
 require_once BASE_PATH . '/components/header.php';
-
 $pdo = getDbInstance();
-
 // Funzione per ottenere gli ordini senza data
 function getOrdersWithoutDate($pdo)
 {
@@ -25,12 +23,10 @@ function getOrdersWithoutDate($pdo)
         LEFT JOIN dati dt ON toi.ordine = dt.Ordine
         WHERE toi.date IS NULL OR toi.date = '' OR toi.date = '0000-00-00'
     ";
-
     $stmt = $pdo->prepare($query);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
 // Funzione per ottenere i dettagli di un ordine specifico
 function getOrderDetails($pdo, $ordine)
 {
@@ -40,19 +36,16 @@ function getOrderDetails($pdo, $ordine)
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-
 // Gestione del salvataggio dei riferimenti
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save_references'])) {
     foreach ($_POST['orders'] as $ordineCode => $order) {
         $date = $order['date'];
-
         // Verifica se esiste già una riga per questo ordine
         $query = "SELECT id FROM track_order_info WHERE ordine = :ordine";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':ordine', $ordineCode);
         $stmt->execute();
         $id = $stmt->fetchColumn();
-
         if ($id) {
             // Aggiorna la riga esistente
             $query = "UPDATE track_order_info SET date = :date WHERE id = :id";
@@ -70,19 +63,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save_references'])) {
         }
     }
 }
-
 // Gestione dell'aggiornamento dei dettagli dell'ordine
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_order_details'])) {
     $ordineCode = $_POST['ordine'];
     $date = $_POST['date'];
-
     // Verifica se esiste già una riga per questo ordine
     $query = "SELECT id FROM track_order_info WHERE ordine = :ordine";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':ordine', $ordineCode);
     $stmt->execute();
     $id = $stmt->fetchColumn();
-
     if ($id) {
         // Aggiorna la riga esistente
         $query = "UPDATE track_order_info SET date = :date WHERE id = :id";
@@ -99,10 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_order_details']
         $stmt->execute();
     }
 }
-
 $ordersWithoutDate = getOrdersWithoutDate($pdo);
 ?>
-
 <body id="page-top">
     <div id="wrapper">
         <?php include BASE_PATH . "/components/navbar.php"; ?>
@@ -218,13 +206,11 @@ $ordersWithoutDate = getOrdersWithoutDate($pdo);
         </div>
     </div>
 </body>
-
 <style>
     .bg-yellow {
         background-color: #ffeeba;
     }
 </style>
-
 <!-- Modale per visualizzare tutte le date -->
 <div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="dateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -253,7 +239,6 @@ $ordersWithoutDate = getOrdersWithoutDate($pdo);
                             $stmt->execute();
                             return $stmt->fetchAll(PDO::FETCH_ASSOC);
                         }
-
                         $allDates = getAllDates($pdo);
                         foreach ($allDates as $date): ?>
                             <tr>

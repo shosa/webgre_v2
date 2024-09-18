@@ -20,22 +20,18 @@ $monthNames = [1 => "GENNAIO", 2 => "FEBBRAIO", 3 => "MARZO", 4 => "APRILE", 5 =
         color: #f2a5a0;
         cursor: not-allowed;
     }
-
     .future:hover {
         background-color: #f07067;
     }
-
     .giorno:hover {
         background-color: #DFF0FF;
     }
-
     .today {
         background-color: #B4E8C9;
         color: #439876;
         font-weight: bolder;
     }
 </style>
-
 <body id="page-top">
     <div id="wrapper"> <?php include BASE_PATH . "/components/navbar.php"; ?>
         <div id="content-wrapper" class="d-flex flex-column">

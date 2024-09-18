@@ -6,7 +6,6 @@ require_once BASE_PATH . '/vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-
 $pdf = new TCPDF("P", "mm", "A4", true, "UTF-8", false);
 $pdf->SetMargins(7, 7, 7);
 $pdf->SetAutoPageBreak(true, 10);
