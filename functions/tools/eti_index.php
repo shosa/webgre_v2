@@ -12,24 +12,30 @@ header('Access-Control-Allow-Origin: *'); ?>
         background-color: #f0f0f0;
         border-bottom-left-radius: 10px
     }
+
     .suggestion-item {
         padding: 8px;
         cursor: pointer
     }
+
     .suggestion-item:hover {
-        background-color: #6610f2;
+        background-color:
+            <?php echo $colore; ?>
+        ;
         color: #fff
     }
 </style>
+
 <head>
     <script charset="UTF-8" src="eti/dymo.js" type="text/javascript"></script>
     <script charset="UTF-8" src="eti/eti_script.js" type="text/javascript"></script>
 </head>
+
 <body id="page-top">
-    <div id="wrapper"><?php include (BASE_PATH . "/components/navbar.php"); ?>
+    <div id="wrapper"><?php include(BASE_PATH . "/components/navbar.php"); ?>
         <div class="d-flex flex-column" id="content-wrapper">
-            <div id="content"><?php include (BASE_PATH . "/components/topbar.php"); ?>
-                <div class="container-fluid"><?php require_once (BASE_PATH . "/utils/alerts.php"); ?>
+            <div id="content"><?php include(BASE_PATH . "/components/topbar.php"); ?>
+                <div class="container-fluid"><?php require_once(BASE_PATH . "/utils/alerts.php"); ?>
                     <div class="mb-4 align-items-center d-sm-flex justify-content-between">
                         <h1 class="h3 mb-0 text-gray-800">Etichette</h1>
                     </div>
@@ -84,7 +90,7 @@ header('Access-Control-Allow-Origin: *'); ?>
                     </div>
                 </div>
             </div>
-            <?php include (BASE_PATH . "/components/scripts.php"); ?><?php include (BASE_PATH . "/components/footer.php"); ?>
+            <?php include(BASE_PATH . "/components/scripts.php"); ?><?php include(BASE_PATH . "/components/footer.php"); ?>
         </div>
     </div>
 </body>
