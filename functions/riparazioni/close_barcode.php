@@ -12,7 +12,7 @@ try {
             $idripArray = json_decode($_POST['idripArray'], true);
             if (!empty($idripArray)) {
                 // Crea un oggetto TCPDF
-                require_once ('../../vendor/tcpdf/tcpdf.php');
+                require_once('../../vendor/tcpdf/tcpdf.php');
                 $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
                 // Itera attraverso gli IDRIP e crea una pagina per ciascuno
                 $stmt = $pdo->prepare("SELECT * FROM riparazioni WHERE IDRIP = ?");
@@ -61,19 +61,20 @@ function chiudiRiparazioni($pdo, $idripArray)
     }
 }
 ?>
-class="modal-dialog modal-dialog-centered"
+
+
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <?php include (BASE_PATH . "/components/navbar.php"); ?>
+        <?php include(BASE_PATH . "/components/navbar.php"); ?>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <?php include (BASE_PATH . "/components/topbar.php"); ?>
+                <?php include(BASE_PATH . "/components/topbar.php"); ?>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <?php require_once (BASE_PATH . "/utils/alerts.php"); ?>
+                    <?php require_once(BASE_PATH . "/utils/alerts.php"); ?>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Riparazioni</h1>
                     </div>
@@ -161,22 +162,22 @@ class="modal-dialog modal-dialog-centered"
                     </div>
                 </div>
             </div>
-            <script src="<?php echo BASE_URL?>/vendor/jquery/jquery.min.js"></script>
-            <script src="<?php echo BASE_URL?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-            <script src="<?php echo BASE_URL?>/vendor/jquery-easing/jquery.easing.min.js"></script>
-            <script src="<?php echo BASE_URL?>/js/sb-admin-2.min.js"></script>
-            <script src="<?php echo BASE_URL?>/vendor/datatables/jquery.dataTables.min.js"></script>
-            <script src="<?php echo BASE_URL?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-            <script src="<?php echo BASE_URL?>/vendor/datatables/dataTables.buttons.min.js"></script>
-            <script src="<?php echo BASE_URL?>/vendor/datatables/buttons.bootstrap4.min.js"></script>
-            <script src="<?php echo BASE_URL?>/vendor/jszip/jszip.min.js"></script>
-            <script src="<?php echo BASE_URL?>/vendor/pdfmake/pdfmake.min.js"></script>
-            <script src="<?php echo BASE_URL?>/vendor/pdfmake/vfs_fonts.js"></script>
-            <script src="<?php echo BASE_URL?>/vendor/datatables/buttons.html5.min.js"></script>
-            <script src="<?php echo BASE_URL?>/vendor/datatables/buttons.print.min.js"></script>
-            <script src="<?php echo BASE_URL?>/vendor/datatables/buttons.colVis.min.js"></script>
-            <script src="<?php echo BASE_URL?>/vendor/datatables/dataTables.colReorder.min.js"></script>
-            <script src="<?php echo BASE_URL?>/js/datatables.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/jquery/jquery.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/js/sb-admin-2.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/datatables/jquery.dataTables.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/datatables/dataTables.buttons.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.bootstrap4.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/jszip/jszip.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/pdfmake/pdfmake.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/pdfmake/vfs_fonts.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.html5.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.print.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.colVis.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/datatables/dataTables.colReorder.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/js/datatables.js"></script>
             <?php include_once BASE_PATH . '/components/footer.php'; ?>
         </div>
     </div>

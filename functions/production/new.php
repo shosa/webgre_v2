@@ -9,15 +9,15 @@ require_once '../../utils/log_utils.php';
 ?>
 <style>
 </style>
-<?php include (BASE_PATH . "/components/header.php"); ?>
+<?php include(BASE_PATH . "/components/header.php"); ?>
+
 <body id="page-top">
-    <div id="wrapper">
-        <?php include (BASE_PATH . "/components/navbar.php"); ?>
+    <div id="wrapper"> <?php include BASE_PATH . "/components/navbar.php"; ?>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                <?php include (BASE_PATH . "/components/topbar.php"); ?>
+                <?php include(BASE_PATH . "/components/topbar.php"); ?>
                 <div class="container-fluid">
-                    <?php require_once (BASE_PATH . "/utils/alerts.php"); ?>
+                    <?php require_once(BASE_PATH . "/utils/alerts.php"); ?>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Produzione</h1>
                     </div>
@@ -204,11 +204,11 @@ require_once '../../utils/log_utils.php';
             <a class="scroll-to-top rounded" href="#page-top">
                 <i class="fas fa-angle-up"></i>
             </a>
-            <?php include_once (BASE_PATH . '/components/scripts.php'); ?>
-            <?php include_once (BASE_PATH . '/components/footer.php'); ?>
+            <?php include_once(BASE_PATH . '/components/scripts.php'); ?>
+            <?php include_once(BASE_PATH . '/components/footer.php'); ?>
         </div>
     </div>
-</body>
+
 <script>
     $(document).ready(function () {
         var currentDate = new Date();
@@ -291,4 +291,5 @@ require_once '../../utils/log_utils.php';
     }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+
 </html>

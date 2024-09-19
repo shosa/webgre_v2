@@ -28,6 +28,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
     </li>
     <!-- DIVISORE -->
     <hr class="sidebar-divider">
+    <style>
+        .border-width-6 {
+            border-width: 6px !important;
+        }
+
+        .nav-item .active {
+            color: white !important;
+            border-left: solid 6pt white;
+            border-radius: 0 10px 10px 0;
+            width: 95% !important;
+            background-color: rgba(0, 0, 0, 0.05);
+            /* Scuro trasparente sopra il background esistente */
+        }
+
+        .nav-item .active {
+            color: white !important;
+            border-left: solid 6pt white;
+            border-radius: 0 10px 10px 0;
+            width: 95% !important;
+            background-color: rgba(0, 0, 0, 0.05);
+            /* Scuro trasparente sopra il background esistente */
+        }
+    </style>
     <!-- TITOLO SEZIONE -->
     <div class="sidebar-heading">
         Funzioni
@@ -107,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                     <a id="production-new" class="collapse-item" href="<?php echo BASE_URL ?>/functions/production/new"><i
                             class="fa fa-plus"></i>
                         Nuova Produzione</a>
-                    <a id="production-new" class="collapse-item"
+                    <a id="production-ship" class="collapse-item"
                         href="<?php echo BASE_URL ?>/functions/production/newShipment"><i class="fa fa-truck-fast"></i>
                         Nuova Spedizione</a>
                     <a id="production-calendario" class="collapse-item"
@@ -189,8 +212,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
     <!-- UTENTI -->
     <?php if (isset($_SESSION['permessi_utenti']) && $_SESSION['permessi_utenti'] == 1): ?>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="<?php echo BASE_URL ?>/functions/users/manageUsers" aria-expanded="true"
-                aria-controls="collapseProd">
+            <a class="nav-link collapsed" id="users" href="<?php echo BASE_URL ?>/functions/users/manageUsers"
+                aria-expanded="true" aria-controls="collapseProd">
                 <i class="far fa-users"></i>
                 <span>Utenti</span>
             </a>
@@ -199,8 +222,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
     <!-- LOG ATTIVITA' -->
     <?php if (isset($_SESSION['permessi_log']) && $_SESSION['permessi_log'] == 1): ?>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="<?php echo BASE_URL ?>/functions/users/log_admin" aria-expanded="true"
-                aria-controls="collapseProd">
+            <a class="nav-link collapsed" id="log" href="<?php echo BASE_URL ?>/functions/users/log_admin"
+                aria-expanded="true" aria-controls="collapseProd">
                 <i class="far fa-monitor-heart-rate"></i>
                 <span>Log Attività</span>
             </a>
@@ -209,8 +232,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
     <!-- ETICHETTE -->
     <?php if (isset($_SESSION['permessi_etichette']) && $_SESSION['permessi_etichette'] == 1): ?>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="<?php echo BASE_URL ?>/functions/tools/eti_index" aria-expanded="true"
-                aria-controls="collapseProd">
+            <a class="nav-link collapsed" id="etichette" href="<?php echo BASE_URL ?>/functions/tools/eti_index"
+                aria-expanded="true" aria-controls="collapseProd">
                 <i class="far fa-barcode-alt"></i>
                 <span>Etichette</span>
             </a>
@@ -218,8 +241,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
     <?php endif; ?>
     <?php if (isset($_SESSION['permessi_sql']) && $_SESSION['permessi_sql'] == 1): ?>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="<?php echo BASE_URL ?>/functions/database/manager" aria-expanded="true"
-                aria-controls="collapseProd">
+            <a class="nav-link collapsed" id="database" href="<?php echo BASE_URL ?>/functions/database/manager"
+                aria-expanded="true" aria-controls="collapseProd">
                 <i class="far fa-database"></i>
                 <span>Database</span>
             </a>
@@ -227,8 +250,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
     <?php endif; ?>
     <?php if (isset($_SESSION['permessi_settings']) && $_SESSION['permessi_settings'] == 1): ?>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="<?php echo BASE_URL ?>/functions/settings/settings" aria-expanded="true"
-                aria-controls="collapseProd">
+            <a class="nav-link collapsed" id="settings" href="<?php echo BASE_URL ?>/functions/settings/settings"
+                aria-expanded="true" aria-controls="collapseProd">
                 <i class="far fa-cog"></i>
                 <span>Impostazioni</span>
             </a>
@@ -272,6 +295,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             '/functions/quality/barcode': 'quality-barcode',
             '/functions/quality/chartsOverview': 'quality-charts',
             '/functions/production/new': 'production-new',
+            '/functions/production/newShipment': 'production-ship',
             '/functions/production/calendario': 'production-calendario',
             '/functions/samples/newSample': 'samples-new',
             '/functions/samples/list': 'samples-list',
@@ -285,6 +309,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             '/functions/tracking/makeFiches': 'tracking-fiches',
             '/functions/tracking/skuManager': 'tracking-sku',
             '/functions/tracking/orderDateManager': 'tracking-dates',
+            '/functions/tools/eti_index': 'etichette',
+            '/functions/users/log_admin': 'log',
+            '/functions/users/manageUsers': 'users',
+            '/functions/settings/settings': 'settings',
+            '/functions/database/manager': 'database'
             // Aggiungi qui altri link come necessario
         };
         // Controlla se l'URL corrente corrisponde a uno degli URL nel menu
@@ -292,16 +321,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             if (navLinks.hasOwnProperty(url) && currentUrl.includes(url)) {
                 var navItem = document.getElementById(navLinks[url]);
                 if (navItem) {
-                    navItem.classList.add('active');
+
                     navItem.classList.add('text-<?php echo $colore; ?>');
                     var parentNavLink = navItem.closest('.nav-item').querySelector('.nav-link');
                     if (parentNavLink) {
                         parentNavLink.classList.remove('collapsed');
+                        parentNavLink.classList.add('active');
                     }
                     var parentCollapse = navItem.closest('.collapse');
                     var navbarNav = document.getElementById('accordionSidebar');
                     if (parentCollapse && (!navbarNav || !navbarNav.classList.contains('toggled'))) {
                         parentCollapse.classList.add('show');
+
+
                     }
                 }
             }
