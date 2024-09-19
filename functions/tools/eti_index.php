@@ -20,7 +20,7 @@ header('Access-Control-Allow-Origin: *'); ?>
 
     .suggestion-item:hover {
         background-color:
-            var(--<?php echo $colore; ?>);
+            var(--<?php echo $_SESSION['tema']; ?>);
         color: #fff
     }
 </style>
