@@ -6,7 +6,7 @@ require_once BASE_PATH . '/components/header.php';
 header('Access-Control-Allow-Origin: *'); ?>
 <style>
     #suggestions-container {
-        max-height: 150px;
+        max-height: 500px;
         overflow-y: auto;
         position: relative;
         background-color: #f0f0f0;
