@@ -4,7 +4,7 @@ session_start();
 require_once BASE_PATH . '/components/auth_validate.php';
 $pdo = getDbInstance();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$idUtente = $_SESSION['user_id'];
+
 $queryNome = "SELECT nome FROM utenti WHERE user_name = :username";
 $stmtNome = $pdo->prepare($queryNome);
 $stmtNome->bindParam(':username', $_SESSION["username"], PDO::PARAM_STR);
@@ -13,7 +13,7 @@ $nome = $stmtNome->fetchColumn();
 $tipoUtente = $_SESSION['admin_type'];
 $data_oggi = date('d/m/Y');
 $queryPreferenze = $pdo->prepare("SELECT * FROM utenti_cards WHERE user_id = :user_id");
-$queryPreferenze->execute([':user_id' => $idUtente]);
+$queryPreferenze->execute([':user_id' => $_SESSION['user_id']]);
 $preferenze = $queryPreferenze->fetch(PDO::FETCH_ASSOC);
 $mostraCardRiparazioni = isset($preferenze['card_riparazioni']) && $preferenze['card_riparazioni'] == 1;
 $mostraCardMyRiparazioni = isset($preferenze['card_myRiparazioni']) && $preferenze['card_myRiparazioni'] == 1;
@@ -22,16 +22,17 @@ $mostraCardProduzione = isset($preferenze['card_produzione']) && $preferenze['ca
 $mostraCardProduzioneMese = isset($preferenze['card_produzioneMese']) && $preferenze['card_produzioneMese'] == 1;
 $queryCheckPreferenze = "SELECT COUNT(*) FROM utenti_cards WHERE user_id = :user_id";
 $stmtCheckPreferenze = $pdo->prepare($queryCheckPreferenze);
-$stmtCheckPreferenze->execute([':user_id' => $idUtente]);
+$stmtCheckPreferenze->execute([':user_id' => $_SESSION['user_id']]);
 $preferenzeEsistenti = $stmtCheckPreferenze->fetchColumn();
 if ($preferenzeEsistenti == 0) {
     // Crea un nuovo record con valori predefiniti
     $queryInsertPreferenze = "INSERT INTO utenti_cards (user_id, card_riparazioni, card_myRiparazioni, card_quality, card_produzione, card_produzioneMese) VALUES (:user_id, 1, 1, 1, 1, 1)";
     $stmtInsertPreferenze = $pdo->prepare($queryInsertPreferenze);
-    $stmtInsertPreferenze->execute([':user_id' => $idUtente]);
+    $stmtInsertPreferenze->execute([':user_id' => $_SESSION['user_id']]);
 }
 ?>
 <?php include("components/header.php"); ?>
+
 <body id="page-top">
     <div id="wrapper">
         <?php include("components/navbar.php"); //INCLUSIONE NAVBAR ?>
@@ -111,10 +112,12 @@ if ($preferenzeEsistenti == 0) {
             position: relative;
             transition: transform 0.3s, box-shadow 0.3s;
         }
+
         .card-hover:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
+
         .card-hover a {
             position: absolute;
             top: 0;
@@ -145,7 +148,7 @@ if ($preferenzeEsistenti == 0) {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: new URLSearchParams({
-                user_id: <?php echo $idUtente; ?>,
+                user_id: <?php echo $_SESSION['user_id']; ?>,
                 card_riparazioni: cardRiparazioni,
                 card_myRiparazioni: cardMyRiparazioni,
                 card_quality: cardQuality,
