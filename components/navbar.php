@@ -10,7 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
     $_SESSION['navbar_toggled'] = $_POST['toggle_navbar'] === 'true';
 }
 ?>
-<ul class="navbar-nav shadow bg-gradient-<?php echo $colore; ?> sidebar sidebar-dark accordion <?php echo $_SESSION['navbar_toggled'] ? '' : 'toggled'; ?>"
+
+<ul class="navbar-nav shadow bg-gradient-<?php echo $colore; ?> sidebar sidebar-dark accordion <?php echo $_SESSION['navbar_toggled'] ? '' : 'toggled'; ?> fixed-sidebar"
     id="accordionSidebar">
     <!-- SIDEBAR INTESTAZIONE -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php echo BASE_URL ?>/index">

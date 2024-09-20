@@ -4,11 +4,9 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
 require_once '../../config/config.php';
-require_once '../../utils/helpers.php';
-require_once '../../utils/log_utils.php';
+require_once BASE_PATH . "/utils/helpers.php";
+require_once BASE_PATH . "/utils/log_utils.php";
 ?>
-<style>
-</style>
 <?php include(BASE_PATH . "/components/header.php"); ?>
 
 <body id="page-top">
@@ -209,87 +207,87 @@ require_once '../../utils/log_utils.php';
         </div>
     </div>
 
-<script>
-    $(document).ready(function () {
-        var currentDate = new Date();
-        var currentMonth = currentDate.getMonth();
-        var monthNames = ["GENNAIO", "FEBBRAIO", "MARZO", "APRILE", "MAGGIO", "GIUGNO", "LUGLIO", "AGOSTO", "SETTEMBRE", "OTTOBRE", "NOVEMBRE", "DICEMBRE"];
-        $("#month").val(monthNames[currentMonth]);
-        var currentDay = currentDate.getDate();
-        $("#day").val(currentDay);
-        $('.form-container').addClass('show');
-    });
-    function getCurrentYear() {
-        var currentDate = new Date();
-        var currentYear = currentDate.getFullYear();
-        document.getElementById("year").value = currentYear;
-    }
-    getCurrentYear();
-    function inviaDati() {
-        var month = $("#month").val();
-        var day = $("#day").val();
-        var manovia1 = $("#manovia1").val();
-        var note1 = $("#note1").val();
-        var manovia2 = $("#manovia2").val();
-        var note2 = $("#note2").val();
-        var manovia3 = $("#manovia3").val();
-        var note3 = $("#note3").val();
-        var orlatura1 = $("#orlatura1").val();
-        var note4 = $("#note4").val();
-        var orlatura2 = $("#orlatura2").val();
-        var note5 = $("#note5").val();
-        var orlatura3 = $("#orlatura3").val();
-        var note8 = $("#note8").val();
-        var orlatura4 = $("#orlatura4").val();
-        var note9 = $("#note9").val();
-        var taglio1 = $("#taglio1").val();
-        var note6 = $("#note6").val();
-        var taglio2 = $("#taglio2").val();
-        var note7 = $("#note7").val();
-        $.ajax({
-            type: "POST",
-            url: "process.php",
-            data: {
-                month: month,
-                day: day,
-                manovia1: manovia1,
-                note1: note1,
-                manovia2: manovia2,
-                note2: note2,
-                manovia3: manovia3,
-                note3: note3,
-                orlatura1: orlatura1,
-                note4: note4,
-                orlatura2: orlatura2,
-                note5: note5,
-                orlatura3: orlatura3,
-                note8: note8,
-                orlatura4: orlatura4,
-                note9: note9,
-                taglio1: taglio1,
-                note6: note6,
-                taglio2: taglio2,
-                note7: note7
-            },
-            success: function (response) {
-                console.log("Risposta del server: " + response);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Successo',
-                    text: 'I dati sono stati aggiornati con successo!',
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = 'calendario.php';
-                    }
-                });
-            },
-            error: function (xhr, status, error) {
-                console.error("Errore durante la chiamata AJAX: " + error);
-            }
+    <script>
+        $(document).ready(function () {
+            var currentDate = new Date();
+            var currentMonth = currentDate.getMonth();
+            var monthNames = ["GENNAIO", "FEBBRAIO", "MARZO", "APRILE", "MAGGIO", "GIUGNO", "LUGLIO", "AGOSTO", "SETTEMBRE", "OTTOBRE", "NOVEMBRE", "DICEMBRE"];
+            $("#month").val(monthNames[currentMonth]);
+            var currentDay = currentDate.getDate();
+            $("#day").val(currentDay);
+            $('.form-container').addClass('show');
         });
-    }
-</script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+        function getCurrentYear() {
+            var currentDate = new Date();
+            var currentYear = currentDate.getFullYear();
+            document.getElementById("year").value = currentYear;
+        }
+        getCurrentYear();
+        function inviaDati() {
+            var month = $("#month").val();
+            var day = $("#day").val();
+            var manovia1 = $("#manovia1").val();
+            var note1 = $("#note1").val();
+            var manovia2 = $("#manovia2").val();
+            var note2 = $("#note2").val();
+            var manovia3 = $("#manovia3").val();
+            var note3 = $("#note3").val();
+            var orlatura1 = $("#orlatura1").val();
+            var note4 = $("#note4").val();
+            var orlatura2 = $("#orlatura2").val();
+            var note5 = $("#note5").val();
+            var orlatura3 = $("#orlatura3").val();
+            var note8 = $("#note8").val();
+            var orlatura4 = $("#orlatura4").val();
+            var note9 = $("#note9").val();
+            var taglio1 = $("#taglio1").val();
+            var note6 = $("#note6").val();
+            var taglio2 = $("#taglio2").val();
+            var note7 = $("#note7").val();
+            $.ajax({
+                type: "POST",
+                url: "process.php",
+                data: {
+                    month: month,
+                    day: day,
+                    manovia1: manovia1,
+                    note1: note1,
+                    manovia2: manovia2,
+                    note2: note2,
+                    manovia3: manovia3,
+                    note3: note3,
+                    orlatura1: orlatura1,
+                    note4: note4,
+                    orlatura2: orlatura2,
+                    note5: note5,
+                    orlatura3: orlatura3,
+                    note8: note8,
+                    orlatura4: orlatura4,
+                    note9: note9,
+                    taglio1: taglio1,
+                    note6: note6,
+                    taglio2: taglio2,
+                    note7: note7
+                },
+                success: function (response) {
+                    console.log("Risposta del server: " + response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Successo',
+                        text: 'I dati sono stati aggiornati con successo!',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'calendario.php';
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Errore durante la chiamata AJAX: " + error);
+                }
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
 
-</html>
+    </html>
