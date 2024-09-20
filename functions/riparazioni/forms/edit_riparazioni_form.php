@@ -1,4 +1,3 @@
-
 <hr>
 <style>
     /* Rimuove le freccette su e giù dai campi di input di tipo number */
