@@ -1,5 +1,6 @@
 <!-- SIDEBAR -->
 <?php
+header('Content-Type: text/html; charset=utf-8');
 $colore = (isset($_SESSION["tema"]) && !empty($_SESSION["tema"])) ? $_SESSION["tema"] : "primary";
 // Verifica se la sessione contiene lo stato della navbar, altrimenti imposta un valore predefinito
 if (!isset($_SESSION['navbar_toggled'])) {
