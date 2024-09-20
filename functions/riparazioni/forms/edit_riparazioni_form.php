@@ -6,14 +6,17 @@
         -webkit-appearance: none;
         margin: 0;
     }
+
     input[type=number] {
         -moz-appearance: textfield;
     }
+
     /* Larghezza uniforme per i campi di input */
     .input-number {
         width: 100%;
         /* Larghezza del campo di input */
     }
+
     /* Imposta la larghezza delle colonne della tabella */
     .table th,
     .table td {
