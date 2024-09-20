@@ -60,7 +60,7 @@
                         for ($i = 1; $i <= 20; $i++) {
                             $fieldName = 'N' . str_pad($i, 2, '0', STR_PAD_LEFT); // Costruisci il nome del campo N01, N02, ecc.
                             // Aggiungi l'attributo 'disabled' ai campi N01, N02, ecc.
-                            echo '<td class="text-center"><span>' . htmlspecialchars($idNumerateData[$fieldName], ENT_QUOTES, 'UTF-8') . '</span></td>';
+                            echo '<td class="text-center"><span>' . $idNumerateData[$fieldName] . '</span></td>';
                         }
                         ?>
                     </tr>
