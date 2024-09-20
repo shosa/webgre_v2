@@ -1,4 +1,4 @@
-<?php header('Content-Type: text/html; charset=utf-8'); ?>
+
 <hr>
 <style>
     /* Rimuove le freccette su e giù dai campi di input di tipo number */
