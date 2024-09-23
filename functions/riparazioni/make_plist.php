@@ -2,6 +2,7 @@
 session_start();
 require_once '../../config/config.php';
 require_once BASE_PATH . '/components/auth_validate.php';
+require_once BASE_PATH . '/vendor/autoload.php'; // Path to PhpSpreadsheet autoload file
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $db = getDbInstance();
     $idrip_values = array();
@@ -23,8 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->execute($idrip_values);
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             // Ora hai i dati da utilizzare per generare il PDF con TCPDF
-            require_once (BASE_PATH . '/vendor/tcpdf/tcpdf.php');
-            require_once (BASE_PATH . '/vendor/tcpdf/tcpdf_barcodes_1d.php');
+
             // Inizializza un nuovo oggetto TCPDF con orientamento orizzontale
             $pdf = new TCPDF('L');
             // Imposta le informazioni del documento PDF
@@ -87,18 +87,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 require_once BASE_PATH . '/components/header.php';
 ?>
+
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <?php include (BASE_PATH . "/components/navbar.php"); ?>
+        <?php include(BASE_PATH . "/components/navbar.php"); ?>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <?php include (BASE_PATH . "/components/topbar.php"); ?>
+                <?php include(BASE_PATH . "/components/topbar.php"); ?>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <?php require_once (BASE_PATH . "/utils/alerts.php"); ?>
+                    <?php require_once(BASE_PATH . "/utils/alerts.php"); ?>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Riparazioni</h1>
                     </div>
