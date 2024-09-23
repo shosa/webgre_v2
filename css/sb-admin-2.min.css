@@ -3,14 +3,13 @@
  * Copyright 2013-2021 Start Bootstrap
  * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-sb-admin-2/blob/master/LICENSE)
  */
-
 /*!
  * Bootstrap v4.6.0 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-:root {
+ :root {
   --blue: #4e73df;
   --indigo: #6610f2;
   --purple: #6f42c1;
@@ -5894,7 +5893,6 @@ a.badge-dark.focus {
 }
 
 .list-group-item.active {
-
   color: #fff;
   background-color: #4e73df;
   border-color: #4e73df;
@@ -11248,6 +11246,10 @@ a:focus {
 
 .bg-yellow {
   background-color: var(--yellow) !important;
+}
+
+.bg-red {
+  background-color: var(--red) !important;
 }
 
 .bg-orange {

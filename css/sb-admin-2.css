@@ -11248,6 +11248,10 @@ a:focus {
   background-color: var(--yellow) !important;
 }
 
+.bg-red {
+  background-color: var(--red) !important;
+}
+
 .bg-orange {
   background-color: var(--orange) !important;
 }

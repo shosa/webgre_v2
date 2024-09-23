@@ -152,13 +152,10 @@ $unreadCount = count($notifications);
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+
+                <a class="dropdown-item" href="<?php echo BASE_URL ?>/functions/users/personal">
+                    <i class="fas fa-home fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profilo
-                </a>
-                <a class="dropdown-item" href="<?php echo BASE_URL ?>/functions/users/log">
-                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Registro Attività
                 </a>
                 <a class="dropdown-item" href="<?php echo BASE_URL ?>/functions/users/themes">
                     <i
@@ -166,9 +163,9 @@ $unreadCount = count($notifications);
                     Tema
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="<?php echo BASE_URL ?>/logout" data-toggle="modal"
+                <a class="dropdown-item bg-red text-white" href="<?php echo BASE_URL ?>/logout" data-toggle="modal"
                     data-target="#logoutModal">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    <i class="fas fa-power-off fa-sm fa-fw mr-2 text-white"></i>
                     Esci
                 </a>
             </div>

@@ -4,17 +4,18 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
 require_once '../../config/config.php';
-include (BASE_PATH . "/components/header.php");
+include(BASE_PATH . "/components/header.php");
 ?>
+
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <?php include (BASE_PATH . "/components/navbar.php"); ?>
+        <?php include(BASE_PATH . "/components/navbar.php"); ?>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <?php include (BASE_PATH . "/components/topbar.php"); ?>
+                <?php include(BASE_PATH . "/components/topbar.php"); ?>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -31,14 +32,47 @@ include (BASE_PATH . "/components/header.php");
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Utente</h6>
                                 </div>
-                                <div class="card-body text-left">
-                                    <span class="text-left"> ID: <?php echo $_SESSION['user_id']; ?></span>
-                                </div>
+
                                 <div class="card-body text-center">
-                                    <i class="fas fa-user-circle fa-8x  " style="color: #74C0FC;"></i>
-                                    <h3> <?php echo $_SESSION['nome']; ?></h3>
-                                    <h6> <?php echo $_SESSION['username']; ?></h6>
-                                    <span> <?php echo $_SESSION['tipo']; ?></span>
+                                    <i class="fas fa-user-circle fa-8x mb-3" style="color: #74C0FC;"></i>
+
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-dark text-white border-dark"
+                                                id="basic-addon1"><i class="fal fa-user"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control bg-white" placeholder=""
+                                            aria-label="Username" aria-describedby="basic-addon1" readonly
+                                            value="<?php echo $_SESSION['nome']; ?>">
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend w-20">
+                                            <span class="input-group-text bg-dark text-white border-dark"
+                                                id="basic-addon1"><i class="fal fa-fingerprint"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control bg-white" placeholder=""
+                                            aria-label="Username" aria-describedby="basic-addon1" readonly
+                                            value="<?php echo $_SESSION['username']; ?>">
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-dark text-white border-dark"
+                                                id="basic-addon1"><i class="fal fa-hashtag"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control bg-white" placeholder=""
+                                            aria-label="Username" aria-describedby="basic-addon1" readonly
+                                            value="<?php echo $_SESSION['user_id']; ?>">
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-dark text-white border-dark"
+                                                id="basic-addon1"><i class="fal fa-lock"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control bg-white" placeholder=""
+                                            aria-label="Username" aria-describedby="basic-addon1" readonly
+                                            value="<?php echo $_SESSION['tipo']; ?>">
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -46,7 +80,7 @@ include (BASE_PATH . "/components/header.php");
                             <div class="card shadow mb-4">
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Attività Eseguite</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Registro Attività </h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -130,23 +164,23 @@ include (BASE_PATH . "/components/header.php");
                     </div>
                 </div>
                 <!-- Footer -->
-                <script src="<?php echo BASE_URL?>/vendor/jquery/jquery.min.js"></script>
-                <script src="<?php echo BASE_URL?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-                <script src="<?php echo BASE_URL?>/vendor/jquery-easing/jquery.easing.min.js"></script>
-                <script src="<?php echo BASE_URL?>/js/sb-admin-2.min.js"></script>
-                <script src="<?php echo BASE_URL?>/vendor/datatables/jquery.dataTables.min.js"></script>
-                <script src="<?php echo BASE_URL?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-                <script src="<?php echo BASE_URL?>/vendor/datatables/dataTables.buttons.min.js"></script>
-                <script src="<?php echo BASE_URL?>/vendor/datatables/buttons.bootstrap4.min.js"></script>
-                <script src="<?php echo BASE_URL?>/vendor/jszip/jszip.min.js"></script>
-                <script src="<?php echo BASE_URL?>/vendor/pdfmake/pdfmake.min.js"></script>
-                <script src="<?php echo BASE_URL?>/vendor/pdfmake/vfs_fonts.js"></script>
-                <script src="<?php echo BASE_URL?>/vendor/datatables/buttons.html5.min.js"></script>
-                <script src="<?php echo BASE_URL?>/vendor/datatables/buttons.print.min.js"></script>
-                <script src="<?php echo BASE_URL?>/vendor/datatables/buttons.colVis.min.js"></script>
-                <script src="<?php echo BASE_URL?>/vendor/datatables/dataTables.colReorder.min.js"></script>
-                <script src="<?php echo BASE_URL?>/js/datatables.js"></script>
-                <?php include (BASE_PATH . "/components/footer.php"); ?>
+                <script src="<?php echo BASE_URL ?>/vendor/jquery/jquery.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/js/sb-admin-2.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/vendor/datatables/jquery.dataTables.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/vendor/datatables/dataTables.buttons.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.bootstrap4.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/vendor/jszip/jszip.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/vendor/pdfmake/pdfmake.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/vendor/pdfmake/vfs_fonts.js"></script>
+                <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.html5.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.print.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.colVis.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/vendor/datatables/dataTables.colReorder.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/js/datatables.js"></script>
+                <?php include(BASE_PATH . "/components/footer.php"); ?>
                 <!-- End of Footer -->
             </div>
             <!-- End of Content Wrapper -->
