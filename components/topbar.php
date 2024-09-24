@@ -7,6 +7,28 @@ $stmtNome->bindParam(':username', $_SESSION["username"], PDO::PARAM_STR);
 $stmtNome->execute();
 $nome = $stmtNome->fetchColumn();
 // Query per ottenere le notifiche non lette per l'utente corrente
+// Ottieni l'immagine del profilo
+$topbar_userImage = BASE_URL . '/img/users/' . $_SESSION['user_id'] . '.jpg'; // Modifica l'estensione se necessario
+
+function getTopBarProfileImage($userId)
+{
+    $imageExtensions = ['png', 'jpeg', 'jpg'];
+    $imagePath = BASE_PATH . '/img/users/';
+
+    foreach ($imageExtensions as $ext) {
+        $filePath = $imagePath . $userId . '.' . $ext;
+        if (file_exists($filePath)) {
+            return BASE_URL . '/img/users/' . $userId . '.' . $ext; // Restituisci il percorso dell'immagine
+        }
+    }
+
+    return false; // Nessuna immagine trovata
+}
+
+$userImage = getTopBarProfileImage($_SESSION['user_id']);
+if (!file_exists($topbar_userImage)) {
+    $topbar_userImage = 'img/users/default.jpg'; // Immagine di default se il file non esiste
+}
 $queryNotifications = "SELECT * FROM notifications WHERE user_id = :user_id AND is_read = 0 ORDER BY timestamp DESC LIMIT 3";
 $stmtNotifications = $pdoTopbar->prepare($queryNotifications);
 $stmtNotifications->bindParam(':user_id', $_SESSION["user_id"], PDO::PARAM_INT);
@@ -14,6 +36,7 @@ $stmtNotifications->execute();
 $notifications = $stmtNotifications->fetchAll(PDO::FETCH_ASSOC);
 // Conta il numero di notifiche non lette
 $unreadCount = count($notifications);
+
 ?>
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
     <!-- Sidebar Toggle (Topbar) -->
@@ -143,16 +166,20 @@ $unreadCount = count($notifications);
             </div>
         </li>
         <div class="topbar-divider d-none d-sm-block"></div>
-        <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $nome; ?></span>
-                <i class="fas fa-user-circle fa-2x " style="color: #74C0FC;"></i>
+                <?php if ($userImage): ?>
+                    <img src="<?php echo $userImage; ?>" alt="Immagine profilo"
+                        class="rounded-circle border border-<?php echo $colore ?>"
+                        style="width: 40px; height: 40px; object-fit: cover; border-width:2pt !important;" />
+                <?php else: ?>
+                    <i class="fas fa-user-circle fa-2x" style="color: #74C0FC;"></i>
+                <?php endif; ?>
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-
                 <a class="dropdown-item" href="<?php echo BASE_URL ?>/functions/users/personal">
                     <i class="fas fa-home fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profilo

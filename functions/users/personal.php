@@ -5,7 +5,51 @@ error_reporting(E_ALL);
 session_start();
 require_once '../../config/config.php';
 include(BASE_PATH . "/components/header.php");
+
+// Funzione per verificare se esiste un'immagine del profilo
+function getProfileImage($userId)
+{
+    $imageExtensions = ['png', 'jpeg', 'jpg'];
+    $imagePath = BASE_PATH . '/img/users/';
+
+    foreach ($imageExtensions as $ext) {
+        $filePath = $imagePath . $userId . '.' . $ext;
+        if (file_exists($filePath)) {
+            return BASE_URL . '/img/users/' . $userId . '.' . $ext; // Restituisci il percorso dell'immagine
+        }
+    }
+
+    return false; // Nessuna immagine trovata
+}
+
+$userImage = getProfileImage($_SESSION['user_id']);
+
 ?>
+<style>
+    .change-photo-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #ffc107;
+        border-radius: 50%;
+        padding: 5px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .change-photo-btn i {
+        color: white;
+    }
+
+    .change-photo-btn:hover {
+        background-color: #e0a800;
+        cursor: pointer;
+    }
+</style>
 
 <body id="page-top">
     <!-- Page Wrapper -->
@@ -32,10 +76,23 @@ include(BASE_PATH . "/components/header.php");
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Utente</h6>
                                 </div>
-
                                 <div class="card-body text-center">
-                                    <i class="fas fa-user-circle fa-8x mb-3" style="color: #74C0FC;"></i>
+                                    <div style="position: relative; display: inline-block;">
+                                        <!-- Immagine del profilo o icona utente -->
+                                        <?php if ($userImage): ?>
+                                            <img src="<?php echo $userImage; ?>" alt="Immagine profilo"
+                                                class="rounded-circle mb-3 border-<?php echo $colore ?> border "
+                                                style="width: 150px; height: 150px; object-fit: cover; border-width: 2pt!important;">
+                                        <?php else: ?>
+                                            <i class="fas fa-user-circle fa-8x mb-3" style="color: #74C0FC;"></i>
+                                        <?php endif; ?>
 
+                                        <!-- Bottone per cambiare immagine (con icona penna) -->
+                                        <button class="btn btn-sm btn-warning btn-circle change-photo-btn "
+                                            data-toggle="modal" data-target="#profileImageModal">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                    </div>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-dark text-white border-dark"
@@ -43,7 +100,7 @@ include(BASE_PATH . "/components/header.php");
                                         </div>
                                         <input type="text" class="form-control bg-white" placeholder=""
                                             aria-label="Username" aria-describedby="basic-addon1" readonly
-                                            value="<?php echo $_SESSION['nome']; ?>">
+                                            value="<?php echo $_SESSION['nome']; ?> ">
                                     </div>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend w-20">
@@ -180,6 +237,8 @@ include(BASE_PATH . "/components/header.php");
                 <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.colVis.min.js"></script>
                 <script src="<?php echo BASE_URL ?>/vendor/datatables/dataTables.colReorder.min.js"></script>
                 <script src="<?php echo BASE_URL ?>/js/datatables.js"></script>
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
                 <?php include(BASE_PATH . "/components/footer.php"); ?>
                 <!-- End of Footer -->
             </div>
@@ -190,6 +249,32 @@ include(BASE_PATH . "/components/header.php");
         <i class="fas fa-angle-up"></i>
     </a>
 </body>
+<!-- Modale per aggiornare l'immagine del profilo -->
+<div class="modal fade" id="profileImageModal" tabindex="-1" role="dialog" aria-labelledby="profileImageModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="profileImageModalLabel">Aggiorna Immagine del Profilo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Input per caricare l'immagine -->
+                <input type="file" id="profileImageInput" accept="image/*" class="form-control">
+                <div class="mt-3">
+                    <!-- Contenitore per Cropper.js -->
+                    <img id="profileImagePreview" style="max-width: 100%; display: none;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                <button type="button" id="saveProfileImage" class="btn btn-primary">Salva Immagine</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const viewButtons = document.querySelectorAll('.view-query');
@@ -208,6 +293,66 @@ include(BASE_PATH . "/components/header.php");
                         console.error(error);
                     }
                 });
+            });
+        });
+        let cropper;
+        const profileImageInput = document.getElementById('profileImageInput');
+        const profileImagePreview = document.getElementById('profileImagePreview');
+        const saveButton = document.getElementById('saveProfileImage');
+
+        // Al caricamento dell'immagine
+        profileImageInput.addEventListener('change', function (event) {
+            const files = event.target.files;
+            if (files && files.length > 0) {
+                const file = files[0];
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    profileImagePreview.src = e.target.result;
+                    profileImagePreview.style.display = 'block';
+
+                    // Inizializza Cropper.js
+                    if (cropper) {
+                        cropper.destroy(); // Rimuovi eventuale cropper esistente
+                    }
+                    cropper = new Cropper(profileImagePreview, {
+                        aspectRatio: 1, // Mantenere proporzioni 1:1
+                        viewMode: 3,
+                        preview: '.preview',
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Salva immagine ritagliata
+        saveButton.addEventListener('click', function () {
+            const canvas = cropper.getCroppedCanvas({
+                width: 300,
+                height: 300,
+            });
+
+            canvas.toBlob(function (blob) {
+                const formData = new FormData();
+                formData.append('profile_image', blob, 'profile.png');
+
+                // Esegui una richiesta AJAX per caricare l'immagine sul server
+                fetch('updateImage.php', {
+                    method: 'POST',
+                    body: formData,
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Aggiorna l'immagine del profilo nella pagina
+                            location.reload();
+                        } else {
+                            alert('Errore durante il caricamento dell\'immagine');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Errore:', error);
+                    });
             });
         });
     });
