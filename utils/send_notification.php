@@ -6,7 +6,7 @@ function sendNotification($user_id, $type, $message, $link = '')
 {
     try {
         // Connessione al database
-        $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
+        $pdo = getDbInstace();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         // Prepara la query SQL per inserire la notifica nel database
         $query = "INSERT INTO notifications (user_id, type, message, link, is_read) VALUES (:user_id, :type, :message, :link, 0)";
