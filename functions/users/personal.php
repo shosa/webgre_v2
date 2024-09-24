@@ -89,11 +89,11 @@ $userImage = getProfileImage($_SESSION['user_id']);
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Log Attività</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Il mio Profilo</h1>
                     </div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Log Attività</li>
+                        <li class="breadcrumb-item active">Profilo</li>
                     </ol>
                     <div class="row">
                         <div class="col-xl-3 col-lg-4">
