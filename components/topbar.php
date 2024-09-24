@@ -162,7 +162,7 @@ $unreadCount = count($notifications);
                     </a>
                 <?php endif; ?>
                 <a class="dropdown-item text-center small text-gray-500"
-                    href="<?php echo BASE_URL ?>/functions/users/notifications.php">Mostra tutte</a>
+                    href="<?php echo BASE_URL ?>/functions/users/personal#notifiche">Mostra tutte</a>
             </div>
         </li>
         <div class="topbar-divider d-none d-sm-block"></div>

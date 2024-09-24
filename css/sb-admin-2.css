@@ -21,6 +21,7 @@
   --teal: #20c9a6;
   --cyan: #36b9cc;
   --white: #fff;
+  --lightgrey: #ededed;
   --gray: #858796;
   --gray-dark: #5a5c69;
   --primary: #4e73df;
@@ -7176,6 +7177,10 @@ button.bg-light:focus {
 
 .bg-dark {
   background-color: #5a5c69 !important;
+}
+
+.bg-lightgrey {
+  background-color: var(--lightgrey) !important;
 }
 
 a.bg-dark:hover,

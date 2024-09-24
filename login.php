@@ -27,6 +27,7 @@ if (!empty($_COOKIE['series_id']) && !empty($_COOKIE['remember_token'])) {
         $_SESSION['admin_type'] = $row['admin_type'];
         $_SESSION['nome'] = $row['nome'];
         $_SESSION['username'] = $row['user_name'];
+        $_SESSION['mail'] = $row['mail'];
         header('Location:index.php');
         exit;
     } else {
@@ -42,12 +43,14 @@ include BASE_PATH . '/components/header.php';
         margin: 5%;
         text-align: center;
     }
+
     @media screen and (max-width: 768px) {
         .logo img {
             width: 60%;
         }
     }
 </style>
+
 <body class="bg-gradient-light">
     <div class="container">
         <div class="card o-hidden border-0 shadow-lg my-5 bg-gray-100 align-center">
@@ -91,4 +94,5 @@ include BASE_PATH . '/components/header.php';
         </div>
     </div>
 </body>
+
 </html>

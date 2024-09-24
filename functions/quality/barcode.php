@@ -38,12 +38,13 @@ try {
     echo "Errore di connessione: " . $e->getMessage();
 }
 ?>
+
 <body id="page-top">
     <div id="wrapper">
-        <?php include (BASE_PATH . "/components/navbar.php"); ?>
+        <?php include(BASE_PATH . "/components/navbar.php"); ?>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                <?php include (BASE_PATH . "/components/topbar.php"); ?>
+                <?php include(BASE_PATH . "/components/topbar.php"); ?>
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Controllo Qualità</h1>
@@ -141,14 +142,14 @@ try {
                         </div>
                     </div>
                 </div>
-               
-                <script src="<?php echo BASE_URL?>/vendor/jquery/jquery.min.js"></script>
-                <script src="<?php echo BASE_URL?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-                <script src="<?php echo BASE_URL?>/vendor/jquery-easing/jquery.easing.min.js"></script>
-                <script src="<?php echo BASE_URL?>/js/sb-admin-2.min.js"></script>
-                <script src="<?php echo BASE_URL?>/vendor/datatables/jquery.dataTables.min.js"></script>
-                <script src="<?php echo BASE_URL?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-                <script src="<?php echo BASE_URL?>/js/datatables.js"></script>
+
+                <script src="<?php echo BASE_URL ?>/vendor/jquery/jquery.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/js/sb-admin-2.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/vendor/datatables/jquery.dataTables.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+                <script src="<?php echo BASE_URL ?>/js/datatables.js"></script>
                 <?php include_once BASE_PATH . '/components/footer.php'; ?>
             </div>
         </div>

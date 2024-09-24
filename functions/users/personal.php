@@ -21,6 +21,32 @@ function getProfileImage($userId)
 
     return false; // Nessuna immagine trovata
 }
+$limit = 5; // Numero di notifiche per pagina
+$page = isset($_GET['notification']) ? (int) $_GET['notification'] : 1; // Ottieni la pagina corrente
+$offset = ($page - 1) * $limit; // Calcola l'offset
+
+try {
+    $pdo = getDbInstance();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $stmt = $pdo->prepare("SELECT * FROM notifications WHERE user_id = :user_id ORDER BY timestamp DESC LIMIT :limit OFFSET :offset");
+    $stmt->bindParam(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+
+    $stmt->execute();
+    $notifiche = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Ottieni il totale delle notifiche per la paginazione
+    $stmtTotal = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE user_id = :user_id");
+    $stmtTotal->bindParam(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+    $stmtTotal->execute();
+    $total = $stmtTotal->fetchColumn();
+
+} catch (PDOException $e) {
+    $_SESSION['danger'] = "Errore durante il recupero delle notifiche.";
+}
+
 
 $userImage = getProfileImage($_SESSION['user_id']);
 
@@ -74,7 +100,7 @@ $userImage = getProfileImage($_SESSION['user_id']);
                             <div class="card shadow mb-4">
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Utente</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Profilo personale</h6>
                                 </div>
                                 <div class="card-body text-center">
                                     <div style="position: relative; display: inline-block;">
@@ -103,11 +129,20 @@ $userImage = getProfileImage($_SESSION['user_id']);
                                             value="<?php echo $_SESSION['nome']; ?> ">
                                     </div>
                                     <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-dark text-white border-dark"
+                                                id="basic-addon1"><i class="fal fa-envelope"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control bg-white" placeholder=""
+                                            aria-label="Username" aria-describedby="basic-addon1" readonly
+                                            value="<?php echo (isset($_SESSION["mail"]) && !empty($_SESSION["mail"])) ? $_SESSION["mail"] : ""; ?>">
+                                    </div>
+                                    <div class="input-group mb-3">
                                         <div class="input-group-prepend w-20">
                                             <span class="input-group-text bg-dark text-white border-dark"
                                                 id="basic-addon1"><i class="fal fa-fingerprint"></i></span>
                                         </div>
-                                        <input type="text" class="form-control bg-white" placeholder=""
+                                        <input type="text" class="form-control bg-lightgrey" placeholder=""
                                             aria-label="Username" aria-describedby="basic-addon1" readonly
                                             value="<?php echo $_SESSION['username']; ?>">
                                     </div>
@@ -116,25 +151,77 @@ $userImage = getProfileImage($_SESSION['user_id']);
                                             <span class="input-group-text bg-dark text-white border-dark"
                                                 id="basic-addon1"><i class="fal fa-hashtag"></i></span>
                                         </div>
-                                        <input type="text" class="form-control bg-white" placeholder=""
+                                        <input type="text" class="form-control bg-lightgrey" placeholder=""
                                             aria-label="Username" aria-describedby="basic-addon1" readonly
                                             value="<?php echo $_SESSION['user_id']; ?>">
                                     </div>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-dark text-white border-dark"
-                                                id="basic-addon1"><i class="fal fa-lock"></i></span>
+                                                id="basic-addon1"><i class="fal fa-layer-group"></i></span>
                                         </div>
-                                        <input type="text" class="form-control bg-white" placeholder=""
+                                        <input type="text" class="form-control bg-lightgrey" placeholder=""
                                             aria-label="Username" aria-describedby="basic-addon1" readonly
                                             value="<?php echo $_SESSION['tipo']; ?>">
                                     </div>
 
                                 </div>
                             </div>
+                            <div class="card shadow mb-4" id="notifiche">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Notifiche</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="list-group">
+                                        <?php foreach ($notifiche as $notifica): ?>
+                                            <span
+                                                class="list-group-item list-group-item-action border-left-<?php echo $notifica['type']; ?>">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h5 class="mb-1"><?php echo $notifica['message']; ?></h5>
+                                                    <small><?php echo $notifica['timestamp']; ?></small>
+                                                </div>
+                                            </span>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination justify-content-center">
+                                            <?php if ($page > 1): ?>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?notification=<?php echo $page - 1; ?>"
+                                                        aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                    </a>
+                                                </li>
+                                            <?php endif; ?>
+
+                                            <?php
+                                            $totalPages = ceil($total / $limit);
+                                            for ($i = 1; $i <= $totalPages; $i++): ?>
+                                                <li class="page-item <?php echo ($i == $page) ? 'active' : ''; ?>">
+                                                    <a class="page-link"
+                                                        href="?notification=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                                </li>
+                                            <?php endfor; ?>
+
+                                            <?php if ($page < $totalPages): ?>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?notification=<?php echo $page + 1; ?>"
+                                                        aria-label="Next">
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                    </a>
+                                                </li>
+                                            <?php endif; ?>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
                         </div>
+
                         <div class="col-xl-9 col-lg-8">
-                            <div class="card shadow mb-4">
+                            <div class="card shadow mb-4" style="font-size:10pt;">
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Registro Attività </h6>
@@ -250,31 +337,38 @@ $userImage = getProfileImage($_SESSION['user_id']);
     </a>
 </body>
 <!-- Modale per aggiornare l'immagine del profilo -->
+<!-- Modal per cambiare l'immagine del profilo -->
 <div class="modal fade" id="profileImageModal" tabindex="-1" role="dialog" aria-labelledby="profileImageModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="profileImageModalLabel">Aggiorna Immagine del Profilo</h5>
+                <h5 class="modal-title" id="profileImageModalLabel">Cambia Immagine del Profilo</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Input per caricare l'immagine -->
-                <input type="file" id="profileImageInput" accept="image/*" class="form-control">
-                <div class="mt-3">
-                    <!-- Contenitore per Cropper.js -->
-                    <img id="profileImagePreview" style="max-width: 100%; display: none;">
+                <!-- Sezione di upload dell'immagine -->
+                <div class="form-group">
+                    <label for="profileImageInput" class="btn btn-light text-info border border-info btn-block">
+                        <i class="fad fa-image"></i> Scegli un'immagine
+                        <input type="file" id="profileImageInput" accept="image/*" class="d-none">
+                    </label>
+                    <div class="mt-3 text-center">
+                        <img id="profileImagePreview"
+                            style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd; display: none;">
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                <button type="button" id="saveProfileImage" class="btn btn-primary">Salva Immagine</button>
+                <button type="button" id="saveProfileImage" class="btn btn-success">Salva</button>
             </div>
         </div>
     </div>
 </div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const viewButtons = document.querySelectorAll('.view-query');

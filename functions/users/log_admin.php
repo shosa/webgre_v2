@@ -33,7 +33,7 @@ require_once BASE_PATH . '/components/auth_validate.php';
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped" id="dataTable" width="100%"
-                                        cellspacing="0">
+                                        cellspacing="0" style="font-size:10pt;">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>

@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['tipo'] = $row['admin_type'];
                 $_SESSION['user_id'] = $row['id'];
                 $_SESSION['tema'] = $row['theme_color'];
+                $_SESSION['mail'] = $row['mail'];
                 // Recupera i permessi dalla tabella `permessi`
                 $permessi_statement = $pdo->prepare("SELECT riparazioni, campionario, cq, produzione, tabelle, log,tracking, etichette,dbsql, settings, utenti FROM permessi WHERE id_utente = :user_id");
                 $permessi_statement->bindParam(':user_id', $user_id);
