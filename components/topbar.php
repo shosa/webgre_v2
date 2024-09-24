@@ -163,9 +163,9 @@ $unreadCount = count($notifications);
                     Tema
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item text-warning" href="<?php echo BASE_URL ?>/logout" data-toggle="modal"
+                <a class="dropdown-item text-danger" href="<?php echo BASE_URL ?>/logout" data-toggle="modal"
                     data-target="#logoutModal">
-                    <i class="fas fa-power-off fa-sm fa-fw mr-2 text-warning"></i>
+                    <i class="fas fa-power-off fa-sm fa-fw mr-2 text-danger"></i>
                     Esci
                 </a>
             </div>
