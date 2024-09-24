@@ -61,25 +61,26 @@ try {
 } catch (PDOException $e) {
     echo "Connessione al database fallita: " . $e->getMessage();
 }
-include (BASE_PATH . "/components/header.php");
+include(BASE_PATH . "/components/header.php");
 ?>
 <script>
     function generatePDF(month, day) {
         window.location.href = `generate_pdf.php?month=${month}&day=${day}`;
     }
 </script>
+
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <?php include (BASE_PATH . "/components/navbar.php"); ?>
+        <?php include(BASE_PATH . "/components/navbar.php"); ?>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <?php include (BASE_PATH . "/components/topbar.php"); ?>
+                <?php include(BASE_PATH . "/components/topbar.php"); ?>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <?php require_once (BASE_PATH . "/utils/alerts.php"); ?>
+                    <?php require_once(BASE_PATH . "/utils/alerts.php"); ?>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Produzione</h1>
                     </div>
@@ -257,6 +258,13 @@ include (BASE_PATH . "/components/header.php");
                                                 <input class="form-control" id="day" value=<?php echo $day ?>
                                                     hidden></input>
                                             </div>
+                                            <div class="form-group">
+                                                <i class="fal fa-paperclip"></i> <a class="btn alert alert-info p-1"
+                                                    href="<?php echo BASE_URL; ?>/functions/production/generate_pdf.php?month=<?php echo $month ?>&day=<?php echo $day ?>"
+                                                    target="_blank"><i class="fad fa-file-pdf fa-xl"
+                                                        style="--fa-primary-color: #d92020; --fa-secondary-color: #e3e3e3; --fa-secondary-opacity: 1;"></i>
+                                                    PRODUZIONE</a>
+                                            </div>
                                             <button type="button" class="btn btn-primary btn-block"
                                                 id="sendEmailButton">Invia</button>
                                         </form>
@@ -338,12 +346,12 @@ include (BASE_PATH . "/components/header.php");
                     </div>
                 </div>
             </div>
-            <script src="<?php echo BASE_URL?>/vendor/jquery/jquery.min.js"></script>
-            <script src="<?php echo BASE_URL?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/jquery/jquery.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
             <!-- Core plugin JavaScript-->
-            <script src="<?php echo BASE_URL?>/vendor/jquery-easing/jquery.easing.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
             <!-- Custom scripts for all pages-->
-            <script src="<?php echo BASE_URL?>/js/sb-admin-2.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/js/sb-admin-2.min.js"></script>
             <?php include_once BASE_PATH . '/components/footer.php'; ?>
         </div>
     </div>
