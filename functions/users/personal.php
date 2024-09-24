@@ -108,9 +108,13 @@ $userImage = getProfileImage($_SESSION['user_id']);
                                         <?php if ($userImage): ?>
                                             <img src="<?php echo $userImage; ?>" alt="Immagine profilo"
                                                 class="rounded-circle mb-3 border-<?php echo $colore ?> border "
-                                                style="width: 150px; height: 150px; object-fit: cover; border-width: 2pt!important;">
+                                                style="width: 150px; height: 150px; object-fit: cover; border-width: 2pt!important;"
+                                                id="profileImage">
                                         <?php else: ?>
                                             <i class="fas fa-user-circle fa-8x mb-3" style="color: #74C0FC;"></i>
+                                            <img src="" class="rounded-circle mb-3 border-<?php echo $colore ?> border "
+                                                style="width: 150px; height: 150px; object-fit: cover; border-width: 2pt!important;"
+                                                id="profileImage" hidden>
                                         <?php endif; ?>
 
                                         <!-- Bottone per cambiare immagine (con icona penna) -->
@@ -355,11 +359,15 @@ $userImage = getProfileImage($_SESSION['user_id']);
                         <i class="fad fa-image"></i> Scegli un'immagine
                         <input type="file" id="profileImageInput" accept="image/*" class="d-none">
                     </label>
+
                     <div class="mt-3 text-center">
                         <img id="profileImagePreview"
                             style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd; display: none;">
                     </div>
                 </div>
+                <button type="button" id="deleteProfileImage"
+                    class="btn btn-light text-danger border border-danger btn-block" style="display: none;">Elimina
+                    Immagine</butto>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
@@ -391,9 +399,18 @@ $userImage = getProfileImage($_SESSION['user_id']);
         });
         let cropper;
         const profileImageInput = document.getElementById('profileImageInput');
+        const profileImage = document.getElementById('profileImage');
         const profileImagePreview = document.getElementById('profileImagePreview');
         const saveButton = document.getElementById('saveProfileImage');
-
+        const deleteProfileImageBtn = document.getElementById('deleteProfileImage');
+        function checkIfImageExists() {
+            const imageUrl = profileImage.getAttribute('src');
+            if (imageUrl) {
+                deleteProfileImageBtn.style.display = 'inline-block';
+            } else {
+                deleteProfileImageBtn.style.display = 'none';
+            }
+        }
         // Al caricamento dell'immagine
         profileImageInput.addEventListener('change', function (event) {
             const files = event.target.files;
@@ -448,6 +465,38 @@ $userImage = getProfileImage($_SESSION['user_id']);
                         console.error('Errore:', error);
                     });
             });
+        });
+        // Funzione per eliminare l'immagine del profilo
+        deleteProfileImageBtn.addEventListener('click', function () {
+            const confirmed = confirm("Sei sicuro di voler eliminare l'immagine del profilo?");
+            if (confirmed) {
+                // Effettua la richiesta per eliminare l'immagine dal server
+                fetch('deleteImage.php', {
+                    method: 'POST',
+                    body: JSON.stringify({ userId: <?php echo $_SESSION["user_id"]; ?> }), // Invia l'ID utente al server
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Immagine eliminata con successo');
+                            profileImagePreview.src = ''; // Rimuove l'anteprima
+                            profileImagePreview.style.display = 'none'; // Nasconde l'anteprima
+                            deleteProfileImageBtn.style.display = 'none'; // Nasconde il pulsante
+                            location.reload();
+                        } else {
+                            alert('Errore durante l\'eliminazione dell\'immagine');
+                        }
+                    }).catch(error => {
+                        console.error('Errore:', error);
+                    });
+            }
+        });
+
+        // Controlla se l'immagine esiste quando il modale viene aperto
+        $('#profileImageModal').on('show.bs.modal', function () {
+            checkIfImageExists();
         });
     });
 </script>
