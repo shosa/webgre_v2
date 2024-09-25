@@ -226,10 +226,11 @@ include(BASE_PATH . "/components/header.php");
                         <!-- Modale per comporre l'email -->
                         <div class="modal fade" id="emailModal" tabindex="-1" role="dialog"
                             aria-labelledby="emailModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
+                            <div class="modal-dialog modal-dialog-centered " role="document">
+                                <div class="modal-content ">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="emailModalLabel">E-mail Produzione</h5>
+                                        <h5 class="modal-title" id="emailModalLabel"><i class="far fa-envelope"></i>
+                                            E-mail Produzione</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -248,7 +249,8 @@ include(BASE_PATH . "/components/header.php");
                                             </div>
                                             <div class="form-group">
                                                 <label for="body">Corpo del messaggio</label>
-                                                <textarea class="form-control" id="body" rows="4"></textarea>
+                                                <textarea class="form-control" id="body" rows="4"
+                                                    placeholder="Calzaturificio Emmegiemme Shoes Srl"></textarea>
                                             </div>
                                             <div class="form-group">
                                                 <input class="form-control" id="month" value=<?php echo $month ?>
@@ -335,10 +337,10 @@ include(BASE_PATH . "/components/header.php");
                                         <i class="fas fa-file-pdf"></i> PDF
                                     </button>
                                     <button id="sendEmailModalButton" class="btn btn-primary btn-lg btn-block shadow">
-                                        <i class="fas fa-share-square"></i> INVIA MAIL
+                                        <i class="far fa-envelope"></i> INVIA MAIL
                                     </button>
                                     <button id="spedModalButton" class="btn btn-warning btn-lg btn-block shadow">
-                                        <i class="fas fa-truck-fast"></i> VEDI SPEDIZIONE
+                                        <i class="far fa-truck-fast"></i> VEDI SPEDIZIONE
                                     </button>
                                 </div>
                             </div>

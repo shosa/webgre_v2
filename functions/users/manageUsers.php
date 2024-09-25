@@ -47,7 +47,7 @@ require_once BASE_PATH . '/components/header.php';
                                                     echo "<td>" . htmlspecialchars($row['id'] ?? '') . "</td>";
                                                     echo "<td>" . htmlspecialchars($row['user_name'] ?? '') . "</td>";
                                                     echo "<td>" . htmlspecialchars($row['nome'] ?? '') . "</td>";
-                                                    echo "<td>" . htmlspecialchars($row['email'] ?? '') . "</td>";
+                                                    echo "<td>" . htmlspecialchars($row['mail'] ?? '') . "</td>";
                                                     echo "<td>" . htmlspecialchars($row['admin_type'] ?? '') . "</td>";
                                                     echo "<td class='text-center'>";
                                                     echo "<button class='btn btn-primary btn-sm btn-circle edit-btn shadow'><i class='far fa-pen'></i></button>";
@@ -128,22 +128,22 @@ require_once BASE_PATH . '/components/header.php';
                             var id = $row.find('td:eq(0)').text();
                             var username = $row.find('td:eq(1) input').val();
                             var nome = $row.find('td:eq(2) input').val();
-                            var email = $row.find('td:eq(3) input').val();
+                            var mail = $row.find('td:eq(3) input').val();
                             var ruolo = $row.find('td:eq(4) input').val();
                             $.ajax({
-                                url: 'update_user',
+                                url: 'update_user.php',
                                 method: 'POST',
                                 data: {
                                     id: id,
                                     user_name: username,
                                     nome: nome,
-                                    email: email,
+                                    mail: mail,
                                     admin_type: ruolo
                                 },
                                 success: function (response) {
                                     $row.find('td:eq(1)').html(username);
                                     $row.find('td:eq(2)').html(nome);
-                                    $row.find('td:eq(3)').html(email);
+                                    $row.find('td:eq(3)').html(mail);
                                     $row.find('td:eq(4)').html(ruolo);
                                     $button.removeClass('editing btn-success').html('<i class="far fa-pen"></i>');
                                 }
