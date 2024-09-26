@@ -7,6 +7,7 @@ $idrip = filter_input(INPUT_GET, 'riparazione_id');
 include(BASE_PATH . "/components/header.php");
 require_once BASE_PATH . '/vendor/autoload.php';
 ?>
+
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -21,9 +22,15 @@ require_once BASE_PATH . '/vendor/autoload.php';
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Riparazioni</h1>
                     </div>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="../../functions/riparazioni/riparazioni">Elenco
+                                Riparazioni</a></li>
+                        <li class="breadcrumb-item active">Cedola <b>#<?php echo $idrip; ?></b></li>
+                    </ol>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 ">
-                            <h6 class="m-0 font-weight-bold text-primary">Anteprima Cedola # <?php echo $idrip; ?></h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Anteprima</h6>
                         </div>
                         <div class="card-body">
                             <?php

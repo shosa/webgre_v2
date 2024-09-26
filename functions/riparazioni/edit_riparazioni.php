@@ -15,7 +15,7 @@ try {
         $data_to_update = filter_input_array(INPUT_POST);
         unset($data_to_update['numerata']);
         // Create PDO instance
-        $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
+        $pdo = getDbInstance();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         // Start building the update query
         $update_query = "UPDATE riparazioni SET ";
@@ -42,12 +42,18 @@ try {
             // Redirect to the listing page
             header('location: riparazioni');
             exit();
+        } else {
+            $_SESSION['warning'] = "Non sono state specificate modifiche!";
+            // Redirect to the listing page
+            header('location: riparazioni');
+            exit();
         }
+
     }
     // If edit variable is set, we are performing the update operation
     if ($edit) {
         // Create PDO instance
-        $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
+        $pdo = getDbInstance();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         // Prepare select statement
         $stmt = $pdo->prepare("SELECT * FROM riparazioni WHERE IDRIP = :idrip");
@@ -64,29 +70,36 @@ try {
 }
 include_once BASE_PATH . '/components/header.php';
 ?>
+
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <?php include (BASE_PATH . "/components/navbar.php"); ?>
+        <?php include(BASE_PATH . "/components/navbar.php"); ?>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <?php include (BASE_PATH . "/components/topbar.php"); ?>
+                <?php include(BASE_PATH . "/components/topbar.php"); ?>
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Riparazioni</h1>
                     </div>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="../../functions/riparazioni/riparazioni">Elenco
+                                Riparazioni</a></li>
+                        <li class="breadcrumb-item active">Cedola <b>#<?php echo $riparazione_id; ?></b></li>
+                    </ol>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Modifica cedolda
-                                #<?php echo $riparazione_id; ?></h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Modifica
+                            </h6>
                         </div>
                         <div class="card-body">
                             <form class="" action="" method="post" enctype="multipart/form-data" id="contact_form">
                                 <?php
                                 // Include the common form for add and edit  
-                                require_once ('forms/edit_riparazioni_form.php');
+                                require_once('forms/edit_riparazioni_form.php');
                                 ?>
                             </form>
                         </div>
