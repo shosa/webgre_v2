@@ -43,6 +43,8 @@ include(BASE_PATH . "/components/header.php");
                                             Strumenti</li>
                                         <span class="list-group-item" href="#" id="sendNotification"><i
                                                 class="fal fa-bell"></i> Invio Notifiche</span>
+                                        <span class="list-group-item" href="#" id="readLog"><i
+                                                class="fal fa-code"></i> Log Sistema</span>
                                         <li
                                             class="list-group-item active p-1 pl-2 no-cursor bg-light text-<?php echo $colore; ?> font-weight-bold border">
                                             Email</li>
@@ -116,6 +118,10 @@ include(BASE_PATH . "/components/header.php");
     document.getElementById('sendNotification').addEventListener('click', function (event) {
         event.preventDefault();
         loadForm('form_SendNotification', 'Invio Notifiche');
+    });
+    document.getElementById('readLog').addEventListener('click', function (event) {
+        event.preventDefault();
+        loadForm('form_ReadLog', 'Log Sistema');
     });
     document.getElementById('productionSmtp').addEventListener('click', function (event) {
         event.preventDefault();
