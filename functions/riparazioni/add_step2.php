@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../../utils/log_utils.php';
+
 require_once '../../config/config.php';
 require_once BASE_PATH . '/components/auth_validate.php';
 // Connessione al database usando PDO
@@ -47,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         $maxid = $result['max_id'];
         $real_query = replacePlaceholders($pdo, $insert_query, $data_to_store);
-        logActivity($_SESSION['user_id'], 'RIPARAZIONI', 'CREA', 'Inserimento Cedola', '#' . $maxid , $real_query);
+        logActivity($_SESSION['user_id'], 'RIPARAZIONI', 'CREA', 'Inserimento Cedola', '#' . $maxid, $real_query);
         header('Location: riparazioni.php');
         exit();
     }
@@ -60,20 +61,23 @@ $max_tabid = $max_stmt->fetch(PDO::FETCH_ASSOC)['max_id'];
 // Calcola il nuovo valore per id
 $new_id = $max_tabid + 1;
 ?>
+
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <?php include (BASE_PATH . "/components/navbar.php"); ?>
+        <?php include(BASE_PATH . "/components/navbar.php"); ?>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <?php include (BASE_PATH . "/components/topbar.php"); ?>
+                <?php include(BASE_PATH . "/components/topbar.php"); ?>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <?php require_once '../../utils/alerts.php'; ?>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Riparazioni</h1>
                     </div>
+
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="../../functions/riparazioni/add_step1">Nuova
@@ -86,7 +90,7 @@ $new_id = $max_tabid + 1;
                         </div>
                         <div class="card-body">
                             <form class="form" action="" method="post" id="customer_form" enctype="multipart/form-data">
-                                <?php include_once ('forms/new_step2_form.php'); ?>
+                                <?php include_once('forms/new_step2_form.php'); ?>
                             </form>
                         </div>
                     </div>

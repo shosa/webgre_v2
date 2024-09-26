@@ -1,3 +1,5 @@
+
+
 <?php
 define('BASE_PATH', dirname(__DIR__));
 // Determina la tua cartella app in modo statico

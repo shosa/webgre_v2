@@ -15,6 +15,7 @@ if (isset($_GET['message'])) {
 ?>
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,30 +28,37 @@ if (isset($_GET['message'])) {
             text-align: center;
             padding: 50px;
         }
+
         h1 {
             font-size: 5rem;
             margin-bottom: 10px;
-            color:black;
+            color: black;
         }
+
         p {
             font-size: 1.5rem;
             margin-bottom: 30px;
         }
+
         a {
             color: #007bff;
             text-decoration: none;
         }
+
         a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
+
 <body>
     <div>
         <h1>404</h1>
         <div class="alert alert-danger"><?php echo $message; ?></div>
-      
+
         <a class="btn btn-primary" href="/">HOME PAGE</a>
+
     </div>
 </body>
+
 </html>
