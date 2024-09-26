@@ -43,8 +43,8 @@ include(BASE_PATH . "/components/header.php");
                                             Strumenti</li>
                                         <span class="list-group-item" href="#" id="sendNotification"><i
                                                 class="fal fa-bell"></i> Invio Notifiche</span>
-                                        <span class="list-group-item" href="#" id="readLog"><i
-                                                class="fal fa-code"></i> Log Sistema</span>
+                                        <span class="list-group-item" href="#" id="readLog"><i class="fal fa-code"></i>
+                                            Log Sistema</span>
                                         <li
                                             class="list-group-item active p-1 pl-2 no-cursor bg-light text-<?php echo $colore; ?> font-weight-bold border">
                                             Email</li>
