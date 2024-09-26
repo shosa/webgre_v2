@@ -28,7 +28,7 @@ require_once BASE_PATH . '/components/header.php';
 
 
 
-        <?php include (BASE_PATH . "/components/navbar.php"); ?>
+        <?php include(BASE_PATH . "/components/navbar.php"); ?>
 
 
 
@@ -42,7 +42,7 @@ require_once BASE_PATH . '/components/header.php';
 
             <div id="content">
 
-                <?php include (BASE_PATH . "/components/topbar.php"); ?>
+                <?php include(BASE_PATH . "/components/topbar.php"); ?>
 
 
 
@@ -50,7 +50,7 @@ require_once BASE_PATH . '/components/header.php';
 
                 <div class="container-fluid">
 
-                    <?php include (BASE_PATH . "/utils/alerts.php"); ?>
+                    <?php include(BASE_PATH . "/utils/alerts.php"); ?>
 
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
@@ -76,12 +76,12 @@ require_once BASE_PATH . '/components/header.php';
 
                                 <div class="card-header py-3 d-flex align-items-center">
 
-                                    <h6 class="m-0 font-weigclass="alert-primary">Inserimento Cartellini</h6>
+                                    <h6 class="m-0 font-weigclass=" alert-primary">Inserimento Cartellini</h6>
 
                                 </div>
 
                                 <div class="card-body">
-class="alert
+
                                     <div class="input-grid" id="commessa-fields">
 
                                         <?php for ($i = 0; $i < 30; $i++): ?>
@@ -89,7 +89,6 @@ class="alert
                                             <div class="input-item">
 
                                                 <input type="text" class="form-control commessa-input" placeholder=""
-
                                                     onchange="verifyCommessa(this)">
 
                                             </div>
@@ -99,7 +98,6 @@ class="alert
                                     </div>
 
                                     <button class="btn btn-primary btn-circle mt-2" onclick="addField()"><i
-
                                             class="fas fa-plus"></i></button>
 
                                     <form id="invioForm" method="post" action="processLink.php">
@@ -111,7 +109,6 @@ class="alert
                                         <!-- Bottone per inviare i dati -->
 
                                         <button type="button" id="avantiBtn" class="btn btn-success btn-block mt-2"
-
                                             onclick="inviaDati()" disabled>
 
                                             <i class="fas fa-paper-plane"></i> AVANTI
@@ -141,7 +138,6 @@ class="alert
                                 <div class="card-body">
 
                                     <button id="loadSummaryBtn" class="btn btn-warning btn-block mt-2"
-
                                         onclick="loadSummary()" disabled><i class="fas fa-refresh"></i> CARICA
 
                                         RIEPILOGO</button>
@@ -195,7 +191,6 @@ class="alert
     </div>
 
     <style>
-
         .input-grid {
 
             display: grid;
@@ -287,7 +282,6 @@ class="alert
 
 
         }
-
     </style>
 
     <script>
