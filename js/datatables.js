@@ -11,7 +11,7 @@ $(document).ready(function () {
     "info": true,
     "colReorder": true,
     "order": [[0, "desc"]],
-    dom: '<"top"lf>rt<"bottom"ip><"clear">', // Metti i bottoni e la barra di ricerca nel contenitore "top"
+    dom: '<"top"Bf>rt<"bottom"lip><"clear">',
     buttons: [
       { extend: 'excel', text: '<i class="fas fa-file-excel"></i> EXCEL', className: 'btn-light text-dark border-dark' },
       { extend: 'pdf', orientation: 'landscape', text: '<i class="fas fa-file-pdf"></i> PDF', className: 'btn-light text-dark border-dark', columns: ':visible:not(.notexport)' },
