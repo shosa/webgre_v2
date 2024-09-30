@@ -47,7 +47,7 @@ require_once BASE_PATH . '/components/header.php'; ?>
                                         class="font-weight-bold text-primary"><?php echo $cartelCount; ?></span> Cartellini.
                                 </span><a href="getXlsx.php" class="btn btn-success"><i
                                         class="fa-solid fa-download"></i> EXCEL</a></div>
-                            <div class="card">
+                            <div class="card mb-4">
                                 <div class="mt-2 text-center" id="loader">
                                     <div class="spinner"></div>
                                 </div>
