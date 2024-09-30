@@ -14,11 +14,12 @@ $stmt2->execute();
 $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
 $cartelCount = $row2['count'];
 require_once BASE_PATH . '/components/header.php'; ?>
+
 <body id="page-top">
-    <div id="wrapper"><?php include (BASE_PATH . "/components/navbar.php"); ?>
+    <div id="wrapper"><?php include(BASE_PATH . "/components/navbar.php"); ?>
         <div class="d-flex flex-column" id="content-wrapper">
-            <div id="content"><?php include (BASE_PATH . "/components/topbar.php"); ?>
-                <div class="container-fluid"><?php include (BASE_PATH . "/utils/alerts.php"); ?>
+            <div id="content"><?php include(BASE_PATH . "/components/topbar.php"); ?>
+                <div class="container-fluid"><?php include(BASE_PATH . "/utils/alerts.php"); ?>
                     <div class="mb-4 align-items-center d-sm-flex justify-content-between">
                         <h1 class="h3 mb-0 text-gray-800">Monitoraggio Lotti di Produzione</h1>
                     </div>
@@ -42,9 +43,10 @@ require_once BASE_PATH . '/components/header.php'; ?>
                         <div class="col-md-6 offset-md-3">
                             <div class="align-items-center justify-content-between d-flex"><span class="text-muted">Sono
                                     presenti <span
-                                        class="font-weight-bold text-success"><?php echo $assocCount; ?></span> Associazioni
-                                    per <span
-                                        class="font-weight-bold text-primary"><?php echo $cartelCount; ?></span> Cartellini.
+                                        class="font-weight-bold text-success"><?php echo $assocCount; ?></span>
+                                    Associazioni
+                                    per <span class="font-weight-bold text-primary"><?php echo $cartelCount; ?></span>
+                                    Cartellini.
                                 </span><a href="getXlsx.php" class="btn btn-success"><i
                                         class="fa-solid fa-download"></i> EXCEL</a></div>
                             <div class="card mb-4">
@@ -55,6 +57,7 @@ require_once BASE_PATH . '/components/header.php'; ?>
                                     <div id="treeViewPlaceholder">
                                     </div>
                                 </div>
+                              
                             </div>
                         </div>
                     </div>
@@ -75,64 +78,79 @@ require_once BASE_PATH . '/components/header.php'; ?>
         border-top-color: #333;
         animation: spin 1s infinite linear
     }
+
     @keyframes spin {
         to {
             transform: rotate(360deg)
         }
     }
+
     .card {
         margin-top: 20px;
         border: 1px solid #ddd;
         border-radius: 8px;
         box-shadow: 0 0 10px rgba(0, 0, 0, .1)
     }
+
     .card-body {
         padding: 20px
     }
+
     #treeViewPlaceholder ul {
         list-style-type: none;
         padding-left: 0;
         margin-bottom: 0
     }
+
     #treeViewPlaceholder ul ul {
         display: none;
         margin-left: 20px;
         padding-left: 20px
     }
+
     #treeViewPlaceholder li {
         cursor: pointer;
         padding: 8px 10px;
         border-bottom: 1px solid #ddd;
         position: relative
     }
+
     #treeViewPlaceholder li:last-child {
         border-bottom: none
     }
+
     #treeViewPlaceholder li:before {
         content: "\f054";
         font-family: FontAwesome;
         margin-right: 10px;
         color: #777
     }
+
     #treeViewPlaceholder li.collapsed:before {
         content: "\f054"
     }
+
     #treeViewPlaceholder li.expanded:before {
         content: "\f078"
     }
+
     #treeViewPlaceholder li.leaf:before {
         content: "\f111";
         color: #6c757d
     }
+
     #treeViewPlaceholder li.collapsed.leaf:before {
         content: "\f111"
     }
+
     #treeViewPlaceholder li.expanded.leaf:before {
         content: "\f111"
     }
+
     #treeViewPlaceholder li.leaf {
         cursor: default !important
     }
+
     #treeViewPlaceholder li .timestamp {
         color: #777;
         font-size: 90%;

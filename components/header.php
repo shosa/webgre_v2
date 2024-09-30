@@ -52,3 +52,6 @@ require_once(__DIR__ . '/error_handler.php');
         alert('Si è verificato un problema. Riprova più tardi.');
     };
 </script>
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
