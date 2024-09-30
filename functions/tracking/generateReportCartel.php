@@ -51,10 +51,10 @@ WHERE tl.cartel IN ($placeholders) ORDER BY Cartel ASC";
                 foreach ($cartellini as $cartel => $types) {
                     $pdf->SetFillColor(240, 240, 240);
                     $pdf->Cell(0, 10, "Cartellino: $cartel / Commessa: $commessa", 0, 1, 'L', true);
-                    $colWidth = 65;
+                    $colWidth = 25;
                     $pdf->SetFont('helvetica', 'B', 8);
                     foreach ($types as $type_name => $lots) {
-                        $pdf->Cell($colWidth, 10, $type_name, 0, 0, 'C', false);
+                        $pdf->Cell($colWidth, 5, $type_name, 0, 0, 'C', false);
                     }
                     $pdf->Ln();
                     $pdf->SetFont('helvetica', '', 8);
@@ -68,9 +68,9 @@ WHERE tl.cartel IN ($placeholders) ORDER BY Cartel ASC";
                     for ($row = 0; $row < $maxRows; $row++) {
                         foreach ($types as $type_name => $lots) {
                             if (isset($lots[$row])) {
-                                $pdf->Cell($colWidth, 10, $lots[$row]['lot'], 0, 0, 'C');
+                                $pdf->Cell($colWidth, 5, $lots[$row]['lot'], 0, 0, 'C');
                             } else {
-                                $pdf->Cell($colWidth, 10, '', 0, 0, 'C');
+                                $pdf->Cell($colWidth, 5, '', 0, 0, 'C');
                             }
                         }
                         $pdf->Ln();
