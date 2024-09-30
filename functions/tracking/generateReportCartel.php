@@ -19,7 +19,7 @@ SELECT
 FROM track_links tl
 JOIN track_types tt ON tl.type_id = tt.id
 JOIN dati d ON d.cartel = tl.cartel
-WHERE tl.cartel IN ($placeholders) ORDER BY Cartel ASC";
+WHERE tl.cartel IN ($placeholders) ORDER BY Cartel ASC , tl.id ASC ";
         $stmt = $db->prepare($query);
         $stmt->execute($cartellini);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
