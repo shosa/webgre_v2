@@ -12,14 +12,14 @@ if (isset($_GET['search_query'])) {
     // Prepare SQL statement to fetch data
     if ($search_query === '*') {
         // Se la ricerca è '*', otteniamo tutti i record
-        $sql = "SELECT DISTINCT tl.id ,tl.lot , tl.cartel ,tl.id ,tl.type_id, tl.note, tl.timestamp, dati.`Commessa Cli`, tt.name AS type_name
+        $sql = "SELECT DISTINCT tl.id ,tl.lot , tl.cartel ,tl.id ,tl.type_id, tl.note, tl.timestamp, dati.`Commessa Cli`, dati.Articolo, tt.name AS type_name
                 FROM track_links tl 
                 LEFT JOIN track_types tt ON tl.type_id = tt.id
                 LEFT JOIN dati ON dati.Cartel = tl.cartel";
         $stmt = $pdo->query($sql);
     } else {
         // Altrimenti, esegui la query normale con LIKE per ricerca iniziale
-        $sql = "SELECT DISTINCT tl.id ,tl.lot , tl.cartel ,tl.id ,tl.type_id, tl.note, tl.timestamp, dati.`Commessa Cli`, tt.name AS type_name 
+        $sql = "SELECT DISTINCT tl.id ,tl.lot , tl.cartel ,tl.id ,tl.type_id, tl.note, tl.timestamp, dati.`Commessa Cli`,dati.Articolo, tt.name AS type_name 
                 FROM track_links tl 
                 LEFT JOIN track_types tt ON tl.type_id = tt.id
                 LEFT JOIN dati ON dati.Cartel = tl.cartel
@@ -39,6 +39,7 @@ if (isset($_GET['search_query'])) {
         foreach ($results as $result) {
             $tree[$result['cartel']]['cartel'] = $result['cartel'];
             $tree[$result['cartel']]['Commessa Cli'] = $result['Commessa Cli']; // Save Commessa Cli in the tree
+            $tree[$result['cartel']]['Articolo'] = $result['Articolo']; // Save Commessa Cli in the tree
             $tree[$result['cartel']]['children'][$result['type_id']]['type_name'] = $result['type_name'];
             $tree[$result['cartel']]['children'][$result['type_id']]['lots'][] = [
                 'id' => $result['id'], // Aggiungi l'id del record
@@ -49,11 +50,11 @@ if (isset($_GET['search_query'])) {
         // Render the tree structure as HTML
         echo '<ul><h5>Risultati:</h5>';
         foreach ($tree as $cartelino) {
-            echo '<li class="text-primary">' . $cartelino['cartel'] . ' (' . $cartelino['Commessa Cli'] . ')'; // Display Commessa Cli
+            echo '<li class="text-primary">' . $cartelino['cartel'] . ' (' . $cartelino['Commessa Cli'] . ') <span class="timestamp" style="color:#d1d1d1;">' . $cartelino['Articolo'] . '</span>'; // Display Commessa Cli
             echo '<ul>';
             foreach ($cartelino['children'] as $type_id => $type) {
                 echo '<li class="text-dark"><b>' . $type['type_name'] . '</b>';
-              
+
                 echo '<ul>';
                 foreach ($type['lots'] as $lot) {
                     echo '<p class="mt-1 border-bottom">' . $lot['lot'] .

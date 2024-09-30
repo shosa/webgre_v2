@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
         <div class="sidebar-brand-icon">
             <img src="<?php echo BASE_URL ?>/img/roundLogo.png" alt="" width="40" height="40">
         </div>
-        <div class="sidebar-brand-text mx-3">WEBGRE </div>
+        <div class="sidebar-brand-text mx-3">WEBGRE</div>
     </a>
     <!-- DIVISORE -->
     <hr class="sidebar-divider my-0">
