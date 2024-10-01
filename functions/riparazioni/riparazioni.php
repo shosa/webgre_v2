@@ -32,7 +32,7 @@ try {
     // If an error occurs, display the error message
     echo "Errore: " . $e->getMessage();
 }
-include (BASE_PATH . "/components/header.php");
+include(BASE_PATH . "/components/header.php");
 function getUrgencyColor($urgency)
 {
     switch ($urgency) {
@@ -47,18 +47,19 @@ function getUrgencyColor($urgency)
     }
 }
 ?>
+
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <?php include (BASE_PATH . "/components/navbar.php"); ?>
+        <?php include(BASE_PATH . "/components/navbar.php"); ?>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <?php include (BASE_PATH . "/components/topbar.php"); ?>
+                <?php include(BASE_PATH . "/components/topbar.php"); ?>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <?php include (BASE_PATH . "/utils/alerts.php"); ?>
+                    <?php include(BASE_PATH . "/utils/alerts.php"); ?>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Riparazioni</h1>
                     </div>
@@ -142,13 +143,13 @@ function getUrgencyColor($urgency)
                                                         class="btn btn-primary">
                                                         <i class="fal fa-edit"></i>
                                                     </a>
-                                                    <div class="btn-group">
-                                                        <a href="file_preview.php?riparazione_id=<?php echo htmlspecialchars($row['IDRIP']); ?>"
-                                                            type="button" class="btn btn-warning">
-                                                            <i class="fal fa-print"></i>
-                                                        </a>
-                                                      
-                                                    </div>
+
+                                                    <a href="file_preview.php?riparazione_id=<?php echo htmlspecialchars($row['IDRIP']); ?>"
+                                                        type="button" class="btn btn-warning">
+                                                        <i class="fal fa-print"></i>
+                                                    </a>
+
+
                                                     <a href="#" class="btn btn-danger delete_btn" data-toggle="modal"
                                                         data-target="#confirm-delete-<?php echo htmlspecialchars($row['IDRIP']); ?>">
                                                         <i class="fal fa-trash-alt"></i>
@@ -164,7 +165,7 @@ function getUrgencyColor($urgency)
                 </div>
             </div>
             <!-- Footer -->
-            <?php include (BASE_PATH . "/components/footer.php"); ?>
+            <?php include(BASE_PATH . "/components/footer.php"); ?>
             <!-- End of Footer -->
         </div>
         <!-- End of Content Wrapper -->
