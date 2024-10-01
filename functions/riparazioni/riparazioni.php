@@ -74,18 +74,18 @@ function getUrgencyColor($urgency)
                                 style="margin-left:5px;"><i class="fal fa-plus-circle fa-l"></i> NUOVA</a>
                         </div>
                         <div class="card-body">
-                            <table class="table table-bordered table-responsive table-striped " id="dataTable"
+                            <table class="table table-bordered table-responsive table-striped" style="font-size:10pt;" id="dataTable"
                                 width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th width="5%">ID</th>
+                                        <th width="5%">#</th>
                                         <th width="15%">Codice</th>
                                         <th width="35%">Articolo</th>
-                                        <th width="5%">Quantità</th>
+                                        <th width="5%">PA</th>
                                         <th width="10%">Cartellino</th>
                                         <th width="5%">Data</th>
                                         <th width="10%">Reparto</th>
-                                        <th width="5%">Linea</th>
+                                        <th width="5%" hidden>Linea</th>
                                         <th class='notexport' width="10%">Azioni</th>
                                     </tr>
                                 </thead>
@@ -132,7 +132,7 @@ function getUrgencyColor($urgency)
                                             <td class="align-middle"><?php echo $row['CARTELLINO']; ?></td>
                                             <td class="align-middle"><?php echo $row['DATA']; ?></td>
                                             <td class="align-middle"><?php echo $row['REPARTO']; ?></td>
-                                            <td class="align-middle"><?php echo $row['LINEA']; ?></td>
+                                            <td class="align-middle" hidden><?php echo $row['LINEA']; ?></td>
                                             <td class="align-middle">
                                                 <div class="btn-group">
                                                     <a href="#" class="btn btn-success show-record-details"

@@ -1,0 +1,17 @@
+[01/10/2024, 10:51:17] [Page: riparazioni] JS Error: Uncaught ReferenceError: column is not defined in http://localhost/webgre/vendor/jquery/jquery.min.js on line 2
+Stack trace: ReferenceError: column is not defined
+    at HTMLDocument.<anonymous> (http://localhost/webgre/js/datatables.js:20:3)
+    at e (http://localhost/webgre/vendor/jquery/jquery.min.js:2:30038)
+    at t (http://localhost/webgre/vendor/jquery/jquery.min.js:2:30340)
+[01/10/2024, 11:04:21] [Page: riparazioni] JS Error: Uncaught TypeError: Cannot set properties of undefined (setting '_DT_CellIndex') in http://localhost/webgre/vendor/jquery/jquery.min.js on line 2
+Stack trace: TypeError: Cannot set properties of undefined (setting '_DT_CellIndex')
+    at Ja (http://localhost/webgre/vendor/datatables/jquery.dataTables.min.js:25:57)
+    at O (http://localhost/webgre/vendor/datatables/jquery.dataTables.min.js:16:448)
+    at HTMLTableRowElement.<anonymous> (http://localhost/webgre/vendor/datatables/jquery.dataTables.min.js:17:57)
+    at http://localhost/webgre/vendor/jquery/jquery.min.js:2:1567
+    at Function.map (http://localhost/webgre/vendor/jquery/jquery.min.js:2:3536)
+    at S.fn.init.map (http://localhost/webgre/vendor/jquery/jquery.min.js:2:1535)
+    at oa (http://localhost/webgre/vendor/datatables/jquery.dataTables.min.js:17:22)
+    at e (http://localhost/webgre/vendor/datatables/jquery.dataTables.min.js:93:475)
+    at HTMLTableElement.<anonymous> (http://localhost/webgre/vendor/datatables/jquery.dataTables.min.js:94:156)
+    at Function.each (http://localhost/webgre/vendor/jquery/jquery.min.js:2:3003)
