@@ -10,3 +10,13 @@ Stack trace: TypeError: Cannot read properties of null (reading 'setAttribute')
     at Function.each (http://localhost/webgre/vendor/jquery/jquery.min.js:2:3003)
     at S.fn.init.each (http://localhost/webgre/vendor/jquery/jquery.min.js:2:1481)
     at t._jQueryInterface [as dropdown] (http://localhost/webgre/vendor/bootstrap/js/bootstrap.bundle.min.js:6:45896)
+[03/10/2024, 12:20:25] [Page: manageUsers] JS Error: Array in Array on line 3
+Stack trace: 
+[03/10/2024, 12:20:26] [Page: manageUsers] JS Error: Array in Array on line 3
+Stack trace: 
+[03/10/2024, 12:52:05] [Page: manageUsers] JS Error: Uncaught SyntaxError: Unexpected token ')' in http://localhost/webgre/functions/users/manageUsers on line 660
+Stack trace: SyntaxError: Unexpected token ')'
+[03/10/2024, 12:52:13] [Page: manageUsers] JS Error: Uncaught SyntaxError: Unexpected token ')' in http://localhost/webgre/functions/users/manageUsers on line 660
+Stack trace: SyntaxError: Unexpected token ')'
+[03/10/2024, 12:52:40] [Page: manageUsers] JS Error: Uncaught SyntaxError: Unexpected token ')' in http://localhost/webgre/functions/users/manageUsers on line 660
+Stack trace: SyntaxError: Unexpected token ')'

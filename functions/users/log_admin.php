@@ -4,18 +4,19 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
 require_once '../../config/config.php';
-include (BASE_PATH . "/components/header.php");
+include(BASE_PATH . "/components/header.php");
 require_once BASE_PATH . '/components/auth_validate.php';
 ?>
+
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <?php include (BASE_PATH . "/components/navbar.php"); ?>
+        <?php include(BASE_PATH . "/components/navbar.php"); ?>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <?php include (BASE_PATH . "/components/topbar.php"); ?>
+                <?php include(BASE_PATH . "/components/topbar.php"); ?>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -31,17 +32,17 @@ require_once BASE_PATH . '/components/auth_validate.php';
                                 <h6 class="m-0 font-weight-bold text-primary">Log Attività Admin</h6>
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped" id="dataTable" width="100%"
+                             
+                                    <table class="table table-bordered table-striped table-responsive" id="dataTable" width="100%"
                                         cellspacing="0" style="font-size:10pt;">
-                                        <thead>
+                                        <thead class="border border-primary">
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Utente</th>
                                                 <th>Categoria</th>
                                                 <th>Tipo</th>
                                                 <th>Descrizione</th>
-                                                <th>Descrizione</th>
+                                                <th>Dettaglio</th>
                                                 <th>Note</th>
                                                 <th>Timestamp</th>
                                             </tr>
@@ -82,7 +83,7 @@ require_once BASE_PATH . '/components/auth_validate.php';
                                             ?>
                                         </tbody>
                                     </table>
-                                </div>
+                               
                             </div>
                         </div>
                     </div>
@@ -125,7 +126,7 @@ require_once BASE_PATH . '/components/auth_validate.php';
             <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.colVis.min.js"></script>
             <script src="<?php echo BASE_URL ?>/vendor/datatables/dataTables.colReorder.min.js"></script>
             <script src="<?php echo BASE_URL ?>/js/datatables.js"></script>
-            <?php include (BASE_PATH . "/components/footer.php"); ?>
+            <?php include(BASE_PATH . "/components/footer.php"); ?>
             <!-- End of Footer -->
         </div>
         <!-- End of Content Wrapper -->

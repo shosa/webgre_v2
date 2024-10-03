@@ -25642,3 +25642,23 @@ input:checked+.slider:before {
 .slider.round {
   border-radius: 34px;
 }
+
+table.dataTable thead th .form-control {
+  height: 100%;
+  /* Imposta l'altezza al 100% della cella della tabella */
+  display: flex;
+  align-items: center;
+  /* Centra verticalmente il contenuto */
+  padding: 0;
+  /* Rimuovi il padding per mantenere lo stile coerente */
+}
+
+table.dataTable thead th span.form-control {
+  height: auto;
+  /* Imposta un'altezza automatica per gli span */
+}
+
+table.dataTable thead th select.form-control {
+  height: auto;
+  /* Imposta l'altezza del select */
+}

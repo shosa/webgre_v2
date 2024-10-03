@@ -22,21 +22,23 @@ $(document).ready(function () {
       this.api().columns().every(function (index) {
         var column = this;
         var headerName = $(column.header()).text();
-
-        // Skip the "Azioni" column (for example, index 3)
-        if (headerName === "Azioni" || headerName ==="Note" || headerName ==="#" || headerName ==="ID" ) {
-          return;  // Skip this iteration for "Azioni" column
+    
+        // Skip columns
+        if (headerName === "Azioni" || headerName === "Note" || headerName === "#" || headerName === "ID" || headerName === "Timestamp") {
+          var header = $('<span class="form-control border-0 font-weight-bold p-0 d-flex align-items-center" style="font-size:10pt;">' + headerName + '</span>')
+            .appendTo($(column.header()).empty());
+          return;
         }
-
-        // Create the select element and set the default option to the column name
-        var select = $('<select style="font-size:10pt;"  class="form-control border-0 font-weight-bold p-0"><option value="">' + headerName + '</option></select>')
+    
+        // Create select element
+        var select = $('<select class="form-control border-0 font-weight-bold p-0 d-flex align-items-center" style="font-size:10pt;"><option value="">' + headerName + '</option></select>')
           .appendTo($(column.header()).empty())
           .on('change', function () {
             var val = $.fn.dataTable.util.escapeRegex($(this).val());
             column.search(val ? '^' + val + '$' : '', true, false).draw();
           });
-
-        // Get unique values from the column and add them to the select element
+    
+        // Add unique values to select
         column.data().unique().sort().each(function (d, j) {
           select.append('<option value="' + d + '">' + d + '</option>');
         });
