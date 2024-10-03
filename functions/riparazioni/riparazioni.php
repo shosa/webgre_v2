@@ -74,8 +74,8 @@ function getUrgencyColor($urgency)
                                 style="margin-left:5px;"><i class="fal fa-plus-circle fa-l"></i> NUOVA</a>
                         </div>
                         <div class="card-body">
-                            <table class="table table-bordered table-responsive table-striped" style="font-size:10pt;" id="dataTable"
-                                width="100%" cellspacing="0">
+                            <table class="table table-bordered table-responsive table-striped" style="font-size:10pt;"
+                                id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th width="5%">#</th>
@@ -122,9 +122,9 @@ function getUrgencyColor($urgency)
                                             </div>
                                         </div>
                                         <tr>
-                                            <td
-                                                class="align-middle border-left-<?php echo getUrgencyColor($row['URGENZA']); ?>">
-                                                <?php echo $row['IDRIP']; ?>
+                                            <td class="align-middle text-center">
+                                                <span
+                                                    class="badge badge-<?php echo getUrgencyColor($row['URGENZA']); ?>" style="font-size:10pt !important;"><?php echo $row['IDRIP']; ?></span>
                                             </td>
                                             <td class="align-middle"><?php echo $row['CODICE']; ?></td>
                                             <td class="align-middle"><?php echo $row['ARTICOLO']; ?></td>

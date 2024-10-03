@@ -128,9 +128,10 @@ function getUrgencyColor($urgency)
                                                 </div>
                                             </div>
                                             <tr>
-                                                <td
-                                                    class="align-middle border-left-<?php echo getUrgencyColor($row['URGENZA']); ?>">
-                                                    <?php echo $row['IDRIP']; ?>
+                                                <td class="align-middle text-center">
+                                                    <span
+                                                        class="badge badge-<?php echo getUrgencyColor($row['URGENZA']); ?>"
+                                                        style="font-size:10pt !important;"><?php echo $row['IDRIP']; ?></span>
                                                 </td>
                                                 <td class="align-middle"><?php echo $row['CODICE']; ?></td>
                                                 <td class="align-middle"><?php echo $row['ARTICOLO']; ?></td>

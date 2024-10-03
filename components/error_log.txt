@@ -20,3 +20,9 @@ Stack trace: SyntaxError: Unexpected token ')'
 Stack trace: SyntaxError: Unexpected token ')'
 [03/10/2024, 12:52:40] [Page: manageUsers] JS Error: Uncaught SyntaxError: Unexpected token ')' in http://localhost/webgre/functions/users/manageUsers on line 660
 Stack trace: SyntaxError: Unexpected token ')'
+[03/10/2024, 13:10:46] [Page: chartsOverview] JS Error: Uncaught TypeError: Cannot read properties of null (reading 'length') in http://localhost/webgre/vendor/chart.js/Chart.min.js on line 7
+Stack trace: TypeError: Cannot read properties of null (reading 'length')
+    at Object.acquireContext (http://localhost/webgre/vendor/chart.js/Chart.min.js:7:86074)
+    at tn.construct (http://localhost/webgre/vendor/chart.js/Chart.min.js:7:102546)
+    at new tn (http://localhost/webgre/vendor/chart.js/Chart.min.js:7:102287)
+    at http://localhost/webgre/js/chart-pie.js:6:18
