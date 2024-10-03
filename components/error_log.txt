@@ -1,17 +1,12 @@
-[01/10/2024, 10:51:17] [Page: riparazioni] JS Error: Uncaught ReferenceError: column is not defined in http://localhost/webgre/vendor/jquery/jquery.min.js on line 2
-Stack trace: ReferenceError: column is not defined
-    at HTMLDocument.<anonymous> (http://localhost/webgre/js/datatables.js:20:3)
-    at e (http://localhost/webgre/vendor/jquery/jquery.min.js:2:30038)
-    at t (http://localhost/webgre/vendor/jquery/jquery.min.js:2:30340)
-[01/10/2024, 11:04:21] [Page: riparazioni] JS Error: Uncaught TypeError: Cannot set properties of undefined (setting '_DT_CellIndex') in http://localhost/webgre/vendor/jquery/jquery.min.js on line 2
-Stack trace: TypeError: Cannot set properties of undefined (setting '_DT_CellIndex')
-    at Ja (http://localhost/webgre/vendor/datatables/jquery.dataTables.min.js:25:57)
-    at O (http://localhost/webgre/vendor/datatables/jquery.dataTables.min.js:16:448)
-    at HTMLTableRowElement.<anonymous> (http://localhost/webgre/vendor/datatables/jquery.dataTables.min.js:17:57)
-    at http://localhost/webgre/vendor/jquery/jquery.min.js:2:1567
-    at Function.map (http://localhost/webgre/vendor/jquery/jquery.min.js:2:3536)
-    at S.fn.init.map (http://localhost/webgre/vendor/jquery/jquery.min.js:2:1535)
-    at oa (http://localhost/webgre/vendor/datatables/jquery.dataTables.min.js:17:22)
-    at e (http://localhost/webgre/vendor/datatables/jquery.dataTables.min.js:93:475)
-    at HTMLTableElement.<anonymous> (http://localhost/webgre/vendor/datatables/jquery.dataTables.min.js:94:156)
+[03/10/2024, 10:06:47] [Page: index] JS Error: Uncaught TypeError: Cannot read properties of null (reading 'setAttribute') in http://localhost/webgre/vendor/bootstrap/js/bootstrap.bundle.min.js on line 6
+Stack trace: TypeError: Cannot read properties of null (reading 'setAttribute')
+    at Object.onLoad (http://localhost/webgre/vendor/bootstrap/js/bootstrap.bundle.min.js:6:40352)
+    at http://localhost/webgre/vendor/bootstrap/js/bootstrap.bundle.min.js:6:41248
+    at Array.forEach (<anonymous>)
+    at new t (http://localhost/webgre/vendor/bootstrap/js/bootstrap.bundle.min.js:6:41201)
+    at e.show (http://localhost/webgre/vendor/bootstrap/js/bootstrap.bundle.min.js:6:43235)
+    at e.toggle (http://localhost/webgre/vendor/bootstrap/js/bootstrap.bundle.min.js:6:42470)
+    at HTMLButtonElement.<anonymous> (http://localhost/webgre/vendor/bootstrap/js/bootstrap.bundle.min.js:6:46140)
     at Function.each (http://localhost/webgre/vendor/jquery/jquery.min.js:2:3003)
+    at S.fn.init.each (http://localhost/webgre/vendor/jquery/jquery.min.js:2:1481)
+    at t._jQueryInterface [as dropdown] (http://localhost/webgre/vendor/bootstrap/js/bootstrap.bundle.min.js:6:45896)

@@ -49,52 +49,74 @@ if ($preferenzeEsistenti == 0) {
                         <h3 class="h3 mb-0 text-<?php echo $colore; ?>">Contatori</h3>
                         <hr>
                         <div class="dropdown">
-                            <button class="btn btn-light dropdown-toggle text-<?php echo $colore; ?>" type="button"
-                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                            <a class="nav-link btn btn-light dropdown-toggle text-<?php echo $colore; ?>" href="#"
+                                id="dropdownPreferencesButton" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
                                 <i class="fal fa-sliders-h fa-2x text-<?php echo $colore; ?>"></i>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow-sm"
+                                aria-labelledby="dropdownPreferencesButton" style="min-width: 300px;">
+                                <h6 class="dropdown-header" style="font-size:12pt;">Personalizza Contatori:</h6>
                                 <form id="preferencesForm" class="px-2 py-2">
                                     <?php if (isset($_SESSION['permessi_riparazioni']) && $_SESSION['permessi_riparazioni'] == 1): ?>
-                                        <div class="h5 form-check form-switch mb-2">
-                                            <input class="form-check-input" type="checkbox" id="cardRiparazioni"
-                                                name="cardRiparazioni" <?php echo $mostraCardRiparazioni ? 'checked' : ''; ?>>
-                                            <label class="form-check-label" for="cardRiparazioni">Riparazioni</label>
+                                        <div class="h6 form-group mb-1">
+                                            <label class="switch">
+                                                <input type="checkbox" id="cardRiparazioni" name="cardRiparazioni" <?php echo $mostraCardRiparazioni ? 'checked' : ''; ?>>
+                                                <span class="slider round"></span>
+                                            </label>
+                                            <label for="cardRiparazioni">Riparazioni</label>
                                         </div>
-                                        <div class="h5 form-check form-switch mb-2">
-                                            <input class="form-check-input" type="checkbox" id="cardMyRiparazioni"
-                                                name="cardMyRiparazioni" <?php echo $mostraCardMyRiparazioni ? 'checked' : ''; ?>>
-                                            <label class="form-check-label" for="cardMyRiparazioni">Riparazioni
-                                                Personali</label>
+                                        <hr>
+                                        <div class="h6 form-group mb-1">
+                                            <label class="switch">
+                                                <input type="checkbox" id="cardMyRiparazioni" name="cardMyRiparazioni" <?php echo $mostraCardMyRiparazioni ? 'checked' : ''; ?>>
+                                                <span class="slider round"></span>
+                                            </label>
+                                            <label for="cardMyRiparazioni">Riparazioni Personali</label>
                                         </div>
+                                        <hr>
                                     <?php endif; ?>
+
                                     <?php if (isset($_SESSION['permessi_cq']) && $_SESSION['permessi_cq'] == 1): ?>
-                                        <div class="h5 form-check form-switch mb-2">
-                                            <input class="form-check-input" type="checkbox" id="cardQuality"
-                                                name="cardQuality" <?php echo $mostraCardQuality ? 'checked' : ''; ?>>
-                                            <label class="form-check-label" for="cardQuality">Controllo Qualità</label>
+                                        <div class="h6 form-group mb-1">
+                                            <label class="switch">
+                                                <input type="checkbox" id="cardQuality" name="cardQuality" <?php echo $mostraCardQuality ? 'checked' : ''; ?>>
+                                                <span class="slider round"></span>
+                                            </label>
+                                            <label for="cardQuality">Controllo Qualità</label>
                                         </div>
+                                        <hr>
                                     <?php endif; ?>
+
                                     <?php if (isset($_SESSION['permessi_produzione']) && $_SESSION['permessi_produzione'] == 1): ?>
-                                        <div class="h5 form-check form-switch mb-2">
-                                            <input class="form-check-input" type="checkbox" id="cardProduction"
-                                                name="cardProduction" <?php echo $mostraCardProduzione ? 'checked' : ''; ?>>
-                                            <label class="form-check-label" for="cardProduction">Produzione di Oggi</label>
+                                        <div class="h6 form-group mb-1">
+                                            <label class="switch">
+                                                <input type="checkbox" id="cardProduction" name="cardProduction" <?php echo $mostraCardProduzione ? 'checked' : ''; ?>>
+                                                <span class="slider round"></span>
+                                            </label>
+                                            <label for="cardProduction">Produzione di Oggi</label>
                                         </div>
-                                        <div class="h5 form-check form-switch mb-2">
-                                            <input class="form-check-input" type="checkbox" id="cardProductionMonth"
-                                                name="cardProductionMonth" <?php echo $mostraCardProduzioneMese ? 'checked' : ''; ?>>
-                                            <label class="form-check-label" for="cardProductionMonth">Produzione del
-                                                Mese</label>
+                                        <hr>
+                                        <div class="h6 form-group mb-1">
+                                            <label class="switch">
+                                                <input type="checkbox" id="cardProductionMonth" name="cardProductionMonth"
+                                                    <?php echo $mostraCardProduzioneMese ? 'checked' : ''; ?>>
+                                                <span class="slider round"></span>
+                                            </label>
+                                            <label for="cardProductionMonth">Produzione del Mese</label>
                                         </div>
                                     <?php endif; ?>
+                                    <hr>
                                     <button type="submit"
                                         class="btn btn-<?php echo $colore; ?> btn-block mt-2">Salva</button>
                                 </form>
                             </div>
                         </div>
+
+
                     </div>
+
                     <hr>
                     <?php include("components/homeCards.php"); ?>
                     <!-- CHIUSURA ROW CARDS -->
