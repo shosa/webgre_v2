@@ -36,7 +36,7 @@ require_once BASE_PATH . '/vendor/autoload.php';
 
                     <?php
                     $filename = 'CEDOLA.pdf';
-                    $pdfPath = BASE_URL . '/temp/pdf/' . $filename;
+                    $pdfPath = BASE_PATH . '/temp/pdf/' . $filename;
                     $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
                     $pdf->SetMargins(7, 7, 7);
                     $pdf->SetAutoPageBreak(true, 10);
@@ -249,7 +249,8 @@ require_once BASE_PATH . '/vendor/autoload.php';
                     }
 
                     $pdfData = $pdf->Output($pdfPath, 'F');
-                    echo '<iframe src="' . BASE_URL . '/vendor/pdfjs/web/viewer.html?file=' . urlencode($pdfPath) . '" width="100%" height="600px"></iframe>';
+                    $url = BASE_URL . "/temp/pdf/CEDOLA.pdf";
+                    echo '<iframe src="' . BASE_URL . '/vendor/pdfjs/web/viewer.html?file=' . urlencode($url) . '" width="100%" height="600px"></iframe>';
                     ?>
                 </div>
             </div>

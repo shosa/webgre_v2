@@ -9,3 +9,6 @@ RewriteRule ^([^\.]+)$ $1.php [NC,L]
 RewriteRule ^webgre/(.*)$ webgre/$1 [L]
 ErrorDocument 404 /webgre/404.php
 ErrorDocument 403 /webgre/403.php
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>
