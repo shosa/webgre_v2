@@ -9,7 +9,7 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
- :root {
+:root {
   --blue: #4e73df;
   --indigo: #6610f2;
   --purple: #6f42c1;
@@ -12773,7 +12773,7 @@ body.sidebar-toggled footer.sticky-footer {
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: #fafafa !important;
+  background-color: #fafafa;
 }
 
 #tables-list .list-group-item {
@@ -25570,7 +25570,7 @@ body.sidebar-toggled footer.sticky-footer {
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: #fafafa !important;
+  background-color: #fafafa;
 }
 
 #tables-list .list-group-item {
@@ -25661,4 +25661,31 @@ table.dataTable thead th span.form-control {
 table.dataTable thead th select.form-control {
   height: auto;
   /* Imposta l'altezza del select */
+}
+
+.sorting {
+  color: var(--primary) !important;
+}
+
+div.dataTables_wrapper div.dataTables_filter {
+  background-color: var(--light) !important;
+  float: inline-end !important;
+  color: var(--primary) !important;
+  font-weight: bold !important;
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+  padding-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+  box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.2) !important;
+  border-radius: 0.35rem !important;
+
+}
+
+div.dataTables_wrapper div.dataTables_filter:has(input:focus) {
+  border: 1px solid var(--primary) !important;
+}
+
+div.dataTables_wrapper div.dataTables_filter label {
+  font-weight: bold !important;
+
 }

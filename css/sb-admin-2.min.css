@@ -9,7 +9,7 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-:root {
+ :root {
   --blue: #4e73df;
   --indigo: #6610f2;
   --purple: #6f42c1;
@@ -12773,7 +12773,7 @@ body.sidebar-toggled footer.sticky-footer {
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: #fafafa !important;
+  background-color: #fafafa;
 }
 
 #tables-list .list-group-item {
@@ -25570,7 +25570,7 @@ body.sidebar-toggled footer.sticky-footer {
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: #fafafa !important;
+  background-color: #fafafa;
 }
 
 #tables-list .list-group-item {
@@ -25661,4 +25661,8 @@ table.dataTable thead th span.form-control {
 table.dataTable thead th select.form-control {
   height: auto;
   /* Imposta l'altezza del select */
+}
+
+.sorting {
+  color: var(--primary) !important;
 }

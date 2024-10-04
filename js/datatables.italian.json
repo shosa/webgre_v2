@@ -3,11 +3,11 @@
     "infoThousands": ".",
     "loadingRecords": "Caricamento...",
     "processing": "Elaborazione...",
-    "search": "Cerca:",
+    "search": "<i class='fa fa-search'></i>",
     "paginate": {
         "first": "Inizio",
-        "previous": "Precedente",
-        "next": "Successivo",
+        "previous": "<i class='fa fa-chevron-left'></i>",
+        "next": "<i class='fa fa-chevron-right'></i>",
         "last": "Fine"
     },
     "aria": {

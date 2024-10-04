@@ -7,14 +7,14 @@ $(document).ready(function () {
     "info": true,
     "colReorder": true,
     "order": [[0, "desc"]],
-    dom: '<"top"Bf>rt<"bottom"lip><"clear">',
+   dom: '<"top"f>rt<"bottom"lip><"clear">', //mettere B per pulsanti export
     buttons: [
       { extend: 'excel', text: '<i class="fas fa-file-excel"></i> EXCEL', className: 'btn-light text-dark border-dark' },
       { extend: 'pdf', orientation: 'landscape', text: '<i class="fas fa-file-pdf"></i> PDF', className: 'btn-light text-dark border-dark', columns: ':visible:not(.notexport)' },
       { extend: 'print', text: '<i class="fas fa-print"></i> STAMPA', className: 'btn-light text-dark border-dark' },
     ],
     language: {
-      url: "https://cdn.datatables.net/plug-ins/2.0.8/i18n/it-IT.json"
+      url: "/webgre/js/datatables.italian.json"
     },
 
     // Use initComplete to add the select elements after the table is fully initialized
@@ -24,7 +24,7 @@ $(document).ready(function () {
         var headerName = $(column.header()).text();
     
         // Skip columns
-        if (headerName === "Azioni" || headerName === "Note" || headerName === "#" || headerName === "ID" || headerName === "Timestamp") {
+        if (headerName === "Azioni" || headerName === "Note" || headerName === "#" || headerName === "ID" || headerName === "Timestamp" || headerName === "c") {
           var header = $('<span class="form-control border-0 font-weight-bold p-0 d-flex align-items-center" style="font-size:10pt;">' + headerName + '</span>')
             .appendTo($(column.header()).empty());
           return;

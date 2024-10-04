@@ -122,30 +122,30 @@ require_once BASE_PATH . '/components/header.php';
                             url: "https://cdn.datatables.net/plug-ins/2.0.8/i18n/it-IT.json"
                         },
                         initComplete: function () {
-  this.api().columns().every(function (index) {
-    var column = this;
-    var headerName = $(column.header()).text();
+                            this.api().columns().every(function (index) {
+                                var column = this;
+                                var headerName = $(column.header()).text();
 
-    // Skip columns
-    if (headerName === "Azioni" || headerName === "Note" || headerName === "#" || headerName === "ID" || headerName === "Timestamp") {
-      var header = $('<span class="form-control border-0 font-weight-bold p-0 d-flex align-items-center" style="font-size:10pt;">' + headerName + '</span>')
-        .appendTo($(column.header()).empty());
-      return;
-    }
+                                // Skip columns
+                                if (headerName === "Azioni" || headerName === "Note" || headerName === "#" || headerName === "ID" || headerName === "Timestamp") {
+                                    var header = $('<span class="form-control border-0 font-weight-bold p-0 d-flex align-items-center" style="font-size:10pt;">' + headerName + '</span>')
+                                        .appendTo($(column.header()).empty());
+                                    return;
+                                }
 
-    // Create select element
-    var select = $('<select class="form-control border-0 font-weight-bold p-0 d-flex align-items-center" style="font-size:10pt;"><option value="">' + headerName + '</option></select>')
-      .appendTo($(column.header()).empty())
-      .on('change', function () {
-        var val = $.fn.dataTable.util.escapeRegex($(this).val());
-        column.search(val ? '^' + val + '$' : '', true, false).draw();
-      });
+                                // Create select element
+                                var select = $('<select class="form-control border-0 font-weight-bold p-0 d-flex align-items-center" style="font-size:10pt;"><option value="">' + headerName + '</option></select>')
+                                    .appendTo($(column.header()).empty())
+                                    .on('change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                        column.search(val ? '^' + val + '$' : '', true, false).draw();
+                                    });
 
-    // Add unique values to select
-    column.data().unique().sort().each(function (d, j) {
-      select.append('<option value="' + d + '">' + d + '</option>');
-    });
-  });
+                                // Add unique values to select
+                                column.data().unique().sort().each(function (d, j) {
+                                    select.append('<option value="' + d + '">' + d + '</option>');
+                                });
+                            });
                         }
                     });
                     $('#dataTable').on('click', '.edit-btn', function () {
@@ -323,14 +323,17 @@ require_once BASE_PATH . '/components/header.php';
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Permessi</label>
+                          
                             <?php
                             $permStmt = $pdo->query("SHOW COLUMNS FROM permessi WHERE Field NOT IN ('id', 'id_utente')");
                             while ($perm = $permStmt->fetch(PDO::FETCH_ASSOC)) {
                                 $permName = htmlspecialchars($perm['Field']);
-                                echo '<div class="form-check">';
-                                echo '<input class="form-check-input" type="checkbox" name="permission" data-permission="' . $permName . '">';
-                                echo '<label class="form-check-label">' . strtoupper($permName) . '</label>';
+                                echo '<div class="h6 form-group mb-1">';
+                                echo '<label class="switch">';
+                                echo '<input type="checkbox" name="permission" data-permission="' . $permName . '">';
+                                echo ' <span class="slider round "></span>';
+                                echo '</label>';
+                                echo '<label class="ml-2">'  . strtoupper($permName) . '</label>';
                                 echo '</div>';
                             }
                             ?>
