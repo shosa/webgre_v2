@@ -250,7 +250,7 @@ require_once BASE_PATH . '/vendor/autoload.php';
 
                     $pdfData = $pdf->Output($pdfPath, 'F');
                     $url = BASE_URL . "/temp/pdf/CEDOLA.pdf";
-                    echo '<iframe src="' . BASE_URL . '/vendor/pdfjs/web/viewer.html?file=' . urlencode($url) . '" width="100%" height="600px"></iframe>';
+                    echo '<iframe src="' . BASE_URL . '/vendor/pdfjs/web/viewer.html?file=' . urlencode($url) . '" width="100%" height="700px"></iframe>';
                     ?>
                 </div>
             </div>

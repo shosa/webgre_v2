@@ -128,7 +128,7 @@ function getUrgencyColor($urgency)
                                     <button id="delete-selected" class="btn btn-danger btn-xl btn-circle text-white "
                                         disabled><i class="fa fa-trash"></i>
                                     </button>
-                                    <button id="print-selected" class="btn btn-orange btn-xl btn-circle text-white "
+                                    <button id="print-selected" class="btn btn-yellow btn-xl btn-circle text-white "
                                         disabled><i class="fa fa-print"></i>
                                     </button>
                                 </div>
@@ -244,7 +244,8 @@ function getUrgencyColor($urgency)
     <script src="<?php echo BASE_URL ?>/js/datatables.js"></script>
     <?php include_once BASE_PATH . '/components/footer.php'; ?>
 </body>
-<script>$(document).ready(function () {
+<script>
+    $(document).ready(function () {
         $('.show-record-details').on('click', function (e) {
             e.preventDefault();
             var recordId = $(this).data('record-id');
@@ -262,75 +263,72 @@ function getUrgencyColor($urgency)
                 }
             });
         });
-    })
-    $(document).ready(function () {
-        $(document).ready(function () {
-            // Seleziona/Deseleziona tutte le righe
-            $('#select-all').on('click', function () {
-                $('.select-row').prop('checked', this.checked);
-                $('.select-row').each(function () {
-                    toggleRowSelection($(this));
-                });
-                toggleActionButtons();
-            });
-
-            // Gestisci la selezione delle singole righe
-            $('.select-row').on('change', function () {
+        // Seleziona/Deseleziona tutte le righe
+        $('#select-all').on('click', function () {
+            $('.select-row').prop('checked', this.checked);
+            $('.select-row').each(function () {
                 toggleRowSelection($(this));
-                toggleActionButtons();
             });
-
-            function toggleRowSelection(checkbox) {
-                if (checkbox.is(':checked')) {
-                    checkbox.closest('tr').addClass('selected-row');
-                } else {
-                    checkbox.closest('tr').removeClass('selected-row');
-                }
-            }
-
-            function toggleActionButtons() {
-                let selectedCount = $('.select-row:checked').length;
-                if (selectedCount > 0) {
-                    $('#delete-selected, #print-selected').prop('disabled', false);
-                } else {
-                    $('#delete-selected, #print-selected').prop('disabled', true);
-                }
-            }
-
-            // Gestione per eliminare record selezionati
-            $('#delete-selected').on('click', function () {
-                let selectedIds = $('.select-row:checked').map(function () {
-                    return $(this).val();
-                }).get();
-
-                if (selectedIds.length > 0) {
-                    $.ajax({
-                        url: 'delete_plus.php',
-                        type: 'POST',
-                        data: { ids: selectedIds },
-                        success: function (response) {
-                            location.reload();
-                        },
-                        error: function (xhr, status, error) {
-                            console.error(xhr.responseText);
-                        }
-                    });
-                }
-            });
-            $('#print-selected').on('click', function () {
-                let selectedIds = $('.select-row:checked').map(function () {
-                    return $(this).val();
-                }).get();
-
-                if (selectedIds.length > 0) {
-                    // Redirigi verso la pagina di preview con gli ID selezionati come parametro GET
-                    let idsParam = selectedIds.join(';');
-                    window.location.href = 'filePreview?ids=' + idsParam;
-                }
-            });
-
+            toggleActionButtons();
         });
 
-        // Gestisci l'azione Modifica e Stampa in modo simile
+        // Gestisci la selezione delle singole righe
+        $('.select-row').on('change', function () {
+            toggleRowSelection($(this));
+            toggleActionButtons();
+        });
+
+        function toggleRowSelection(checkbox) {
+            if (checkbox.is(':checked')) {
+                checkbox.closest('tr').addClass('selected-row');
+            } else {
+                checkbox.closest('tr').removeClass('selected-row');
+            }
+        }
+
+        function toggleActionButtons() {
+            let selectedCount = $('.select-row:checked').length;
+            if (selectedCount > 0) {
+                $('#delete-selected, #print-selected').prop('disabled', false);
+            } else {
+                $('#delete-selected, #print-selected').prop('disabled', true);
+            }
+        }
+
+        // Gestione per eliminare record selezionati
+        $('#delete-selected').on('click', function () {
+            let selectedIds = $('.select-row:checked').map(function () {
+                return $(this).val();
+            }).get();
+
+            if (selectedIds.length > 0) {
+                $.ajax({
+                    url: 'delete_plus.php',
+                    type: 'POST',
+                    data: { ids: selectedIds },
+                    success: function (response) {
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+        });
+        $('#print-selected').on('click', function () {
+            let selectedIds = $('.select-row:checked').map(function () {
+                return $(this).val();
+            }).get();
+
+            if (selectedIds.length > 0) {
+                // Redirigi verso la pagina di preview con gli ID selezionati come parametro GET
+                let idsParam = selectedIds.join(';');
+                window.location.href = 'filePreview?ids=' + idsParam;
+            }
+        });
+
     });
+
+
+
 </script>

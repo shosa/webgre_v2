@@ -47,7 +47,7 @@
         "stateRestore": "Ripristina stato",
         "updateState": "Aggiorna"
     },
-    "emptyTable": "Nessun dato disponibile nella tabella",
+    "emptyTable": "Nessun dato disponibile.",
     "info": "Risultati da _START_ a _END_ di _TOTAL_ elementi",
     "infoEmpty": "Risultati da 0 a 0 di 0 elementi",
     "lengthMenu": "Mostra _MENU_ elementi",
