@@ -9,7 +9,7 @@ function customErrorHandler($errno, $errstr, $errfile, $errline)
     $errorTime = date('Y-m-d H:i:s');
 
     // Crea un messaggio di errore dettagliato
-    $errorMessage = "[$errorTime] [Page: $currentPage] [Error $errno] $errstr in $errfile on line $errline";
+    $errorMessage = "[$errorTime] [Page: $currentPage] [Error $errno] $errstr in $errfile on line $errline \n\n";
 
     // Logga l'errore in un file
     error_log($errorMessage, 3, __DIR__ . '/error_log.txt');

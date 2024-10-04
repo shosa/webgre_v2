@@ -13,8 +13,7 @@ require_once BASE_PATH . '/vendor/autoload.php';
 ?>
 
 <body id="page-top">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf_viewer.css" />
+
     <!-- Page Wrapper -->
     <div id="wrapper">
         <?php include(BASE_PATH . "/components/navbar.php"); ?>
@@ -32,12 +31,12 @@ require_once BASE_PATH . '/vendor/autoload.php';
                         <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="../../functions/riparazioni/riparazioni">Elenco
                                 Riparazioni</a></li>
-                        <li class="breadcrumb-item active">Stamp Cedole</li>
+                        <li class="breadcrumb-item active">Stampa Cedole</li>
                     </ol>
 
                     <?php
-                    $filename = 'CEDOLA_' . $idrip . '.pdf';
-                    $pdfPath = BASE_PATH . '/temp/pdf/' . $filename; 
+                    $filename = 'CEDOLA.pdf';
+                    $pdfPath = BASE_PATH . '/temp/pdf/' . $filename;
                     $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
                     $pdf->SetMargins(7, 7, 7);
                     $pdf->SetAutoPageBreak(true, 10);
@@ -246,10 +245,11 @@ require_once BASE_PATH . '/vendor/autoload.php';
                         } else {
                             echo "<p>Nessuna riparazione trovata per ID: $idrip</p>";
                         }
+
                     }
 
                     $pdfData = $pdf->Output($pdfPath, 'F');
-                    echo '<iframe src="../../vendor/pdfjs/web/viewer.html?file=' . urlencode($pdfPath) . '" width="100%" height="600px"></iframe>';
+                    echo '<iframe src="'.BASE_PATH . '/vendor/pdfjs/web/viewer.html?file=' . urlencode($pdfPath) . '" width="100%" height="600px"></iframe>';
                     ?>
                 </div>
             </div>

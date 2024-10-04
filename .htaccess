@@ -1,6 +1,7 @@
 
 # # av:php5-engine
 AddHandler av-php82 .php
+AddType application/javascript .mjs
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
