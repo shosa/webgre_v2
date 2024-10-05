@@ -118,8 +118,8 @@ function getUrgencyColor($urgency)
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex align-items-center">
                             <h6 class="m-0 font-weight-bold text-primary">Elenco riparazioni</h6>
-                            <a href="add_step1?operation=create" class="btn btn-info ml-auto"
-                                style="margin-left:5px;"><i class="fal fa-plus-circle fa-l"></i> NUOVA</a>
+                            <a href="add_step1?operation=create" class="btn btn-success btn-circle shadow-sm ml-auto"
+                                style="margin-left:5px;"><i class="fal fa-plus fa-xl"></i></a>
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-between mb-4">

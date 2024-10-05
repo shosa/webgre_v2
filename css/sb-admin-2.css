@@ -25678,6 +25678,7 @@ div.dataTables_wrapper div.dataTables_filter {
   margin-bottom: 0.5rem !important;
   box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.2) !important;
   border-radius: 0.35rem !important;
+  background-color: #f8f9fc !important;
 }
 
 
@@ -25692,20 +25693,21 @@ div.dataTables_wrapper div.dataTables_length {
   margin-bottom: 0.5rem !important;
   box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.2) !important;
   border-radius: 0.35rem !important;
+  background-color: #f8f9fc !important;
 }
 
 div.dataTables_wrapper div.dataTables_info {
   border: 1px solid #e3e6f0 !important;
   margin-top: 0.5rem !important;
-
-  padding-left: 0.5rem !important;
-  padding-right: 0.5rem !important;
-  padding-top: 0.5rem !important;
+  background-color: #f8f9fc !important;
+  padding: 0.5rem !important;
   margin-bottom: 0.5rem !important;
   margin-left: 1rem !important;
   box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.2) !important;
   border-radius: 0.35rem !important;
   display: math !important;
+  float: inline-end !important;
+  font-style: italic !important;
 }
 
 
