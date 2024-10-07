@@ -218,9 +218,6 @@ function getUrgencyColor($urgency)
                 <div class="modal-body">
                     <div id="record-details"></div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                </div>
             </div>
         </div>
     </div>

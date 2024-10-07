@@ -8,17 +8,15 @@ if ($recordId) {
         $statement->execute();
         $record = $statement->fetch(PDO::FETCH_ASSOC);
         if ($record) {
-            $details = '<div class="table-responsive border">';
+            $details = '<div class="table-responsive border shadow-sm" style="font-size:10pt;!important;">';
             $details .= '<table class="table table-striped">';
             $details .= '<tr><th>ID:</th><td>' . $record['IDRIP'] . '</td></tr>';
             $details .= '<tr><th>LINEA:</th><td>' . $record['descrizione'] . '</td></tr>';
             $details .= '<tr><th>CODICE:</th><td>' . $record['CODICE'] . '</td></tr>';
             $details .= '<tr><th>ARTICOLO:</th><td>' . $record['ARTICOLO'] . '</td></tr>';
-            $details .= '<tr><th>QTA:</th><td>' . $record['QTA'] . '</td></tr>';
-            // Tabella per PXX e NXX
             $details .= '<tr><td colspan="2">';
             $details .= '<div class="table-responsive">';
-            $details .= '<table class="table table-bordered">';
+            $details .= '<table class="table table-bordered shadow-sm">';
             $details .= '<tr>';
             for ($i = 1; $i <= 20; $i++) {
                 $pKey = 'P' . str_pad($i, 2, '0', STR_PAD_LEFT);
@@ -26,13 +24,23 @@ if ($recordId) {
                 if (!empty($record[$pKey]) && $record[$pKey] != 0) {
                     $details .= '<th class="bg-dark text-white">' . $record[$nKey] . '</th>';
                 }
+                if ($i == 20) {
+                    $details .= '<th class="bg-dark text-white">TOTALE</th>';
+                }
             }
             $details .= '</tr><tr>';
+            $pTot = 0; // Sposta la dichiarazione fuori dal ciclo
             for ($i = 1; $i <= 20; $i++) {
                 $pKey = 'P' . str_pad($i, 2, '0', STR_PAD_LEFT);
                 $nKey = 'N' . str_pad($i, 2, '0', STR_PAD_LEFT);
+
                 if (!empty($record[$pKey]) && $record[$pKey] != 0) {
                     $details .= '<td>' . $record[$pKey] . '</td>';
+                    $pTot += $record[$pKey]; // Aggiungi al totale
+                }
+
+                if ($i == 20) {
+                    $details .= '<th class="">' . $pTot . ' </th>'; // Mostra il totale
                 }
             }
             $details .= '</tr></table>';
@@ -45,7 +53,7 @@ if ($recordId) {
             $details .= '<tr><th>DATA:</th><td>' . $record['DATA'] . '</td></tr>';
             $details .= '</table>';
             $details .= '</div>';
-            $details .= '<a href="file_preview.php?riparazione_id=' . $recordId . '" class="btn btn-block btn-warning btn-lg mt-2"><i class="fa-solid fa-print fa-lg"></i></a>';
+            $details .= '<a href="filePreview.php?ids=' . $recordId . '" class="btn btn-block btn-warning btn-lg mt-2"><i class="fa-solid fa-print fa-lg"></i></a>';
             $details .= '<a href="#" class="btn btn-danger btn-block btn-lg delete_btn" data-toggle="modal" data-target="#confirm-delete-' . $recordId . '"><i class="fa-solid fa-trash-alt fa-lg"></i></a>';
             echo $details;
         } else {
