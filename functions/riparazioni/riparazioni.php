@@ -213,7 +213,6 @@ function getUrgencyColor($urgency)
                 <div class="modal-body">
                     <div id="record-details"></div>
                 </div>
-               
             </div>
         </div>
     </div>
