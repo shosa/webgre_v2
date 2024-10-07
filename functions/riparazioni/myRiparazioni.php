@@ -50,6 +50,57 @@ function getUrgencyColor($urgency)
 }
 ?>
 
+<style>
+    /* Stile moderno per la checkbox */
+    .custom-checkbox input[type="checkbox"] {
+        display: none;
+    }
+
+    .custom-checkbox label {
+        position: relative;
+        cursor: pointer;
+    }
+
+    .custom-checkbox label:before {
+        content: "";
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #4e73df;
+        border-radius: 4px;
+        vertical-align: middle;
+        margin-right: 10px;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .custom-checkbox input[type="checkbox"]:checked+label:before {
+        background-color: #4e73df;
+        border-color: #4e73df;
+    }
+
+    .custom-checkbox label:after {
+        content: "✓";
+        position: absolute;
+        left: 4px;
+        top: 2px;
+        font-size: 16px;
+        color: white;
+        display: none;
+    }
+
+    .custom-checkbox input[type="checkbox"]:checked+label:after {
+        display: block;
+    }
+
+    /* Evidenziazione della riga selezionata */
+    .selected-row {
+        background-color: rgba(107 197 247) !important;
+        color: var(--light);
+        font-weight: bold !important;
+    }
+</style>
+
+
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -63,141 +114,117 @@ function getUrgencyColor($urgency)
                 <div class="container-fluid">
                     <?php include(BASE_PATH . "/utils/alerts.php"); ?>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Le mie Riparazioni</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Riparazioni</h1>
                     </div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="../../functions/riparazioni/riparazioni">Elenco
-                                Riparazioni</a></li>
-                        <li class="breadcrumb-item active">Elenco Personale [<?php echo $utente; ?>]</li>
+                        <li class="breadcrumb-item active">Elenco Riparazioni</li>
                     </ol>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex align-items-center">
-                            <h6 class="m-0 font-weight-bold text-primary">Attive</h6>
-                            <a href="add_step1?operation=create" class="btn btn-info ml-auto"
-                                style="margin-left:5px;"><i class="fal fa-plus-circle fa-l"></i> NUOVA</a>
+                            <h6 class="m-0 font-weight-bold text-primary">Elenco riparazioni</h6>
+                            <a href="add_step1?operation=create" class="btn btn-success btn-circle shadow-sm ml-auto"
+                                style="margin-left:5px;"><i class="fal fa-plus fa-xl"></i></a>
                         </div>
                         <div class="card-body">
-                            <div class="card-body">
-                                <table class="table table-bordered table-responsive table-striped"
-                                    style="font-size:10pt;" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th width="5%">#</th>
-                                            <th width="15%">Codice</th>
-                                            <th width="35%">Articolo</th>
-                                            <th width="5%">PA</th>
-                                            <th width="10%">Cartellino</th>
-                                            <th width="5%">Data</th>
-                                            <th width="10%">Reparto</th>
-                                            <th width="5%" hidden>Linea</th>
-                                            <th class='notexport' width="10%">Azioni</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($rows as $row) { ?>
-                                            <!-- MODALE CANCELLA  -->
-                                            <div class="modal fade" style="z-index: 5000"
-                                                id="confirm-delete-<?php echo $row['IDRIP']; ?>" role="dialog"
-                                                aria-labelledby="confirm-delete-modal-label" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered ">
-                                                    <form action="delete_riparazioni.php" method="POST">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="confirm-delete-modal-label">
-                                                                    Conferma
-                                                                </h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body"
-                                                                style="color: #f96363; background: #ffe9e9;">
-                                                                <input type="hidden" name="del_id" id="del_id"
-                                                                    value="<?php echo $row['IDRIP']; ?>">
-                                                                <p>Sicuro di voler procedere ad eliminare questa riga?</p>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="submit" class="btn btn-danger">Si</button>
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">No</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                            <tr>
-                                                <td class="align-middle text-center">
-                                                    <span
-                                                        class="badge badge-<?php echo getUrgencyColor($row['URGENZA']); ?>"
-                                                        style="font-size:10pt !important;"><?php echo $row['IDRIP']; ?></span>
-                                                </td>
-                                                <td class="align-middle"><?php echo $row['CODICE']; ?></td>
-                                                <td class="align-middle"><?php echo $row['ARTICOLO']; ?></td>
-                                                <td class="align-middle"><?php echo $row['QTA']; ?></td>
-                                                <td class="align-middle"><?php echo $row['CARTELLINO']; ?></td>
-                                                <td class="align-middle"><?php echo $row['DATA']; ?></td>
-                                                <td class="align-middle"><?php echo $row['REPARTO']; ?></td>
-                                                <td class="align-middle" hidden><?php echo $row['LINEA']; ?></td>
-                                                <td class="align-middle">
-                                                    <div class="btn-group">
-                                                        <a href="#" class="btn btn-success show-record-details"
-                                                            data-record-id="<?php echo htmlspecialchars($row['IDRIP']); ?>">
-                                                            <i class="fal fa-search"></i>
-                                                        </a>
-                                                        <a href="edit_riparazioni.php?riparazione_id=<?php echo htmlspecialchars($row['IDRIP']); ?>&operation=edit"
-                                                            class="btn btn-primary">
-                                                            <i class="fal fa-edit"></i>
-                                                        </a>
+                            <div class="d-flex justify-content-between mb-4">
 
-                                                        <a href="file_preview.php?riparazione_id=<?php echo htmlspecialchars($row['IDRIP']); ?>"
-                                                            type="button" class="btn btn-warning">
-                                                            <i class="fal fa-print"></i>
-                                                        </a>
+                                <div>
+                                    <button id="delete-selected" class="btn btn-danger btn-xl btn-circle text-white "
+                                        disabled><i class="fa fa-trash"></i>
+                                    </button>
+                                    <button id="print-selected" class="btn btn-yellow btn-xl btn-circle text-white "
+                                        disabled><i class="fa fa-print"></i>
+                                    </button>
+                                </div>
 
-
-                                                        <a href="#" class="btn btn-danger delete_btn" data-toggle="modal"
-                                                            data-target="#confirm-delete-<?php echo htmlspecialchars($row['IDRIP']); ?>">
-                                                            <i class="fal fa-trash-alt"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
                             </div>
+                            <table class="table table-bordered table-responsive table-striped rounded shadow-sm"
+                                style="font-size:10pt;" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th width="2%"><input type="checkbox" id="select-all"></th>
+                                        <th width="5%">#</th>
+                                        <th width="15%">Codice</th>
+                                        <th width="7%"></th>
+                                        <th width="36%">Articolo</th>
+                                        <th width="5%">PA</th>
+                                        <th width="10%">Cartellino</th>
+                                        <th width="5%">Data</th>
+                                        <th width="10%">Reparto</th>
+                                        <th width="5%" hidden>Linea</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($rows as $row) { ?>
+                                        <tr>
+                                            <td class="align-middle text-center">
+                                                <input type="checkbox" class="select-row"
+                                                    id="checkbox-<?php echo $row['IDRIP']; ?>"
+                                                    value="<?php echo $row['IDRIP']; ?>">
+                                                <label for="checkbox-<?php echo $row['IDRIP']; ?>"></label>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <span class="badge badge-<?php echo getUrgencyColor($row['URGENZA']); ?>"
+                                                    style="font-size:10pt !important;"><?php echo $row['IDRIP']; ?></span>
+
+                                            </td>
+                                            <td class="align-middle"><?php echo $row['CODICE']; ?></td>
+                                            <td class="align-middle text-center">
+                                                <a href="#"
+                                                    class="btn  btn-sm btn-circle btn-light border-success border text-success show-record-details"
+                                                    data-record-id="<?php echo htmlspecialchars($row['IDRIP']); ?>">
+                                                    <i class="fas fa-search"></i>
+                                                </a>
+                                                <a href="edit_riparazioni.php?riparazione_id=<?php echo htmlspecialchars($row['IDRIP']); ?>&operation=edit"
+                                                    class="btn btn-sm btn-circle btn-light border-primary text-primary">
+                                                    <i class="fas fa-pencil-alt"></i>
+
+                                                </a>
+
+                                            </td>
+                                            <td class="align-middle"><?php echo $row['ARTICOLO']; ?></td>
+                                            <td class="align-middle"><?php echo $row['QTA']; ?></td>
+                                            <td class="align-middle"><?php echo $row['CARTELLINO']; ?></td>
+                                            <td class="align-middle"><?php echo $row['DATA']; ?></td>
+                                            <td class="align-middle"><?php echo $row['REPARTO']; ?></td>
+                                            <td class="align-middle" hidden><?php echo $row['LINEA']; ?></td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+
                         </div>
                     </div>
                 </div>
-                <!-- Footer -->
-                <?php include(BASE_PATH . "/components/footer.php"); ?>
-                <!-- End of Footer -->
             </div>
-            <!-- End of Content Wrapper -->
+            <!-- Footer -->
+            <?php include(BASE_PATH . "/components/footer.php"); ?>
+            <!-- End of Footer -->
         </div>
-        <!-- MODALE DETTAGLI -->
-        <div class="modal fade" id="record-details-modal" tabindex="-1" role="dialog"
-            aria-labelledby="record-details-modal-label" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="record-details-modal-label">Dettagli</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="record-details"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                    </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- MODALE DETTAGLI -->
+    <div class="modal fade" id="record-details-modal" tabindex="-1" role="dialog"
+        aria-labelledby="record-details-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="record-details-modal-label">Dettagli</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="record-details"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                 </div>
             </div>
         </div>
-        <!-- End of Page Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
     </div>
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -222,7 +249,8 @@ function getUrgencyColor($urgency)
     <script src="<?php echo BASE_URL ?>/js/datatables.js"></script>
     <?php include_once BASE_PATH . '/components/footer.php'; ?>
 </body>
-<script>$(document).ready(function () {
+<script>
+    $(document).ready(function () {
         $('.show-record-details').on('click', function (e) {
             e.preventDefault();
             var recordId = $(this).data('record-id');
@@ -240,4 +268,72 @@ function getUrgencyColor($urgency)
                 }
             });
         });
-    });</script>
+        // Seleziona/Deseleziona tutte le righe
+        $('#select-all').on('click', function () {
+            $('.select-row').prop('checked', this.checked);
+            $('.select-row').each(function () {
+                toggleRowSelection($(this));
+            });
+            toggleActionButtons();
+        });
+
+        // Gestisci la selezione delle singole righe
+        $('.select-row').on('change', function () {
+            toggleRowSelection($(this));
+            toggleActionButtons();
+        });
+
+        function toggleRowSelection(checkbox) {
+            if (checkbox.is(':checked')) {
+                checkbox.closest('tr').addClass('selected-row');
+            } else {
+                checkbox.closest('tr').removeClass('selected-row');
+            }
+        }
+
+        function toggleActionButtons() {
+            let selectedCount = $('.select-row:checked').length;
+            if (selectedCount > 0) {
+                $('#delete-selected, #print-selected').prop('disabled', false);
+            } else {
+                $('#delete-selected, #print-selected').prop('disabled', true);
+            }
+        }
+
+        // Gestione per eliminare record selezionati
+        $('#delete-selected').on('click', function () {
+            let selectedIds = $('.select-row:checked').map(function () {
+                return $(this).val();
+            }).get();
+
+            if (selectedIds.length > 0) {
+                $.ajax({
+                    url: 'delete_plus.php',
+                    type: 'POST',
+                    data: { ids: selectedIds },
+                    success: function (response) {
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+        });
+        $('#print-selected').on('click', function () {
+            let selectedIds = $('.select-row:checked').map(function () {
+                return $(this).val();
+            }).get();
+
+            if (selectedIds.length > 0) {
+                // Redirigi verso la pagina di preview con gli ID selezionati come parametro GET
+                let idsParam = selectedIds.join(';');
+                window.location.href = 'filePreview?ids=' + idsParam;
+            }
+        });
+
+    });
+
+
+
+</script>
