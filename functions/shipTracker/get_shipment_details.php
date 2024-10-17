@@ -56,13 +56,44 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                     echo "<div class='progress-bar bg-success' role='progressbar' style='width: $progress%;' aria-valuenow='$progress' aria-valuemin='0' aria-valuemax='100'>$progress%</div>";
                     echo "</div>";
 
-                    echo "<div class='card shadow-lg mb-2'>";
-                    echo "<div class='card-body'>";
-                    echo "<p><strong>Numero di Tracciamento:</strong> " . htmlspecialchars($trackingInfo['tracking_number']) . "</p>";
-                    echo "<p><strong>Corriere:</strong> <span class='text-uppercase'>" . htmlspecialchars($trackingInfo['courier_code']) . "</span></p>";
-                    echo "<p><strong>Stato della Consegna:</strong> <span class='text-uppercase'>" . htmlspecialchars($trackingInfo['delivery_status']) . "</span></p>";
-                    echo "<p><strong>Ultimo Aggiornamento:</strong> " . htmlspecialchars($trackingInfo['update_date']) . "</p>";
-                    echo "</div></div>";
+                    // Card con i dettagli principali
+                    echo "<div class='card shadow-lg mb-2 border-info'>";
+                    echo "<div class='card-body d-flex justify-content-between align-items-center'>";
+
+                    // Dettagli a sinistra
+                    echo "<div>";
+                    echo "<p><strong>Numero di Tracciamento:</strong><br>" . htmlspecialchars($trackingInfo['tracking_number']) . "</p>";
+                    echo "<p><strong>Corriere:</strong><br> <span class='text-uppercase'>" . htmlspecialchars($trackingInfo['courier_code']) . "</span></p>";
+                    echo "<p><strong>Stato della Consegna:</strong><br> <span class='text-uppercase'>" . htmlspecialchars($trackingInfo['delivery_status']) . "</span></p>";
+                    $updateDate = new DateTime($trackingInfo['update_date']);
+                    echo "<p><strong>Ultimo Aggiornamento:</strong><br>" . htmlspecialchars($updateDate->format('d/m/Y H:i')) . "</p>";
+                    echo "</div>";
+
+                    // Icona in base allo stato di consegna
+                    echo "<div>";
+                    switch ($trackingInfo['delivery_status']) {
+                        case 'delivered':
+                            echo "<i class='fas fa-check-circle fa-3x text-success'></i>";
+                            break;
+                        case 'transit':
+                            echo "<i class='fas fa-shipping-fast fa-3x text-primary'></i>";
+                            break;
+                        case 'pickup':
+                            echo "<i class='fas fa-box-open fa-3x text-warning'></i>";
+                            break;
+                        case 'undelivered':
+                            echo "<i class='fas fa-exclamation-circle fa-3x text-danger'></i>";
+                            break;
+                        case 'exception':
+                            echo "<i class='fas fa-times-circle fa-3x text-danger'></i>";
+                            break;
+                        default:
+                            echo "<i class='fas fa-info-circle fa-3x text-secondary'></i>";
+                            break;
+                    }
+                    echo "</div>";
+
+                    echo "</div></div>"; // Fine della card principale
 
                     // Informazioni sull'origine
 
@@ -75,8 +106,10 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                         foreach ($originInfo['trackinfo'] as $checkpoint) {
                             echo "<div class='card shadow-sm mb-2  border-info border-2'>";
                             echo "<div class='card-body'>";
-                            echo "<h4><strong>" . htmlspecialchars($checkpoint['checkpoint_date']) . "</strong> <i class='fas fa-globe-europe float-right'></i></h4>";
-                            echo "<p><strong>Posizione:</strong> " . htmlspecialchars($checkpoint['location']) . "</p>";
+                            echo "<h4 style='color:black;'><strong>" . htmlspecialchars($checkpoint['location']) . "</strong> </h4>";
+                            $checkpointDate = new DateTime($checkpoint['checkpoint_date']);
+                            echo "<p><strong>" . htmlspecialchars($checkpointDate->format('d/m/Y H:i')) . "</strong> <i class='fas fa-globe-europe float-right'></i></p>";
+                          
                             echo "<p><strong>Stato:</strong> " . htmlspecialchars(getTrackingSubStatus($checkpoint['checkpoint_delivery_status'])) . "</p>";
                             echo "<p><strong>Note:</strong> " . htmlspecialchars(getTrackingSubStatus($checkpoint['checkpoint_delivery_substatus'])) . "</p>";
                             echo "</div></div>";
