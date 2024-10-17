@@ -15,8 +15,10 @@ require_once(__DIR__ . '/error_handler.php');
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     <link href="<?php echo BASE_URL; ?>/css/sb-admin-2.css" rel="stylesheet">
     <link href="<?php echo BASE_URL; ?>/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900&display=swap"
+        rel="stylesheet">
     <link href="<?php echo BASE_URL; ?>/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="<?php echo BASE_URL; ?>/favicon.ico">
 </head>
 <script>
     window.onerror = function (message, source, lineno, colno, error) {
