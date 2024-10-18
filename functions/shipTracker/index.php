@@ -179,6 +179,59 @@ $couriers = json_decode(file_get_contents('couriers.json'), true);
                                                 }
                                             }
                                         }
+                                        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_tracking_id'])) {
+                                            $tracking_id = $_POST['delete_tracking_id'];
+
+                                            // Recupera i dati della spedizione dal database
+                                            $stmt = $pdo->prepare("SELECT tracking_number, carrier_code FROM shipments WHERE id = :id");
+                                            $stmt->execute(['id' => $tracking_id]);
+                                            $shipment = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                            if ($shipment) {
+                                                // Parametri per la chiamata all'API di eliminazione
+                                                $api_key = 'ndrk5yvj-x3jj-cbxk-8raq-nqrf0g77tvdk';
+                                                $delete_shipment_url = "https://api.trackingmore.com/v3/trackings/delete";
+                                                $postData = json_encode([
+                                                    'tracking_number' => $shipment['tracking_number'],
+                                                    'courier_code' => $shipment['carrier_code']
+                                                ]);
+
+                                                // Richiesta cURL per eliminare la spedizione
+                                                $curl = curl_init();
+                                                curl_setopt_array($curl, array(
+                                                    CURLOPT_URL => $delete_shipment_url,
+                                                    CURLOPT_RETURNTRANSFER => true,
+                                                    CURLOPT_POST => true,
+                                                    CURLOPT_POSTFIELDS => $postData,
+                                                    CURLOPT_HTTPHEADER => array(
+                                                        "Content-Type: application/json",
+                                                        "Tracking-Api-Key: $api_key"
+                                                    ),
+                                                ));
+
+                                                $response = curl_exec($curl);
+                                                $err = curl_error($curl);
+                                                curl_close($curl);
+
+                                                if ($err) {
+                                                    $_SESSION['danger'] = "Errore API: $err";
+                                                } else {
+                                                    $delete_info = json_decode($response, true);
+                                                    if (isset($delete_info['code']) && $delete_info['code'] == 200) {
+                                                        // Elimina la spedizione dal database
+                                                        $stmt = $pdo->prepare("DELETE FROM shipments WHERE id = :id");
+                                                        $stmt->execute(['id' => $tracking_id]);
+
+                                                        $_SESSION['success'] = "Spedizione eliminata con successo!";
+                                                    } else {
+                                                        $_SESSION['danger'] = "Errore nell'eliminazione della spedizione: " . $delete_info['message'];
+                                                    }
+                                                }
+                                            } else {
+                                                $_SESSION['danger'] = "Spedizione non trovata!";
+                                            }
+                                        }
+
 
                                         // Recupero e visualizzo le spedizioni memorizzate
                                         $stmt = $pdo->prepare("SELECT * FROM shipments ORDER BY updated_at DESC");
@@ -205,7 +258,10 @@ $couriers = json_decode(file_get_contents('couriers.json'), true);
                                                 echo "</div>";
 
                                                 // Pulsante Dettagli
-                                                echo "<button class='btn btn-info btn-sm btn-details' data-toggle='modal' data-target='#shipmentModal' data-id='" . $shipment['id'] . "'>Dettagli</button>";
+                                                echo "<button class='btn btn-light btn-circle btn-outline-info btn-sm btn-details' data-toggle='modal' data-target='#shipmentModal' data-id='" . $shipment['id'] . "'><i class='fa fa-list'></i></button>";
+                                                // Pulsante Elimina
+                                                echo "<button class='btn btn-light btn-circle btn-outline-danger ml-2 btn-sm btn-delete' data-id='" . $shipment['id'] . "'><i class='fa fa-trash'></i></button>";
+
                                                 echo "</div>";
                                             }
                                         } else {
@@ -307,6 +363,24 @@ $couriers = json_decode(file_get_contents('couriers.json'), true);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     $('.modal-body').html("<p>Errore nel caricamento dei dettagli: " + textStatus + "</p>");
+                }
+            });
+        });
+
+        document.querySelectorAll('.btn-delete').forEach(button => {
+            button.addEventListener('click', function () {
+                const trackingId = this.getAttribute('data-id');
+                if (confirm("Sei sicuro di voler eliminare questa spedizione?")) {
+                    const formData = new FormData();
+                    formData.append('delete_tracking_id', trackingId);
+
+                    fetch('', {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => response.text())
+                        .then(data => {
+                            location.reload(); // Ricarica la pagina per aggiornare la lista delle spedizioni
+                        }).catch(error => console.error('Errore:', error));
                 }
             });
         });

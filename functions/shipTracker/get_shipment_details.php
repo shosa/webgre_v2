@@ -74,11 +74,11 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                     // Calcolo della percentuale di avanzamento basato sullo stato della consegna
 
 
-                    echo "<div class='container mt-4'>";
+                    echo "<div class='container mt-2'>";
 
                     // Titolo e icona di stato
-                    echo "<div class='d-flex justify-content-between align-items-center mb-4'>";
-                    echo "<h3 class='mb-0'>Informazioni sul Tracciamento</h3>";
+                    echo "<div class='d-flex justify-content-between align-items-center mb-1'>";
+                    echo "<h3 class='mb-0' style='color:black;'>Tracking #" . htmlspecialchars($trackingInfo['tracking_number']) . "</h3>";
 
                     // Icona di stato alla destra del titolo
                     echo "<div class='status-icon'>"; // Modifica per l'icona accanto al titolo
@@ -106,12 +106,12 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                     echo "</div>"; // Chiude il container del titolo
 
                     // Barra di avanzamento
-                    echo "<div class='progress mb-3' style='height: 25px;'>";
+                    echo "<div class='progress mb-2 border' style='height: 25px;'>";
                     echo "<div class='progress-bar bg-success' role='progressbar' style='width: $progress%;' aria-valuenow='$progress' aria-valuemin='0' aria-valuemax='100'>$progress%</div>";
                     echo "</div>";
 
                     // Card principale
-                    echo "<div class='card shadow-lg mb-2 border-info'>";
+                    echo "<div class='card shadow-lg mb-2 border-orange'>";
                     echo "<div class='card-body d-flex justify-content-between align-items-center'>";
 
                     // Parte sinistra con numero di tracciamento e corriere in linea
@@ -121,12 +121,12 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                     echo "</div>";
 
                     // Numero di tracciamento e corriere in linea
-                    echo "<p><strong>Numero di Tracciamento e Corriere:</strong> <br>";
+                    echo "<p><strong>Tracking e Corriere:</strong> <br>";
                     echo "<span class='badge badge-success' style='font-size:1rem !important;'>" . htmlspecialchars($trackingInfo['tracking_number']) . "</span> - ";
                     echo "<span class='text-uppercase'>" . htmlspecialchars($trackingInfo['courier_code']) . "</span>";
                     echo "</p>";
 
-                    echo "<p><strong>Stato della Consegna:</strong><br> <span class='text-uppercase font-weight-bold text-primary'>" . getTrackingSubStatus(htmlspecialchars($trackingInfo['delivery_status'])) . "</span></p>";
+                    echo "<p><strong>Ultimo Evento:</strong><br> <span class='text-uppercase font-weight-bold text-primary'>" . htmlspecialchars($trackingInfo['latest_event']) . "</span></p>";
                     $updateDate = new DateTime($trackingInfo['update_date']);
                     echo "<p><strong>Ultimo Aggiornamento:</strong><br>" . htmlspecialchars($updateDate->format('d/m/Y H:i')) . "</p>";
                     echo "</div>"; // Chiude la sezione sinistra
@@ -139,7 +139,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
 
                     // Sottostati di Tracking
-                    echo "<h3 class='mb-3'>Eventi Tracking</h3>";
+                    echo "<h3 class='mb-2 mt-1' style='color:black;'>Eventi</h3>";
                     if (!empty($originInfo['trackinfo'])) {
                         foreach ($originInfo['trackinfo'] as $checkpoint) {
                             echo "<div class='card shadow-sm mb-2  border-info border-2 position-relative'>"; // Aggiungi position-relative per la card
@@ -157,12 +157,12 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                             echo "<i class='fas fa-globe-europe'></i>";
                             echo "</div>";
 
-                            echo "<p class='font-weight-bold h5' style='color:black;'>" . htmlspecialchars(getTrackingSubStatus($checkpoint['checkpoint_delivery_status'])) . "</p>";
+                            echo "<p class='font-weight-bold h5 text-info' >" . htmlspecialchars($checkpoint['tracking_detail']) . "</p>";
                             echo "<p class='h6'><i>" . htmlspecialchars(getTrackingSubStatus($checkpoint['checkpoint_delivery_substatus'])) . "</i></p>";
                             echo "</div></div>"; // Fine della card
                         }
                     } else {
-                        echo "<p>Nessun dettaglio di tracking disponibile.</p>";
+                        echo "<p class='alert alert-warning'>Nessun dettaglio di tracking disponibile.</p>";
                     }
 
                     echo "</div>"; // Fine container
@@ -286,7 +286,7 @@ function getTrackingSubStatus($subStatus)
         case 'notfound':
             return 'Le informazioni di tracciamento non sono ancora disponibili';
         case 'transit':
-            return 'Il corriere ha ritirato, in viaggio verso la destinazione';
+            return 'In viaggio verso la destinazione';
         case 'pickup':
             return 'Il pacco è in consegna o in attesa del ritiro da parte del destinatario';
         case 'delivered':
