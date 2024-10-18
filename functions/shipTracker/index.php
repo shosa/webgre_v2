@@ -61,44 +61,7 @@ $couriers = json_decode(file_get_contents('couriers.json'), true);
                                 </div>
                             </div>
                         </div>
-                        <style>
-                            .shipment-box {
-                                border: 1px solid #ddd;
-                                padding: 15px;
-                                margin-bottom: 10px;
-                                border-radius: 8px;
-                                background-color: #f9f9f9;
-                                display: flex;
-                                align-items: center;
-                                justify-content: space-between;
-                            }
-
-                            .shipment-logo {
-                                width: 50px;
-                                height: auto;
-                                margin-right: 15px;
-                            }
-
-                            .shipment-info {
-                                flex-grow: 1;
-                                margin-right: 20px;
-                            }
-
-                            .shipment-info h5 {
-                                margin: 0;
-                                font-size: 1rem;
-                                font-weight: bold;
-                            }
-
-                            .shipment-info p {
-                                margin: 0;
-                                font-size: 0.875rem;
-                            }
-
-                            .btn-details {
-                                white-space: nowrap;
-                            }
-                        </style>
+                        <link rel="stylesheet" href="custom.css">
                         <!-- Elenco delle spedizioni create -->
                         <div class="col-xl-9 col-lg-8">
                             <div class="card shadow mb-4">
@@ -231,10 +194,8 @@ $couriers = json_decode(file_get_contents('couriers.json'), true);
                                                 $_SESSION['danger'] = "Spedizione non trovata!";
                                             }
                                         }
-
-
                                         // Recupero e visualizzo le spedizioni memorizzate
-                                        $stmt = $pdo->prepare("SELECT * FROM shipments ORDER BY updated_at DESC");
+                                        $stmt = $pdo->prepare("SELECT shipments.*, utenti.user_name AS creatore_user FROM shipments LEFT JOIN utenti ON shipments.createdby_userid = utenti.id ORDER BY shipments.updated_at DESC");
                                         $stmt->execute();
                                         $shipments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -246,23 +207,28 @@ $couriers = json_decode(file_get_contents('couriers.json'), true);
                                                 });
                                                 $courier = array_shift($courier);
                                                 $courierLogo = $courier['courier_logo'] ?? '';
-
-                                                echo "<div class='shipment-box shadow-sm'>";
+                                            
+                                                echo "<div class='shipment-box shadow-sm d-flex justify-content-between align-items-center'>";
                                                 // Logo del corriere
                                                 echo "<img class='shipment-logo' src='" . htmlspecialchars($courierLogo) . "' alt='" . htmlspecialchars($shipment['carrier_code']) . "'>";
-
+                                            
                                                 // Informazioni sulla spedizione
                                                 echo "<div class='shipment-info'>";
                                                 echo "<h5>" . htmlspecialchars($shipment['name']) . "</h5>";  // Titolo della spedizione
                                                 echo "<p>" . htmlspecialchars($shipment['tracking_number']) . "</p>";  // Numero di tracking
                                                 echo "</div>";
-
+                                            
+                                                // Nome dell'utente creatore, allineato a destra
+                                                echo "<div class='ml-auto text-right'>";
+                                                echo "<span class='mb-0 text-muted'><i>" . htmlspecialchars($shipment['creatore_user']) . "</i></span>";
+                                            
                                                 // Pulsante Dettagli
-                                                echo "<button class='btn btn-light btn-circle btn-outline-info btn-sm btn-details' data-toggle='modal' data-target='#shipmentModal' data-id='" . $shipment['id'] . "'><i class='fa fa-list'></i></button>";
+                                                echo "<button class='btn btn-light btn-circle btn-outline-info btn-sm btn-details ml-5' data-toggle='modal' data-target='#shipmentModal' data-id='" . $shipment['id'] . "'><i class='fa fa-list'></i></button>";
                                                 // Pulsante Elimina
                                                 echo "<button class='btn btn-light btn-circle btn-outline-danger ml-2 btn-sm btn-delete' data-id='" . $shipment['id'] . "'><i class='fa fa-trash'></i></button>";
-
-                                                echo "</div>";
+                                                echo "</div>";  // Fine della div allineata a destra
+                                            
+                                                echo "</div>";  // Fine della shipment-box
                                             }
                                         } else {
                                             echo "<p>Nessuna spedizione trovata.</p>";
@@ -277,22 +243,9 @@ $couriers = json_decode(file_get_contents('couriers.json'), true);
                     </div>
                 </div>
             </div>
-
+            <?php include(BASE_PATH . "/components/footer.php"); ?>
         </div>
     </div>
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-    <style>
-        .tracking-info,
-        .origin-info {
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
-    </style>
     <!-- Modale per visualizzare i dettagli della spedizione -->
     <div class="modal fade" id="shipmentModal" tabindex="-1" role="dialog" aria-labelledby="shipmentModalLabel"
         aria-hidden="true">
@@ -310,6 +263,14 @@ $couriers = json_decode(file_get_contents('couriers.json'), true);
             </div>
         </div>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <script src="<?php echo BASE_URL ?>/vendor/jquery/jquery.min.js"></script>
+    <script src="<?php echo BASE_URL ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo BASE_URL ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?php echo BASE_URL ?>/js/sb-admin-2.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+
     <script>
         const couriers = <?= json_encode($couriers['data']) ?>;
 
@@ -328,27 +289,6 @@ $couriers = json_decode(file_get_contents('couriers.json'), true);
                 logoImg.style.display = 'none'; // Nasconde l'immagine se non trovato
             }
         }
-    </script>
-    <script src="<?php echo BASE_URL ?>/vendor/jquery/jquery.min.js"></script>
-    <script src="<?php echo BASE_URL ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="<?php echo BASE_URL ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="<?php echo BASE_URL ?>/js/sb-admin-2.min.js"></script>
-    <script src="<?php echo BASE_URL ?>/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="<?php echo BASE_URL ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="<?php echo BASE_URL ?>/vendor/datatables/dataTables.buttons.min.js"></script>
-    <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.bootstrap4.min.js"></script>
-    <script src="<?php echo BASE_URL ?>/vendor/jszip/jszip.min.js"></script>
-    <script src="<?php echo BASE_URL ?>/vendor/pdfmake/pdfmake.min.js"></script>
-    <script src="<?php echo BASE_URL ?>/vendor/pdfmake/vfs_fonts.js"></script>
-    <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.html5.min.js"></script>
-    <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.print.min.js"></script>
-    <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.colVis.min.js"></script>
-    <script src="<?php echo BASE_URL ?>/vendor/datatables/dataTables.colReorder.min.js"></script>
-    <script src="<?php echo BASE_URL ?>/js/datatables.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-    <?php include(BASE_PATH . "/components/footer.php"); ?>
-    <script>
         // Caricamento dei dettagli nel modale
         $('#shipmentModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget); // Pulsante che ha attivato il modale
@@ -385,7 +325,3 @@ $couriers = json_decode(file_get_contents('couriers.json'), true);
             });
         });
     </script>
-
-</body>
-
-</html>

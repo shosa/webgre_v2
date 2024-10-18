@@ -16,3 +16,8 @@ Stack trace: ReferenceError: $ is not defined
 
 [2024-10-18 11:01:32] [Page: index.php] [Error 8] Undefined index: user_id in C:\xampp\htdocs\webgre\components\topbar.php on line 28 
 
+[18/10/2024, 12:58:06] [Page: index] JS Error: Uncaught TypeError: Cannot read properties of undefined (reading 'top') in http://localhost/webgre/js/sb-admin-2.min.js on line 6
+Stack trace: TypeError: Cannot read properties of undefined (reading 'top')
+    at HTMLAnchorElement.<anonymous> (http://localhost/webgre/js/sb-admin-2.min.js:6:1055)
+    at HTMLDocument.dispatch (http://localhost/webgre/vendor/jquery/jquery.min.js:2:43064)
+    at v.handle (http://localhost/webgre/vendor/jquery/jquery.min.js:2:41048)
