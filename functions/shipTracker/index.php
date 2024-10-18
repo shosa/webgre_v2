@@ -201,8 +201,7 @@ $couriers = json_decode(file_get_contents('couriers.json'), true);
                                                 // Informazioni sulla spedizione
                                                 echo "<div class='shipment-info'>";
                                                 echo "<h5>" . htmlspecialchars($shipment['name']) . "</h5>";  // Titolo della spedizione
-                                                echo "<p>Tracking Number: " . htmlspecialchars($shipment['tracking_number']) . "</p>";  // Numero di tracking
-                                                echo "<p>Stato: " . htmlspecialchars($shipment['status']) . "</p>";  // Stato della spedizione
+                                                echo "<p>" . htmlspecialchars($shipment['tracking_number']) . "</p>";  // Numero di tracking
                                                 echo "</div>";
 
                                                 // Pulsante Dettagli
@@ -222,8 +221,7 @@ $couriers = json_decode(file_get_contents('couriers.json'), true);
                     </div>
                 </div>
             </div>
-            <?php include(BASE_PATH . "/components/scripts.php"); ?>
-            <?php include(BASE_PATH . "/components/footer.php"); ?>
+
         </div>
     </div>
     <a class="scroll-to-top rounded" href="#page-top">

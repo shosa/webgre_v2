@@ -1,0 +1,12 @@
+[2024-10-17 17:08:22] [Page: index.php] [Error 8] Undefined index: status in C:\xampp\htdocs\webgre\functions\shipTracker\index.php on line 46 
+
+[2024-10-17 17:08:23] [Page: index.php] [Error 8] Undefined index: status in C:\xampp\htdocs\webgre\functions\shipTracker\index.php on line 46 
+
+[2024-10-17 17:08:47] [Page: index.php] [Error 8] Undefined index: status in C:\xampp\htdocs\webgre\functions\shipTracker\index.php on line 46 
+
+[17/10/2024, 17:18:47] [Page: index] JS Error: Uncaught ReferenceError: $ is not defined in http://localhost/webgre/functions/shipTracker/index on line 719
+Stack trace: ReferenceError: $ is not defined
+    at http://localhost/webgre/functions/shipTracker/index:719:9
+[17/10/2024, 17:18:50] [Page: index] JS Error: Uncaught ReferenceError: $ is not defined in http://localhost/webgre/functions/shipTracker/index on line 719
+Stack trace: ReferenceError: $ is not defined
+    at http://localhost/webgre/functions/shipTracker/index:719:9
