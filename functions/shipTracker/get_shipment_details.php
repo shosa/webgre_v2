@@ -127,7 +127,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                     echo "</p>";
 
                     echo "<p><strong>Ultimo Evento:</strong><br> <span class='text-uppercase font-weight-bold text-primary'>" . htmlspecialchars($trackingInfo['latest_event']) . "</span></p>";
-                    $updateDate = new DateTime($trackingInfo['update_date']);
+                    $updateDate = new DateTime($trackingInfo['lastest_checkpoint_time']);
                     echo "<p><strong>Ultimo Aggiornamento:</strong><br>" . htmlspecialchars($updateDate->format('d/m/Y H:i')) . "</p>";
                     echo "</div>"; // Chiude la sezione sinistra
 
