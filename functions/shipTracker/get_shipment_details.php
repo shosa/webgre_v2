@@ -1,3 +1,29 @@
+<style>
+    .world-icon-background {
+        position: absolute;
+        right: -20px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 80px;
+        color: rgba(0, 0, 0, 0.1);
+        z-index: 1;
+    }
+
+    .status-icon {
+        font-size: 20px;
+        color: currentColor;
+    }
+
+    .card-body {
+        position: relative;
+        z-index: 2;
+    }
+
+    .card {
+        position: relative;
+        overflow: hidden;
+    }
+</style>
 <?php
 require_once '../../config/config.php';
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
@@ -49,28 +75,13 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
 
                     echo "<div class='container mt-4'>";
-                    echo "<h2 class='mb-4'>Informazioni sul Tracciamento</h2>";
 
-                    // Barra di avanzamento
-                    echo "<div class='progress mb-3' style='height: 25px;'>";
-                    echo "<div class='progress-bar bg-success' role='progressbar' style='width: $progress%;' aria-valuenow='$progress' aria-valuemin='0' aria-valuemax='100'>$progress%</div>";
-                    echo "</div>";
+                    // Titolo e icona di stato
+                    echo "<div class='d-flex justify-content-between align-items-center mb-4'>";
+                    echo "<h3 class='mb-0'>Informazioni sul Tracciamento</h3>";
 
-                    // Card con i dettagli principali
-                    echo "<div class='card shadow-lg mb-2 border-info'>";
-                    echo "<div class='card-body d-flex justify-content-between align-items-center'>";
-
-                    // Dettagli a sinistra
-                    echo "<div>";
-                    echo "<p><strong>Numero di Tracciamento:</strong><br>" . htmlspecialchars($trackingInfo['tracking_number']) . "</p>";
-                    echo "<p><strong>Corriere:</strong><br> <span class='text-uppercase'>" . htmlspecialchars($trackingInfo['courier_code']) . "</span></p>";
-                    echo "<p><strong>Stato della Consegna:</strong><br> <span class='text-uppercase'>" . htmlspecialchars($trackingInfo['delivery_status']) . "</span></p>";
-                    $updateDate = new DateTime($trackingInfo['update_date']);
-                    echo "<p><strong>Ultimo Aggiornamento:</strong><br>" . htmlspecialchars($updateDate->format('d/m/Y H:i')) . "</p>";
-                    echo "</div>";
-
-                    // Icona in base allo stato di consegna
-                    echo "<div>";
+                    // Icona di stato alla destra del titolo
+                    echo "<div class='status-icon'>"; // Modifica per l'icona accanto al titolo
                     switch ($trackingInfo['delivery_status']) {
                         case 'delivered':
                             echo "<i class='fas fa-check-circle fa-3x text-success'></i>";
@@ -91,9 +102,36 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                             echo "<i class='fas fa-info-circle fa-3x text-secondary'></i>";
                             break;
                     }
+                    echo "</div>"; // Chiude l'icona di stato accanto al titolo
+                    echo "</div>"; // Chiude il container del titolo
+
+                    // Barra di avanzamento
+                    echo "<div class='progress mb-3' style='height: 25px;'>";
+                    echo "<div class='progress-bar bg-success' role='progressbar' style='width: $progress%;' aria-valuenow='$progress' aria-valuemin='0' aria-valuemax='100'>$progress%</div>";
                     echo "</div>";
 
-                    echo "</div></div>"; // Fine della card principale
+                    // Card principale
+                    echo "<div class='card shadow-lg mb-2 border-info'>";
+                    echo "<div class='card-body d-flex justify-content-between align-items-center'>";
+
+                    // Parte sinistra con numero di tracciamento e corriere in linea
+                    echo "<div>";
+                    echo "<div class='world-icon-background'>";
+                    echo "<i class='fas fa-box-open fa-2xl'></i>";
+                    echo "</div>";
+
+                    // Numero di tracciamento e corriere in linea
+                    echo "<p><strong>Numero di Tracciamento e Corriere:</strong> <br>";
+                    echo "<span class='badge badge-success' style='font-size:1rem !important;'>" . htmlspecialchars($trackingInfo['tracking_number']) . "</span> - ";
+                    echo "<span class='text-uppercase'>" . htmlspecialchars($trackingInfo['courier_code']) . "</span>";
+                    echo "</p>";
+
+                    echo "<p><strong>Stato della Consegna:</strong><br> <span class='text-uppercase font-weight-bold text-primary'>" . getTrackingSubStatus(htmlspecialchars($trackingInfo['delivery_status'])) . "</span></p>";
+                    $updateDate = new DateTime($trackingInfo['update_date']);
+                    echo "<p><strong>Ultimo Aggiornamento:</strong><br>" . htmlspecialchars($updateDate->format('d/m/Y H:i')) . "</p>";
+                    echo "</div>"; // Chiude la sezione sinistra
+
+                    echo "</div></div>"; // Chiude la card principale
 
                     // Informazioni sull'origine
 
@@ -104,15 +142,24 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                     echo "<h3 class='mb-3'>Eventi Tracking</h3>";
                     if (!empty($originInfo['trackinfo'])) {
                         foreach ($originInfo['trackinfo'] as $checkpoint) {
-                            echo "<div class='card shadow-sm mb-2  border-info border-2'>";
+                            echo "<div class='card shadow-sm mb-2  border-info border-2 position-relative'>"; // Aggiungi position-relative per la card
                             echo "<div class='card-body'>";
-                            echo "<h4 style='color:black;'><strong>" . htmlspecialchars($checkpoint['location']) . "</strong> </h4>";
+
+                            // Location a sinistra e data a destra
+                            echo "<div class='d-flex justify-content-between align-items-center'>";
+                            echo "<h4 style='color:black;'><strong>" . htmlspecialchars($checkpoint['location']) . "</strong></h4>";
                             $checkpointDate = new DateTime($checkpoint['checkpoint_date']);
-                            echo "<p><strong>" . htmlspecialchars($checkpointDate->format('d/m/Y H:i')) . "</strong> <i class='fas fa-globe-europe float-right'></i></p>";
-                          
-                            echo "<p><strong>Stato:</strong> " . htmlspecialchars(getTrackingSubStatus($checkpoint['checkpoint_delivery_status'])) . "</p>";
-                            echo "<p><strong>Note:</strong> " . htmlspecialchars(getTrackingSubStatus($checkpoint['checkpoint_delivery_substatus'])) . "</p>";
-                            echo "</div></div>";
+                            echo "<p class='text-right'><strong>" . htmlspecialchars($checkpointDate->format('d/m/Y H:i')) . "</strong></p>";
+                            echo "</div>";
+
+                            // Aggiungi l'icona del mondo come background, parzialmente fuori
+                            echo "<div class='world-icon-background'>";
+                            echo "<i class='fas fa-globe-europe'></i>";
+                            echo "</div>";
+
+                            echo "<p class='font-weight-bold h5' style='color:black;'>" . htmlspecialchars(getTrackingSubStatus($checkpoint['checkpoint_delivery_status'])) . "</p>";
+                            echo "<p class='h6'><i>" . htmlspecialchars(getTrackingSubStatus($checkpoint['checkpoint_delivery_substatus'])) . "</i></p>";
+                            echo "</div></div>"; // Fine della card
                         }
                     } else {
                         echo "<p>Nessun dettaglio di tracking disponibile.</p>";
@@ -158,6 +205,8 @@ function getPercentage($stat)
             return 20;
     }
 }
+
+
 function getTrackingSubStatus($subStatus)
 {
     switch ($subStatus) {
@@ -237,7 +286,7 @@ function getTrackingSubStatus($subStatus)
         case 'notfound':
             return 'Le informazioni di tracciamento non sono ancora disponibili';
         case 'transit':
-            return 'Il corriere ha ritirato il pacco, in viaggio verso la destinazione';
+            return 'Il corriere ha ritirato, in viaggio verso la destinazione';
         case 'pickup':
             return 'Il pacco è in consegna o in attesa del ritiro da parte del destinatario';
         case 'delivered':

@@ -10,3 +10,9 @@ Stack trace: ReferenceError: $ is not defined
 [17/10/2024, 17:18:50] [Page: index] JS Error: Uncaught ReferenceError: $ is not defined in http://localhost/webgre/functions/shipTracker/index on line 719
 Stack trace: ReferenceError: $ is not defined
     at http://localhost/webgre/functions/shipTracker/index:719:9
+[2024-10-18 11:01:32] [Page: index.php] [Error 8] Undefined index: user_id in C:\xampp\htdocs\webgre\functions\shipTracker\index.php on line 6 
+
+[2024-10-18 11:01:32] [Page: index.php] [Error 8] Undefined index: user_id in C:\xampp\htdocs\webgre\components\topbar.php on line 11 
+
+[2024-10-18 11:01:32] [Page: index.php] [Error 8] Undefined index: user_id in C:\xampp\htdocs\webgre\components\topbar.php on line 28 
+

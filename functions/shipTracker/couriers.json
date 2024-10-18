@@ -28,15 +28,6 @@
             "courier_logo": "//s.trackingmore.com/images/icons/express/fedex.png"
         },
         {
-            "courier_name": "TNT",
-            "courier_code": "tnt",
-            "courier_type": "express",
-            "courier_phone": "199.803.868",
-            "country_code": "US",
-            "courier_url": "http://www.tnt.com/",
-            "courier_logo": "//s.trackingmore.com/images/icons/express/tnt.png"
-        },
-        {
             "courier_name": "Poste Italiane",
             "courier_code": "poste-italiane",
             "courier_type": "globalpost",
