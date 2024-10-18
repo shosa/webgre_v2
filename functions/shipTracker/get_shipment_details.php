@@ -147,9 +147,9 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
                             // Location a sinistra e data a destra
                             echo "<div class='d-flex justify-content-between align-items-center'>";
-                            echo "<h4 style='color:black;'><strong>" . htmlspecialchars($checkpoint['location']) . "</strong></h4>";
+                            echo "<h5 style='color:black;'><strong>" . htmlspecialchars($checkpoint['location']) . "</strong></h4>";
                             $checkpointDate = new DateTime($checkpoint['checkpoint_date']);
-                            echo "<p class='text-right'><strong>" . htmlspecialchars($checkpointDate->format('d/m/Y H:i')) . "</strong></p>";
+                            echo "<p class='badge badge-info text-right mr-5 font-weight-normal' style='font-size:1rem !important;'><strong>" . htmlspecialchars($checkpointDate->format('d/m/Y H:i')) . "</strong></p>";
                             echo "</div>";
 
                             // Aggiungi l'icona del mondo come background, parzialmente fuori
@@ -157,8 +157,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                             echo "<i class='fas fa-globe-europe'></i>";
                             echo "</div>";
 
-                            echo "<p class='font-weight-bold h5 text-info' >" . htmlspecialchars($checkpoint['tracking_detail']) . "</p>";
-                            echo "<p class='h6'><i>" . htmlspecialchars(getTrackingSubStatus($checkpoint['checkpoint_delivery_substatus'])) . "</i></p>";
+                            echo "<p class='font-weight-normal h6 text-dark'><i>" . htmlspecialchars($checkpoint['tracking_detail']) . "</i></p>";
                             echo "</div></div>"; // Fine della card
                         }
                     } else {
