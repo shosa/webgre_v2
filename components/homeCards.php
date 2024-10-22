@@ -18,7 +18,7 @@
                             </div>
                         </div>
                         <div class="col-auto">
-                            <i class="fal fa-tools fa-3x text-primary"></i>
+                            <i class="fad fa-tools fa-3x text-primary"></i>
                         </div>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                             </div>
                         </div>
                         <div class="col-auto">
-                            <i class="fal fa-user-clock fa-3x text-success"></i>
+                            <i class="fad fa-user-clock fa-3x text-success"></i>
                         </div>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                             </div>
                         </div>
                         <div class="col-auto">
-                            <i class="fal fa-vials fa-3x text-info"></i>
+                            <i class="fad fa-vials fa-3x text-info"></i>
                         </div>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                             </div>
                         </div>
                         <div class="col-auto">
-                            <i class="fal fa-chart-bar fa-3x text-danger"></i>
+                            <i class="fad fa-chart-bar fa-3x text-danger"></i>
                         </div>
                     </div>
                 </div>
@@ -201,7 +201,7 @@
                             </div>
                         </div>
                         <div class="col-auto">
-                            <i class="fal fa-chart-bar fa-3x text-warning"></i>
+                            <i class="fad fa-chart-bar fa-3x text-warning"></i>
                         </div>
                     </div>
                 </div>

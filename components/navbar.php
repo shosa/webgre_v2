@@ -64,8 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 <i class="fas fa-fw fa-hammer"></i>
                 <span>Riparazioni</span>
             </a>
-            <div id="collapseRiparazioni" class="collapse" aria-labelledby="headingRiparazioni"
-                data-parent="#accordionSidebar">
+            <div id="collapseRiparazioni" class="collapse"  style="z-index:9999"aria-labelledby="headingRiparazioni"
+                data-parent="#accordionSidebar" >
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
                     <a id="riparazioni-add-step1" class="collapse-item"
@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 <i class="far fa-box-check"></i>
                 <span>Controllo Qualità</span>
             </a>
-            <div id="collapseCQ" class="collapse" aria-labelledby="headingCQ" data-parent="#accordionSidebar">
+            <div id="collapseCQ" class="collapse"  style="z-index:9999"aria-labelledby="headingCQ" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
                     <a id="quality-new" class="collapse-item" href="<?php echo BASE_URL ?>/functions/quality/new"><i
@@ -125,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 <i class="far fa-calendar-alt"></i>
                 <span>Produzione</span>
             </a>
-            <div id="collapseProd" class="collapse" aria-labelledby="headingProd" data-parent="#accordionSidebar">
+            <div id="collapseProd" class="collapse"  style="z-index:9999"aria-labelledby="headingProd" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
                     <a id="production-new" class="collapse-item" href="<?php echo BASE_URL ?>/functions/production/new"><i
@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 <i class="fa-solid fa-cloud"></i>
                 <span>Campionario</span>
             </a>
-            <div id="collapseSamples" class="collapse" aria-labelledby="headingSamples" data-parent="#accordionSidebar">
+            <div id="collapseSamples" class="collapse"  style="z-index:9999"aria-labelledby="headingSamples" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
                     <a id="samples-new" class="collapse-item" href="<?php echo BASE_URL ?>/functions/samples/newSample"><i
@@ -170,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 <i class="fal fa-radar fa-lg"></i>
                 <span>Tracking Lotti</span>
             </a>
-            <div id="collapseTracking" class="collapse" aria-labelledby="headingTracking" data-parent="#accordionSidebar">
+            <div id="collapseTracking" class="collapse"  style="z-index:9999"aria-labelledby="headingTracking" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
                     <a id="tracking-home" class="collapse-item" href="<?php echo BASE_URL ?>/functions/tracking/home"><i
