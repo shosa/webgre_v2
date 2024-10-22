@@ -1,5 +1,8 @@
 <?php
 require_once(__DIR__ . '/error_handler.php');
+$version = mt_rand(1000, 9999); // random
+
+
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -13,7 +16,7 @@ require_once(__DIR__ . '/error_handler.php');
     <link rel="manifest" href="<?php echo BASE_URL; ?>/manifest.json">
     <title>WEBGRE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
-    <link href="<?php echo BASE_URL; ?>/css/sb-admin-2.css" rel="stylesheet">
+    <link href="<?php echo BASE_URL; ?>/css/sb-admin-2.css?ver=<?php echo $version; ?>" rel="stylesheet">
     <link href="<?php echo BASE_URL; ?>/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900&display=swap"
         rel="stylesheet">

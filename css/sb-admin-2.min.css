@@ -9,7 +9,7 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
- :root {
+:root {
   --blue: #4e73df;
   --indigo: #6610f2;
   --purple: #6f42c1;
@@ -7200,6 +7200,18 @@ button.bg-dark:focus {
 
 .border {
   border: 1px solid #e3e6f0 !important;
+}
+
+.border-1 {
+  border-width: 1pt !important;
+}
+
+.border-2 {
+  border-width: 2pt !important;
+}
+
+.border-3 {
+  border-width: 3pt !important;
 }
 
 .border-top {
@@ -25665,4 +25677,58 @@ table.dataTable thead th select.form-control {
 
 .sorting {
   color: var(--primary) !important;
+}
+
+div.dataTables_wrapper div.dataTables_filter {
+  border: 1px solid #e3e6f0 !important;
+  float: inline-end !important;
+  color: var(--primary) !important;
+  font-weight: bold !important;
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+  padding-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+  box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.2) !important;
+  border-radius: 0.35rem !important;
+  background-color: #f8f9fc !important;
+}
+
+
+div.dataTables_wrapper div.dataTables_length {
+  border: 1px solid #e3e6f0 !important;
+  display: inline-block !important;
+  margin-top: 0.5rem !important;
+  font-weight: bold !important;
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+  padding-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+  box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.2) !important;
+  border-radius: 0.35rem !important;
+  background-color: #f8f9fc !important;
+}
+
+div.dataTables_wrapper div.dataTables_info {
+  border: 1px solid #e3e6f0 !important;
+  margin-top: 0.5rem !important;
+  background-color: #f8f9fc !important;
+  padding: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+  margin-left: 1rem !important;
+  box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.2) !important;
+  border-radius: 0.35rem !important;
+  display: math !important;
+  float: inline-end !important;
+  font-style: italic !important;
+}
+
+
+
+div.dataTables_wrapper div.dataTables_filter:has(input:focus) {
+  border: 1px solid var(--primary) !important;
+}
+
+div.dataTables_wrapper div.dataTables_filter label {
+  font-weight: bold !important;
+
 }
