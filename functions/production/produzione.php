@@ -23,8 +23,6 @@ try {
         $MANOVIA1NOTE = $row['MANOVIA1NOTE'];
         $MANOVIA2 = $row['MANOVIA2'];
         $MANOVIA2NOTE = $row['MANOVIA2NOTE'];
-        $MANOVIA3 = $row['MANOVIA3'];
-        $MANOVIA3NOTE = $row['MANOVIA3NOTE'];
         $ORLATURA1 = $row['ORLATURA1'];
         $ORLATURA1NOTE = $row['ORLATURA1NOTE'];
         $ORLATURA2 = $row['ORLATURA2'];
@@ -126,18 +124,8 @@ include(BASE_PATH . "/components/header.php");
                                                         <?php echo $MANOVIA2NOTE; ?>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>MANOVIA 3</td>
-                                                    <td class="text-wrap text-center">
-                                                        <?php echo $MANOVIA3; ?>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>NOTE</td>
-                                                    <td class="note text-wrap">
-                                                        <?php echo $MANOVIA3NOTE; ?>
-                                                    </td>
-                                                </tr>
+                                                
+                                                
                                                 <tr>
                                                     <td>ORLATURA 1</td>
                                                     <td class="text-wrap text-center">
@@ -307,7 +295,7 @@ include(BASE_PATH . "/components/header.php");
                                                         <th>MAN1</th>
                                                         <th>MAN1 RESO</th>
                                                         <th>MAN2</th>
-                                                        <th>MAN3</th>
+                                                
                                                         <th>ORL1</th>
                                                         <th>ORL2</th>
                                                         <th>ORL3</th>
@@ -413,7 +401,6 @@ include(BASE_PATH . "/components/header.php");
                 var values = [
                     '<?php echo $MANOVIA1; ?>',
                     '<?php echo $MANOVIA2; ?>',
-                    '<?php echo $MANOVIA3; ?>',
                     '<?php echo $ORLATURA1; ?>',
                     '<?php echo $ORLATURA2; ?>',
                     '<?php echo $ORLATURA3; ?>',
@@ -448,7 +435,6 @@ include(BASE_PATH . "/components/header.php");
                 tr.append($('<td>').text(row.MANOVIA1));
                 tr.append($('<td>').text(row.MANOVIA1RESO));
                 tr.append($('<td>').text(row.MANOVIA2));
-                tr.append($('<td>').text(row.MANOVIA3));
                 tr.append($('<td>').text(row.ORLATURA1));
                 tr.append($('<td>').text(row.ORLATURA2));
                 tr.append($('<td>').text(row.ORLATURA3));

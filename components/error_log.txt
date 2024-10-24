@@ -27,3 +27,9 @@ Stack trace: TypeError: Cannot read properties of undefined (reading 'top')
 
 [2024-10-22 10:53:02] [Page: index.php] [Error 8] Undefined index: user_id in C:\xampp\htdocs\webgre\components\topbar.php on line 28 
 
+[2024-10-24 17:04:18] [Page: index.php] [Error 8] Undefined index: user_id in C:\xampp\htdocs\webgre\functions\shipTracker\index.php on line 6 
+
+[2024-10-24 17:04:18] [Page: index.php] [Error 8] Undefined index: user_id in C:\xampp\htdocs\webgre\components\topbar.php on line 11 
+
+[2024-10-24 17:04:18] [Page: index.php] [Error 8] Undefined index: user_id in C:\xampp\htdocs\webgre\components\topbar.php on line 28 
+

@@ -39,14 +39,13 @@ $html = '<table style="text-align: center;
     vertical-align: middle;"border="1" cellspacing="0" cellpadding="2">
     <thead>
         <tr style="background-color: #D3E2F4; text-align: center;">
-            <th rowspan="2" colspan="2" width="80"><b>GIORNO</b></th>
-            <th colspan="9" width="342"><b>PRODUZIONE</b></th>
-            <th style="background-color:#FFE78F;" colspan="9" width="342"><b>SPEDIZIONE</b></th>
+            <th rowspan="2" colspan="2" width="130"><b>GIORNO</b></th>
+            <th colspan="8" width="304"><b>PRODUZIONE</b></th>
+            <th style="background-color:#FFE78F;" colspan="8" width="304"><b>SPEDIZIONE</b></th>
         </tr>
         <tr style="background-color: #D3E2F4; text-align: center;">
             <th width="38"><b>MAN1</b></th>
             <th width="38"><b>MAN2</b></th>
-            <th width="38"><b>MAN3</b></th>
             <th width="38"><b>ORL1</b></th>
             <th width="38"><b>ORL2</b></th>
             <th width="38"><b>ORL3</b></th>
@@ -56,7 +55,6 @@ $html = '<table style="text-align: center;
             <th style="background-color:#FFE78F;" width="38"><b>MAN1</b></th>
             <th style="background-color:#FFE78F;" width="38"><b>RESO</b></th>
             <th style="background-color:#FFE78F;" width="38"><b>MAN2</b></th>
-            <th style="background-color:#FFE78F;" width="38"><b>MAN3</b></th>
             <th style="background-color:#FFE78F;" width="38"><b>ORL1</b></th>
             <th style="background-color:#FFE78F;" width="38"><b>ORL2</b></th>
             <th style="background-color:#FFE78F;" width="38"><b>ORL3</b></th>
@@ -78,18 +76,18 @@ for ($i = 0; $i < max(count($prod_data), count($sped_data)); $i++) {
     // Alterna il colore di sfondo delle righe
     $bg_color = ($i % 2 == 0) ? '#FFFFFF' : '#F0F0F0';
     $html .= '<tr style="background-color: ' . $bg_color . ';">';
-    $html .= '<td width="20" align="center">' . ($prod_row['GIORNO'] ?? '') . '</td>';
-    $html .= '<td width="60">' . ($prod_row['NOMEGIORNO'] ?? '') . '</td>';
+    $html .= '<td width="30" align="center">' . ($prod_row['GIORNO'] ?? '') . '</td>';
+    $html .= '<td width="100">' . ($prod_row['NOMEGIORNO'] ?? '') . '</td>';
     // Produzione
-    for ($j = 0; $j < 9; $j++) {
-        $key = ['MANOVIA1', 'MANOVIA2', 'MANOVIA3', 'ORLATURA1', 'ORLATURA2', 'ORLATURA3', 'ORLATURA4', 'TAGLIO1', 'TAGLIO2'][$j];
+    for ($j = 0; $j < 8; $j++) {
+        $key = ['MANOVIA1', 'MANOVIA2', 'ORLATURA1', 'ORLATURA2', 'ORLATURA3', 'ORLATURA4', 'TAGLIO1', 'TAGLIO2'][$j];
         $value = $prod_row[$key] ?? '';
         $html .= '<td width="38" align="center">' . $value . '</td>';
         $totals[$j] += (float) $value;
     }
     // Spedizione
-    for ($j = 9; $j < 18; $j++) {
-        $key = ['MANOVIA1', 'MANOVIA1RESO', 'MANOVIA2', 'MANOVIA3', 'ORLATURA1', 'ORLATURA2', 'ORLATURA3', 'ORLATURA4', 'TOMESTERO'][$j - 9];
+    for ($j = 8; $j < 16; $j++) {
+        $key = ['MANOVIA1', 'MANOVIA1RESO', 'MANOVIA2','ORLATURA1', 'ORLATURA2', 'ORLATURA3', 'ORLATURA4', 'TOMESTERO'][$j - 8];
         $value = $sped_row[$key] ?? '';
         $html .= '<td width="38" align="center">' . $value . '</td>';
         $totals[$j] += (float) $value;
@@ -99,10 +97,10 @@ for ($i = 0; $i < max(count($prod_data), count($sped_data)); $i++) {
 // Righe Totali
 $html .= '<tr style="background-color: #D3E2F4; text-align: center;">';
 $html .= '<td colspan="2"><b>TOTALE</b></td>';
-for ($j = 0; $j < 9; $j++) {
+for ($j = 0; $j < 8; $j++) {
     $html .= '<td><b>' . $totals[$j] . '</b></td>';
 }
-for ($j = 9; $j < 18; $j++) {
+for ($j = 8; $j < 16; $j++) {
     $html .= '<td style="background-color:#FFE78F;"><b>' . $totals[$j] . '</b></td>';
 }
 $html .= '</tr>';

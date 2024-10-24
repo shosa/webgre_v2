@@ -87,14 +87,7 @@ require_once BASE_PATH . "/utils/log_utils.php";
                                                 <input type="number" id="manovia2" name="manovia2" class="form-control">
                                             </div>
                                         </div>
-                                        <hr>
-                                        <!-- MANOVIA3 -->
-                                        <div class="form-group row">
-                                            <div class="col-md-12">
-                                                <label for="manovia3">MANOVIA3:</label>
-                                                <input type="number" id="manovia3" name="manovia3" class="form-control">
-                                            </div>
-                                        </div>
+                                       
                                         <hr>
                                         <!-- ORLATURA1 -->
                                         <div class="form-group row">
@@ -193,7 +186,6 @@ require_once BASE_PATH . "/utils/log_utils.php";
         var manovia1 = $("#manovia1").val();
         var manovia1reso = $("#manovia1reso").val();
         var manovia2 = $("#manovia2").val();
-        var manovia3 = $("#manovia3").val();
         var orlatura1 = $("#orlatura1").val();
         var orlatura2 = $("#orlatura2").val();
         var orlatura3 = $("#orlatura3").val();
@@ -208,7 +200,6 @@ require_once BASE_PATH . "/utils/log_utils.php";
                 manovia1: manovia1,
                 manovia1reso: manovia1reso,
                 manovia2: manovia2,
-                manovia3: manovia3,
                 orlatura1: orlatura1,
                 orlatura2: orlatura2,
                 orlatura3: orlatura3,
