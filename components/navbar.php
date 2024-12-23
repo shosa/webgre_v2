@@ -206,13 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
         </li>
     <?php endif; ?>
 
-    <li class="nav-item">
-        <a class="nav-link collapsed" id="shipTracker" href="<?php echo BASE_URL ?>/functions/shipTracker/index"
-            aria-expanded="true" aria-controls="collapseProd">
-            <i class="far fa-truck"></i>
-            <span>Spedizioni</span>
-        </a>
-    </li>
+  
 
     <!-- DIVISORE -->
     <hr class="sidebar-divider">
