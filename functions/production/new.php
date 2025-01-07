@@ -87,8 +87,21 @@ require_once BASE_PATH . "/utils/log_utils.php";
                                                 <textarea id="note2" name="note2" class="form-control"></textarea>
                                             </div>
                                         </div>
-                                        <hr>
-                                
+                                        <!-- MANOVIA3 NASCOSTA-->
+                                        <div class="form-group row">
+                                            <div class="col-md-6">
+                                                <label for="manovia3" hidden>MANOVIA3:</label>
+                                                <input type="number" id="manovia3" name="manovia3" class="form-control"
+                                                    hidden>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="note3" class="note" hidden>NOTE:</label>
+                                                <textarea id="note3" name="note3" class="form-control"
+                                                    hidden></textarea>
+                                            </div>
+                                        </div>
+
+
                                         <!-- ORLATURA1 -->
                                         <div class="form-group row">
                                             <div class="col-md-6">
@@ -219,7 +232,7 @@ require_once BASE_PATH . "/utils/log_utils.php";
             var note1 = $("#note1").val();
             var manovia2 = $("#manovia2").val();
             var note2 = $("#note2").val();
-          
+            var manovia3 = $("#manovia3").val();
             var note3 = $("#note3").val();
             var orlatura1 = $("#orlatura1").val();
             var note4 = $("#note4").val();
@@ -243,7 +256,7 @@ require_once BASE_PATH . "/utils/log_utils.php";
                     note1: note1,
                     manovia2: manovia2,
                     note2: note2,
-            
+                    manovia3: manovia3,
                     note3: note3,
                     orlatura1: orlatura1,
                     note4: note4,

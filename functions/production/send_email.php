@@ -29,7 +29,7 @@ if ($stmt->rowCount() > 0) {
         $pdf->SetLineWidth(0.5);
         $pdf->SetFillColor(255, 255, 255);
         $pdf->SetFont("helvetica", "B", 20);
-        $pdf->Cell(0, 3, "RAPPORTO DI PRODUZIONE " . $row["NOMEGIORNO"] . " " . $row["GIORNO"] . " " . $row["MESE"] . " 2024", 0, 1, "C", true);
+        $pdf->Cell(0, 3, "RAPPORTO DI PRODUZIONE " . $row["NOMEGIORNO"] . " " . $row["GIORNO"] . " " . $row["MESE"] . " 2025", 0, 1, "C", true);
         $pdf->SetFillColor(255, 255, 255);
         $pdf->Rect(7, 20, 196, 78, "DF");
         $pdf->SetFillColor(0, 0, 0);

@@ -28,7 +28,7 @@ try {
     $pdf->AddPage();
     $pdf->Cell(0, 3, "RAPPORTO DI PRODUZIONE DEL MESE DI ", 0, 1, 'C', true);
     $pdf->SetFont('helvetica', 'B', 20);
-    $pdf->Cell(0, 3, $month . " 2024", 0, 1, 'C', true);
+    $pdf->Cell(0, 3, $month . " 2025", 0, 1, 'C', true);
     // Imposta il colore di sfondo e il colore del testo per le intestazioni
     $pdf->SetFillColor(0, 0, 0); // Sfondo nero
     $pdf->SetTextColor(255, 255, 255); // Testo bianco
