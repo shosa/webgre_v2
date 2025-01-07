@@ -11,6 +11,7 @@
             navigator.serviceWorker.register('<?php echo BASE_URL; ?>/service-worker.js')
                 .then((registration) => {
                     console.log('Software creato da Stefano Solidoro');
+                    console.log('stefano.solidoro@icloud.com');
                     console.log('Service Worker running on:', registration.scope);
                 })
                 .catch((error) => {
