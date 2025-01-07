@@ -10,10 +10,11 @@
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('<?php echo BASE_URL; ?>/service-worker.js')
                 .then((registration) => {
-                    console.log('Service Worker registered with scope:', registration.scope);
+                    console.log('Software creato da Stefano Solidoro');
+                    console.log('Service Worker running on:', registration.scope);
                 })
                 .catch((error) => {
-                    console.error('Service Worker registration failed:', error);
+                    console.error('Service Worker error:', error);
                 });
         });
     }
