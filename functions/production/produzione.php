@@ -209,7 +209,7 @@ include(BASE_PATH . "/components/header.php");
                                             </div>
                                             <div class="form-group">
                                                 <i class="fal fa-paperclip"></i> <a class="btn alert alert-info p-1"
-                                                    href="<?php echo BASE_URL; ?>/functions/production/generate_pdf.php?month=<?php echo $month ?>&day=<?php echo $day ?>"
+                                                    href="<?php echo BASE_URL; ?>/functions/production/generate_pdf?month=<?php echo $month ?>&day=<?php echo $day ?>"
                                                     target="_blank"><i class="fad fa-file-pdf fa-xl"
                                                         style="--fa-primary-color: #d92020; --fa-secondary-color: #e3e3e3; --fa-secondary-opacity: 1;"></i>
                                                     PRODUZIONE</a>
