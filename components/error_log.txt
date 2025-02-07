@@ -1,0 +1,4 @@
+[2025-02-07 10:10:30] [Page: calendario.php] [Error 8] Undefined index: user_id in C:\xampp\htdocs\webgre\components\topbar.php on line 11 
+
+[2025-02-07 10:10:30] [Page: calendario.php] [Error 8] Undefined index: user_id in C:\xampp\htdocs\webgre\components\topbar.php on line 28 
+

@@ -1,4 +1,4 @@
-<?php require ("../../config/config.php");
+<?php require("../../config/config.php");
 require_once BASE_PATH . '/vendor/autoload.php';
 $pdf = new TCPDF("P", "mm", "A4", true, "UTF-8", false);
 $pdf->SetMargins(7, 7, 7);
@@ -101,6 +101,14 @@ if ($stmt->rowCount() > 0) {
         $pdf->SetFont("helvetica", "", 7);
         $pdf->Cell($col2Width, 7, $row["ORLATURA4NOTE"], 0, 1);
         $pdf->SetFont("helvetica", "B", 9);
+        $pdf->Cell($col1Width, 7, "ORLATURA 5:", 0, 0);
+        $pdf->SetFont("helvetica", "", 11);
+        $pdf->Cell($col2Width, 7, $row["ORLATURA5"], 0, 0);
+        $pdf->SetFont("helvetica", "B", 9);
+        $pdf->Cell($col3Width, 7, "NOTE:", 0, 0);
+        $pdf->SetFont("helvetica", "", 7);
+        $pdf->Cell($col2Width, 7, $row["ORLATURA5NOTE"], 0, 1);
+        $pdf->SetFont("helvetica", "B", 9);
         $pdf->Cell($col1Width, 7, "TAGLIO 1:", 0, 0);
         $pdf->SetFont("helvetica", "", 11);
         $pdf->Cell($col2Width, 7, $row["TAGLIO1"], 0, 0);
@@ -120,52 +128,52 @@ if ($stmt->rowCount() > 0) {
         $pdf->SetFillColor(0, 0, 0);
         $pdf->Rect(7, 100, 77, 10, "DF");
         $pdf->SetFont("helvetica", "B", 12);
-        $pdf->Ln(5);
+        $pdf->Ln(-3);
         $pdf->Cell(185, 28, "SETTIMANA " . $week, 0, 0, "R");
         $pdf->SetTextColor(255, 255, 255);
         $pdf->SetFont("helvetica", "B", 17);
-        $pdf->Ln(10);
+        $pdf->Ln(11);
         $pdf->Cell($col1Width, 10, "RIEPILOGO SETTIMANA", 0, 0);
         $pdf->SetTextColor(0, 0, 0);
-        $sql2 = "SELECT ID, MESE, GIORNO, NOMEGIORNO, MANOVIA1, MANOVIA1NOTE, MANOVIA2, MANOVIA2NOTE, ORLATURA1, ORLATURA1NOTE, ORLATURA2, ORLATURA2NOTE, ORLATURA3, ORLATURA3NOTE, ORLATURA4, ORLATURA4NOTE, TAGLIO1, TAGLIO1NOTE, TAGLIO2, TAGLIO2NOTE, TOTALITAGLIO, TOTALIORLATURA, TOTALIMONTAGGIO\n\n        FROM prod_mesi\n\n        WHERE (((WEEK)='" . $week . "')) And Not NOMEGIORNO='DOMENICA'\n\n        ORDER BY ID;";
+        $sql2 = "SELECT ID, MESE, GIORNO, NOMEGIORNO, MANOVIA1, MANOVIA1NOTE, MANOVIA2, MANOVIA2NOTE, ORLATURA1, ORLATURA1NOTE, ORLATURA2, ORLATURA2NOTE, ORLATURA3, ORLATURA3NOTE, ORLATURA4, ORLATURA4NOTE, ORLATURA5, ORLATURA5NOTE,TAGLIO1, TAGLIO1NOTE, TAGLIO2, TAGLIO2NOTE, TOTALITAGLIO, TOTALIORLATURA, TOTALIMONTAGGIO\n\n        FROM prod_mesi\n\n        WHERE (((WEEK)='" . $week . "')) And Not NOMEGIORNO='DOMENICA'\n\n        ORDER BY ID;";
         $stmt2 = $conn->prepare($sql2);
         $stmt2->execute();
-        $pdf->Ln(14);
+        $pdf->Ln(13);
         $pdf->SetLineWidth(0.3);
         if ($stmt2->rowCount() > 0) {
             $pdf->SetFont("helvetica", "B", 12);
             $pdf->SetTextColor(0, 0, 0);
             $pdf->SetFillColor(192, 192, 192);
             $pdf->SetFont("helvetica", "B", 8);
-            $pdf->Cell(14, 6, "DATA", 1, 0, "C", 1);
-            $pdf->Cell(30, 6, "GIORNO", 1, 0, "C", 1);
-            $pdf->Cell(25, 6, "MANOVIA 1", 1, 0, "C", 1);
-            $pdf->Cell(25, 6, "MANOVIA 2", 1, 0, "C", 1);
-   
+            $pdf->Cell(15, 6, "DATA", 1, 0, "C", 1);
+            $pdf->Cell(40, 6, "GIORNO", 1, 0, "C", 1);
+            $pdf->Cell(15, 6, "MONT 1", 1, 0, "C", 1);
+            $pdf->Cell(15, 6, "MONT 2", 1, 0, "C", 1);
             $pdf->Cell(15, 6, "ORL 1", 1, 0, "C", 1);
             $pdf->Cell(15, 6, "ORL 2", 1, 0, "C", 1);
             $pdf->Cell(15, 6, "ORL 3", 1, 0, "C", 1);
             $pdf->Cell(15, 6, "ORL 4", 1, 0, "C", 1);
-            $pdf->Cell(18, 6, "TAGLIO 1", 1, 0, "C", 1);
-            $pdf->Cell(18, 6, "TAGLIO 2", 1, 1, "C", 1);
+            $pdf->Cell(15, 6, "ORL 5", 1, 0, "C", 1);
+            $pdf->Cell(15, 6, "TAGL 1", 1, 0, "C", 1);
+            $pdf->Cell(15, 6, "TAGL 2", 1, 1, "C", 1);
             $pdf->SetTextColor(0, 0, 0);
             $pdf->SetFillColor(255, 255, 255);
             $pdf->SetFont("helvetica", "", 10);
             $pdf->SetFillColor(255, 255, 255);
             while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
-                $pdf->Cell(14, 8, $row2["GIORNO"], 1, 0, "C");
-                $pdf->Cell(30, 8, $row2["NOMEGIORNO"], 1, 0, "C");
-                $pdf->Cell(25, 8, $row2["MANOVIA1"], 1, 0, "C");
-                $pdf->Cell(25, 8, $row2["MANOVIA2"], 1, 0, "C");
-              
+                $pdf->Cell(15, 8, $row2["GIORNO"], 1, 0, "C");
+                $pdf->Cell(40, 8, $row2["NOMEGIORNO"], 1, 0, "C");
+                $pdf->Cell(15, 8, $row2["MANOVIA1"], 1, 0, "C");
+                $pdf->Cell(15, 8, $row2["MANOVIA2"], 1, 0, "C");
                 $pdf->Cell(15, 8, $row2["ORLATURA1"], 1, 0, "C");
                 $pdf->Cell(15, 8, $row2["ORLATURA2"], 1, 0, "C");
                 $pdf->Cell(15, 8, $row2["ORLATURA3"], 1, 0, "C");
                 $pdf->Cell(15, 8, $row2["ORLATURA4"], 1, 0, "C");
-                $pdf->Cell(18, 8, $row2["TAGLIO1"], 1, 0, "C");
-                $pdf->Cell(18, 8, $row2["TAGLIO2"], 1, 1, "C");
+                $pdf->Cell(15, 8, $row2["ORLATURA5"], 1, 0, "C");
+                $pdf->Cell(15, 8, $row2["TAGLIO1"], 1, 0, "C");
+                $pdf->Cell(15, 8, $row2["TAGLIO2"], 1, 1, "C");
             }
-            $sql3 = "SELECT SUM(MANOVIA1) AS TOTALEMANOVIA1 , SUM(MANOVIA2) AS TOTALEMANOVIA2,  SUM(ORLATURA1) AS TOTALEORLATURA1, SUM(ORLATURA2) AS TOTALEORLATURA2, SUM(ORLATURA3) AS TOTALEORLATURA3,SUM(ORLATURA4) AS TOTALEORLATURA4, SUM(TAGLIO1) AS TOTALETAGLIO1, SUM(TAGLIO2) AS TOTALETAGLIO2\n\n\n\n            FROM prod_mesi\n\n\n\n            WHERE (((WEEK)='" . $week . "')) And Not NOMEGIORNO='DOMENICA'\n\n\n\n            ORDER BY ID;";
+            $sql3 = "SELECT SUM(MANOVIA1) AS TOTALEMANOVIA1 , SUM(MANOVIA2) AS TOTALEMANOVIA2,  SUM(ORLATURA1) AS TOTALEORLATURA1, SUM(ORLATURA2) AS TOTALEORLATURA2, SUM(ORLATURA3) AS TOTALEORLATURA3,SUM(ORLATURA4) AS TOTALEORLATURA4,SUM(ORLATURA5) AS TOTALEORLATURA5, SUM(TAGLIO1) AS TOTALETAGLIO1, SUM(TAGLIO2) AS TOTALETAGLIO2\n\n\n\n            FROM prod_mesi\n\n\n\n            WHERE (((WEEK)='" . $week . "')) And Not NOMEGIORNO='DOMENICA'\n\n\n\n            ORDER BY ID;";
             $stmt3 = $conn->prepare($sql3);
             $stmt3->execute();
             while ($row3 = $stmt3->fetch(PDO::FETCH_ASSOC)) {
@@ -173,18 +181,18 @@ if ($stmt->rowCount() > 0) {
                 $pdf->SetFillColor(192, 192, 192);
                 $pdf->SetTextColor(0, 0, 0);
                 $pdf->SetFillColor(192, 192, 192);
-                $pdf->Cell(44, 6, "TOTALI SETTIMANA", 1, 0, "C", 1);
+                $pdf->Cell(55, 6, "TOTALI SETTIMANA", 1, 0, "C", 1);
                 $pdf->SetTextColor(0, 0, 0);
                 $pdf->SetFillColor(255, 255, 255);
-                $pdf->Cell(25, 6, $row3["TOTALEMANOVIA1"], 1, 0, "C");
-                $pdf->Cell(25, 6, $row3["TOTALEMANOVIA2"], 1, 0, "C");
-  
+                $pdf->Cell(15, 6, $row3["TOTALEMANOVIA1"], 1, 0, "C");
+                $pdf->Cell(15, 6, $row3["TOTALEMANOVIA2"], 1, 0, "C");
                 $pdf->Cell(15, 6, $row3["TOTALEORLATURA1"], 1, 0, "C");
                 $pdf->Cell(15, 6, $row3["TOTALEORLATURA2"], 1, 0, "C");
                 $pdf->Cell(15, 6, $row3["TOTALEORLATURA3"], 1, 0, "C");
                 $pdf->Cell(15, 6, $row3["TOTALEORLATURA4"], 1, 0, "C");
-                $pdf->Cell(18, 6, $row3["TOTALETAGLIO1"], 1, 0, "C");
-                $pdf->Cell(18, 6, $row3["TOTALETAGLIO2"], 1, 1, "C");
+                $pdf->Cell(15, 6, $row3["TOTALEORLATURA5"], 1, 0, "C");
+                $pdf->Cell(15, 6, $row3["TOTALETAGLIO1"], 1, 0, "C");
+                $pdf->Cell(15, 6, $row3["TOTALETAGLIO2"], 1, 1, "C");
             }
             $pdf->SetLineWidth(0.5);
         } else {
@@ -199,7 +207,7 @@ if ($stmt->rowCount() > 0) {
         $pdf->SetTextColor(0, 0, 0);
         $pdf->SetFont("helvetica", "B", 12);
         $pdf->Cell(150, 16, $month, 0, 0, "R");
-        $sql2 = "SELECT SETTIMANAMESE, Sum(MANOVIA1) AS TOTALEMANOVIA1, \n\n\n\n        Sum(MANOVIA2) AS TOTALEMANOVIA2,\n\n\n\n         Sum(ORLATURA1) AS TOTALEORLATURA1, Sum(ORLATURA2) AS TOTALEORLATURA2,\n\n\n\n         Sum(ORLATURA3) AS TOTALEORLATURA3, Sum(ORLATURA4) AS TOTALEORLATURA4, Sum(TAGLIO1) AS TOTALETAGLIO1,\n\n\n\n          Sum(TAGLIO2) AS TOTALETAGLIO2, Max(GIORNO) AS MaxDiGIORNO, Min(GIORNO) AS MinDiGIORNO\n\n\n\n        FROM prod_mesi\n\n\n\n        WHERE (((MESE)='" . $month . "'))\n\n\n\n        GROUP BY SETTIMANAMESE\n\n\n\n        HAVING (((SETTIMANAMESE)<>0));";
+        $sql2 = "SELECT SETTIMANAMESE, Sum(MANOVIA1) AS TOTALEMANOVIA1, \n\n\n\n        Sum(MANOVIA2) AS TOTALEMANOVIA2,\n\n\n\n         Sum(ORLATURA1) AS TOTALEORLATURA1, Sum(ORLATURA2) AS TOTALEORLATURA2,\n\n\n\n         Sum(ORLATURA3) AS TOTALEORLATURA3, Sum(ORLATURA4) AS TOTALEORLATURA4, Sum(ORLATURA5) AS TOTALEORLATURA5, Sum(TAGLIO1) AS TOTALETAGLIO1,\n\n\n\n          Sum(TAGLIO2) AS TOTALETAGLIO2, Max(GIORNO) AS MaxDiGIORNO, Min(GIORNO) AS MinDiGIORNO\n\n\n\n        FROM prod_mesi\n\n\n\n        WHERE (((MESE)='" . $month . "'))\n\n\n\n        GROUP BY SETTIMANAMESE\n\n\n\n        HAVING (((SETTIMANAMESE)<>0));";
         $stmt2 = $conn->prepare($sql2);
         $stmt2->execute();
         $pdf->Ln(14);
@@ -209,50 +217,50 @@ if ($stmt->rowCount() > 0) {
             $pdf->SetTextColor(0, 0, 0);
             $pdf->SetFillColor(192, 192, 192);
             $pdf->SetFont("helvetica", "B", 8);
-            $pdf->Cell(45, 6, "SETTIMANA", 1, 0, "C", 1);
-            $pdf->Cell(25, 6, "MANOVIA 1", 1, 0, "C", 1);
-            $pdf->Cell(25, 6, "MANOVIA 2", 1, 0, "C", 1);
-
+            $pdf->Cell(55, 6, "SETTIMANA", 1, 0, "C", 1);
+            $pdf->Cell(15, 6, "MONT 1", 1, 0, "C", 1);
+            $pdf->Cell(15, 6, "MONT 2", 1, 0, "C", 1);
             $pdf->Cell(15, 6, "ORL 1", 1, 0, "C", 1);
             $pdf->Cell(15, 6, "ORL 2", 1, 0, "C", 1);
             $pdf->Cell(15, 6, "ORL 3", 1, 0, "C", 1);
             $pdf->Cell(15, 6, "ORL 4", 1, 0, "C", 1);
-            $pdf->Cell(18, 6, "TAGLIO 1", 1, 0, "C", 1);
-            $pdf->Cell(18, 6, "TAGLIO 2", 1, 1, "C", 1);
+            $pdf->Cell(15, 6, "ORL 5", 1, 0, "C", 1);
+            $pdf->Cell(15, 6, "TAGL 1", 1, 0, "C", 1);
+            $pdf->Cell(15, 6, "TAGL 2", 1, 1, "C", 1);
             $pdf->SetTextColor(0, 0, 0);
             $pdf->SetFillColor(255, 255, 255);
             $pdf->SetFont("helvetica", "", 10);
             $pdf->SetFillColor(255, 255, 255);
             while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
-                $pdf->Cell(45, 8, $row2["SETTIMANAMESE"], 1, 0, "C");
-                $pdf->Cell(25, 8, $row2["TOTALEMANOVIA1"], 1, 0, "C");
-                $pdf->Cell(25, 8, $row2["TOTALEMANOVIA2"], 1, 0, "C");
-
+                $pdf->Cell(55, 8, $row2["SETTIMANAMESE"], 1, 0, "C");
+                $pdf->Cell(15, 8, $row2["TOTALEMANOVIA1"], 1, 0, "C");
+                $pdf->Cell(15, 8, $row2["TOTALEMANOVIA2"], 1, 0, "C");
                 $pdf->Cell(15, 8, $row2["TOTALEORLATURA1"], 1, 0, "C");
                 $pdf->Cell(15, 8, $row2["TOTALEORLATURA2"], 1, 0, "C");
                 $pdf->Cell(15, 8, $row2["TOTALEORLATURA3"], 1, 0, "C");
                 $pdf->Cell(15, 8, $row2["TOTALEORLATURA4"], 1, 0, "C");
-                $pdf->Cell(18, 8, $row2["TOTALETAGLIO1"], 1, 0, "C");
-                $pdf->Cell(18, 8, $row2["TOTALETAGLIO2"], 1, 1, "C");
+                $pdf->Cell(15, 8, $row2["TOTALEORLATURA5"], 1, 0, "C");
+                $pdf->Cell(15, 8, $row2["TOTALETAGLIO1"], 1, 0, "C");
+                $pdf->Cell(15, 8, $row2["TOTALETAGLIO2"], 1, 1, "C");
             }
-            $sql3 = "SELECT SUM(MANOVIA1) AS TOTALEMANOVIA1 , SUM(MANOVIA2) AS TOTALEMANOVIA2,\n\n\n\n             SUM(ORLATURA1) AS TOTALEORLATURA1,\n\n\n\n             SUM(ORLATURA2) AS TOTALEORLATURA2, SUM(ORLATURA3) AS TOTALEORLATURA3, SUM(ORLATURA4) AS TOTALEORLATURA4,\n\n\n\n              SUM(TAGLIO1) AS TOTALETAGLIO1, SUM(TAGLIO2) AS TOTALETAGLIO2\n\n\n\n            FROM prod_mesi\n\n\n\n            WHERE (((MESE)='" . $month . "'))\n\n\n\n            ORDER BY ID;";
+            $sql3 = "SELECT SUM(MANOVIA1) AS TOTALEMANOVIA1 , SUM(MANOVIA2) AS TOTALEMANOVIA2,\n\n\n\n             SUM(ORLATURA1) AS TOTALEORLATURA1,\n\n\n\n             SUM(ORLATURA2) AS TOTALEORLATURA2, SUM(ORLATURA3) AS TOTALEORLATURA3, SUM(ORLATURA4) AS TOTALEORLATURA4, SUM(ORLATURA5) AS TOTALEORLATURA5,\n\n\n\n              SUM(TAGLIO1) AS TOTALETAGLIO1, SUM(TAGLIO2) AS TOTALETAGLIO2\n\n\n\n            FROM prod_mesi\n\n\n\n            WHERE (((MESE)='" . $month . "'))\n\n\n\n            ORDER BY ID;";
             $stmt3 = $conn->prepare($sql3);
             $stmt3->execute();
             while ($row3 = $stmt3->fetch(PDO::FETCH_ASSOC)) {
                 $pdf->SetTextColor(0, 0, 0);
                 $pdf->SetFillColor(192, 192, 192);
-                $pdf->Cell(45, 6, "TOTALI", 1, 0, "C", 1);
+                $pdf->Cell(55, 6, "TOTALI", 1, 0, "C", 1);
                 $pdf->SetTextColor(0, 0, 0);
                 $pdf->SetFillColor(255, 255, 255);
-                $pdf->Cell(25, 6, $row3["TOTALEMANOVIA1"], 1, 0, "C");
-                $pdf->Cell(25, 6, $row3["TOTALEMANOVIA2"], 1, 0, "C");
-
+                $pdf->Cell(15, 6, $row3["TOTALEMANOVIA1"], 1, 0, "C");
+                $pdf->Cell(15, 6, $row3["TOTALEMANOVIA2"], 1, 0, "C");
                 $pdf->Cell(15, 6, $row3["TOTALEORLATURA1"], 1, 0, "C");
                 $pdf->Cell(15, 6, $row3["TOTALEORLATURA2"], 1, 0, "C");
                 $pdf->Cell(15, 6, $row3["TOTALEORLATURA3"], 1, 0, "C");
                 $pdf->Cell(15, 6, $row3["TOTALEORLATURA4"], 1, 0, "C");
-                $pdf->Cell(18, 6, $row3["TOTALETAGLIO1"], 1, 0, "C");
-                $pdf->Cell(18, 6, $row3["TOTALETAGLIO2"], 1, 1, "C");
+                $pdf->Cell(15, 6, $row3["TOTALEORLATURA5"], 1, 0, "C");
+                $pdf->Cell(15, 6, $row3["TOTALETAGLIO1"], 1, 0, "C");
+                $pdf->Cell(15, 6, $row3["TOTALETAGLIO2"], 1, 1, "C");
             }
             $pdf->SetLineWidth(0.5);
         } else {

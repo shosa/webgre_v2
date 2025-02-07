@@ -1,6 +1,6 @@
 <?php
 // Include la libreria TCPDF e la configurazione del database
-require ("../../config/config.php");
+require("../../config/config.php");
 require_once BASE_PATH . '/vendor/autoload.php'; // Path to PhpSpreadsheet autoload file
 // Ricevi i parametri month dalla richiesta GET
 $month = isset($_GET['month']) ? $_GET['month'] : 'GENNAIO';
@@ -40,67 +40,79 @@ $html = '<table style="text-align: center;
     <thead>
         <tr style="background-color: #D3E2F4; text-align: center;">
             <th rowspan="2" colspan="2" width="130"><b>GIORNO</b></th>
-            <th colspan="8" width="304"><b>PRODUZIONE</b></th>
-            <th style="background-color:#FFE78F;" colspan="8" width="304"><b>SPEDIZIONE</b></th>
+            <th colspan="8" width="315"><b>PRODUZIONE</b></th>
+            <th style="background-color:#FFE78F;" colspan="8" width="315"><b>SPEDIZIONE</b></th>
         </tr>
         <tr style="background-color: #D3E2F4; text-align: center;">
-            <th width="38"><b>MAN1</b></th>
-            <th width="38"><b>MAN2</b></th>
-            <th width="38"><b>ORL1</b></th>
-            <th width="38"><b>ORL2</b></th>
-            <th width="38"><b>ORL3</b></th>
-            <th width="38"><b>ORL4</b></th>
-            <th width="38"><b>TAGL1</b></th>
-            <th width="38"><b>TAGL2</b></th>
-            <th style="background-color:#FFE78F;" width="38"><b>MAN1</b></th>
-            <th style="background-color:#FFE78F;" width="38"><b>RESO</b></th>
-            <th style="background-color:#FFE78F;" width="38"><b>MAN2</b></th>
-            <th style="background-color:#FFE78F;" width="38"><b>ORL1</b></th>
-            <th style="background-color:#FFE78F;" width="38"><b>ORL2</b></th>
-            <th style="background-color:#FFE78F;" width="38"><b>ORL3</b></th>
-            <th style="background-color:#FFE78F;" width="38"><b>ORL4</b></th>
-            <th style="background-color:#FFE78F;" width="38"><b>TOM ESTERO</b></th>
+            <th width="35"><b>MAN1</b></th>
+            <th width="35"><b>MAN2</b></th>
+            <th width="35"><b>ORL1</b></th>
+            <th width="35"><b>ORL2</b></th>
+            <th width="35"><b>ORL3</b></th>
+            <th width="35"><b>ORL4</b></th>
+            <th width="35"><b>ORL5</b></th>
+            <th width="35"><b>TAGL1</b></th>
+            <th width="35"><b>TAGL2</b></th>
+            <th style="background-color:#FFE78F;" width="35"><b>MAN1</b></th>
+            <th style="background-color:#FFE78F;" width="35"><b>RESO</b></th>
+            <th style="background-color:#FFE78F;" width="35"><b>MAN2</b></th>
+            <th style="background-color:#FFE78F;" width="35"><b>ORL1</b></th>
+            <th style="background-color:#FFE78F;" width="35"><b>ORL2</b></th>
+            <th style="background-color:#FFE78F;" width="35"><b>ORL3</b></th>
+            <th style="background-color:#FFE78F;" width="35"><b>ORL4</b></th>
+            <th style="background-color:#FFE78F;" width="35"><b>ORL5</b></th>
+            <th style="background-color:#FFE78F;" width="35"><b>TOM ESTERO</b></th>
         </tr>
     </thead>
     <tbody>';
+$row_index = 0; // Contatore per le righe effettive stampate
+
 for ($i = 0; $i < max(count($prod_data), count($sped_data)); $i++) {
     $prod_row = $prod_data[$i] ?? [];
     $sped_row = $sped_data[$i] ?? [];
+
     // Salta le righe che sono "DOMENICA"
-    if (isset($prod_row['NOMEGIORNO']) && $prod_row['NOMEGIORNO'] == 'DOMENICA') {
+    if (
+        (isset($prod_row['NOMEGIORNO']) && $prod_row['NOMEGIORNO'] == 'DOMENICA') ||
+        (isset($sped_row['NOMEGIORNO']) && $sped_row['NOMEGIORNO'] == 'DOMENICA')
+    ) {
         continue;
     }
-    if (isset($sped_row['NOMEGIORNO']) && $sped_row['NOMEGIORNO'] == 'DOMENICA') {
-        continue;
-    }
-    // Alterna il colore di sfondo delle righe
-    $bg_color = ($i % 2 == 0) ? '#FFFFFF' : '#F0F0F0';
+
+    // Alterna il colore di sfondo basato sul numero di righe effettivamente stampate
+    $bg_color = ($row_index % 2 == 0) ? '#FFFFFF' : '#F0F0F0';
+
     $html .= '<tr style="background-color: ' . $bg_color . ';">';
     $html .= '<td width="30" align="center">' . ($prod_row['GIORNO'] ?? '') . '</td>';
     $html .= '<td width="100">' . ($prod_row['NOMEGIORNO'] ?? '') . '</td>';
+
     // Produzione
-    for ($j = 0; $j < 8; $j++) {
-        $key = ['MANOVIA1', 'MANOVIA2', 'ORLATURA1', 'ORLATURA2', 'ORLATURA3', 'ORLATURA4', 'TAGLIO1', 'TAGLIO2'][$j];
+    for ($j = 0; $j < 9; $j++) {
+        $key = ['MANOVIA1', 'MANOVIA2', 'ORLATURA1', 'ORLATURA2', 'ORLATURA3', 'ORLATURA4', 'ORLATURA5', 'TAGLIO1', 'TAGLIO2'][$j];
         $value = $prod_row[$key] ?? '';
-        $html .= '<td width="38" align="center">' . $value . '</td>';
+        $html .= '<td width="35" align="center">' . $value . '</td>';
         $totals[$j] += (float) $value;
     }
+
     // Spedizione
-    for ($j = 8; $j < 16; $j++) {
-        $key = ['MANOVIA1', 'MANOVIA1RESO', 'MANOVIA2','ORLATURA1', 'ORLATURA2', 'ORLATURA3', 'ORLATURA4', 'TOMESTERO'][$j - 8];
+    for ($j = 9; $j < 18; $j++) {
+        $key = ['MANOVIA1', 'MANOVIA1RESO', 'MANOVIA2', 'ORLATURA1', 'ORLATURA2', 'ORLATURA3', 'ORLATURA4', 'ORLATURA5', 'TOMESTERO'][$j - 9];
         $value = $sped_row[$key] ?? '';
-        $html .= '<td width="38" align="center">' . $value . '</td>';
+        $html .= '<td width="35" align="center">' . $value . '</td>';
         $totals[$j] += (float) $value;
     }
+
     $html .= '</tr>';
+
+    $row_index++; // Incrementa il contatore delle righe stampate
 }
 // Righe Totali
 $html .= '<tr style="background-color: #D3E2F4; text-align: center;">';
 $html .= '<td colspan="2"><b>TOTALE</b></td>';
-for ($j = 0; $j < 8; $j++) {
+for ($j = 0; $j < 9; $j++) {
     $html .= '<td><b>' . $totals[$j] . '</b></td>';
 }
-for ($j = 8; $j < 16; $j++) {
+for ($j = 9; $j < 18; $j++) {
     $html .= '<td style="background-color:#FFE78F;"><b>' . $totals[$j] . '</b></td>';
 }
 $html .= '</tr>';

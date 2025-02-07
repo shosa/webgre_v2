@@ -13,11 +13,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $manovia1 = $_POST["manovia1"];
     $manovia1reso = $_POST["manovia1reso"];
     $manovia2 = $_POST["manovia2"];
-   
     $orlatura1 = $_POST["orlatura1"];
     $orlatura2 = $_POST["orlatura2"];
     $orlatura3 = $_POST["orlatura3"];
     $orlatura4 = $_POST["orlatura4"];
+    $orlatura5 = $_POST["orlatura5"];
     $tomaieEstero = $_POST["tomaieEstero"];
     try {
         // Crea una connessione al database utilizzando PDO
@@ -29,11 +29,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "UPDATE sped_mesi
                 SET MANOVIA1 = :manovia1, MANOVIA1RESO = :manovia1reso,
                     MANOVIA2 = :manovia2,
-                  
                     ORLATURA1 = :orlatura1,
                     ORLATURA2 = :orlatura2,
                     ORLATURA3 = :orlatura3, 
                     ORLATURA4 = :orlatura4,
+                    ORLATURA5 = :orlatura5,
                     TOMESTERO = :tomaieEstero
                 WHERE MESE = :month AND GIORNO = :day";
         // Prepara la dichiarazione
@@ -43,11 +43,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':manovia1' => $manovia1,
             ':manovia1reso' => $manovia1reso,
             ':manovia2' => $manovia2,
-            
             ':orlatura1' => $orlatura1,
             ':orlatura2' => $orlatura2,
             ':orlatura3' => $orlatura3,
             ':orlatura4' => $orlatura4,
+            ':orlatura5' => $orlatura5,
             ':tomaieEstero' => $tomaieEstero,
             ':month' => $month,
             ':day' => $day

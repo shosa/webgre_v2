@@ -24,6 +24,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $note8 = $_POST["note8"];
     $orlatura4 = $_POST["orlatura4"];
     $note9 = $_POST["note9"];
+    $orlatura5 = $_POST["orlatura5"];
+    $note10 = $_POST["note10"];
     $taglio1 = $_POST["taglio1"];
     $note6 = $_POST["note6"];
     $taglio2 = $_POST["taglio2"];
@@ -44,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     ORLATURA2 = :orlatura2, ORLATURA2NOTE = :note5, 
                     ORLATURA3 = :orlatura3, ORLATURA3NOTE = :note8, 
                     ORLATURA4 = :orlatura4, ORLATURA4NOTE = :note9, 
+                    ORLATURA5 = :orlatura5, ORLATURA5NOTE = :note10, 
                     TAGLIO1 = :taglio1, TAGLIO1NOTE = :note6, 
                     TAGLIO2 = :taglio2, TAGLIO2NOTE = :note7
                 WHERE MESE = :month AND GIORNO = :day";
@@ -65,6 +68,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':note8' => $note8,
             ':orlatura4' => $orlatura4,
             ':note9' => $note9,
+            ':orlatura5' => $orlatura5,
+            ':note10' => $note10,
             ':taglio1' => $taglio1,
             ':note6' => $note6,
             ':taglio2' => $taglio2,

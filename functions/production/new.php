@@ -153,6 +153,18 @@ require_once BASE_PATH . "/utils/log_utils.php";
                                             </div>
                                         </div>
                                         <hr>
+                                        <div class="form-group row">
+                                            <div class="col-md-6">
+                                                <label for="orlatura5">ORLATURA5:</label>
+                                                <input type="number" id="orlatura5" name="orlatura5"
+                                                    class="form-control">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="note10" class="note">NOTE:</label>
+                                                <textarea id="note10" name="note10" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                        <hr>
                                         <!-- TAGLIO1 -->
                                         <div class="form-group row">
                                             <div class="col-md-6">
@@ -242,6 +254,8 @@ require_once BASE_PATH . "/utils/log_utils.php";
             var note8 = $("#note8").val();
             var orlatura4 = $("#orlatura4").val();
             var note9 = $("#note9").val();
+            var orlatura5 = $("#orlatura5").val();
+            var note10 = $("#note10").val();
             var taglio1 = $("#taglio1").val();
             var note6 = $("#note6").val();
             var taglio2 = $("#taglio2").val();
@@ -266,6 +280,8 @@ require_once BASE_PATH . "/utils/log_utils.php";
                     note8: note8,
                     orlatura4: orlatura4,
                     note9: note9,
+                    orlatura5: orlatura5,
+                    note10: note10,
                     taglio1: taglio1,
                     note6: note6,
                     taglio2: taglio2,

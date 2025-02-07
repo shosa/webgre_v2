@@ -125,6 +125,13 @@ require_once BASE_PATH . "/utils/log_utils.php";
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-md-12">
+                                                <label for="orlatura4">ORLATURA5:</label>
+                                                <input type="number" id="orlatura5" name="orlatura5"
+                                                    class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-md-12">
                                                 <label for="orlatura4">TOMAIE ESTERO:</label>
                                                 <input type="number" id="tomaieEstero" name="tomaieEstero"
                                                     class="form-control">
@@ -190,6 +197,7 @@ require_once BASE_PATH . "/utils/log_utils.php";
         var orlatura2 = $("#orlatura2").val();
         var orlatura3 = $("#orlatura3").val();
         var orlatura4 = $("#orlatura4").val();
+        var orlatura5 = $("#orlatura5").val();
         var tomaieEstero = $("#tomaieEstero").val();
         $.ajax({
             type: "POST",
@@ -204,6 +212,7 @@ require_once BASE_PATH . "/utils/log_utils.php";
                 orlatura2: orlatura2,
                 orlatura3: orlatura3,
                 orlatura4: orlatura4,
+                orlatura5: orlatura5,
                 tomaieEstero: tomaieEstero,
             },
             success: function (response) {

@@ -31,6 +31,8 @@ try {
         $ORLATURA3NOTE = $row['ORLATURA3NOTE'];
         $ORLATURA4 = $row['ORLATURA4'];
         $ORLATURA4NOTE = $row['ORLATURA4NOTE'];
+        $ORLATURA5 = $row['ORLATURA5'];
+        $ORLATURA5NOTE = $row['ORLATURA5NOTE'];
         $TAGLIO1 = $row['TAGLIO1'];
         $TAGLIO1NOTE = $row['TAGLIO1NOTE'];
         $TAGLIO2 = $row['TAGLIO2'];
@@ -98,109 +100,66 @@ include(BASE_PATH . "/components/header.php");
                                 </div>
                                 <div class="card-body">
                                     <div class="table-container">
-                                        <table class="table table-bordered table-striped table-sm">
+                                        <table class="table table-bordered table-striped table-hover">
                                             <tbody>
+                                                <!-- Intestazione Montaggi -->
+                                                <tr class="table-primary">
+                                                    <td colspan="2" class="fw-bold text-center text-primary ">MONTAGGIO</td>
+                                                </tr>
                                                 <tr>
                                                     <td>MANOVIA 1</td>
-                                                    <td class="text-wrap text-center">
-                                                        <?php echo $MANOVIA1; ?>
-                                                    </td>
+                                                    <td class="text-wrap text-center"><?php echo $MANOVIA1; ?></td>
                                                 </tr>
                                                 <tr>
                                                     <td>NOTE</td>
-                                                    <td class="note text-wrap">
-                                                        <?php echo $MANOVIA1NOTE; ?>
+                                                    <td class="note text-wrap text-center"><?php echo $MANOVIA1NOTE; ?>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>MANOVIA 2</td>
-                                                    <td class="text-wrap text-center">
-                                                        <?php echo $MANOVIA2; ?>
-                                                    </td>
+                                                    <td class="text-wrap text-center"><?php echo $MANOVIA2; ?></td>
                                                 </tr>
                                                 <tr>
                                                     <td>NOTE</td>
-                                                    <td class="note text-wrap">
-                                                        <?php echo $MANOVIA2NOTE; ?>
+                                                    <td class="note text-wrap text-center"><?php echo $MANOVIA2NOTE; ?>
                                                     </td>
                                                 </tr>
-                                                
-                                                
-                                                <tr>
-                                                    <td>ORLATURA 1</td>
-                                                    <td class="text-wrap text-center">
-                                                        <?php echo $ORLATURA1; ?>
-                                                    </td>
+
+                                                <!-- Intestazione Orlatura -->
+                                                <tr class="table-success">
+                                                    <td colspan="2" class="fw-bold text-center text-success">ORLATURA</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>NOTE</td>
-                                                    <td class="note text-wrap">
-                                                        <?php echo $ORLATURA1NOTE; ?>
-                                                    </td>
+                                                <?php for ($i = 1; $i <= 5; $i++): ?>
+                                                    <tr>
+                                                        <td>ORLATURA <?php echo $i; ?></td>
+                                                        <td class="text-wrap text-center"><?php echo ${"ORLATURA$i"}; ?>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>NOTE</td>
+                                                        <td class="note text-wrap text-center">
+                                                            <?php echo ${"ORLATURA" . $i . "NOTE"}; ?></td>
+                                                    </tr>
+                                                <?php endfor; ?>
+
+                                                <!-- Intestazione Taglio -->
+                                                <tr class="table-danger">
+                                                    <td colspan="2" class="fw-bold text-center text-danger">TAGLIO</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>ORLATURA 2</td>
-                                                    <td class="text-wrap text-center">
-                                                        <?php echo $ORLATURA2; ?>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>NOTE</td>
-                                                    <td class="note text-wrap">
-                                                        <?php echo $ORLATURA2NOTE; ?>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>ORLATURA 3</td>
-                                                    <td class="text-wrap text-center">
-                                                        <?php echo $ORLATURA3; ?>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>NOTE</td>
-                                                    <td class="note text-wrap">
-                                                        <?php echo $ORLATURA3NOTE; ?>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>ORLATURA 4</td>
-                                                    <td class="text-wrap text-center">
-                                                        <?php echo $ORLATURA4; ?>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>NOTE</td>
-                                                    <td class="note text-wrap">
-                                                        <?php echo $ORLATURA4NOTE; ?>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>TAGLIO 1</td>
-                                                    <td class="text-wrap text-center">
-                                                        <?php echo $TAGLIO1; ?>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>NOTE</td>
-                                                    <td class="note text-wrap">
-                                                        <?php echo $TAGLIO1NOTE; ?>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>TAGLIO 2</td>
-                                                    <td class="text-wrap text-center">
-                                                        <?php echo $TAGLIO2; ?>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>NOTE</td>
-                                                    <td class="note text-wrap">
-                                                        <?php echo $TAGLIO2NOTE; ?>
-                                                    </td>
-                                                </tr>
-                                                <!-- Ripeti per le altre attività -->
+                                                <?php for ($i = 1; $i <= 2; $i++): ?>
+                                                    <tr>
+                                                        <td>TAGLIO <?php echo $i; ?></td>
+                                                        <td class="text-wrap text-center"><?php echo ${"TAGLIO$i"}; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>NOTE</td>
+                                                        <td class="note text-wrap text-center">
+                                                            <?php echo ${"TAGLIO" . $i . "NOTE"}; ?></td>
+                                                    </tr>
+                                                <?php endfor; ?>
                                             </tbody>
                                         </table>
+
                                     </div>
                                 </div>
                             </div>
@@ -295,11 +254,11 @@ include(BASE_PATH . "/components/header.php");
                                                         <th>MAN1</th>
                                                         <th>MAN1 RESO</th>
                                                         <th>MAN2</th>
-                                                
                                                         <th>ORL1</th>
                                                         <th>ORL2</th>
                                                         <th>ORL3</th>
                                                         <th>ORL4</th>
+                                                        <th>ORL5</th>
                                                         <th>TOM ESTERO</th>
                                                     </tr>
                                                 </thead>
@@ -404,6 +363,8 @@ include(BASE_PATH . "/components/header.php");
                     '<?php echo $ORLATURA1; ?>',
                     '<?php echo $ORLATURA2; ?>',
                     '<?php echo $ORLATURA3; ?>',
+                    '<?php echo $ORLATURA4; ?>',
+                    '<?php echo $ORLATURA5; ?>',
                     '<?php echo $TAGLIO1; ?>',
                     '<?php echo $TAGLIO2; ?>'
                 ];
@@ -439,6 +400,7 @@ include(BASE_PATH . "/components/header.php");
                 tr.append($('<td>').text(row.ORLATURA2));
                 tr.append($('<td>').text(row.ORLATURA3));
                 tr.append($('<td>').text(row.ORLATURA4));
+                tr.append($('<td>').text(row.ORLATURA5));
                 tr.append($('<td>').text(row.TOMESTERO));
                 tableBody.append(tr);
             });

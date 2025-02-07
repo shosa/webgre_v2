@@ -1,6 +1,6 @@
 <?php
 // Include la libreria TCPDF
-require ("../../config/config.php");
+require("../../config/config.php");
 require_once BASE_PATH . '/vendor/autoload.php'; // Path to PhpSpreadsheet autoload file
 // Ricevi i parametri month e day dalla richiesta GET
 $month = $_GET['month'];
@@ -11,7 +11,7 @@ try {
     $pdo = getDbInstance();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     // Esegui una query per ottenere i dati dal database
-    $sql = "SELECT ID, MESE, GIORNO, NOMEGIORNO, MANOVIA1, MANOVIA2, ORLATURA1, ORLATURA2, ORLATURA3,ORLATURA4, TAGLIO1, TAGLIO2, TOTALITAGLIO, TOTALIORLATURA, TOTALIMONTAGGIO
+    $sql = "SELECT ID, MESE, GIORNO, NOMEGIORNO, MANOVIA1, MANOVIA2, ORLATURA1, ORLATURA2, ORLATURA3,ORLATURA4,ORLATURA5,  TAGLIO1, TAGLIO2, TOTALITAGLIO, TOTALIORLATURA, TOTALIMONTAGGIO
             FROM prod_mesi
             WHERE MESE = :month AND NOMEGIORNO <> 'DOMENICA'
             ORDER BY ID";
@@ -34,16 +34,17 @@ try {
     $pdf->SetTextColor(255, 255, 255); // Testo bianco
     $pdf->SetFont('helvetica', 'B', 10);
     // Aggiungi le intestazioni della tabella
-    $pdf->Cell(45, 8, 'GIORNO', 1, 0, 'C', 1); // 'C' per centrare il testo
-    $pdf->Cell(18, 8, 'TAGL1', 1, 0, 'C', 1);
-    $pdf->Cell(18, 8, 'TAGL2', 1, 0, 'C', 1);
-    $pdf->Cell(18, 8, 'ORL1', 1, 0, 'C', 1);
-    $pdf->Cell(18, 8, 'ORL2', 1, 0, 'C', 1);
-    $pdf->Cell(18, 8, 'ORL3', 1, 0, 'C', 1);
-    $pdf->Cell(18, 8, 'ORL4', 1, 0, 'C', 1);
-    $pdf->Cell(18, 8, 'MONT1', 1, 0, 'C', 1);
-    $pdf->Cell(18, 8, 'MONT2', 1, 0, 'C', 1);
-   
+    $pdf->Cell(55, 8, 'GIORNO', 1, 0, 'C', 1); // 'C' per centrare il testo
+    $pdf->Cell(15, 8, 'TAGL1', 1, 0, 'C', 1);
+    $pdf->Cell(15, 8, 'TAGL2', 1, 0, 'C', 1);
+    $pdf->Cell(15, 8, 'ORL1', 1, 0, 'C', 1);
+    $pdf->Cell(15, 8, 'ORL2', 1, 0, 'C', 1);
+    $pdf->Cell(15, 8, 'ORL3', 1, 0, 'C', 1);
+    $pdf->Cell(15, 8, 'ORL4', 1, 0, 'C', 1);
+    $pdf->Cell(15, 8, 'ORL5', 1, 0, 'C', 1);
+    $pdf->Cell(15, 8, 'MONT1', 1, 0, 'C', 1);
+    $pdf->Cell(15, 8, 'MONT2', 1, 0, 'C', 1);
+
     $pdf->Ln(); // Vai alla riga successiva
     // Ripristina il colore di sfondo e il colore del testo predefiniti
     $pdf->SetFillColor(255, 255, 255); // Sfondo bianco
@@ -55,6 +56,7 @@ try {
     $totOrlatura2 = 0;
     $totOrlatura3 = 0;
     $totOrlatura4 = 0;
+    $totOrlatura5 = 0;
     $totOrlato = 0;
     $totManovia1 = 0;
     $totManovia2 = 0;
@@ -81,7 +83,8 @@ try {
         $totOrlatura2 += (int) $row['ORLATURA2'];
         $totOrlatura3 += (int) $row['ORLATURA3'];
         $totOrlatura4 += (int) $row['ORLATURA4'];
-        $totOrlato = $totOrlatura1 + $totOrlatura2 + $totOrlatura3 + $totOrlatura4;
+        $totOrlatura5 += (int) $row['ORLATURA5'];
+        $totOrlato = $totOrlatura1 + $totOrlatura2 + $totOrlatura3 + $totOrlatura4 + $totOrlatura5;
         $totManovia1 += (int) $row['MANOVIA1'];
         $totManovia2 += (int) $row['MANOVIA2'];
         $totMontato = $totManovia1 + $totManovia2;
@@ -89,32 +92,34 @@ try {
         $pdf->SetFont('helvetica', 'B', 9);
         $pdf->Cell(10, 8, $row['GIORNO'], 1, 0, 'C', 1);
         $pdf->SetFont('helvetica', '', 9);
-        $pdf->Cell(35, 8, $row['NOMEGIORNO'], 1, 0, 'C', 1);
+        $pdf->Cell(45, 8, $row['NOMEGIORNO'], 1, 0, 'C', 1);
         $pdf->SetFont('helvetica', '', 10);
-        $pdf->Cell(18, 8, $row['TAGLIO1'], 1, 0, 'C', 1);
-        $pdf->Cell(18, 8, $row['TAGLIO2'], 1, 0, 'C', 1);
-        $pdf->Cell(18, 8, $row['ORLATURA1'], 1, 0, 'C', 1);
-        $pdf->Cell(18, 8, $row['ORLATURA2'], 1, 0, 'C', 1);
-        $pdf->Cell(18, 8, $row['ORLATURA3'], 1, 0, 'C', 1);
-        $pdf->Cell(18, 8, $row['ORLATURA4'], 1, 0, 'C', 1);
-        $pdf->Cell(18, 8, $row['MANOVIA1'], 1, 0, 'C', 1);
-        $pdf->Cell(18, 8, $row['MANOVIA2'], 1, 0, 'C', 1);
+        $pdf->Cell(15, 8, $row['TAGLIO1'], 1, 0, 'C', 1);
+        $pdf->Cell(15, 8, $row['TAGLIO2'], 1, 0, 'C', 1);
+        $pdf->Cell(15, 8, $row['ORLATURA1'], 1, 0, 'C', 1);
+        $pdf->Cell(15, 8, $row['ORLATURA2'], 1, 0, 'C', 1);
+        $pdf->Cell(15, 8, $row['ORLATURA3'], 1, 0, 'C', 1);
+        $pdf->Cell(15, 8, $row['ORLATURA4'], 1, 0, 'C', 1);
+        $pdf->Cell(15, 8, $row['ORLATURA5'], 1, 0, 'C', 1);
+        $pdf->Cell(15, 8, $row['MANOVIA1'], 1, 0, 'C', 1);
+        $pdf->Cell(15, 8, $row['MANOVIA2'], 1, 0, 'C', 1);
         $pdf->Ln(); // Vai alla riga successiva
     }
     $pdf->SetFillColor(0, 0, 0); // Sfondo nero
     $pdf->SetTextColor(255, 255, 255); // Testo bianco
     $pdf->SetFont('helvetica', 'B', 14);
-    $pdf->Cell(45, 8, 'TOTALI', 1, 0, 'C', 1); // 'C' per centrare il testo
+    $pdf->Cell(55, 8, 'TOTALI', 1, 0, 'C', 1); // 'C' per centrare il testo
     $pdf->SetFillColor(255, 255, 255); // Sfondo bianco
     $pdf->SetTextColor(0, 0, 0); // Testo nero
-    $pdf->Cell(18, 8, $totTaglio1, 1, 0, 'C', 1);
-    $pdf->Cell(18, 8, $totTaglio2, 1, 0, 'C', 1);
-    $pdf->Cell(18, 8, $totOrlatura1, 1, 0, 'C', 1);
-    $pdf->Cell(18, 8, $totOrlatura2, 1, 0, 'C', 1);
-    $pdf->Cell(18, 8, $totOrlatura3, 1, 0, 'C', 1);
-    $pdf->Cell(18, 8, $totOrlatura4, 1, 0, 'C', 1);
-    $pdf->Cell(18, 8, $totManovia1, 1, 0, 'C', 1);
-    $pdf->Cell(18, 8, $totManovia2, 1, 0, 'C', 1);
+    $pdf->Cell(15, 8, $totTaglio1, 1, 0, 'C', 1);
+    $pdf->Cell(15, 8, $totTaglio2, 1, 0, 'C', 1);
+    $pdf->Cell(15, 8, $totOrlatura1, 1, 0, 'C', 1);
+    $pdf->Cell(15, 8, $totOrlatura2, 1, 0, 'C', 1);
+    $pdf->Cell(15, 8, $totOrlatura3, 1, 0, 'C', 1);
+    $pdf->Cell(15, 8, $totOrlatura4, 1, 0, 'C', 1);
+    $pdf->Cell(15, 8, $totOrlatura5, 1, 0, 'C', 1);
+    $pdf->Cell(15, 8, $totManovia1, 1, 0, 'C', 1);
+    $pdf->Cell(15, 8, $totManovia2, 1, 0, 'C', 1);
 
     $pdf->Ln(12); // Vai alla riga successiva
     $pdf->SetFont('helvetica', '', 8);
