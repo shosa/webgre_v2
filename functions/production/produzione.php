@@ -65,7 +65,7 @@ include(BASE_PATH . "/components/header.php");
 ?>
 <script>
     function generatePDF(month, day) {
-        window.location.href = `generate_pdf.php?month=${month}&day=${day}`;
+        window.location.href = `generate_pdf?month=${month}&day=${day}`;
     }
 </script>
 
