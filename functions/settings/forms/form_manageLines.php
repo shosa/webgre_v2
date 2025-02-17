@@ -38,7 +38,7 @@ $lines = getLines($conn);
                             data-id="<?= $line['ID'] ?>" data-field="descrizione"></td>
                     <td>
                         <?php if (!isSiglaInDati($conn, $line['sigla'])): ?>
-                            <button class="btn btn-danger btn-delete-line" data-id="<?= $line['ID'] ?>"><i
+                            <button class="btn btn-light btn-circle text-danger btn-delete-line" data-id="<?= $line['ID'] ?>"><i
                                     class="fal fa-trash"></i></button>
                         <?php endif; ?>
                     </td>

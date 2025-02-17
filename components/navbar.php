@@ -64,8 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 <i class="fas fa-fw fa-hammer"></i>
                 <span>Riparazioni</span>
             </a>
-            <div id="collapseRiparazioni" class="collapse"  style="z-index:9999"aria-labelledby="headingRiparazioni"
-                data-parent="#accordionSidebar" >
+            <div id="collapseRiparazioni" class="collapse" style="z-index:9999" aria-labelledby="headingRiparazioni"
+                data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
                     <a id="riparazioni-add-step1" class="collapse-item"
@@ -86,6 +86,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 </div>
             </div>
         </li>
+        <!--
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAttrezzatura"
+                aria-expanded="true" aria-controls="collapseAttrezzatura">
+                <i class="fas fa-fw fa-toolbox"></i>
+                <span>Attrezzatura</span>
+            </a>
+            <div id="collapseAttrezzatura" class="collapse" style="z-index:9999" aria-labelledby="headingAttrezzatura"
+                data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Sezioni:</h6>
+                    <a id="attrezzatura-manage" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/attrezzatura/manage"><i class="fa fa-home fa-fw"></i>
+                        Gestione</a>
+                    <a id="attrezzatura-return" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/attrezzatura/return"><i class="fa fa-undo fa-fw"></i>
+                        Rientra</a>
+                </div>
+            </div>
+        </li> -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFTP"
+                aria-expanded="true" aria-controls="collapseFTP">
+                <i class="fas fa-fw fa-globe-europe"></i>
+                <span>FTP</span>
+            </a>
+            <div id="collapseFTP" class="collapse" style="z-index:9999" aria-labelledby="headingFTP"
+                data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Sezioni:</h6>
+                    <a id="valentino-home" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/ftp/valentino"><i class="fa fa-network-wired fa-fw"></i>
+                        Valentino</a>
+
+                </div>
+            </div>
+        </li>
     <?php endif; ?>
     <!-- CONTROLLO QUALITA -->
     <?php if (isset($_SESSION['permessi_cq']) && $_SESSION['permessi_cq'] == 1): ?>
@@ -95,7 +132,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 <i class="far fa-box-check"></i>
                 <span>Controllo Qualità</span>
             </a>
-            <div id="collapseCQ" class="collapse"  style="z-index:9999"aria-labelledby="headingCQ" data-parent="#accordionSidebar">
+            <div id="collapseCQ" class="collapse" style="z-index:9999" aria-labelledby="headingCQ"
+                data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
                     <a id="quality-new" class="collapse-item" href="<?php echo BASE_URL ?>/functions/quality/new"><i
@@ -116,6 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 </div>
             </div>
         </li>
+
     <?php endif; ?>
     <!-- PRODUZIONE & SPEDIZIONE -->
     <?php if (isset($_SESSION['permessi_produzione']) && $_SESSION['permessi_produzione'] == 1): ?>
@@ -125,7 +164,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 <i class="far fa-calendar-alt"></i>
                 <span>Produzione</span>
             </a>
-            <div id="collapseProd" class="collapse"  style="z-index:9999"aria-labelledby="headingProd" data-parent="#accordionSidebar">
+            <div id="collapseProd" class="collapse" style="z-index:9999" aria-labelledby="headingProd"
+                data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
                     <a id="production-new" class="collapse-item" href="<?php echo BASE_URL ?>/functions/production/new"><i
@@ -149,7 +189,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 <i class="fa-solid fa-cloud"></i>
                 <span>Campionario</span>
             </a>
-            <div id="collapseSamples" class="collapse"  style="z-index:9999"aria-labelledby="headingSamples" data-parent="#accordionSidebar">
+            <div id="collapseSamples" class="collapse" style="z-index:9999" aria-labelledby="headingSamples"
+                data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
                     <a id="samples-new" class="collapse-item" href="<?php echo BASE_URL ?>/functions/samples/newSample"><i
@@ -170,7 +211,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 <i class="fal fa-radar fa-lg"></i>
                 <span>Tracking Lotti</span>
             </a>
-            <div id="collapseTracking" class="collapse"  style="z-index:9999"aria-labelledby="headingTracking" data-parent="#accordionSidebar">
+            <div id="collapseTracking" class="collapse" style="z-index:9999" aria-labelledby="headingTracking"
+                data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Sezioni:</h6>
                     <a id="tracking-home" class="collapse-item" href="<?php echo BASE_URL ?>/functions/tracking/home"><i
@@ -206,7 +248,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
         </li>
     <?php endif; ?>
 
-  
+
 
     <!-- DIVISORE -->
     <hr class="sidebar-divider">
@@ -318,7 +360,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             '/functions/users/manageUsers': 'users',
             '/functions/settings/settings': 'settings',
             '/functions/database/manager': 'database',
-             '/functions/shipTracker/index': 'shipTracker'
+            '/functions/shipTracker/index': 'shipTracker',
+            '/functions/attrezzatura/manage': 'attrezzatura-manage',
+            '/functions/attrezzatura/return': 'attrezzatura-return',
+            '/functions/ftp/valentino': 'valentino-home'
             // Aggiungi qui altri link come necessario
         };
         // Controlla se l'URL corrente corrisponde a uno degli URL nel menu

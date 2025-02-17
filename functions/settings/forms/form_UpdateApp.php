@@ -45,23 +45,5 @@ $token = getToken($conn, 'github_token');
         <pre id="updateLog" class="mt-2 rounded"
             style="display: none; background-color: black; color:lime; padding: 10px; border: 1px solid #e0e0e0; max-height: 300px; overflow-y: auto;"></pre>
     </div>
-    <div class="accordion p-2" id="accordionToken">
-        <div class="card">
-            <div class="card-header" id="headingOne">
-                <h5 class="mb-0">
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
-                        aria-expanded="true" aria-controls="collapseOne">
-                        Token GitHub
-                    </button>
-                </h5>
-            </div>
-
-            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionToken">
-                <div class="card-body">
-                    <input type="text" class="form-control" value="<?= htmlspecialchars($token['value']) ?>"
-                        data-field="token" readonly>
-                </div>
-            </div>
-        </div>
-    </div>
+   
 </div>

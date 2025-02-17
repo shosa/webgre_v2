@@ -36,10 +36,12 @@ $labs = getLines($conn);
                             data-id="<?= $lab['ID'] ?>" data-field="Nome"></td>
                     <td>
                         <?php if (!isLabInRiparazioni($conn, $lab['Nome'])): ?>
-                            <button class="btn btn-danger btn-delete-lab" data-id="<?= $lab['ID'] ?>"><i
-                                    class="fal fa-trash"></i></button>
+                            <button class="btn btn-light btn-circle text-danger btn btn-delete-lab"
+                                data-id="<?= $lab['ID'] ?>"><i class="fal fa-trash"></i></button>
+
                         <?php endif; ?>
                     </td>
+
                 </tr>
             <?php endforeach; ?>
         </tbody>

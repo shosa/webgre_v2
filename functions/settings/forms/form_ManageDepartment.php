@@ -36,8 +36,8 @@ $departments = getLines($conn);
                             data-id="<?= $department['ID'] ?>" data-field="Nome"></td>
                     <td>
                         <?php if (!isDepartmentInRiparazioni($conn, $department['Nome'])): ?>
-                            <button class="btn btn-danger btn-delete-department" data-id="<?= $department['ID'] ?>"><i
-                                    class="fal fa-trash"></i></button>
+                            <button class="btn btn-light btn-circle text-danger btn-delete-department"
+                                data-id="<?= $department['ID'] ?>"><i class="fal fa-trash"></i></button>
                         <?php endif; ?>
                     </td>
                 </tr>

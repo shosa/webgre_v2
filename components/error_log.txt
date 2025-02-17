@@ -1,4 +1,1 @@
-[2025-02-07 10:10:30] [Page: calendario.php] [Error 8] Undefined index: user_id in C:\xampp\htdocs\webgre\components\topbar.php on line 11 
-
-[2025-02-07 10:10:30] [Page: calendario.php] [Error 8] Undefined index: user_id in C:\xampp\htdocs\webgre\components\topbar.php on line 28 
-
+[2025-02-17 17:14:37] [Page: home.php] Uncaught exception: Call to undefined method PDO::get()[2025-02-17 17:15:36] [Page: home.php] Uncaught exception: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'my_webgre.valentino_commesse_lette' doesn't exist
