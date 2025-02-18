@@ -32,58 +32,58 @@ require_once BASE_PATH . '/components/auth_validate.php';
                                 <h6 class="m-0 font-weight-bold text-primary">Log Attività Admin</h6>
                             </div>
                             <div class="card-body">
-                                <table class="table table-responsive" width="100%">
-                                    <table class="table table-bordered table-striped table-responsive" id="dataTable"
-                                        width="100%" cellspacing="0" style="font-size:10pt;">
-                                        <thead class="border border-primary">
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Utente</th>
-                                                <th>Categoria</th>
-                                                <th>Tipo</th>
-                                                <th>Descrizione</th>
-                                                <th>Dettaglio</th>
-                                                <th>Note</th>
-                                                <th>Timestamp</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            // Connessione al database utilizzando PDO
-                                            $conn = getDbInstance(); // Suppongo che questa funzione restituisca un'istanza di PDO già configurata
-                                            $sql = "SELECT activity_log.*, utenti.user_name 
+
+                                <table class="table table-bordered table-striped table-responsive" id="dataTable"
+                                    width="100%" cellspacing="0" style="font-size:10pt;">
+                                    <thead class="border border-primary">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Utente</th>
+                                            <th>Categoria</th>
+                                            <th>Tipo</th>
+                                            <th>Descrizione</th>
+                                            <th>Dettaglio</th>
+                                            <th>Note</th>
+                                            <th>Timestamp</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        // Connessione al database utilizzando PDO
+                                        $conn = getDbInstance(); // Suppongo che questa funzione restituisca un'istanza di PDO già configurata
+                                        $sql = "SELECT activity_log.*, utenti.user_name 
                                                 FROM activity_log 
                                                 JOIN utenti ON activity_log.user_id = utenti.id 
                                                 ORDER BY activity_log.id DESC";
-                                            $stmt = $conn->prepare($sql);
-                                            $stmt->execute();
-                                            $activity_logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                            // Iterazione attraverso le righe del risultato della query
-                                            foreach ($activity_logs as $log) {
-                                                echo "<tr>";
-                                                echo "<td>{$log['id']}</td>";
-                                                echo "<td>{$log['user_name']}</td>";
-                                                echo "<td>{$log['category']}</td>";
-                                                echo "<td>{$log['activity_type']}</td>";
-                                                echo "<td>{$log['description']}</td>";
-                                                echo "<td>{$log['note']}</td>";
-                                                // Visualizza la colonna "Query" solo per Admin e Super se il campo "text_query" non è vuoto
-                                                if (!empty($log['text_query'])) {
-                                                    echo '<td class="text-center">';
-                                                    echo "<i class='fal fa-search view-query' style='cursor: pointer; color: #007bff;' data-query-id='{$log['id']}' data-toggle='modal' data-target='#queryModal'></i>";
-                                                    echo '</td>';
-                                                }
-                                                if (empty($log['text_query'])) {
-                                                    echo '<td>';
-                                                    echo "</td>";
-                                                }
-                                                echo "<td>{$log['created_at']}</td>";
-                                                echo "</tr>";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->execute();
+                                        $activity_logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                        // Iterazione attraverso le righe del risultato della query
+                                        foreach ($activity_logs as $log) {
+                                            echo "<tr>";
+                                            echo "<td>{$log['id']}</td>";
+                                            echo "<td>{$log['user_name']}</td>";
+                                            echo "<td>{$log['category']}</td>";
+                                            echo "<td>{$log['activity_type']}</td>";
+                                            echo "<td>{$log['description']}</td>";
+                                            echo "<td>{$log['note']}</td>";
+                                            // Visualizza la colonna "Query" solo per Admin e Super se il campo "text_query" non è vuoto
+                                            if (!empty($log['text_query'])) {
+                                                echo '<td class="text-center">';
+                                                echo "<i class='fal fa-search view-query' style='cursor: pointer; color: #007bff;' data-query-id='{$log['id']}' data-toggle='modal' data-target='#queryModal'></i>";
+                                                echo '</td>';
                                             }
-                                            ?>
-                                        </tbody>
-                                    </table>
+                                            if (empty($log['text_query'])) {
+                                                echo '<td>';
+                                                echo "</td>";
+                                            }
+                                            echo "<td>{$log['created_at']}</td>";
+                                            echo "</tr>";
+                                        }
+                                        ?>
+                                    </tbody>
                                 </table>
+
                             </div>
                         </div>
                     </div>
