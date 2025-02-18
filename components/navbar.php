@@ -106,23 +106,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 </div>
             </div>
         </li> -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFTP"
-                aria-expanded="true" aria-controls="collapseFTP">
-                <i class="fas fa-fw fa-globe-europe"></i>
-                <span>FTP</span>
-            </a>
-            <div id="collapseFTP" class="collapse" style="z-index:9999" aria-labelledby="headingFTP"
-                data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Sezioni:</h6>
-                    <a id="valentino-home" class="collapse-item"
-                        href="<?php echo BASE_URL ?>/functions/ftp/valentino"><i class="fa fa-network-wired fa-fw"></i>
-                        Valentino</a>
-
-                </div>
-            </div>
-        </li>
     <?php endif; ?>
     <!-- CONTROLLO QUALITA -->
     <?php if (isset($_SESSION['permessi_cq']) && $_SESSION['permessi_cq'] == 1): ?>
@@ -363,7 +346,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             '/functions/shipTracker/index': 'shipTracker',
             '/functions/attrezzatura/manage': 'attrezzatura-manage',
             '/functions/attrezzatura/return': 'attrezzatura-return',
-            '/functions/ftp/valentino': 'valentino-home'
             // Aggiungi qui altri link come necessario
         };
         // Controlla se l'URL corrente corrisponde a uno degli URL nel menu
