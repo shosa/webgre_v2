@@ -192,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTracking"
                 aria-expanded="true" aria-controls="collapseTracking">
                 <i class="fal fa-radar fa-lg"></i>
-                <span>Tracking Lotti</span>
+                <span>Tracking</span>
             </a>
             <div id="collapseTracking" class="collapse" style="z-index:9999" aria-labelledby="headingTracking"
                 data-parent="#accordionSidebar">
@@ -254,7 +254,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             <a class="nav-link collapsed" id="log" href="<?php echo BASE_URL ?>/functions/users/log_admin"
                 aria-expanded="true" aria-controls="collapseProd">
                 <i class="far fa-monitor-heart-rate"></i>
-                <span>Log Attività</span>
+                <span>Attività</span>
             </a>
         </li>
     <?php endif; ?>

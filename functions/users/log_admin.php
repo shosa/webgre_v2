@@ -32,9 +32,9 @@ require_once BASE_PATH . '/components/auth_validate.php';
                                 <h6 class="m-0 font-weight-bold text-primary">Log Attività Admin</h6>
                             </div>
                             <div class="card-body">
-                             
-                                    <table class="table table-bordered table-striped table-responsive" id="dataTable" width="100%"
-                                        cellspacing="0" style="font-size:10pt;">
+                                <table class="table table-responsive" width="100%">
+                                    <table class="table table-bordered table-striped table-responsive" id="dataTable"
+                                        width="100%" cellspacing="0" style="font-size:10pt;">
                                         <thead class="border border-primary">
                                             <tr>
                                                 <th>ID</th>
@@ -83,7 +83,7 @@ require_once BASE_PATH . '/components/auth_validate.php';
                                             ?>
                                         </tbody>
                                     </table>
-                               
+                                </table>
                             </div>
                         </div>
                     </div>
