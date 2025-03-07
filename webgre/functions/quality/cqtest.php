@@ -66,37 +66,31 @@ require_once BASE_PATH . '/components/header.php';
         touch-action: manipulation;
     }
     
-    /* Dimensioni più grandi per tutti i pulsanti e input */
-    .btn, .form-control, select, textarea {
-   
-        line-height: 1.5;
-        padding: 0.75rem 1rem;
-    }
-    
-    .btn {
-        min-height: 50px;
-        border-radius: 8px;
+    /* Dimensioni bilanciate per tutti i pulsanti e input */
+    .btn, select, textarea {
+        font-size: inherit;
+        line-height: inherit;
     }
     
     /* Stile per la tabella principale */
     #test_table td {
         vertical-align: middle;
-        padding: 15px;
+        padding: 8px;
     }
     
     /* Stili per i pulsanti di esito */
     .esito-btn {
-        width: 60px;
-        height: 60px;
-        margin: 5px;
-        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        margin: 3px;
+        border-radius: 4px;
         display: flex;
         align-items: center;
         justify-content: center;
     }
     
     .esito-btn i {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
     }
     
     .esito-btn.active {
@@ -122,11 +116,9 @@ require_once BASE_PATH . '/components/header.php';
     
     /* Stili per i pulsanti nei modali */
     #calzataButtons .btn, #testButtons .btn {
-        min-width: 70px;
-        min-height: 50px;
-        margin: 8px;
+        min-width: 50px;
+        margin: 5px;
         font-weight: bold;
-        font-size: 1.1rem;
     }
     
     /* Stile per i campi di input con i pulsanti */
@@ -137,70 +129,75 @@ require_once BASE_PATH . '/components/header.php';
     
     .input-group-field .form-control {
         flex-grow: 1;
-        border-radius: 8px 0 0 8px;
-        height: 50px;
+        border-radius: 4px 0 0 4px;
     }
     
     .input-group-field .btn {
-        border-radius: 0 8px 8px 0;
-        height: 50px;
-        width: 50px;
+        border-radius: 0 4px 4px 0;
+        width: 38px;
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-    
-    /* Stile per il pulsante salva */
-    .btn-lg {
-        padding: 15px 30px;
-        font-size: 1.25rem;
-        border-radius: 10px;
-        min-height: 60px;
     }
     
     /* Stile per i modali */
     .modal-content {
-        border-radius: 12px;
-    }
-    
-    .modal-body {
-        padding: 20px;
+        border-radius: 6px;
     }
     
     /* Stile per la visualizzazione dei badge */
     .badge {
-        font-size: 1rem;
-        padding: 8px 15px;
-        margin: 5px;
-        border-radius: 8px;
+        margin: 2px;
+        border-radius: 4px;
     }
     
-    /* Pulsanti per il test più evidenti */
+    /* Pulsanti per il test */
     .action-btn {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        border-radius: 4px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 5px;
-    }
-    
-    .action-btn i {
-        font-size: 1.5rem;
+        margin: 0 3px;
     }
     
     /* Display visibile per il test selezionato */
     .test-display {
         background-color: #f8f9fa;
-        padding: 10px 15px;
-        border-radius: 8px;
-        min-height: 50px;
-        margin-bottom: 10px;
+        padding: 6px 10px;
+        border-radius: 4px;
+        min-height: 34px;
+        margin-bottom: 6px;
         font-weight: bold;
         border: 1px solid #ddd;
         display: flex;
         align-items: center;
+    }
+    
+    /* Rendi i pulsanti più facili da premere ma non troppo grandi */
+    .btn-touch {
+        min-height: 36px;
+        min-width: 36px;
+    }
+    
+    /* Assicurati che i testi nei select siano visibili */
+    select.form-control {
+        height: auto;
+        padding: 6px 12px;
+    }
+    
+    /* Migliora la visibilità dei pulsanti nel modal */
+    #testButtons .btn, #calzataButtons .btn {
+        padding: 6px 12px;
+        margin: 4px;
+        font-size: inherit;
+    }
+    
+    /* Stile per la ricerca nei test */
+    #testSearch {
+        padding: 6px 12px;
+        font-size: inherit;
     }
 </style>
 
@@ -232,28 +229,28 @@ require_once BASE_PATH . '/components/header.php';
                             </h6>
                         </div>
                         <div class="card-body">
-                            <div class="d-flex flex-wrap align-items-center justify-content-center mb-4">
-                                <h3 class="badge bg-warning text-white text-center" style="margin-right: 10px;">
+                            <div class="d-flex flex-wrap align-items-center justify-content-center mb-3">
+                                <span class="badge bg-warning text-white" style="margin-right: 5px;">
                                     <?php echo $nomeLinea; ?>
-                                </h3>
-                                <h3 class="badge bg-light text-center" style="margin-right: 10px;">
+                                </span>
+                                <span class="badge bg-light" style="margin-right: 5px;">
                                     Cartellino: <?php echo $cartellino; ?>
-                                </h3>
-                                <h3 class="badge bg-light text-center">
+                                </span>
+                                <span class="badge bg-light">
                                     Commessa: <?php echo $commessa; ?>
-                                </h3>
-                                <h3 class="badge bg-primary text-white" style="margin-left: 10px;">
+                                </span>
+                                <span class="badge bg-primary text-white" style="margin-left: 5px;">
                                     <?php echo $data ?>
-                                </h3>
-                                <h3 class="badge bg-success text-white" style="margin-left: 10px;">
+                                </span>
+                                <span class="badge bg-success text-white" style="margin-left: 5px;">
                                     <?php echo $orario ?>
-                                </h3>
-                                <h3 class="badge bg-danger text-white" style="margin-left: 10px;">
+                                </span>
+                                <span class="badge bg-danger text-white" style="margin-left: 5px;">
                                     <?php echo $operatore ?>
-                                </h3>
+                                </span>
                             </div>
                             <form action="process_save.php" method="post" id="test_form">
-                                <div class="form-group row mb-4">
+                                <div class="form-group row mb-3">
                                     <label for="reparto" class="col-sm-3 col-form-label">Filiera di Provenienza</label>
                                     <div class="col-sm-9">
                                         <select id="reparto" name="reparto" class="form-control" required>
@@ -281,7 +278,7 @@ require_once BASE_PATH . '/components/header.php';
                                                         <div class="input-group-field">
                                                             <input type="text" name="calzata[]"
                                                                 class="form-control calzata-input" readonly required>
-                                                            <button type="button" class="btn btn-primary calzata-btn">
+                                                            <button type="button" class="btn btn-primary calzata-btn btn-touch">
                                                                 <i class="fas fa-shoe-prints"></i>
                                                             </button>
                                                         </div>
@@ -331,8 +328,8 @@ require_once BASE_PATH . '/components/header.php';
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="form-group text-center floating-button mt-4">
-                                    <button type="submit" class="btn btn-primary btn-lg">Salva <i class="fas fa-save"></i></button>
+                                <div class="form-group text-center mt-3">
+                                    <button type="submit" class="btn btn-primary">Salva <i class="fas fa-save"></i></button>
                                 </div>
                             </form>
                         </div>
@@ -349,13 +346,13 @@ require_once BASE_PATH . '/components/header.php';
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <input type="text" id="barcodeInput" class="form-control form-control-lg"
+                                        <input type="text" id="barcodeInput" class="form-control"
                                             placeholder="Sparare il codice qui" autofocus>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary btn-lg"
+                                        <button type="button" class="btn btn-secondary"
                                             data-dismiss="modal">Chiudi</button>
-                                        <button type="button" class="btn btn-primary btn-lg" id="saveBarcode">Salva</button>
+                                        <button type="button" class="btn btn-primary" id="saveBarcode">Salva</button>
                                     </div>
                                 </div>
                             </div>
@@ -364,7 +361,7 @@ require_once BASE_PATH . '/components/header.php';
                         <!-- Modal Calzata -->
                         <div class="modal fade" id="calzataModal" tabindex="-1" role="dialog"
                             aria-labelledby="calzataModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="calzataModalLabel">Seleziona Calzata</h5>
@@ -384,7 +381,7 @@ require_once BASE_PATH . '/components/header.php';
                         <!-- Modal Test -->
                         <div class="modal fade" id="testModal" tabindex="-1" role="dialog"
                             aria-labelledby="testModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="testModalLabel">Seleziona Test</h5>
@@ -393,7 +390,7 @@ require_once BASE_PATH . '/components/header.php';
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <input type="text" id="testSearch" class="form-control form-control-lg mb-3" 
+                                        <input type="text" id="testSearch" class="form-control mb-2" 
                                                placeholder="Cerca test..." autocomplete="off">
                                         <div class="d-flex flex-wrap justify-content-center" id="testButtons">
                                             <!-- I pulsanti verranno generati dinamicamente con JavaScript -->
@@ -612,12 +609,24 @@ require_once BASE_PATH . '/components/header.php';
                                 document.querySelectorAll('#test_form button[type="submit"], .calzata-btn, #reparto').forEach(function (button) {
                                     button.disabled = false;
                                 });
-
-                                // Rende più touch-friendly la selezione dei reparti
-                                document.getElementById('reparto').addEventListener('click', function() {
-                                    // I device touch spesso richiedono un click per aprire un select
-                                    this.focus();
-                                });
+                                
+                                // Per migliorare l'accessibilità su dispositivi touch
+                                if ('ontouchstart' in window) {
+                                    // Migliora la selezione dei reparti
+                                    document.getElementById('reparto').addEventListener('touchstart', function() {
+                                        this.focus();
+                                    });
+                                    
+                                    // Aggiungi feedback tattile ai pulsanti quando possibile
+                                    document.querySelectorAll('.btn').forEach(function(btn) {
+                                        btn.addEventListener('touchstart', function() {
+                                            this.classList.add('active');
+                                        });
+                                        btn.addEventListener('touchend', function() {
+                                            this.classList.remove('active');
+                                        });
+                                    });
+                                }
                             });
                         </script>
                     </div>
