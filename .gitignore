@@ -3,3 +3,5 @@
 /img/users/*
 /tmp/pdf/
 /components/error_log.txt
+/reports/
+/reports/*
