@@ -134,9 +134,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                     <a id="quality-barcode" class="collapse-item" href="<?php echo BASE_URL ?>/functions/quality/barcode"><i
                             class="fal fa-barcode-alt"></i>
                         Barcodes</a>
-                    <a id="quality-charts" class="collapse-item"
-                        href="<?php echo BASE_URL ?>/functions/quality/chartsOverview"><i class="far fa-chart-pie-alt"></i>
-                        Statistiche</a>
+                    <a id="quality-plist" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/quality/makePList"><i class="far fa-chart-pie-alt"></i>
+                        Packing List</a>
                 </div>
             </div>
         </li>
@@ -326,7 +326,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             '/functions/quality/search': 'quality-search',
             '/functions/quality/barcode': 'quality-barcode',
             '/functions/quality/home': 'quality-home',
-            '/functions/quality/chartsOverview': 'quality-charts',
+            '/functions/quality/makePList': 'quality-plist',
             '/functions/production/new': 'production-new',
             '/functions/production/newShipment': 'production-ship',
             '/functions/production/calendario': 'production-calendario',

@@ -73,13 +73,13 @@ require_once BASE_PATH . '/components/header.php';
                             </a>
                         </div>
                         <div class="col-md-4 mb-4">
-                            <a href="chartsOverview"
+                            <a href="makePList"
                                 class="btn btn-warning btn-lg btn-block shadow d-flex align-items-center justify-content-center"
                                 style="height: 150px;">
-                                <i class="fad fa-chart-pie fa-3x mr-3"></i>
+                                <i class="fad fa-list fa-3x mr-3"></i>
                                 <div class="text-left">
-                                    <h5><b>Statistiche</b></h5>
-                                    <i>Confronta i dati sotto forma di grafici</i>
+                                    <h5><b>Crea Packing List</b></h5>
+                                    <i>Genera pdf da inviare al Cliente.</i>
                                 </div>
                             </a>
                         </div>
