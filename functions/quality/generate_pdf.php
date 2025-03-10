@@ -51,22 +51,22 @@ $stmt->execute([$date]);
 $totalPaResult = $stmt->fetch(PDO::FETCH_ASSOC);
 $totalPa = $totalPaResult['totalPa'] ?? 0;
 $negativeEsiti = 0;
-$difettiEsiti = 0;
+
 foreach ($data as $record) {
     if ($record['esito'] === 'V') {
-        $difettiEsiti++;
+      
     }
     if ($record['esito'] === 'X') {
         $negativeEsiti++;
-        $difettiEsiti++;
+        
     }
 }
 if ($totalPa > 0) {
     $negativePercentage = ($negativeEsiti / $totalPa) * 100;
-    $difettiPercentage = ($difettiEsiti / $totalPa) * 100;
+   
 } else {
     $negativePercentage = 0; // Se non ci sono pa, la percentuale di esiti negativi è 0%
-    $difettiPercentage = 0;
+    
 }
 $pdf->SetFont('helvetica', '', 15);
 $pdf->SetFillColor(200, 200, 200); // Colore grigio chiaro per lo sfondo
@@ -75,7 +75,7 @@ $pdf->Ln(2);
 $pdf->SetFont('helvetica', '', 12);
 // Aggiungi la percentuale di scarto dopo la riga vuota
 $pdf->Cell(0, 10, 'Percentuale TOTALE di scarto registrata: ' . number_format($negativePercentage, 2) . '%', 0, 1, 'L');
-$pdf->Cell(0, 10, 'Percentuale TOTALE di difetti registrata: ' . number_format($difettiPercentage, 2) . '%', 0, 1, 'L');
+
 // Calcola la larghezza massima per ogni colonna
 $colWidths = array_fill(0, 7, 0); // Array inizializzato con 7 colonne
 $columnTitles = array('N° TEST', 'CARTELLINO/COMMESSA', 'ARTICOLO', 'CALZATA', 'ORA', 'TEST', 'ANNOTAZIONI', 'ESITO');
