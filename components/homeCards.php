@@ -53,7 +53,7 @@
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Visualizza tutte
                                 </a>
-                                <a class="dropdown-item" href="<?php echo BASE_URL ?>/functions/riparazioni/addRiparazione">
+                                <a class="dropdown-item" href="<?php echo BASE_URL ?>/functions/riparazioni/add_step1">
                                     <i class="fas fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Aggiungi nuova
                                 </a>
@@ -116,7 +116,7 @@
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Visualizza tutte
                                 </a>
-                                <a class="dropdown-item" href="<?php echo BASE_URL ?>/functions/riparazioni/addRiparazione">
+                                <a class="dropdown-item" href="<?php echo BASE_URL ?>/functions/riparazioni/add_step1">
                                     <i class="fas fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Aggiungi nuova
                                 </a>
@@ -470,10 +470,7 @@
                                     <i class="fas fa-calendar fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Visualizza calendario
                                 </a>
-                                <a class="dropdown-item" href="<?php echo BASE_URL ?>/functions/production/report">
-                                    <i class="fas fa-file-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Genera report
-                                </a>
+                              
                             </div>
                         </div>
                     </div>
