@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['tema'] = $row['theme_color'];
                 $_SESSION['mail'] = $row['mail'];
                 // Recupera i permessi dalla tabella `permessi`
-                $permessi_statement = $pdo->prepare("SELECT riparazioni, campionario, cq, produzione, tabelle, log,tracking, etichette,dbsql, settings, utenti FROM permessi WHERE id_utente = :user_id");
+                $permessi_statement = $pdo->prepare("SELECT riparazioni, campionario, cq, produzione, tabelle, log,tracking, etichette,dbsql, settings, macchinari, utenti FROM permessi WHERE id_utente = :user_id");
                 $permessi_statement->bindParam(':user_id', $user_id);
                 $permessi_statement->execute();
                 $permessi = $permessi_statement->fetch(PDO::FETCH_ASSOC);
@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['permessi_sql'] = $permessi['dbsql'];
                     $_SESSION['permessi_tracking'] = $permessi['tracking'];
                     $_SESSION['permessi_settings'] = $permessi['settings'];
+                    $_SESSION['permessi_macchinari'] = $permessi['macchinari'];
                 }
                 if ($remember) {
                     $series_id = randomString(16);

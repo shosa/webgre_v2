@@ -134,9 +134,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                     <a id="quality-barcode" class="collapse-item" href="<?php echo BASE_URL ?>/functions/quality/barcode"><i
                             class="fal fa-barcode-alt"></i>
                         Barcodes</a>
-                    <a id="quality-plist" class="collapse-item"
-                        href="<?php echo BASE_URL ?>/functions/quality/makePList"><i class="far fa-chart-pie-alt"></i>
+                    <a id="quality-plist" class="collapse-item" href="<?php echo BASE_URL ?>/functions/quality/makePList"><i
+                            class="far fa-chart-pie-alt"></i>
                         Packing List</a>
+                </div>
+            </div>
+        </li>
+
+    <?php endif; ?>
+    <!-- GESTIONE MACCHINARI -->
+    <?php if (isset($_SESSION['permessi_macchinari']) && $_SESSION['permessi_macchinari'] == 1): ?>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMachine"
+                aria-expanded="true" aria-controls="collapseMachine">
+                <i class="far fa-laptop-code"></i>
+                <span>Macchinari</span>
+            </a>
+            <div id="collapseMachine" class="collapse" style="z-index:9999" aria-labelledby="headingMachine"
+                data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Sezioni:</h6>
+                    <a id="machine-home" class="collapse-item" href="<?php echo BASE_URL ?>/functions/machine/home"><i
+                            class="fa fa-home"></i>
+                        Home</a>
+                    <a id="machine-new" class="collapse-item" href="<?php echo BASE_URL ?>/functions/machine/new"><i
+                            class="fa fa-plus"></i>
+                        Nuova</a>
                 </div>
             </div>
         </li>
@@ -350,6 +373,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             '/functions/shipTracker/index': 'shipTracker',
             '/functions/attrezzatura/manage': 'attrezzatura-manage',
             '/functions/attrezzatura/return': 'attrezzatura-return',
+            '/functions/machine/home': 'machine-home',
+            '/functions/machine/new': 'machine-new',
             // Aggiungi qui altri link come necessario
         };
         // Controlla se l'URL corrente corrisponde a uno degli URL nel menu
