@@ -38,61 +38,199 @@ if (!empty($_COOKIE['series_id']) && !empty($_COOKIE['remember_token'])) {
 }
 include BASE_PATH . '/components/header.php';
 ?>
-<style>
-    .logo {
-        margin: 5%;
-        text-align: center;
-    }
 
+<style>
+    .bg-login-image {
+        background: url('img/login-bg.jpg');
+        background-position: center;
+        background-size: cover;
+    }
+    
+    .login-wrapper {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 0;
+    }
+    
+    .logo-container {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .logo-container img {
+        max-width: 180px;
+        height: auto;
+    }
+    
+    .login-form-container {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .form-control {
+        border-radius: 10px;
+        padding: 12px 15px;
+        font-size: 14px;
+        border: 1px solid #e2e8f0;
+        background-color: #f8fafc;
+    }
+    
+    .form-control:focus {
+        background-color: #fff;
+        box-shadow: 0 0 0 0.2rem rgba(66, 153, 225, 0.25);
+        border-color: #90cdf4;
+    }
+    
+    .input-group-text {
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+    }
+    
+    .btn-login {
+        border-radius: 10px;
+        padding: 12px;
+        font-weight: 600;
+        background: linear-gradient(to right, #ed8936, #dd6b20);
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-login:hover {
+        background: linear-gradient(to right, #dd6b20, #c05621);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    
+    .card-header {
+        background-color: #fff;
+        border-bottom: 1px solid #f1f1f1;
+        padding: 1.5rem;
+        text-align: center;
+        font-size: 1.5rem;
+    }
+    
+    .form-check-input {
+        width: 18px;
+        height: 18px;
+        margin-top: 0.2rem;
+    }
+    
+    .form-check-label {
+        margin-left: 0.5rem;
+        font-size: 14px;
+    }
+    
+    .login-footer {
+        text-align: center;
+        font-size: 0.8rem;
+        color: #718096;
+        margin-top: 2rem;
+    }
+    
     @media screen and (max-width: 768px) {
-        .logo img {
-            width: 60%;
+        .login-image-column {
+            display: none;
+        }
+        
+        .logo-container img {
+            max-width: 150px;
         }
     }
 </style>
 
 <body class="bg-gradient-light">
-    <div class="container">
-        <div class="card o-hidden border-0 shadow-lg my-5 bg-gray-100 align-center">
-            <div class="card-body p-0"></div>
-            <div class="logo">
-                <img src="img/logoMini.png" alt="Logo">
-            </div>
-            <form class="form loginform" method="POST" action="authenticate.php" style="padding:5%;">
-                <div class="card">
-                    <div class="card-header text-primary font-weight-bold">ACCEDI</div>
-                    <div class="card-body">
-                        <?php require_once(BASE_PATH . "/utils/alerts.php"); ?>
-                        <div class="form-group">
-                            <label class="control-label">USERNAME</label>
-                            <input type="text" name="username" class="form-control" required="required">
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">PASSWORD</label>
-                            <input type="password" name="passwd" class="form-control" required="required">
-                        </div>
-                        <div class="form-check">
-                            <input name="remember" type="checkbox" class="form-check-input" value="1">
-                            <label class="form-check-label">Ricordami su questo dispositivo.</label>
-                        </div>
-                        <?php if (isset($_SESSION['login_failure'])): ?>
-                            <div class="alert alert-danger alert-dismissable fade show mt-3">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                <?php
-                                echo $_SESSION['login_failure'];
-                                unset($_SESSION['login_failure']);
-                                ?>
+    <div class="login-wrapper">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-6 col-lg-6 col-md-9">
+                    <div class="card o-hidden border-0 shadow-lg my-5">
+                        <div class="card-body p-0">
+                            <div class="row">
+                               
+                                <div class="col-lg-12">
+                                    <div class="p-5 login-form-container">
+                                        <div class="logo-container">
+                                            <img src="img/logoMini.png" alt="Logo" class="img-fluid">
+                                        </div>
+                                        
+                                        <div class="text-center mb-4">
+                                            <h1 class="h4 text-gray-900">Benvenuto</h1>
+                                            <p class="text-muted">Accedi per continuare</p>
+                                        </div>
+                                        
+                                        <?php require_once(BASE_PATH . "/utils/alerts.php"); ?>
+                                        
+                                        <form class="user" method="POST" action="authenticate.php">
+                                            <div class="form-group mb-4">
+                                                <label class="text-gray-700 mb-2">Username</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-user"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" name="username" class="form-control" required="required" placeholder="Inserisci username">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group mb-4">
+                                                <label class="text-gray-700 mb-2">Password</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-lock"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input type="password" name="passwd" class="form-control" required="required" placeholder="Inserisci password">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <div class="form-check">
+                                                    <input name="remember" type="checkbox" class="form-check-input" value="1" id="rememberCheck">
+                                                    <label class="form-check-label" for="rememberCheck">Ricordami su questo dispositivo</label>
+                                                </div>
+                                            </div>
+                                            
+                                            <?php if (isset($_SESSION['login_failure'])): ?>
+                                                <div class="alert alert-danger alert-dismissable fade show mt-3">
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    <?php
+                                                    echo $_SESSION['login_failure'];
+                                                    unset($_SESSION['login_failure']);
+                                                    ?>
+                                                </div>
+                                            <?php endif; ?>
+                                            
+                                            <button type="submit" class="btn btn-login btn-block mt-4">
+                                                <i class="fas fa-sign-in-alt mr-2"></i> Accedi
+                                            </button>
+                                        </form>
+                                        
+                                       
+                                    </div>
+                                </div>
                             </div>
-                        <?php endif; ?>
-                        <button type="submit" class="btn btn-orange mt-3" style="width:100%;">Accedi</button>
+                        </div>
                     </div>
                 </div>
-            </form>
-            <?php include BASE_PATH . '/components/footer.php'; ?>
+            </div>
         </div>
     </div>
+    
+    <?php include BASE_PATH . '/components/scripts.php'; ?>
 </body>
-
 </html>
