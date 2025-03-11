@@ -9,7 +9,7 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-:root {
+ :root {
   --blue: #4e73df;
   --indigo: #6610f2;
   --purple: #6f42c1;
@@ -11447,7 +11447,9 @@ a:focus {
 .border-left-warning {
   border-left: 0.25rem solid #f6c23e !important;
 }
-
+.border-left-indigo {
+  border-left: 0.25rem solid #6610f2 !important;
+}
 .border-bottom-warning {
   border-bottom: 0.25rem solid #f6c23e !important;
 }
