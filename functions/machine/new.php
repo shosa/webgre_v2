@@ -16,7 +16,7 @@ $formData = []; // Per mantenere i dati del form in caso di errore
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Salva i dati del form per il ripristino in caso di errore
     $formData = $_POST;
-    
+
     if (isset($_POST['action']) && $_POST['action'] === 'update') {
         // Gestione aggiornamento rapido
         try {
@@ -26,20 +26,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($checkStmt->fetch()) {
                 throw new PDOException("Matricola duplicata", 1062);
             }
-            
+
             $stmt = $pdo->prepare("UPDATE mac_anag SET 
                 matricola = ?,
                 tipologia = ?,
                 data_acquisto = ?,
+                rif_fattura = ?,
                 produttore = ?,
                 modello = ?,
                 note = ?
                 WHERE id = ?");
-            
+
             $result = $stmt->execute([
                 $_POST['edit_matricola'],
                 $_POST['edit_tipologia'],
                 $_POST['edit_data_acquisto'],
+                $_POST['edit_rif_fattura'],
                 $_POST['edit_produttore'],
                 $_POST['edit_modello'],
                 $_POST['edit_note'] ?? null,
@@ -70,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($checkStmt->fetch()) {
                 throw new PDOException("Matricola duplicata", 1062);
             }
-            
+
             // Gestione del nuovo tipo di macchina
             $tipologia = $_POST['tipologia'];
             if ($_POST['tipologia'] === 'nuovo') {
@@ -94,13 +96,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             // Preparazione dell'inserimento del macchinario
-            $stmt = $pdo->prepare("INSERT INTO mac_anag (matricola, tipologia, data_acquisto, produttore, modello, note) 
-                                VALUES (?, ?, ?, ?, ?, ?)");
-            
+            $stmt = $pdo->prepare("INSERT INTO mac_anag (matricola, tipologia, data_acquisto, rif_fattura, produttore, modello, note) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?)");
+
             $result = $stmt->execute([
                 $_POST['matricola'],
                 $tipologia,
                 $_POST['data_acquisto'],
+                $_POST['rif_fattura'],
                 $_POST['produttore'],
                 $_POST['modello'],
                 $_POST['note'] ?? null
@@ -110,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Reset dei dati del form ma mantieni i dati per la visualizzazione del messaggio
                 $successMessage = "Macchinario '<strong>" . htmlspecialchars($_POST['matricola']) . "</strong>' inserito con successo!";
                 $formData = []; // Pulisci i dati del form dopo il successo
-                
+
                 // Aggiorna la lista degli ultimi 5 macchinari
                 $stmt = $pdo->query("SELECT * FROM mac_anag ORDER BY data_creazione DESC LIMIT 5");
                 $ultimi_macchinari = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -156,28 +159,28 @@ require_once BASE_PATH . '/components/header.php';
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <?php include(BASE_PATH . "/utils/alerts.php"); ?>
-                    
+
                     <?php if (!empty($successMessage)): ?>
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="fas fa-check-circle mr-2"></i> <?= $successMessage ?>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle mr-2"></i> <?= $successMessage ?>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                     <?php endif; ?>
-                    
+
                     <?php if (!empty($errorMessage)): ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="fas fa-exclamation-triangle mr-2"></i> <?= $errorMessage ?>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-triangle mr-2"></i> <?= $errorMessage ?>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                     <?php endif; ?>
-                    
+
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Inserimento Nuovo Macchinario</h1>
-                       
+
                     </div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
@@ -189,10 +192,12 @@ require_once BASE_PATH . '/components/header.php';
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">Dati Macchinario</h6>
                             <div class="dropdown no-arrow">
-                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                    aria-labelledby="dropdownMenuLink">
                                     <div class="dropdown-header">Operazioni:</div>
                                     <a class="dropdown-item" href="lista_macchinari">Visualizza tutti</a>
                                     <a class="dropdown-item" href="#" id="resetForm">Pulisci form</a>
@@ -204,30 +209,36 @@ require_once BASE_PATH . '/components/header.php';
                                 <div class="row">
                                     <div class="col-md-6 form-group">
                                         <label for="matricola"><strong>Matricola/Numero di Serie *</strong></label>
-                                        <input type="text" name="matricola" id="matricola" class="form-control <?= !empty($errorMessage) && strpos($errorMessage, 'matricola') !== false ? 'is-invalid' : '' ?>" required 
-                                            value="<?= htmlspecialchars($formData['matricola'] ?? '') ?>">
+                                        <input type="text" name="matricola" id="matricola"
+                                            class="form-control <?= !empty($errorMessage) && strpos($errorMessage, 'matricola') !== false ? 'is-invalid' : '' ?>"
+                                            required value="<?= htmlspecialchars($formData['matricola'] ?? '') ?>">
                                         <?php if (!empty($errorMessage) && strpos($errorMessage, 'matricola') !== false): ?>
-                                        <div class="invalid-feedback">
-                                            La matricola inserita è già in uso. Inserire una matricola unica.
-                                        </div>
+                                            <div class="invalid-feedback">
+                                                La matricola inserita è già in uso. Inserire una matricola unica.
+                                            </div>
                                         <?php endif; ?>
                                     </div>
 
                                     <div class="col-md-6 form-group">
                                         <label for="tipologia"><strong>Tipologia Macchina *</strong></label>
-                                        <select name="tipologia" id="tipologia" class="form-control selectpicker" data-live-search="true" required>
+                                        <select name="tipologia" id="tipologia" class="form-control selectpicker"
+                                            data-live-search="true" required>
                                             <option value="">-- Seleziona tipo --</option>
                                             <?php foreach ($tipi_macchine as $tipo): ?>
-                                                <option value="<?= htmlspecialchars($tipo['tipo']) ?>" <?= (isset($formData['tipologia']) && $formData['tipologia'] == $tipo['tipo']) ? 'selected' : '' ?>>
-                                                    <?= htmlspecialchars($tipo['tipo']) ?></option>
+                                                <option value="<?= htmlspecialchars($tipo['tipo']) ?>"
+                                                    <?= (isset($formData['tipologia']) && $formData['tipologia'] == $tipo['tipo']) ? 'selected' : '' ?>>
+                                                    <?= htmlspecialchars($tipo['tipo']) ?>
+                                                </option>
                                             <?php endforeach; ?>
-                                            <option value="nuovo" <?= (isset($formData['tipologia']) && $formData['tipologia'] == 'nuovo') ? 'selected' : '' ?>>➕ Aggiungi nuovo tipo...</option>
+                                            <option value="nuovo" <?= (isset($formData['tipologia']) && $formData['tipologia'] == 'nuovo') ? 'selected' : '' ?>>➕ Aggiungi nuovo
+                                                tipo...</option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <!-- Sezione per nuovo tipo (nascosta inizialmente) -->
-                                <div id="nuovo_tipo_section" class="row mt-3" style="display:<?= (isset($formData['tipologia']) && $formData['tipologia'] == 'nuovo') ? 'flex' : 'none' ?>;">
+                                <div id="nuovo_tipo_section" class="row mt-3"
+                                    style="display:<?= (isset($formData['tipologia']) && $formData['tipologia'] == 'nuovo') ? 'flex' : 'none' ?>;">
                                     <div class="col-md-6 form-group">
                                         <label for="nuovo_tipo"><strong>Nuovo Tipo di Macchina *</strong></label>
                                         <input type="text" name="nuovo_tipo" id="nuovo_tipo" class="form-control"
@@ -235,7 +246,8 @@ require_once BASE_PATH . '/components/header.php';
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label for="descrizione_tipo">Descrizione (opzionale)</label>
-                                        <input type="text" name="descrizione_tipo" id="descrizione_tipo" class="form-control"
+                                        <input type="text" name="descrizione_tipo" id="descrizione_tipo"
+                                            class="form-control"
                                             value="<?= htmlspecialchars($formData['descrizione_tipo'] ?? '') ?>">
                                     </div>
                                 </div>
@@ -243,14 +255,18 @@ require_once BASE_PATH . '/components/header.php';
                                 <div class="row mt-3">
                                     <div class="col-md-6 form-group">
                                         <label for="data_acquisto"><strong>Data Acquisto *</strong></label>
-                                        <input type="date" name="data_acquisto" id="data_acquisto" class="form-control" required
-                                            value="<?= htmlspecialchars($formData['data_acquisto'] ?? '') ?>">
+                                        <input type="date" name="data_acquisto" id="data_acquisto" class="form-control"
+                                            required value="<?= htmlspecialchars($formData['data_acquisto'] ?? '') ?>">
                                     </div>
-
+                                    <div class="col-md-6 form-group">
+                                        <label for="rif_fattura"><strong>Rif. Fattura</strong></label>
+                                        <input type="text" name="rif_fattura" id="rif_Fattura" class="form-control"
+                                             value="<?= htmlspecialchars($formData['rif_fattura'] ?? '') ?>">
+                                    </div>
                                     <div class="col-md-6 form-group">
                                         <label for="produttore"><strong>Produttore *</strong></label>
-                                        <input type="text" name="produttore" id="produttore" class="form-control" required
-                                            value="<?= htmlspecialchars($formData['produttore'] ?? '') ?>">
+                                        <input type="text" name="produttore" id="produttore" class="form-control"
+                                            required value="<?= htmlspecialchars($formData['produttore'] ?? '') ?>">
                                     </div>
                                 </div>
 
@@ -263,7 +279,8 @@ require_once BASE_PATH . '/components/header.php';
 
                                     <div class="col-md-6 form-group">
                                         <label for="note">Note (opzionale)</label>
-                                        <textarea name="note" id="note" class="form-control" rows="3"><?= htmlspecialchars($formData['note'] ?? '') ?></textarea>
+                                        <textarea name="note" id="note" class="form-control"
+                                            rows="3"><?= htmlspecialchars($formData['note'] ?? '') ?></textarea>
                                     </div>
                                 </div>
 
@@ -290,7 +307,8 @@ require_once BASE_PATH . '/components/header.php';
                         <div class="card-body">
                             <?php if (count($ultimi_macchinari) > 0): ?>
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-hover" id="ultimi-macchinari" width="100%" cellspacing="0">
+                                    <table class="table table-bordered table-hover" id="ultimi-macchinari" width="100%"
+                                        cellspacing="0">
                                         <thead>
                                             <tr>
                                                 <th>Matricola</th>
@@ -308,19 +326,22 @@ require_once BASE_PATH . '/components/header.php';
                                                     <td><?= htmlspecialchars($macchinario['tipologia']) ?></td>
                                                     <td><?= htmlspecialchars($macchinario['produttore']) ?></td>
                                                     <td><?= htmlspecialchars($macchinario['modello']) ?></td>
-                                                    <td><?= htmlspecialchars(date('d/m/Y', strtotime($macchinario['data_acquisto']))) ?></td>
+                                                    <td><?= htmlspecialchars(date('d/m/Y', strtotime($macchinario['data_acquisto']))) ?>
+                                                    </td>
                                                     <td class="text-center">
-                                                        <button type="button" class="btn btn-sm btn-primary edit-btn" 
+                                                        <button type="button" class="btn btn-sm btn-primary edit-btn"
                                                             data-id="<?= $macchinario['id'] ?>"
                                                             data-matricola="<?= htmlspecialchars($macchinario['matricola']) ?>"
                                                             data-tipologia="<?= htmlspecialchars($macchinario['tipologia']) ?>"
                                                             data-data_acquisto="<?= htmlspecialchars($macchinario['data_acquisto']) ?>"
+                                                            data-rif_fattura="<?= htmlspecialchars($macchinario['rif_fattura']) ?>"
                                                             data-produttore="<?= htmlspecialchars($macchinario['produttore']) ?>"
                                                             data-modello="<?= htmlspecialchars($macchinario['modello']) ?>"
                                                             data-note="<?= htmlspecialchars($macchinario['note'] ?? '') ?>">
                                                             <i class="fas fa-edit"></i> Modifica
                                                         </button>
-                                                        <a href="dettaglio_macchinario?id=<?= $macchinario['id'] ?>" class="btn btn-sm btn-info">
+                                                        <a href="dettaglio_macchinario?id=<?= $macchinario['id'] ?>"
+                                                            class="btn btn-sm btn-info">
                                                             <i class="fas fa-eye"></i> Dettagli
                                                         </a>
                                                     </td>
@@ -331,16 +352,18 @@ require_once BASE_PATH . '/components/header.php';
                                 </div>
                             <?php else: ?>
                                 <div class="alert alert-info">
-                                    <i class="fas fa-info-circle mr-2"></i> Nessun macchinario inserito finora. Utilizza il form sopra per aggiungere il primo macchinario.
+                                    <i class="fas fa-info-circle mr-2"></i> Nessun macchinario inserito finora. Utilizza il
+                                    form sopra per aggiungere il primo macchinario.
                                 </div>
                             <?php endif; ?>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Modal per modifica rapida -->
-            <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -356,13 +379,16 @@ require_once BASE_PATH . '/components/header.php';
                                 <div class="row">
                                     <div class="col-md-6 form-group">
                                         <label for="edit_matricola"><strong>Matricola/Numero di Serie *</strong></label>
-                                        <input type="text" name="edit_matricola" id="edit_matricola" class="form-control" required>
+                                        <input type="text" name="edit_matricola" id="edit_matricola"
+                                            class="form-control" required>
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label for="edit_tipologia"><strong>Tipologia Macchina *</strong></label>
                                         <select name="edit_tipologia" id="edit_tipologia" class="form-control" required>
                                             <?php foreach ($tipi_macchine as $tipo): ?>
-                                                <option value="<?= htmlspecialchars($tipo['tipo']) ?>"><?= htmlspecialchars($tipo['tipo']) ?></option>
+                                                <option value="<?= htmlspecialchars($tipo['tipo']) ?>">
+                                                    <?= htmlspecialchars($tipo['tipo']) ?>
+                                                </option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -370,21 +396,30 @@ require_once BASE_PATH . '/components/header.php';
                                 <div class="row">
                                     <div class="col-md-6 form-group">
                                         <label for="edit_data_acquisto"><strong>Data Acquisto *</strong></label>
-                                        <input type="date" name="edit_data_acquisto" id="edit_data_acquisto" class="form-control" required>
+                                        <input type="date" name="edit_data_acquisto" id="edit_data_acquisto"
+                                            class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="edit_rif_fattura"><strong>Rif. Fattura</strong></label>
+                                        <input type="text" name="edit_rif_fattura" id="edit_rif_fattura"
+                                            class="form-control">
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label for="edit_produttore"><strong>Produttore *</strong></label>
-                                        <input type="text" name="edit_produttore" id="edit_produttore" class="form-control" required>
+                                        <input type="text" name="edit_produttore" id="edit_produttore"
+                                            class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 form-group">
                                         <label for="edit_modello"><strong>Modello *</strong></label>
-                                        <input type="text" name="edit_modello" id="edit_modello" class="form-control" required>
+                                        <input type="text" name="edit_modello" id="edit_modello" class="form-control"
+                                            required>
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label for="edit_note">Note (opzionale)</label>
-                                        <textarea name="edit_note" id="edit_note" class="form-control" rows="3"></textarea>
+                                        <textarea name="edit_note" id="edit_note" class="form-control"
+                                            rows="3"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -396,7 +431,7 @@ require_once BASE_PATH . '/components/header.php';
                     </div>
                 </div>
             </div>
-            
+
             <?php include_once BASE_PATH . '/components/scripts.php'; ?>
 
             <script>
@@ -410,7 +445,7 @@ require_once BASE_PATH . '/components/header.php';
                         today = yyyy + '-' + mm + '-' + dd;
                         $('#data_acquisto').val(today);
                     }
-                    
+
                     // Mostra/nascondi la sezione per nuovo tipo
                     $('#tipologia').change(function () {
                         if ($(this).val() === 'nuovo') {
@@ -421,23 +456,23 @@ require_once BASE_PATH . '/components/header.php';
                             $('#nuovo_tipo').attr('required', false);
                         }
                     });
-                    
+
                     // Attiva sezione nuovo tipo se selezionato
                     if ($('#tipologia').val() === 'nuovo') {
                         $('#nuovo_tipo_section').show();
                         $('#nuovo_tipo').attr('required', true);
                     }
-                    
+
                     // Pulisci form
                     $('#clearBtn, #resetForm').click(function () {
                         // Pulisci il modulo
                         $('#macchinarioForm')[0].reset();
                         $('#nuovo_tipo_section').hide();
                         $('#matricola').removeClass('is-invalid');
-                        
+
                         // Nascondi messaggi di errore e successo
                         $('.alert-danger, .alert-success').fadeOut();
-                        
+
                         // Reimposta la data odierna
                         var today = new Date();
                         var dd = String(today.getDate()).padStart(2, '0');
@@ -445,53 +480,54 @@ require_once BASE_PATH . '/components/header.php';
                         var yyyy = today.getFullYear();
                         today = yyyy + '-' + mm + '-' + dd;
                         $('#data_acquisto').val(today);
-                        
+
                         return false;
                     });
-                    
+
                     // Sostituiamo la funzione modal con una soluzione alternativa
-                    $('.edit-btn').click(function() {
+                    $('.edit-btn').click(function () {
                         // Imposta i valori nei campi del form
                         $('#edit_id').val($(this).data('id'));
                         $('#edit_matricola').val($(this).data('matricola'));
                         $('#edit_tipologia').val($(this).data('tipologia'));
                         $('#edit_data_acquisto').val($(this).data('data_acquisto'));
+                        $('#edit_rif_fattura').val($(this).data('rif_fattura'));
                         $('#edit_produttore').val($(this).data('produttore'));
                         $('#edit_modello').val($(this).data('modello'));
                         $('#edit_note').val($(this).data('note'));
-                        
+
                         // Mostra il modal con JavaScript puro
                         document.getElementById('editModal').style.display = 'block';
                         document.getElementById('editModal').classList.add('show');
                         document.body.classList.add('modal-open');
-                        
+
                         // Crea un backdrop per il modal
                         var backdrop = document.createElement('div');
                         backdrop.className = 'modal-backdrop fade show';
                         document.body.appendChild(backdrop);
                     });
-                    
+
                     // Gestione della chiusura del modal
-                    $('#closeModalBtn, #closeModalX').click(function() {
+                    $('#closeModalBtn, #closeModalX').click(function () {
                         // Nascondi il modal
                         document.getElementById('editModal').style.display = 'none';
                         document.getElementById('editModal').classList.remove('show');
                         document.body.classList.remove('modal-open');
-                        
+
                         // Rimuovi il backdrop
                         var backdrop = document.querySelector('.modal-backdrop');
                         if (backdrop) {
                             backdrop.parentNode.removeChild(backdrop);
                         }
                     });
-                    
+
                     // Auto-focus sul primo campo quando la pagina si carica
                     if ($('#matricola').val() === '') {
                         $('#matricola').focus();
                     }
-                    
+
                     // Verifica matricola con AJAX (opzionale - richiede implementazione del server)
-                    $('#matricola').blur(function() {
+                    $('#matricola').blur(function () {
                         var matricola = $(this).val();
                         if (matricola !== '') {
                             // Qui puoi aggiungere una verifica AJAX per controllare se la matricola esiste già

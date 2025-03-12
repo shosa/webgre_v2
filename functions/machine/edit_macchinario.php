@@ -62,15 +62,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                               matricola = ?, 
                               tipologia = ?, 
                               data_acquisto = ?, 
+                               rif_fattura = ?, 
                               produttore = ?, 
                               modello = ?, 
                               note = ?
                               WHERE id = ?");
-        
+
         $result = $stmt->execute([
             $_POST['matricola'],
             $tipologia,
             $_POST['data_acquisto'],
+            $_POST['rif_fattura'],
             $_POST['produttore'],
             $_POST['modello'],
             $_POST['note'] ?? null,
@@ -79,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($result) {
             $successMessage = "Macchinario aggiornato con successo!";
-            
+
             // Se richiesto il redirect alla lista
             if (isset($_POST['save_and_back']) && $_POST['save_and_back'] == 1) {
                 $_SESSION['success'] = $successMessage;
@@ -106,7 +108,7 @@ try {
     $stmt = $pdo->prepare("SELECT * FROM mac_anag WHERE id = ?");
     $stmt->execute([$id]);
     $macchinario = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
     if (!$macchinario) {
         $_SESSION['error'] = "Macchinario non trovato.";
         header("Location: lista_macchinari");
@@ -141,25 +143,25 @@ require_once BASE_PATH . '/components/header.php';
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <?php include(BASE_PATH . "/utils/alerts.php"); ?>
-                    
+
                     <?php if (!empty($successMessage)): ?>
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="fas fa-check-circle mr-2"></i> <?= $successMessage ?>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle mr-2"></i> <?= $successMessage ?>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                     <?php endif; ?>
-                    
+
                     <?php if (!empty($errorMessage)): ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="fas fa-exclamation-triangle mr-2"></i> <?= $errorMessage ?>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-triangle mr-2"></i> <?= $errorMessage ?>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                     <?php endif; ?>
-                    
+
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">
                             <i class="fas fa-edit text-gray-500 mr-2"></i>
@@ -174,7 +176,7 @@ require_once BASE_PATH . '/components/header.php';
                             </a>
                         </div>
                     </div>
-                    
+
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="home">Macchinari</a></li>
@@ -192,30 +194,36 @@ require_once BASE_PATH . '/components/header.php';
                                 <div class="row">
                                     <div class="col-md-6 form-group">
                                         <label for="matricola"><strong>Matricola/Numero di Serie *</strong></label>
-                                        <input type="text" name="matricola" id="matricola" class="form-control <?= !empty($errorMessage) && strpos($errorMessage, 'matricola') !== false ? 'is-invalid' : '' ?>" required 
-                                            value="<?= htmlspecialchars($formData['matricola'] ?? '') ?>">
+                                        <input type="text" name="matricola" id="matricola"
+                                            class="form-control <?= !empty($errorMessage) && strpos($errorMessage, 'matricola') !== false ? 'is-invalid' : '' ?>"
+                                            required value="<?= htmlspecialchars($formData['matricola'] ?? '') ?>">
                                         <?php if (!empty($errorMessage) && strpos($errorMessage, 'matricola') !== false): ?>
-                                        <div class="invalid-feedback">
-                                            La matricola inserita è già in uso. Inserire una matricola unica.
-                                        </div>
+                                            <div class="invalid-feedback">
+                                                La matricola inserita è già in uso. Inserire una matricola unica.
+                                            </div>
                                         <?php endif; ?>
                                     </div>
 
                                     <div class="col-md-6 form-group">
                                         <label for="tipologia"><strong>Tipologia Macchina *</strong></label>
-                                        <select name="tipologia" id="tipologia" class="form-control selectpicker" data-live-search="true" required>
+                                        <select name="tipologia" id="tipologia" class="form-control selectpicker"
+                                            data-live-search="true" required>
                                             <option value="">-- Seleziona tipo --</option>
                                             <?php foreach ($tipi_macchine as $tipo): ?>
-                                                <option value="<?= htmlspecialchars($tipo['tipo']) ?>" <?= (isset($formData['tipologia']) && $formData['tipologia'] == $tipo['tipo']) ? 'selected' : '' ?>>
-                                                    <?= htmlspecialchars($tipo['tipo']) ?></option>
+                                                <option value="<?= htmlspecialchars($tipo['tipo']) ?>"
+                                                    <?= (isset($formData['tipologia']) && $formData['tipologia'] == $tipo['tipo']) ? 'selected' : '' ?>>
+                                                    <?= htmlspecialchars($tipo['tipo']) ?>
+                                                </option>
                                             <?php endforeach; ?>
-                                            <option value="nuovo" <?= (isset($formData['tipologia']) && $formData['tipologia'] == 'nuovo') ? 'selected' : '' ?>>➕ Aggiungi nuovo tipo...</option>
+                                            <option value="nuovo" <?= (isset($formData['tipologia']) && $formData['tipologia'] == 'nuovo') ? 'selected' : '' ?>>➕ Aggiungi nuovo
+                                                tipo...</option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <!-- Sezione per nuovo tipo (nascosta inizialmente) -->
-                                <div id="nuovo_tipo_section" class="row mt-3" style="display:<?= (isset($formData['tipologia']) && $formData['tipologia'] == 'nuovo') ? 'flex' : 'none' ?>;">
+                                <div id="nuovo_tipo_section" class="row mt-3"
+                                    style="display:<?= (isset($formData['tipologia']) && $formData['tipologia'] == 'nuovo') ? 'flex' : 'none' ?>;">
                                     <div class="col-md-6 form-group">
                                         <label for="nuovo_tipo"><strong>Nuovo Tipo di Macchina *</strong></label>
                                         <input type="text" name="nuovo_tipo" id="nuovo_tipo" class="form-control"
@@ -223,7 +231,8 @@ require_once BASE_PATH . '/components/header.php';
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label for="descrizione_tipo">Descrizione (opzionale)</label>
-                                        <input type="text" name="descrizione_tipo" id="descrizione_tipo" class="form-control"
+                                        <input type="text" name="descrizione_tipo" id="descrizione_tipo"
+                                            class="form-control"
                                             value="<?= htmlspecialchars($formData['descrizione_tipo'] ?? '') ?>">
                                     </div>
                                 </div>
@@ -231,14 +240,18 @@ require_once BASE_PATH . '/components/header.php';
                                 <div class="row mt-3">
                                     <div class="col-md-6 form-group">
                                         <label for="data_acquisto"><strong>Data Acquisto *</strong></label>
-                                        <input type="date" name="data_acquisto" id="data_acquisto" class="form-control" required
-                                            value="<?= htmlspecialchars($formData['data_acquisto'] ?? '') ?>">
+                                        <input type="date" name="data_acquisto" id="data_acquisto" class="form-control"
+                                            required value="<?= htmlspecialchars($formData['data_acquisto'] ?? '') ?>">
                                     </div>
-
+                                    <div class="col-md-6 form-group">
+                                        <label for="rif_fattura"><strong>Rif. Fattura</strong></label>
+                                        <input type="text" name="rif_fattura" id="rif_fattura" class="form-control"
+                                             value="<?= htmlspecialchars($formData['rif_fattura'] ?? '') ?>">
+                                    </div>
                                     <div class="col-md-6 form-group">
                                         <label for="produttore"><strong>Produttore *</strong></label>
-                                        <input type="text" name="produttore" id="produttore" class="form-control" required
-                                            value="<?= htmlspecialchars($formData['produttore'] ?? '') ?>">
+                                        <input type="text" name="produttore" id="produttore" class="form-control"
+                                            required value="<?= htmlspecialchars($formData['produttore'] ?? '') ?>">
                                     </div>
                                 </div>
 
@@ -251,7 +264,8 @@ require_once BASE_PATH . '/components/header.php';
 
                                     <div class="col-md-6 form-group">
                                         <label for="note">Note (opzionale)</label>
-                                        <textarea name="note" id="note" class="form-control" rows="3"><?= htmlspecialchars($formData['note'] ?? '') ?></textarea>
+                                        <textarea name="note" id="note" class="form-control"
+                                            rows="3"><?= htmlspecialchars($formData['note'] ?? '') ?></textarea>
                                     </div>
                                 </div>
 
@@ -268,7 +282,8 @@ require_once BASE_PATH . '/components/header.php';
                                     <button type="submit" class="btn btn-success btn-lg">
                                         <i class="fas fa-save mr-2"></i>Salva Modifiche
                                     </button>
-                                    <button type="submit" name="save_and_back" value="1" class="btn btn-primary btn-lg ml-2">
+                                    <button type="submit" name="save_and_back" value="1"
+                                        class="btn btn-primary btn-lg ml-2">
                                         <i class="fas fa-check-circle mr-2"></i>Salva e Torna alla Lista
                                     </button>
                                     <a href="dettaglio_macchinario?id=<?= $id ?>" class="btn btn-info btn-lg ml-2">
@@ -308,16 +323,17 @@ require_once BASE_PATH . '/components/header.php';
                             <div class="text-muted">
                                 <p>
                                     <i class="fas fa-exclamation-triangle mr-1"></i>
-                                    <strong>Attenzione:</strong> La modifica della matricola potrebbe influenzare i riferimenti in altri moduli.
+                                    <strong>Attenzione:</strong> La modifica della matricola potrebbe influenzare i
+                                    riferimenti in altri moduli.
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <?php include_once BASE_PATH . '/components/scripts.php'; ?>
-            
+
             <script>
                 $(document).ready(function () {
                     // Mostra/nascondi la sezione per nuovo tipo
@@ -330,21 +346,21 @@ require_once BASE_PATH . '/components/header.php';
                             $('#nuovo_tipo').attr('required', false);
                         }
                     });
-                    
+
                     // Attiva sezione nuovo tipo se selezionato
                     if ($('#tipologia').val() === 'nuovo') {
                         $('#nuovo_tipo_section').show();
                         $('#nuovo_tipo').attr('required', true);
                     }
-                    
+
                     // Conferma prima di abbandonare i cambiamenti non salvati
                     var formChanged = false;
-                    
-                    $('#macchinarioForm input, #macchinarioForm textarea, #macchinarioForm select').change(function() {
+
+                    $('#macchinarioForm input, #macchinarioForm textarea, #macchinarioForm select').change(function () {
                         formChanged = true;
                     });
-                    
-                    $('a').click(function(e) {
+
+                    $('a').click(function (e) {
                         if (formChanged && !$(this).hasClass('no-confirm')) {
                             var confirmLeave = confirm("Hai modifiche non salvate. Sei sicuro di voler abbandonare la pagina?");
                             if (!confirmLeave) {
@@ -354,7 +370,7 @@ require_once BASE_PATH . '/components/header.php';
                     });
                 });
             </script>
-            
+
             <?php include_once BASE_PATH . '/components/footer.php'; ?>
         </div>
     </div>

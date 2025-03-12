@@ -168,7 +168,14 @@ require_once BASE_PATH . '/components/header.php';
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                 <?= date('d/m/Y', strtotime($macchinario['data_acquisto'])) ?>
                                             </div>
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Rif. Fattura
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <?= htmlspecialchars($macchinario['rif_fattura']) ?>
+                                            </div>
                                         </div>
+                                    
                                         <div class="col-md-4 mb-3">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Produttore
