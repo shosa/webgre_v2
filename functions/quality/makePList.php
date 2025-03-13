@@ -105,6 +105,17 @@ function generatePDF($ddt_numero, $ddt_data, $cod_articolo, $articolo_info, $tes
 
     // Formatta la data in formato italiano
     $formatted_date = date('d/m/Y', strtotime($ddt_data));
+    
+    // Raccoglie tutte le commesse uniche per questo articolo
+    $commesse = [];
+    foreach ($tests as $test) {
+        if (!empty($test['commessa']) && !in_array($test['commessa'], $commesse)) {
+            $commesse[] = $test['commessa'];
+        }
+    }
+    
+    // Formatta la stringa delle commesse
+    $commesse_str = implode(', ', $commesse);
 
     // Prepara il contenuto HTML
     $html = '
@@ -210,6 +221,12 @@ function generatePDF($ddt_numero, $ddt_data, $cod_articolo, $articolo_info, $tes
                 font-weight: bold;
                 margin: 0 2%;
             }
+            .commesse-info {
+                margin-top: 20px;
+                font-size: 9pt;
+                border-top: 1px dashed #ccc;
+                padding-top: 10px;
+            }
             .page-number {
                 text-align: center;
                 font-size: 8pt;
@@ -269,9 +286,9 @@ function generatePDF($ddt_numero, $ddt_data, $cod_articolo, $articolo_info, $tes
                 <td>' . $counter . '</td>
                 <td class="esito-check">' . ($test['esito'] == 'V' ? '<span class="check-mark">✓</span>' : '') . '</td>
                 <td class="paia-non-conformi ' . ($test['esito'] == 'X' ? 'non-conformi-bg' : '') . '">' . 
-                    ($test['esito'] == 'X' ? htmlspecialchars($test['cartellino']) : '') . '</td>
+                    ($test['esito'] == 'X' ? '1' : '') . '</td>
                 <td class="left-align">' . htmlspecialchars($test['test']) . ' [' . htmlspecialchars($test['calzata']) . ']</td>
-                <td></td>
+                <td>TEST</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -308,6 +325,10 @@ function generatePDF($ddt_numero, $ddt_data, $cod_articolo, $articolo_info, $tes
             <div class="signatures">
                 <div class="signature-line">Firma controllore tomaificio:</div>
                 <div class="signature-line">Firma controllore interno:</div>
+            </div>
+            
+            <div class="commesse-info">
+                <strong>Commesse:</strong> ' . htmlspecialchars($commesse_str) . '
             </div>
             
             <div class="page-number">Pagina 1 di 1</div>
