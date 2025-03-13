@@ -248,7 +248,7 @@ function generatePDF($ddt_numero, $ddt_data, $cod_articolo, $articolo_info, $tes
                         <td colspan="4" class="bold">Check list articolo: ' . htmlspecialchars($articolo_info['nome']) . ' (' . htmlspecialchars($cod_articolo) . ')</td>
                     </tr>
                     <tr>
-                        <td><span class="bold">Tomaificio:</span></td>
+                        <td><span class="bold">Tomaificio: Emmegiemme Shoes</span></td>
                         <td><span class="bold">Data:</span> ' . $formatted_date . '</td>
                         <td><span class="bold">N° bolla/e:</span> ' . htmlspecialchars($ddt_numero) . '</td>
                         <td><span class="bold">Quantità totale:</span> ' . count($tests) . '</td>
