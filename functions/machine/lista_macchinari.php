@@ -241,35 +241,12 @@ require_once BASE_PATH . '/components/header.php';
                                                 <th>Produttore</th>
                                                 <th>Modello</th>
                                                 <th>Data Acquisto</th>
-                                                <th>Stato</th>
+                                                
                                                 <th>Azioni</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach ($macchinari as $macchinario): 
-                                                // Calcolo età in anni
-                                                $dataAcquisto = new DateTime($macchinario['data_acquisto']);
-                                                $oggi = new DateTime();
-                                                $eta = $dataAcquisto->diff($oggi)->y;
-                                                
-                                                // Stato basato sull'età
-                                                $statoClass = '';
-                                                $statoText = '';
-                                                
-                                                if ($eta < 2) {
-                                                    $statoClass = 'success';
-                                                    $statoText = 'Nuovo';
-                                                } else if ($eta < 5) {
-                                                    $statoClass = 'info';
-                                                    $statoText = 'Buono';
-                                                } else if ($eta < 8) {
-                                                    $statoClass = 'warning';
-                                                    $statoText = 'Verificare';
-                                                } else {
-                                                    $statoClass = 'danger';
-                                                    $statoText = 'Da sostituire';
-                                                }
-                                            ?>
+                                            <?php foreach ($macchinari as $macchinario):  ?>
                                                 <tr>
                                                     <td><?= $macchinario['id'] ?></td>
                                                     <td><?= htmlspecialchars($macchinario['matricola']) ?></td>
@@ -277,7 +254,6 @@ require_once BASE_PATH . '/components/header.php';
                                                     <td><?= htmlspecialchars($macchinario['produttore']) ?></td>
                                                     <td><?= htmlspecialchars($macchinario['modello']) ?></td>
                                                     <td><?= date('d/m/Y', strtotime($macchinario['data_acquisto'])) ?></td>
-                                                    <td><span class="badge badge-<?= $statoClass ?>"><?= $statoText ?> (<?= $eta ?> anni)</span></td>
                                                     <td class="text-center">
                                                         
                                                             <a href="dettaglio_macchinario?id=<?= $macchinario['id'] ?>" class="btn btn-circle btn-light text-info " title="Visualizza">
@@ -447,15 +423,44 @@ require_once BASE_PATH . '/components/header.php';
                         }
                     });
                     
-                    // Gestione degli eventi per i pulsanti di esportazione (da implementare)
+                  
+                                    // Gestione degli eventi per i pulsanti di esportazione
                     $('#esportaExcel').click(function(e) {
                         e.preventDefault();
-                        alert('Funzionalità di esportazione in Excel da implementare.');
+                        
+                        // Costruisci l'URL con gli stessi parametri di ricerca/filtro attuali
+                        var currentUrl = window.location.href;
+                        var searchParams = new URLSearchParams(window.location.search);
+                        
+                        // Rimuovi eventuali parametri di paginazione o delete
+                        searchParams.delete('page');
+                        searchParams.delete('delete');
+                        searchParams.delete('token');
+                        
+                        // Crea l'URL di esportazione Excel
+                        var exportUrl = 'export_excel.php?' + searchParams.toString();
+                        
+                        // Redirect alla pagina di esportazione
+                        window.location.href = exportUrl;
                     });
-                    
+
                     $('#esportaPdf').click(function(e) {
                         e.preventDefault();
-                        alert('Funzionalità di esportazione in PDF da implementare.');
+                        
+                        // Costruisci l'URL con gli stessi parametri di ricerca/filtro attuali
+                        var currentUrl = window.location.href;
+                        var searchParams = new URLSearchParams(window.location.search);
+                        
+                        // Rimuovi eventuali parametri di paginazione o delete
+                        searchParams.delete('page');
+                        searchParams.delete('delete');
+                        searchParams.delete('token');
+                        
+                        // Crea l'URL di esportazione PDF
+                        var exportUrl = 'export_pdf.php?' + searchParams.toString();
+                        
+                        // Redirect alla pagina di esportazione
+                        window.location.href = exportUrl;
                     });
                 });
                 
