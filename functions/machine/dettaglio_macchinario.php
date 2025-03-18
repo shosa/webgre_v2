@@ -33,6 +33,17 @@ try {
         exit;
     }
     
+    // Calcolo età in anni
+    $dataAcquisto = new DateTime($macchinario['data_acquisto']);
+    $oggi = new DateTime();
+    $eta = $dataAcquisto->diff($oggi)->y;
+    
+    // Stato basato sull'età
+    $statoClass = 'success';
+    $statoText = 'Acquistato da';
+    
+    
+    
     // Recupera la cronologia delle manutenzioni (se esiste la tabella)
     $hasManutenzioni = false;
     try {
@@ -89,7 +100,7 @@ require_once BASE_PATH . '/components/header.php';
                             <a href="edit_macchinario?id=<?= $id ?>" class="btn btn-primary btn-sm shadow-sm">
                                 <i class="fas fa-edit fa-sm text-white-50"></i> Modifica
                             </a>
-                            <a href="manutenzioni?mac_id=<?= $id ?>" class="btn btn-warning btn-sm shadow-sm ml-2">
+                            <a href="#" class="btn btn-warning btn-sm shadow-sm ml-2">
                                 <i class="fas fa-tools fa-sm text-white-50"></i> Manutenzioni
                             </a>
                             <a href="#" onclick="printDetails()" class="btn btn-info btn-sm shadow-sm ml-2">
@@ -112,10 +123,13 @@ require_once BASE_PATH . '/components/header.php';
                         <!-- Colonna principale con dettagli -->
                         <div class="col-lg-8">
                             <div class="card shadow mb-4">
-                                <div class="card-header py-3">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">
                                         Informazioni Macchinario
                                     </h6>
+                                    <span class="badge badge-<?= $statoClass ?> px-3 py-2">
+                                        <?= $statoText ?> <?= $eta ?> anni
+                                    </span>
                                 </div>
                                 <div class="card-body">
                                     <div class="row no-gutters">
@@ -142,15 +156,14 @@ require_once BASE_PATH . '/components/header.php';
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                 <?= date('d/m/Y', strtotime($macchinario['data_acquisto'])) ?>
                                             </div>
-                                        </div>
-                                        <div class="col-md-4 mb-3">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Rif. Fattura
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?= htmlspecialchars($macchinario['rif_fattura'] ?? 'N/D') ?>
+                                            <?= htmlspecialchars($macchinario['rif_fattura']) ?>
                                             </div>
                                         </div>
+                                    
                                         <div class="col-md-4 mb-3">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Produttore
@@ -165,6 +178,14 @@ require_once BASE_PATH . '/components/header.php';
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                 <?= htmlspecialchars($macchinario['modello']) ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                ID Sistema
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                #<?= $macchinario['id'] ?>
                                             </div>
                                         </div>
                                     </div>
@@ -250,17 +271,20 @@ require_once BASE_PATH . '/components/header.php';
                         
                         <!-- Colonna laterale con info aggiuntive -->
                         <div class="col-lg-4">
-                            <!-- Scheda informativa -->
+                            <!-- Scheda riassuntiva -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">
-                                        <i class="fas fa-info-circle mr-1"></i> Dettagli Tecnici
+                                        <i class="fas fa-info-circle mr-1"></i> Stato Macchinario
                                     </h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="text-center mb-4">
                                         <div class="position-relative d-inline-block">
                                             <i class="fas fa-cog fa-6x text-gray-300"></i>
+                                            <span class="position-absolute bottom-0 right-0 transform-translate-middle badge rounded-pill bg-<?= $statoClass ?> p-2">
+                                                <i class="fas fa-<?= ($statoClass == 'success' || $statoClass == 'info') ? 'check' : 'exclamation' ?>"></i>
+                                            </span>
                                         </div>
                                     </div>
                                     
@@ -268,36 +292,45 @@ require_once BASE_PATH . '/components/header.php';
                                     
                                     <div class="mb-3">
                                         <div class="text-xs font-weight-bold text-uppercase mb-1">
-                                            Dettagli:
+                                            Età Macchinario
                                         </div>
-                                        <div class="text-xs text-gray-600 mb-2">
-                                            <strong>Matricola:</strong> <?= htmlspecialchars($macchinario['matricola']) ?>
+                                        <div class="progress mb-1">
+                                            <?php 
+                                            // Percentuale di età rispetto a 10 anni (vita utile stimata)
+                                            $percentualeEta = min(100, ($eta / 10) * 100);
+                                            ?>
+                                            <div class="progress-bar bg-<?= $statoClass ?>" role="progressbar" 
+                                                style="width: <?= $percentualeEta ?>%" 
+                                                aria-valuenow="<?= $eta ?>" aria-valuemin="0" aria-valuemax="10">
+                                                <?= $eta ?> anni
+                                            </div>
                                         </div>
-                                        <div class="text-xs text-gray-600 mb-2">
-                                            <strong>Tipologia:</strong> <?= htmlspecialchars($macchinario['tipologia']) ?>
-                                        </div>
-                                        <div class="text-xs text-gray-600 mb-2">
-                                            <strong>Data Acquisto:</strong> <?= date('d/m/Y', strtotime($macchinario['data_acquisto'])) ?>
-                                        </div>
-                                        <div class="text-xs text-gray-600">
-                                            <strong>Rif. Fattura:</strong> <?= htmlspecialchars($macchinario['rif_fattura'] ?? 'N/D') ?>
-                                        </div>
+                                        
                                     </div>
                                     
-                                    <?php if ($hasManutenzioni && count($manutenzioni) > 0): ?>
+                                    <?php if ($hasManutenzioni): ?>
                                     <div class="mb-3">
                                         <div class="text-xs font-weight-bold text-uppercase mb-1">
                                             Ultima Manutenzione
                                         </div>
-                                        <div class="text-xs text-gray-600">
-                                            <div class="font-weight-bold">
+                                        <?php if (count($manutenzioni) > 0): 
+                                            $ultimaManutenzione = new DateTime($manutenzioni[0]['data_manutenzione']);
+                                            $giorniTrascorsi = $ultimaManutenzione->diff($oggi)->days;
+                                            $statoManutenzioneBadge = $giorniTrascorsi > 180 ? 'danger' : 'success';
+                                        ?>
+                                            <div class="font-weight-bold text-<?= $statoManutenzioneBadge ?>">
                                                 <?= date('d/m/Y', strtotime($manutenzioni[0]['data_manutenzione'])) ?>
+                                                (<?= $giorniTrascorsi ?> giorni fa)
                                             </div>
-                                            <div>
+                                            <div class="text-xs text-gray-600">
                                                 <?= htmlspecialchars($manutenzioni[0]['tipo']) ?> - 
                                                 <?= htmlspecialchars($manutenzioni[0]['operatore']) ?>
                                             </div>
-                                        </div>
+                                        <?php else: ?>
+                                            <div class="text-warning">
+                                                Nessuna manutenzione registrata
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                     <?php endif; ?>
                                     
