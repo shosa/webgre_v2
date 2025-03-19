@@ -1,4 +1,4 @@
-<?php 
+<?php
 ob_start();
 header('Access-Control-Allow-Origin: *');
 session_start();
@@ -12,7 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['barcodes'])) {
         $barcodes = explode("\n", trim($_POST['barcodes']));
         $barcodes = array_filter(array_map('trim', $barcodes));
         $barcodes = array_map(function ($barcode) {
-            return str_replace("MGM", "", str_replace("mgm", "", $barcode)); }, $barcodes);
+            return str_replace("MGM", "", str_replace("mgm", "", $barcode));
+        }, $barcodes);
         $barcodeCounts = array_count_values($barcodes);
         $uniqueBarcodes = array_keys($barcodeCounts);
         $placeholders = implode(',', array_fill(0, count($uniqueBarcodes), '?'));
@@ -61,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['barcodes'])) {
         echo "Errore di connessione: " . $e->getMessage();
     }
 } ?>
+
 <body id="page-top">
     <div id="wrapper"> <?php include BASE_PATH . "/components/navbar.php"; ?>
         <div id="content-wrapper" class="d-flex flex-column">

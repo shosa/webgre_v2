@@ -9,7 +9,7 @@ function customErrorHandler($errno, $errstr, $errfile, $errline)
     $errorTime = date('Y-m-d H:i:s');
 
     // Crea un messaggio di errore dettagliato
-    $errorMessage = "[$errorTime] [Page: $currentPage] [Error $errno] $errstr in $errfile on line $errline \n\n";
+    $errorMessage = "\n[$errorTime] [PAGINA: $currentPage] [ERRORE $errno] $errstr in $errfile nella riga $errline \n\n";
 
     // Logga l'errore in un file
     error_log($errorMessage, 3, __DIR__ . '/error_log.txt');
@@ -32,7 +32,7 @@ function customExceptionHandler($exception)
     // Ottieni l'orario corrente
     $errorTime = date('Y-m-d H:i:s');
 
-    $errorMessage = "[$errorTime] [Page: $currentPage] Uncaught exception: " . $exception->getMessage();
+    $errorMessage = "\n[$errorTime] [PAGINA: $currentPage] ERRORE: " . $exception->getMessage();
 
     error_log($errorMessage, 3, __DIR__ . '/error_log.txt');
 
