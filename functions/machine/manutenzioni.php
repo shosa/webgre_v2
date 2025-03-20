@@ -682,21 +682,58 @@ require_once BASE_PATH . '/components/header.php';
 
             <script>
                 $(document).ready(function () {
+                    // Funzione helper per mostrare un modal
+                    function showModal(modalId) {
+                        var modal = document.getElementById(modalId);
+                        if (modal) {
+                            modal.style.display = 'block';
+                            modal.classList.add('show');
+                            document.body.classList.add('modal-open');
+
+                            // Crea un backdrop
+                            var backdrop = document.createElement('div');
+                            backdrop.className = 'modal-backdrop fade show';
+                            document.body.appendChild(backdrop);
+                        }
+                    }
+
+                    // Funzione helper per nascondere un modal
+                    function hideModal(modalId) {
+                        var modal = document.getElementById(modalId);
+                        if (modal) {
+                            modal.style.display = 'none';
+                            modal.classList.remove('show');
+                            document.body.classList.remove('modal-open');
+
+                            // Rimuovi il backdrop
+                            var backdrop = document.querySelector('.modal-backdrop');
+                            if (backdrop) {
+                                backdrop.parentNode.removeChild(backdrop);
+                            }
+                        }
+                    }
+
                     // Reject button click
                     $('.reject-btn').click(function () {
                         $('#reject_id').val($(this).data('id'));
                         $('#reject_operatore').text($(this).data('operatore'));
-                        $('#rejectModal').modal('show');
+                        showModal('rejectModal');
                     });
 
                     // Delete button click
                     $('.delete-btn').click(function () {
                         $('#delete_data').text($(this).data('data'));
                         $('#confirm-delete').attr('href', '?<?= http_build_query(array_merge($_GET, ['delete' => ''])) ?>' + $(this).data('id'));
-                        $('#deleteModal').modal('show');
+                        showModal('deleteModal');
                     });
 
-                    // Initialize DataTable if available
+                    // Chiudi i modal quando si clicca su Annulla o sulla X
+                    $('.btn-secondary, .close').click(function () {
+                        var modalId = $(this).closest('.modal').attr('id');
+                        hideModal(modalId);
+                    });
+
+                    // Inizializza DataTable se disponibile
                     if (typeof $.fn.DataTable !== 'undefined') {
                         $('#manutenzioni-table').DataTable({
                             "paging": false,
