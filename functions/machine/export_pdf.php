@@ -27,12 +27,12 @@ try {
     $order = isset($_GET['order']) ? $_GET['order'] : 'DESC';
 
     // Query di base
-    $query = "SELECT id, matricola, tipologia, produttore, modello, data_acquisto, rif_fattura, note FROM mac_anag WHERE 1=1";
+    $query = "SELECT id, matricola, tipologia, fornitore, modello, data_acquisto, rif_fattura, note FROM mac_anag WHERE 1=1";
     $params = [];
 
     // Aggiunta dei filtri
     if (!empty($search)) {
-        $query .= " AND (matricola LIKE ? OR produttore LIKE ? OR modello LIKE ? OR note LIKE ?)";
+        $query .= " AND (matricola LIKE ? OR fornitore LIKE ? OR modello LIKE ? OR note LIKE ?)";
         $searchParam = "%$search%";
         $params = array_merge($params, [$searchParam, $searchParam, $searchParam, $searchParam]);
     }
@@ -43,7 +43,7 @@ try {
     }
 
     // Ordinamento
-    $validSortColumns = ['matricola', 'tipologia', 'produttore', 'modello', 'data_acquisto', 'data_creazione'];
+    $validSortColumns = ['matricola', 'tipologia', 'fornitore', 'modello', 'data_acquisto', 'data_creazione'];
     $validSortOrders = ['ASC', 'DESC'];
 
     if (!in_array($sort, $validSortColumns)) {
@@ -134,7 +134,7 @@ try {
     $widths = [10, 40, 35, 35, 35, 25, 35, 40];
     
     // Intestazioni
-    $headers = ['ID', 'Matricola', 'Tipologia', 'Produttore', 'Modello', 'Data Acquisto', 'Riferimento Fattura', 'Note'];
+    $headers = ['ID', 'Matricola', 'Tipologia', 'fornitore', 'Modello', 'Data Acquisto', 'Riferimento Fattura', 'Note'];
     foreach ($headers as $i => $header) {
         $pdf->Cell($widths[$i], 10, $header, 1, 0, 'C', 1);
     }
@@ -160,8 +160,8 @@ try {
         // Tipologia
         $pdf->Cell($widths[2], 6, $macchinario['tipologia'], 1, 0, 'L', $fill);
         
-        // Produttore
-        $pdf->Cell($widths[3], 6, $macchinario['produttore'], 1, 0, 'L', $fill);
+        // fornitore
+        $pdf->Cell($widths[3], 6, $macchinario['fornitore'], 1, 0, 'L', $fill);
         
         // Modello
         $pdf->Cell($widths[4], 6, $macchinario['modello'], 1, 0, 'L', $fill);

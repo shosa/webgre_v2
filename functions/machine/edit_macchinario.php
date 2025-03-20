@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                               tipologia = ?, 
                               data_acquisto = ?, 
                                rif_fattura = ?, 
-                              produttore = ?, 
+                              fornitore = ?, 
                               modello = ?, 
                               note = ?
                               WHERE id = ?");
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tipologia,
             $_POST['data_acquisto'],
             $_POST['rif_fattura'],
-            $_POST['produttore'],
+            $_POST['fornitore'],
             $_POST['modello'],
             $_POST['note'] ?? null,
             $id
@@ -249,9 +249,9 @@ require_once BASE_PATH . '/components/header.php';
                                              value="<?= htmlspecialchars($formData['rif_fattura'] ?? '') ?>">
                                     </div>
                                     <div class="col-md-6 form-group">
-                                        <label for="produttore"><strong>Produttore *</strong></label>
-                                        <input type="text" name="produttore" id="produttore" class="form-control"
-                                            required value="<?= htmlspecialchars($formData['produttore'] ?? '') ?>">
+                                        <label for="fornitore"><strong>fornitore *</strong></label>
+                                        <input type="text" name="fornitore" id="fornitore" class="form-control"
+                                            required value="<?= htmlspecialchars($formData['fornitore'] ?? '') ?>">
                                     </div>
                                 </div>
 

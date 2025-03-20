@@ -166,10 +166,10 @@ require_once BASE_PATH . '/components/header.php';
                                     
                                         <div class="col-md-4 mb-3">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Produttore
+                                                fornitore
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?= htmlspecialchars($macchinario['produttore']) ?>
+                                                <?= htmlspecialchars($macchinario['fornitore']) ?>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-3">
@@ -288,7 +288,7 @@ require_once BASE_PATH . '/components/header.php';
                                         </div>
                                     </div>
                                     
-                                    <h4 class="text-center mb-3"><?= htmlspecialchars($macchinario['produttore']) ?> <?= htmlspecialchars($macchinario['modello']) ?></h4>
+                                    <h4 class="text-center mb-3"><?= htmlspecialchars($macchinario['fornitore']) ?> <?= htmlspecialchars($macchinario['modello']) ?></h4>
                                     
                                     <div class="mb-3">
                                         <div class="text-xs font-weight-bold text-uppercase mb-1">

@@ -33,12 +33,12 @@ try {
     $order = isset($_GET['order']) ? $_GET['order'] : 'DESC';
 
     // Query di base
-    $query = "SELECT id, matricola, tipologia, produttore, modello, data_acquisto, rif_fattura, note, data_creazione, data_aggiornamento FROM mac_anag WHERE 1=1";
+    $query = "SELECT id, matricola, tipologia, fornitore, modello, data_acquisto, rif_fattura, note, data_creazione, data_aggiornamento FROM mac_anag WHERE 1=1";
     $params = [];
 
     // Aggiunta dei filtri
     if (!empty($search)) {
-        $query .= " AND (matricola LIKE ? OR produttore LIKE ? OR modello LIKE ? OR note LIKE ?)";
+        $query .= " AND (matricola LIKE ? OR fornitore LIKE ? OR modello LIKE ? OR note LIKE ?)";
         $searchParam = "%$search%";
         $params = array_merge($params, [$searchParam, $searchParam, $searchParam, $searchParam]);
     }
@@ -49,7 +49,7 @@ try {
     }
 
     // Ordinamento
-    $validSortColumns = ['matricola', 'tipologia', 'produttore', 'modello', 'data_acquisto', 'data_creazione'];
+    $validSortColumns = ['matricola', 'tipologia', 'fornitore', 'modello', 'data_acquisto', 'data_creazione'];
     $validSortOrders = ['ASC', 'DESC'];
 
     if (!in_array($sort, $validSortColumns)) {
@@ -102,7 +102,7 @@ try {
     
     // Intestazioni colonne
     $headers = [
-        'ID', 'Matricola', 'Tipologia', 'Produttore', 'Modello', 'Data Acquisto', 'Riferimento Fattura', 'Note'
+        'ID', 'Matricola', 'Tipologia', 'fornitore', 'Modello', 'Data Acquisto', 'Riferimento Fattura', 'Note'
     ];
     
     $col = 1;
@@ -140,7 +140,7 @@ try {
     $sheet->getColumnDimension('A')->setWidth(10);   // ID
     $sheet->getColumnDimension('B')->setWidth(25);   // Matricola
     $sheet->getColumnDimension('C')->setWidth(25);   // Tipologia
-    $sheet->getColumnDimension('D')->setWidth(25);   // Produttore
+    $sheet->getColumnDimension('D')->setWidth(25);   // fornitore
     $sheet->getColumnDimension('E')->setWidth(25);   // Modello
     $sheet->getColumnDimension('F')->setWidth(15);   // Data Acquisto
     $sheet->getColumnDimension('G')->setWidth(25);   // Riferimento Fattura
@@ -181,7 +181,7 @@ try {
         $sheet->setCellValue('A' . $row, $macchinario['id']);
         $sheet->setCellValue('B' . $row, $macchinario['matricola']);
         $sheet->setCellValue('C' . $row, $macchinario['tipologia']);
-        $sheet->setCellValue('D' . $row, $macchinario['produttore']);
+        $sheet->setCellValue('D' . $row, $macchinario['fornitore']);
         $sheet->setCellValue('E' . $row, $macchinario['modello']);
         
         // Formattazione data

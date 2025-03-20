@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 tipologia = ?,
                 data_acquisto = ?,
                 rif_fattura = ?,
-                produttore = ?,
+                fornitore = ?,
                 modello = ?,
                 note = ?
                 WHERE id = ?");
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_POST['edit_tipologia'],
                 $_POST['edit_data_acquisto'],
                 $_POST['edit_rif_fattura'],
-                $_POST['edit_produttore'],
+                $_POST['edit_fornitore'],
                 $_POST['edit_modello'],
                 $_POST['edit_note'] ?? null,
                 $_POST['edit_id']
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             // Preparazione dell'inserimento del macchinario
-            $stmt = $pdo->prepare("INSERT INTO mac_anag (matricola, tipologia, data_acquisto, rif_fattura, produttore, modello, note) 
+            $stmt = $pdo->prepare("INSERT INTO mac_anag (matricola, tipologia, data_acquisto, rif_fattura, fornitore, modello, note) 
                                 VALUES (?, ?, ?, ?, ?, ?, ?)");
 
             $result = $stmt->execute([
@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $tipologia,
                 $_POST['data_acquisto'],
                 $_POST['rif_fattura'],
-                $_POST['produttore'],
+                $_POST['fornitore'],
                 $_POST['modello'],
                 $_POST['note'] ?? null
             ]);
@@ -264,9 +264,9 @@ require_once BASE_PATH . '/components/header.php';
                                              value="<?= htmlspecialchars($formData['rif_fattura'] ?? '') ?>">
                                     </div>
                                     <div class="col-md-6 form-group">
-                                        <label for="produttore"><strong>Produttore *</strong></label>
-                                        <input type="text" name="produttore" id="produttore" class="form-control"
-                                            required value="<?= htmlspecialchars($formData['produttore'] ?? '') ?>">
+                                        <label for="fornitore"><strong>fornitore *</strong></label>
+                                        <input type="text" name="fornitore" id="fornitore" class="form-control"
+                                            required value="<?= htmlspecialchars($formData['fornitore'] ?? '') ?>">
                                     </div>
                                 </div>
 
@@ -313,7 +313,7 @@ require_once BASE_PATH . '/components/header.php';
                                             <tr>
                                                 <th>Matricola</th>
                                                 <th>Tipologia</th>
-                                                <th>Produttore</th>
+                                                <th>Fornitore</th>
                                                 <th>Modello</th>
                                                 <th>Data Acquisto</th>
                                                 <th>Azioni</th>
@@ -324,7 +324,7 @@ require_once BASE_PATH . '/components/header.php';
                                                 <tr>
                                                     <td><?= htmlspecialchars($macchinario['matricola']) ?></td>
                                                     <td><?= htmlspecialchars($macchinario['tipologia']) ?></td>
-                                                    <td><?= htmlspecialchars($macchinario['produttore']) ?></td>
+                                                    <td><?= htmlspecialchars($macchinario['fornitore']) ?></td>
                                                     <td><?= htmlspecialchars($macchinario['modello']) ?></td>
                                                     <td><?= htmlspecialchars(date('d/m/Y', strtotime($macchinario['data_acquisto']))) ?>
                                                     </td>
@@ -335,7 +335,7 @@ require_once BASE_PATH . '/components/header.php';
                                                             data-tipologia="<?= htmlspecialchars($macchinario['tipologia']) ?>"
                                                             data-data_acquisto="<?= htmlspecialchars($macchinario['data_acquisto']) ?>"
                                                             data-rif_fattura="<?= htmlspecialchars($macchinario['rif_fattura']) ?>"
-                                                            data-produttore="<?= htmlspecialchars($macchinario['produttore']) ?>"
+                                                            data-fornitore="<?= htmlspecialchars($macchinario['fornitore']) ?>"
                                                             data-modello="<?= htmlspecialchars($macchinario['modello']) ?>"
                                                             data-note="<?= htmlspecialchars($macchinario['note'] ?? '') ?>">
                                                             <i class="fas fa-edit"></i> Modifica
@@ -405,8 +405,8 @@ require_once BASE_PATH . '/components/header.php';
                                             class="form-control">
                                     </div>
                                     <div class="col-md-6 form-group">
-                                        <label for="edit_produttore"><strong>Produttore *</strong></label>
-                                        <input type="text" name="edit_produttore" id="edit_produttore"
+                                        <label for="edit_fornitore"><strong>fornitore *</strong></label>
+                                        <input type="text" name="edit_fornitore" id="edit_fornitore"
                                             class="form-control" required>
                                     </div>
                                 </div>
@@ -492,7 +492,7 @@ require_once BASE_PATH . '/components/header.php';
                         $('#edit_tipologia').val($(this).data('tipologia'));
                         $('#edit_data_acquisto').val($(this).data('data_acquisto'));
                         $('#edit_rif_fattura').val($(this).data('rif_fattura'));
-                        $('#edit_produttore').val($(this).data('produttore'));
+                        $('#edit_fornitore').val($(this).data('fornitore'));
                         $('#edit_modello').val($(this).data('modello'));
                         $('#edit_note').val($(this).data('note'));
 

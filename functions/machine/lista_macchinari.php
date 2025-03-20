@@ -62,8 +62,8 @@ $query = "SELECT * FROM mac_anag WHERE 1=1";
 $params = [];
 
 if (!empty($search)) {
-    $query .= " AND (matricola LIKE ? OR produttore LIKE ? OR modello LIKE ? OR note LIKE ?)";
-    $queryCount .= " AND (matricola LIKE ? OR produttore LIKE ? OR modello LIKE ? OR note LIKE ?)";
+    $query .= " AND (matricola LIKE ? OR fornitore LIKE ? OR modello LIKE ? OR note LIKE ?)";
+    $queryCount .= " AND (matricola LIKE ? OR fornitore LIKE ? OR modello LIKE ? OR note LIKE ?)";
     $searchParam = "%$search%";
     $params = array_merge($params, [$searchParam, $searchParam, $searchParam, $searchParam]);
 }
@@ -75,7 +75,7 @@ if (!empty($tipologia)) {
 }
 
 // Ordinamento
-$validSortColumns = ['matricola', 'tipologia', 'produttore', 'modello', 'data_acquisto', 'data_creazione'];
+$validSortColumns = ['matricola', 'tipologia', 'fornitore', 'modello', 'data_acquisto', 'data_creazione'];
 $validSortOrders = ['ASC', 'DESC'];
 
 if (!in_array($sort, $validSortColumns)) {
@@ -178,7 +178,7 @@ require_once BASE_PATH . '/components/header.php';
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-search"></i></span>
                                         </div>
-                                        <input type="text" class="form-control" id="search" name="search" placeholder="Matricola, Produttore, Modello..." value="<?= htmlspecialchars($search) ?>">
+                                        <input type="text" class="form-control" id="search" name="search" placeholder="Matricola, fornitore, Modello..." value="<?= htmlspecialchars($search) ?>">
                                     </div>
                                 </div>
                                 <div class="form-group mb-2 mr-2">
@@ -198,7 +198,7 @@ require_once BASE_PATH . '/components/header.php';
                                         <option value="data_creazione" <?= ($sort == 'data_creazione') ? 'selected' : '' ?>>Data Inserimento</option>
                                         <option value="matricola" <?= ($sort == 'matricola') ? 'selected' : '' ?>>Matricola</option>
                                         <option value="tipologia" <?= ($sort == 'tipologia') ? 'selected' : '' ?>>Tipologia</option>
-                                        <option value="produttore" <?= ($sort == 'produttore') ? 'selected' : '' ?>>Produttore</option>
+                                        <option value="fornitore" <?= ($sort == 'fornitore') ? 'selected' : '' ?>>fornitore</option>
                                         <option value="modello" <?= ($sort == 'modello') ? 'selected' : '' ?>>Modello</option>
                                         <option value="data_acquisto" <?= ($sort == 'data_acquisto') ? 'selected' : '' ?>>Data Acquisto</option>
                                     </select>
@@ -238,7 +238,7 @@ require_once BASE_PATH . '/components/header.php';
                                                 <th>ID</th>
                                                 <th>Matricola</th>
                                                 <th>Tipologia</th>
-                                                <th>Produttore</th>
+                                                <th>Fornitore</th>
                                                 <th>Modello</th>
                                                 <th>Data Acquisto</th>
                                                 
@@ -251,7 +251,7 @@ require_once BASE_PATH . '/components/header.php';
                                                     <td><?= $macchinario['id'] ?></td>
                                                     <td><?= htmlspecialchars($macchinario['matricola']) ?></td>
                                                     <td><?= htmlspecialchars($macchinario['tipologia']) ?></td>
-                                                    <td><?= htmlspecialchars($macchinario['produttore']) ?></td>
+                                                    <td><?= htmlspecialchars($macchinario['fornitore']) ?></td>
                                                     <td><?= htmlspecialchars($macchinario['modello']) ?></td>
                                                     <td><?= date('d/m/Y', strtotime($macchinario['data_acquisto'])) ?></td>
                                                     <td class="text-center">
