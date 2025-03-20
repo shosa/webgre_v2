@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Insert maintenance record
         $stmt = $pdo->prepare("INSERT INTO mac_manutenzioni (
             mac_id, tipo_id, data_manutenzione, operatore, descrizione, 
-            lavori_eseguiti, ricambi_utilizzati, tempo_impiegato, costo, 
+            lavori_eseguiti, ricambi_utilizzati, tempo_impiegato, 
             stato, is_programmata
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
@@ -132,7 +132,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST['lavori_eseguiti'] ?? null,
             $_POST['ricambi_utilizzati'] ?? null,
             $_POST['tempo_impiegato'] ?? null,
-            $_POST['costo'] ?? null,
             'richiesta',
             $is_programmata
         ]);
@@ -277,10 +276,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="col-md-4 mb-3">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Fornitore / Modello
+                        Modello
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                            <?= htmlspecialchars($macchinario['fornitore']) ?> / <?= htmlspecialchars($macchinario['modello']) ?>
+                            <?= htmlspecialchars($macchinario['modello']) ?>
                         </div>
                     </div>
                 </div>
@@ -361,10 +360,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <textarea name="ricambi_utilizzati" id="ricambi_utilizzati" class="form-control" rows="2" placeholder="Elenca i ricambi utilizzati..."><?= htmlspecialchars($formData['ricambi_utilizzati'] ?? '') ?></textarea>
                         </div>
                         
-                        <div class="col-md-6 form-group">
-                            <label for="costo">Costo Intervento (€)</label>
-                            <input type="number" name="costo" id="costo" class="form-control" step="0.01" min="0" value="<?= htmlspecialchars($formData['costo'] ?? '') ?>" placeholder="Es. 150.00">
-                        </div>
+                     
                     </div>
                     
                     <div class="row">
