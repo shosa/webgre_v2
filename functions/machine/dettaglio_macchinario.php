@@ -252,7 +252,7 @@ require_once BASE_PATH . '/components/header.php';
                                                     <?php foreach ($manutenzioni as $manutenzione): ?>
                                                         <tr>
                                                             <td><?= date('d/m/Y', strtotime($manutenzione['data_manutenzione'])) ?></td>
-                                                            <td><?= htmlspecialchars($manutenzione['tipo_nome']) ?></td>
+                                                            <td><?= htmlspecialchars($manutenzione['tipo_id']) ?></td>
                                                             <td><?= htmlspecialchars($manutenzione['operatore']) ?></td>
                                                             <td><?= htmlspecialchars($manutenzione['descrizione']) ?></td>
                                                         </tr>
