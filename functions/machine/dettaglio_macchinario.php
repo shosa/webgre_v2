@@ -252,7 +252,7 @@ require_once BASE_PATH . '/components/header.php';
                                                     <?php foreach ($manutenzioni as $manutenzione): ?>
                                                         <tr>
                                                             <td><?= date('d/m/Y', strtotime($manutenzione['data_manutenzione'])) ?></td>
-                                                            <td><?= htmlspecialchars($manutenzione['tipo']) ?></td>
+                                                            <td><?= htmlspecialchars($manutenzione['tipo_nome']) ?></td>
                                                             <td><?= htmlspecialchars($manutenzione['operatore']) ?></td>
                                                             <td><?= htmlspecialchars($manutenzione['descrizione']) ?></td>
                                                         </tr>
@@ -324,7 +324,7 @@ require_once BASE_PATH . '/components/header.php';
                                                 (<?= $giorniTrascorsi ?> giorni fa)
                                             </div>
                                             <div class="text-xs text-gray-600">
-                                                <?= htmlspecialchars($manutenzioni[0]['tipo']) ?> - 
+                                                <?= htmlspecialchars($manutenzioni[0]['tipo_nome']) ?> - 
                                                 <?= htmlspecialchars($manutenzioni[0]['operatore']) ?>
                                             </div>
                                         <?php else: ?>
