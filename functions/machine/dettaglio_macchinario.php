@@ -324,7 +324,7 @@ require_once BASE_PATH . '/components/header.php';
                                                 (<?= $giorniTrascorsi ?> giorni fa)
                                             </div>
                                             <div class="text-xs text-gray-600">
-                                                <?= htmlspecialchars($manutenzioni[0]['tipo_nome']) ?> - 
+                                                <?= htmlspecialchars($manutenzioni[0]['tipo_id']) ?> - 
                                                 <?= htmlspecialchars($manutenzioni[0]['operatore']) ?>
                                             </div>
                                         <?php else: ?>
