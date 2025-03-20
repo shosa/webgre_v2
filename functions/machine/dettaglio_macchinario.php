@@ -106,9 +106,10 @@ require_once BASE_PATH . '/components/header.php';
                             <a href="#" onclick="printDetails()" class="btn btn-info btn-sm shadow-sm ml-2">
                                 <i class="fas fa-print fa-sm text-white-50"></i> Stampa Scheda
                             </a>
-                            <a href="lista_macchinari" class="btn btn-secondary btn-sm shadow-sm ml-2">
-                                <i class="fas fa-arrow-left fa-sm text-white-50"></i> Torna alla Lista
+                            <a href="qrcode?id=<?= $id ?>" class="btn btn-indigo btn-sm shadow-sm ml-2">
+                                <i class="fas fa-qrcode fa-sm text-white-50"></i> QR Code
                             </a>
+                          
                         </div>
                     </div>
                     

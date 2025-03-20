@@ -187,14 +187,7 @@ require_once BASE_PATH . '/components/header.php';
                                         </a>
                                     </div>
                                     
-                                    <div class="text-center mt-4">
-                                        <a href="#" class="btn btn-primary btn-icon-split">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-download"></i>
-                                            </span>
-                                            <span class="text">Esporta Inventario</span>
-                                        </a>
-                                    </div>
+                                   
                                 </div>
                             </div>
                         </div>

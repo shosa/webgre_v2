@@ -264,7 +264,7 @@ require_once BASE_PATH . '/components/header.php';
                                              value="<?= htmlspecialchars($formData['rif_fattura'] ?? '') ?>">
                                     </div>
                                     <div class="col-md-6 form-group">
-                                        <label for="fornitore"><strong>fornitore *</strong></label>
+                                        <label for="fornitore"><strong>Fornitore *</strong></label>
                                         <input type="text" name="fornitore" id="fornitore" class="form-control"
                                             required value="<?= htmlspecialchars($formData['fornitore'] ?? '') ?>">
                                     </div>

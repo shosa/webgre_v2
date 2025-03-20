@@ -19,6 +19,7 @@
         "tecnickcom/tcpdf": "^6.7",
         "phpseclib/phpseclib": "^3.0",
         "mpdf/mpdf": "^8.2",
-        "mpdf/qrcode": "^1.2"
+        "mpdf/qrcode": "^1.2",
+        "endroid/qr-code": "^4.6"
     }
 }
