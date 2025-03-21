@@ -2,7 +2,7 @@
     "name": "EMMEGIEMME CQ",
     "short_name": "EMMEGIEMME",
     "description": "CQ Emmegiemme",
-    "start_url": "/functions/quality/kiosk/m_new.php",
+    "start_url": "/webgre/functions/quality/kiosk/m_new.php",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#ffffff",
