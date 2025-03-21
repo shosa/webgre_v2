@@ -1,8 +1,8 @@
 {
-    "name": "WEBGRE APP",
-    "short_name": "WEBGRE",
-    "description": "WEB Emmegiemme",
-    "start_url": "/functions/quality/kiosk/m_new",
+    "name": "EMMEGIEMME CQ",
+    "short_name": "EMMEGIEMME",
+    "description": "CQ Emmegiemme",
+    "start_url": "/functions/quality/kiosk/m_new.php",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#ffffff",
