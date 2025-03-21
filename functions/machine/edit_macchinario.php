@@ -62,9 +62,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                               matricola = ?, 
                               tipologia = ?, 
                               data_acquisto = ?, 
-                               rif_fattura = ?, 
+                              rif_fattura = ?, 
                               fornitore = ?, 
                               modello = ?, 
+                              marca = ?,
+                              anno_costruzione = ?,
+                              locazione_documenti = ?,
                               note = ?
                               WHERE id = ?");
 
@@ -75,11 +78,82 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST['rif_fattura'],
             $_POST['fornitore'],
             $_POST['modello'],
+            $_POST['marca'] ?? null,
+            $_POST['anno_costruzione'] ?? null,
+            $_POST['locazione_documenti'] ?? null,
             $_POST['note'] ?? null,
             $id
         ]);
 
         if ($result) {
+            // Gestione degli allegati se presenti
+            if (isset($_FILES['allegati']) && !empty($_FILES['allegati']['name'][0])) {
+                $upload_dir = BASE_PATH . '/uploads/macchinari/allegati/';
+
+                // Crea la directory se non esiste
+                if (!file_exists($upload_dir)) {
+                    mkdir($upload_dir, 0777, true);
+                }
+
+                // Processa ogni file allegato
+                $file_count = count($_FILES['allegati']['name']);
+                for ($i = 0; $i < $file_count; $i++) {
+                    if ($_FILES['allegati']['error'][$i] === UPLOAD_ERR_OK) {
+                        $tmp_name = $_FILES['allegati']['tmp_name'][$i];
+                        $nome_file = basename($_FILES['allegati']['name'][$i]);
+                        $tipo_file = $_FILES['allegati']['type'][$i];
+                        $dimensione = $_FILES['allegati']['size'][$i];
+                        $categoria = $_POST['categorie_allegati'][$i] ?? 'altro';
+                        $descrizione = $_POST['descrizioni_allegati'][$i] ?? null;
+
+                        // Genera un nome file univoco per evitare sovrascritture
+                        $percorso_file = uniqid() . '_' . $nome_file;
+                        $destination = $upload_dir . $percorso_file;
+
+                        if (move_uploaded_file($tmp_name, $destination)) {
+                            // Inserisci il record dell'allegato nel database
+                            $attachStmt = $pdo->prepare("INSERT INTO mac_anag_allegati (mac_id, nome_file, percorso_file, tipo_file, categoria, descrizione, dimensione) 
+                                                    VALUES (?, ?, ?, ?, ?, ?, ?)");
+                            $attachStmt->execute([
+                                $id,
+                                $nome_file,
+                                $percorso_file,
+                                $tipo_file,
+                                $categoria,
+                                $descrizione,
+                                $dimensione
+                            ]);
+                        }
+                    }
+                }
+            }
+
+            // Gestione eliminazione allegati
+            if (isset($_POST['delete_allegati']) && !empty($_POST['delete_allegati'])) {
+                $deleteIds = $_POST['delete_allegati'];
+                foreach ($deleteIds as $deleteId) {
+                    $attachId = filter_var($deleteId, FILTER_VALIDATE_INT);
+                    if ($attachId) {
+                        // Recupera il percorso del file prima di eliminare il record
+                        $stmtFile = $pdo->prepare("SELECT percorso_file FROM mac_anag_allegati WHERE id = ? AND mac_id = ?");
+                        $stmtFile->execute([$attachId, $id]);
+                        $fileInfo = $stmtFile->fetch(PDO::FETCH_ASSOC);
+
+                        if ($fileInfo) {
+                            // Elimina il file dal filesystem
+                            $filePath = BASE_PATH . '/uploads/macchinari/allegati/' . $fileInfo['percorso_file'];
+                            if (file_exists($filePath)) {
+                                unlink($filePath);
+                            }
+
+                            // Elimina il record dal database
+                            $stmtDelete = $pdo->prepare("DELETE FROM mac_anag_allegati WHERE id = ? AND mac_id = ?");
+                            $stmtDelete->execute([$attachId, $id]);
+                        }
+                    }
+                }
+            }
+
             $successMessage = "Macchinario aggiornato con successo!";
 
             // Se richiesto il redirect alla lista
@@ -114,6 +188,18 @@ try {
         header("Location: lista_macchinari");
         exit;
     }
+
+    // Recupera gli allegati esistenti
+    $hasAllegati = false;
+    try {
+        $stmtAllegati = $pdo->prepare("SELECT * FROM mac_anag_allegati WHERE mac_id = ? ORDER BY data_caricamento DESC");
+        $stmtAllegati->execute([$id]);
+        $allegati = $stmtAllegati->fetchAll(PDO::FETCH_ASSOC);
+        $hasAllegati = $stmtAllegati->rowCount() > 0;
+    } catch (PDOException $e) {
+        $allegati = [];
+    }
+
 } catch (PDOException $e) {
     $_SESSION['error'] = "Errore nel recupero dei dati: " . $e->getMessage();
     header("Location: lista_macchinari");
@@ -190,13 +276,13 @@ require_once BASE_PATH . '/components/header.php';
                             <span class="badge badge-secondary">ID: <?= $id ?></span>
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="" id="macchinarioForm">
+                            <form method="POST" action="" id="macchinarioForm" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col-md-6 form-group">
                                         <label for="matricola"><strong>Matricola/Numero di Serie *</strong></label>
                                         <input type="text" name="matricola" id="matricola"
                                             class="form-control <?= !empty($errorMessage) && strpos($errorMessage, 'matricola') !== false ? 'is-invalid' : '' ?>"
-                                            required value="<?= htmlspecialchars($formData['matricola'] ?? '') ?>">
+                                            required value="<?= htmlspecialchars($formData['matricola'] ?? '') ?>" readonly>
                                         <?php if (!empty($errorMessage) && strpos($errorMessage, 'matricola') !== false): ?>
                                             <div class="invalid-feedback">
                                                 La matricola inserita è già in uso. Inserire una matricola unica.
@@ -246,26 +332,163 @@ require_once BASE_PATH . '/components/header.php';
                                     <div class="col-md-6 form-group">
                                         <label for="rif_fattura"><strong>Rif. Fattura</strong></label>
                                         <input type="text" name="rif_fattura" id="rif_fattura" class="form-control"
-                                             value="<?= htmlspecialchars($formData['rif_fattura'] ?? '') ?>">
+                                            value="<?= htmlspecialchars($formData['rif_fattura'] ?? '') ?>">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label for="fornitore"><strong>Fornitore *</strong></label>
+                                        <input type="text" name="fornitore" id="fornitore" class="form-control" required
+                                            value="<?= htmlspecialchars($formData['fornitore'] ?? '') ?>">
                                     </div>
                                     <div class="col-md-6 form-group">
-                                        <label for="fornitore"><strong>fornitore *</strong></label>
-                                        <input type="text" name="fornitore" id="fornitore" class="form-control"
-                                            required value="<?= htmlspecialchars($formData['fornitore'] ?? '') ?>">
+                                        <label for="locazione_documenti"><strong>Locazione Documenti</strong></label>
+                                        <input type="text" name="locazione_documenti" id="locazione_documenti"
+                                            class="form-control" placeholder="Es. Armadio A, Scaffale 3"
+                                            value="<?= htmlspecialchars($formData['locazione_documenti'] ?? '') ?>">
+                                        <small class="text-muted">Indicare dove sono conservati fisicamente i
+                                            documenti</small>
                                     </div>
                                 </div>
 
                                 <div class="row mt-3">
-                                    <div class="col-md-6 form-group">
+                                    <div class="col-md-4 form-group">
                                         <label for="modello"><strong>Modello *</strong></label>
                                         <input type="text" name="modello" id="modello" class="form-control" required
                                             value="<?= htmlspecialchars($formData['modello'] ?? '') ?>">
                                     </div>
+                                    <div class="col-md-4 form-group">
+                                        <label for="marca"><strong>Marca</strong></label>
+                                        <input type="text" name="marca" id="marca" class="form-control"
+                                            value="<?= htmlspecialchars($formData['marca'] ?? '') ?>">
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label for="anno_costruzione"><strong>Anno di Costruzione</strong></label>
+                                        <input type="number" name="anno_costruzione" id="anno_costruzione"
+                                            class="form-control" min="1900" max="<?= date('Y') ?>"
+                                            placeholder="<?= date('Y') ?>"
+                                            value="<?= htmlspecialchars($formData['anno_costruzione'] ?? '') ?>">
+                                    </div>
+                                </div>
 
-                                    <div class="col-md-6 form-group">
+                                <div class="row">
+                                    <div class="col-md-12 form-group">
                                         <label for="note">Note (opzionale)</label>
                                         <textarea name="note" id="note" class="form-control"
                                             rows="3"><?= htmlspecialchars($formData['note'] ?? '') ?></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Sezione per gli allegati -->
+                                <div class="row mt-4" id="allegati">
+                                    <div class="col-12">
+                                        <h5 class="font-weight-bold text-primary">Allegati</h5>
+                                        <p class="text-muted">Gestisci manuali, certificazioni e altri documenti
+                                            relativi al macchinario</p>
+                                    </div>
+                                </div>
+
+                                <!-- Lista allegati esistenti -->
+                                <?php if ($hasAllegati): ?>
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <div class="card border-left-info">
+                                                <div class="card-body py-2">
+                                                    <h6 class="font-weight-bold text-info mb-3">Allegati esistenti</h6>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-sm table-bordered">
+                                                            <thead class="thead-light">
+                                                                <tr>
+                                                                    <th>Nome File</th>
+                                                                    <th>Categoria</th>
+                                                                    <th>Descrizione</th>
+                                                                    <th>Dimensione</th>
+                                                                    <th>Data</th>
+                                                                    <th>Azioni</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php foreach ($allegati as $allegato): ?>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <i
+                                                                                class="fas fa-file-<?= getFileIcon($allegato['tipo_file']) ?> mr-1"></i>
+                                                                            <?= htmlspecialchars($allegato['nome_file']) ?>
+                                                                        </td>
+                                                                        <td><?= htmlspecialchars(ucfirst($allegato['categoria'])) ?>
+                                                                        </td>
+                                                                        <td><?= htmlspecialchars($allegato['descrizione'] ?: '-') ?>
+                                                                        </td>
+                                                                        <td><?= formatFileSize($allegato['dimensione']) ?></td>
+                                                                        <td><?= date('d/m/Y', strtotime($allegato['data_caricamento'])) ?>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="btn-group btn-group-sm">
+                                                                                <a href="allegati/download?id=<?= $allegato['id'] ?>"
+                                                                                    class="btn btn-sm btn-outline-primary">
+                                                                                    <i class="fas fa-download"></i>
+                                                                                </a>
+                                                                                <div
+                                                                                    class="custom-control custom-checkbox ml-2 mt-1">
+                                                                                    <input type="checkbox"
+                                                                                        name="delete_allegati[]"
+                                                                                        value="<?= $allegato['id'] ?>"
+                                                                                        class="custom-control-input"
+                                                                                        id="delete_<?= $allegato['id'] ?>">
+                                                                                    <label
+                                                                                        class="custom-control-label text-danger"
+                                                                                        for="delete_<?= $allegato['id'] ?>">Elimina</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                <?php endforeach; ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+
+                                <!-- Upload nuovi allegati -->
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <h6 class="font-weight-bold">Aggiungi nuovi allegati</h6>
+                                    </div>
+                                </div>
+
+                                <div id="allegati-container">
+                                    <div class="allegato-item row mb-3">
+                                        <div class="col-md-4">
+                                            <label><strong>File</strong></label>
+                                            <input type="file" name="allegati[]" class="form-control-file">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label><strong>Categoria</strong></label>
+                                            <select name="categorie_allegati[]" class="form-control">
+                                                <option value="manuale">Manuale</option>
+                                                <option value="certificazione">Certificazione</option>
+                                                <option value="scheda_tecnica">Scheda Tecnica</option>
+                                                <option value="sicurezza">Sicurezza</option>
+                                                <option value="altro">Altro</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <label><strong>Descrizione</strong></label>
+                                            <input type="text" name="descrizioni_allegati[]" class="form-control"
+                                                placeholder="Descrizione opzionale">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-4">
+                                    <div class="col-12">
+                                        <button type="button" id="add-allegato" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-plus-circle"></i> Aggiungi altro allegato
+                                        </button>
                                     </div>
                                 </div>
 
@@ -353,6 +576,44 @@ require_once BASE_PATH . '/components/header.php';
                         $('#nuovo_tipo').attr('required', true);
                     }
 
+                    // Gestione degli allegati - aggiunta di un nuovo allegato
+                    $("#add-allegato").click(function () {
+                        const newRow = `
+                            <div class="allegato-item row mb-3">
+                                <div class="col-md-4">
+                                    <label><strong>File</strong></label>
+                                    <input type="file" name="allegati[]" class="form-control-file">
+                                </div>
+                                <div class="col-md-3">
+                                    <label><strong>Categoria</strong></label>
+                                    <select name="categorie_allegati[]" class="form-control">
+                                        <option value="manuale">Manuale</option>
+                                        <option value="certificazione">Certificazione</option>
+                                        <option value="scheda_tecnica">Scheda Tecnica</option>
+                                        <option value="sicurezza">Sicurezza</option>
+                                        <option value="altro">Altro</option>
+                                    </select>
+                                </div>
+                               Ecco il codice a partire dal punto che hai indicato:
+phpCopy                                <div class="col-md-4">
+                                    <label><strong>Descrizione</strong></label>
+                                    <input type="text" name="descrizioni_allegati[]" class="form-control" placeholder="Descrizione opzionale">
+                                </div>
+                                <div class="col-md-1 d-flex align-items-end mb-2">
+                                    <button type="button" class="btn btn-sm btn-danger remove-allegato">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        $("#allegati-container").append(newRow);
+                    });
+
+                    // Rimozione di un allegato quando si clicca sul pulsante di eliminazione
+                    $(document).on("click", ".remove-allegato", function () {
+                        $(this).closest(".allegato-item").remove();
+                    });
+
                     // Conferma prima di abbandonare i cambiamenti non salvati
                     var formChanged = false;
 
@@ -370,6 +631,59 @@ require_once BASE_PATH . '/components/header.php';
                     });
                 });
             </script>
+
+            <?php
+            // Helper per determinare l'icona del file
+            function getFileIcon($fileType)
+            {
+                if (empty($fileType))
+                    return 'alt';
+
+                $type = strtolower(pathinfo($fileType, PATHINFO_EXTENSION));
+                if (empty($type)) {
+                    // Try to get the MIME type part
+                    $parts = explode('/', $fileType);
+                    $type = end($parts);
+                }
+
+                switch ($type) {
+                    case 'pdf':
+                        return 'pdf';
+                    case 'doc':
+                    case 'docx':
+                    case 'msword':
+                    case 'vnd.openxmlformats-officedocument.wordprocessingml.document':
+                        return 'word';
+                    case 'xls':
+                    case 'xlsx':
+                    case 'vnd.ms-excel':
+                    case 'vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                        return 'excel';
+                    case 'jpg':
+                    case 'jpeg':
+                    case 'png':
+                    case 'gif':
+                    case 'image':
+                        return 'image';
+                    default:
+                        return 'alt';
+                }
+            }
+
+            // Helper per formattare la dimensione del file
+            function formatFileSize($bytes)
+            {
+                if ($bytes >= 1073741824) {
+                    return number_format($bytes / 1073741824, 2) . ' GB';
+                } elseif ($bytes >= 1048576) {
+                    return number_format($bytes / 1048576, 2) . ' MB';
+                } elseif ($bytes >= 1024) {
+                    return number_format($bytes / 1024, 2) . ' KB';
+                } else {
+                    return $bytes . ' bytes';
+                }
+            }
+            ?>
 
             <?php include_once BASE_PATH . '/components/footer.php'; ?>
         </div>

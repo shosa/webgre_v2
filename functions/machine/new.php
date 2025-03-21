@@ -34,6 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 rif_fattura = ?,
                 fornitore = ?,
                 modello = ?,
+                marca = ?,
+                anno_costruzione = ?,
+                locazione_documenti = ?,
                 note = ?
                 WHERE id = ?");
 
@@ -44,6 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_POST['edit_rif_fattura'],
                 $_POST['edit_fornitore'],
                 $_POST['edit_modello'],
+                $_POST['edit_marca'],
+                $_POST['edit_anno_costruzione'],
+                $_POST['edit_locazione_documenti'],
                 $_POST['edit_note'] ?? null,
                 $_POST['edit_id']
             ]);
@@ -96,8 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             // Preparazione dell'inserimento del macchinario
-            $stmt = $pdo->prepare("INSERT INTO mac_anag (matricola, tipologia, data_acquisto, rif_fattura, fornitore, modello, note) 
-                                VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $pdo->prepare("INSERT INTO mac_anag (matricola, tipologia, data_acquisto, rif_fattura, fornitore, modello, marca, anno_costruzione, locazione_documenti, note) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             $result = $stmt->execute([
                 $_POST['matricola'],
@@ -106,10 +112,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_POST['rif_fattura'],
                 $_POST['fornitore'],
                 $_POST['modello'],
+                $_POST['marca'] ?? null,
+                $_POST['anno_costruzione'] ?? null,
+                $_POST['locazione_documenti'] ?? null,
                 $_POST['note'] ?? null
             ]);
 
             if ($result) {
+                // Recupera l'ID del macchinario appena inserito
+                $mac_id = $pdo->lastInsertId();
+
+                // Gestione degli allegati se il form è stato inviato con enctype multipart/form-data
+                if (isset($_FILES['allegati']) && !empty($_FILES['allegati']['name'][0])) {
+                    $upload_dir = BASE_PATH . '/uploads/macchinari/allegati/';
+
+                    // Crea la directory se non esiste
+                    if (!file_exists($upload_dir)) {
+                        mkdir($upload_dir, 0777, true);
+                    }
+
+                    // Processa ogni file allegato
+                    $file_count = count($_FILES['allegati']['name']);
+                    for ($i = 0; $i < $file_count; $i++) {
+                        if ($_FILES['allegati']['error'][$i] === UPLOAD_ERR_OK) {
+                            $tmp_name = $_FILES['allegati']['tmp_name'][$i];
+                            $nome_file = basename($_FILES['allegati']['name'][$i]);
+                            $tipo_file = $_FILES['allegati']['type'][$i];
+                            $dimensione = $_FILES['allegati']['size'][$i];
+                            $categoria = $_POST['categorie_allegati'][$i] ?? 'altro';
+                            $descrizione = $_POST['descrizioni_allegati'][$i] ?? null;
+
+                            // Genera un nome file univoco per evitare sovrascritture
+                            $percorso_file = uniqid() . '_' . $nome_file;
+                            $destination = $upload_dir . $percorso_file;
+
+                            if (move_uploaded_file($tmp_name, $destination)) {
+                                // Inserisci il record dell'allegato nel database
+                                $attachStmt = $pdo->prepare("INSERT INTO mac_anag_allegati (mac_id, nome_file, percorso_file, tipo_file, categoria, descrizione, dimensione) 
+                                                        VALUES (?, ?, ?, ?, ?, ?, ?)");
+                                $attachStmt->execute([
+                                    $mac_id,
+                                    $nome_file,
+                                    $percorso_file,
+                                    $tipo_file,
+                                    $categoria,
+                                    $descrizione,
+                                    $dimensione
+                                ]);
+                            }
+                        }
+                    }
+                }
+
                 // Reset dei dati del form ma mantieni i dati per la visualizzazione del messaggio
                 $successMessage = "Macchinario '<strong>" . htmlspecialchars($_POST['matricola']) . "</strong>' inserito con successo!";
                 $formData = []; // Pulisci i dati del form dopo il successo
@@ -205,7 +259,7 @@ require_once BASE_PATH . '/components/header.php';
                             </div>
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="" id="macchinarioForm">
+                            <form method="POST" action="" id="macchinarioForm" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col-md-6 form-group">
                                         <label for="matricola"><strong>Matricola/Numero di Serie *</strong></label>
@@ -260,27 +314,93 @@ require_once BASE_PATH . '/components/header.php';
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label for="rif_fattura"><strong>Rif. Fattura</strong></label>
-                                        <input type="text" name="rif_fattura" id="rif_Fattura" class="form-control"
-                                             value="<?= htmlspecialchars($formData['rif_fattura'] ?? '') ?>">
+                                        <input type="text" name="rif_fattura" id="rif_fattura" class="form-control"
+                                            value="<?= htmlspecialchars($formData['rif_fattura'] ?? '') ?>">
                                     </div>
+                                </div>
+
+                                <div class="row">
                                     <div class="col-md-6 form-group">
                                         <label for="fornitore"><strong>Fornitore *</strong></label>
-                                        <input type="text" name="fornitore" id="fornitore" class="form-control"
-                                            required value="<?= htmlspecialchars($formData['fornitore'] ?? '') ?>">
+                                        <input type="text" name="fornitore" id="fornitore" class="form-control" required
+                                            value="<?= htmlspecialchars($formData['fornitore'] ?? '') ?>">
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="locazione_documenti"><strong>Locazione Documenti</strong></label>
+                                        <input type="text" name="locazione_documenti" id="locazione_documenti"
+                                            class="form-control" placeholder="Es. Armadio A, Scaffale 3"
+                                            value="<?= htmlspecialchars($formData['locazione_documenti'] ?? '') ?>">
+                                        <small class="text-muted">Indicare dove sono conservati fisicamente i
+                                            documenti</small>
                                     </div>
                                 </div>
 
                                 <div class="row mt-3">
-                                    <div class="col-md-6 form-group">
+                                    <div class="col-md-4 form-group">
                                         <label for="modello"><strong>Modello *</strong></label>
                                         <input type="text" name="modello" id="modello" class="form-control" required
                                             value="<?= htmlspecialchars($formData['modello'] ?? '') ?>">
                                     </div>
+                                    <div class="col-md-4 form-group">
+                                        <label for="marca"><strong>Marca</strong></label>
+                                        <input type="text" name="marca" id="marca" class="form-control"
+                                            value="<?= htmlspecialchars($formData['marca'] ?? '') ?>">
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label for="anno_costruzione"><strong>Anno di Costruzione</strong></label>
+                                        <input type="number" name="anno_costruzione" id="anno_costruzione"
+                                            class="form-control" min="1900" max="<?= date('Y') ?>"
+                                            placeholder="<?= date('Y') ?>"
+                                            value="<?= htmlspecialchars($formData['anno_costruzione'] ?? '') ?>">
+                                    </div>
+                                </div>
 
-                                    <div class="col-md-6 form-group">
+                                <div class="row">
+                                    <div class="col-md-12 form-group">
                                         <label for="note">Note (opzionale)</label>
                                         <textarea name="note" id="note" class="form-control"
                                             rows="3"><?= htmlspecialchars($formData['note'] ?? '') ?></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Sezione Allegati -->
+                                <div class="row mt-4">
+                                    <div class="col-12">
+                                        <h5 class="text-primary font-weight-bold">Allegati</h5>
+                                        <p class="text-muted">Puoi caricare manuali, certificazioni o altri documenti
+                                            relativi al macchinario</p>
+                                    </div>
+                                </div>
+
+                                <div id="allegati-container">
+                                    <div class="allegato-item row mb-3">
+                                        <div class="col-md-4">
+                                            <label><strong>File</strong></label>
+                                            <input type="file" name="allegati[]" class="form-control-file">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label><strong>Categoria</strong></label>
+                                            <select name="categorie_allegati[]" class="form-control">
+                                                <option value="manuale">Manuale</option>
+                                                <option value="certificazione">Certificazione</option>
+                                                <option value="scheda_tecnica">Scheda Tecnica</option>
+                                                <option value="sicurezza">Sicurezza</option>
+                                                <option value="altro">Altro</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <label><strong>Descrizione</strong></label>
+                                            <input type="text" name="descrizioni_allegati[]" class="form-control"
+                                                placeholder="Descrizione opzionale">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-4">
+                                    <div class="col-12">
+                                        <button type="button" id="add-allegato" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-plus-circle"></i> Aggiungi altro allegato
+                                        </button>
                                     </div>
                                 </div>
 
@@ -313,8 +433,9 @@ require_once BASE_PATH . '/components/header.php';
                                             <tr>
                                                 <th>Matricola</th>
                                                 <th>Tipologia</th>
-                                                <th>Fornitore</th>
+                                                <th>Marca</th>
                                                 <th>Modello</th>
+                                                <th>Anno</th>
                                                 <th>Data Acquisto</th>
                                                 <th>Azioni</th>
                                             </tr>
@@ -324,8 +445,9 @@ require_once BASE_PATH . '/components/header.php';
                                                 <tr>
                                                     <td><?= htmlspecialchars($macchinario['matricola']) ?></td>
                                                     <td><?= htmlspecialchars($macchinario['tipologia']) ?></td>
-                                                    <td><?= htmlspecialchars($macchinario['fornitore']) ?></td>
+                                                    <td><?= htmlspecialchars($macchinario['marca'] ?? '-') ?></td>
                                                     <td><?= htmlspecialchars($macchinario['modello']) ?></td>
+                                                    <td><?= htmlspecialchars($macchinario['anno_costruzione'] ?? '-') ?></td>
                                                     <td><?= htmlspecialchars(date('d/m/Y', strtotime($macchinario['data_acquisto']))) ?>
                                                     </td>
                                                     <td class="text-center">
@@ -337,6 +459,9 @@ require_once BASE_PATH . '/components/header.php';
                                                             data-rif_fattura="<?= htmlspecialchars($macchinario['rif_fattura']) ?>"
                                                             data-fornitore="<?= htmlspecialchars($macchinario['fornitore']) ?>"
                                                             data-modello="<?= htmlspecialchars($macchinario['modello']) ?>"
+                                                            data-marca="<?= htmlspecialchars($macchinario['marca'] ?? '') ?>"
+                                                            data-anno_costruzione="<?= htmlspecialchars($macchinario['anno_costruzione'] ?? '') ?>"
+                                                            data-locazione_documenti="<?= htmlspecialchars($macchinario['locazione_documenti'] ?? '') ?>"
                                                             data-note="<?= htmlspecialchars($macchinario['note'] ?? '') ?>">
                                                             <i class="fas fa-edit"></i> Modifica
                                                         </button>
@@ -404,19 +529,41 @@ require_once BASE_PATH . '/components/header.php';
                                         <input type="text" name="edit_rif_fattura" id="edit_rif_fattura"
                                             class="form-control">
                                     </div>
-                                    <div class="col-md-6 form-group">
-                                        <label for="edit_fornitore"><strong>fornitore *</strong></label>
-                                        <input type="text" name="edit_fornitore" id="edit_fornitore"
-                                            class="form-control" required>
-                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 form-group">
+                                        <label for="edit_fornitore"><strong>Fornitore *</strong></label>
+                                        <input type="text" name="edit_fornitore" id="edit_fornitore"
+                                            class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="edit_locazione_documenti"><strong>Locazione
+                                                Documenti</strong></label>
+                                        <input type="text" name="edit_locazione_documenti" id="edit_locazione_documenti"
+                                            class="form-control" placeholder="Es. Armadio A, Scaffale 3">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 form-group">
                                         <label for="edit_modello"><strong>Modello *</strong></label>
                                         <input type="text" name="edit_modello" id="edit_modello" class="form-control"
                                             required>
                                     </div>
-                                    <div class="col-md-6 form-group">
+                                    <div class="col-md-4 form-group">
+                                        <label for="edit_marca"><strong>Marca</strong></label>
+                                        <input type="text" name="edit_marca" id="edit_marca" class="form-control">
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label for="edit_anno_costruzione"><strong>Anno di Costruzione</strong></label>
+                                        <input type="number" name="edit_anno_costruzione" id="edit_anno_costruzione"
+                                            class="form-control" min="1900" max="<?= date('Y') ?>">
+                                    </div>
+                                </div>
+                                Ecco il codice a partire dalla parte che hai indicato:
+
+                                ```php
+                                <div class="row">
+                                    <div class="col-md-12 form-group">
                                         <label for="edit_note">Note (opzionale)</label>
                                         <textarea name="edit_note" id="edit_note" class="form-control"
                                             rows="3"></textarea>
@@ -446,6 +593,43 @@ require_once BASE_PATH . '/components/header.php';
                         $('#data_acquisto').val(today);
                     }
 
+                    // Gestione degli allegati - aggiunta di un nuovo allegato
+                    $("#add-allegato").click(function () {
+                        const newRow = `
+                            <div class="allegato-item row mb-3">
+                                <div class="col-md-4">
+                                    <label><strong>File</strong></label>
+                                    <input type="file" name="allegati[]" class="form-control-file">
+                                </div>
+                                <div class="col-md-3">
+                                    <label><strong>Categoria</strong></label>
+                                    <select name="categorie_allegati[]" class="form-control">
+                                        <option value="manuale">Manuale</option>
+                                        <option value="certificazione">Certificazione</option>
+                                        <option value="scheda_tecnica">Scheda Tecnica</option>
+                                        <option value="sicurezza">Sicurezza</option>
+                                        <option value="altro">Altro</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label><strong>Descrizione</strong></label>
+                                    <input type="text" name="descrizioni_allegati[]" class="form-control" placeholder="Descrizione opzionale">
+                                </div>
+                                <div class="col-md-1 d-flex align-items-end mb-2">
+                                    <button type="button" class="btn btn-sm btn-danger remove-allegato">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        $("#allegati-container").append(newRow);
+                    });
+
+                    // Rimozione di un allegato quando si clicca sul pulsante di eliminazione
+                    $(document).on("click", ".remove-allegato", function () {
+                        $(this).closest(".allegato-item").remove();
+                    });
+
                     // Mostra/nascondi la sezione per nuovo tipo
                     $('#tipologia').change(function () {
                         if ($(this).val() === 'nuovo') {
@@ -469,6 +653,14 @@ require_once BASE_PATH . '/components/header.php';
                         $('#macchinarioForm')[0].reset();
                         $('#nuovo_tipo_section').hide();
                         $('#matricola').removeClass('is-invalid');
+
+                        // Rimuovi tutti gli allegati aggiuntivi
+                        $(".allegato-item:not(:first)").remove();
+
+                        // Reset dei valori degli allegati rimanenti
+                        $(".allegato-item:first input[type='file']").val('');
+                        $(".allegato-item:first input[type='text']").val('');
+                        $(".allegato-item:first select").val($(".allegato-item:first select option:first").val());
 
                         // Nascondi messaggi di errore e successo
                         $('.alert-danger, .alert-success').fadeOut();
@@ -494,6 +686,9 @@ require_once BASE_PATH . '/components/header.php';
                         $('#edit_rif_fattura').val($(this).data('rif_fattura'));
                         $('#edit_fornitore').val($(this).data('fornitore'));
                         $('#edit_modello').val($(this).data('modello'));
+                        $('#edit_marca').val($(this).data('marca'));
+                        $('#edit_anno_costruzione').val($(this).data('anno_costruzione'));
+                        $('#edit_locazione_documenti').val($(this).data('locazione_documenti'));
                         $('#edit_note').val($(this).data('note'));
 
                         // Mostra il modal con JavaScript puro
@@ -541,3 +736,4 @@ require_once BASE_PATH . '/components/header.php';
         </div>
     </div>
 </body>
+

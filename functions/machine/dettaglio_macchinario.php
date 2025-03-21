@@ -42,8 +42,6 @@ try {
     $statoClass = 'success';
     $statoText = 'Acquistato da';
     
-    
-    
     // Recupera la cronologia delle manutenzioni (se esiste la tabella)
     $hasManutenzioni = false;
     try {
@@ -56,16 +54,16 @@ try {
         $manutenzioni = [];
     }
     
-    // Recupera i documenti allegati (se esiste la tabella)
-    $hasDocumenti = false;
+    // Recupera gli allegati dalla tabella mac_anag_allegati
+    $hasAllegati = false;
     try {
-        $stmtDocumenti = $pdo->prepare("SELECT * FROM mac_documenti WHERE mac_id = ? ORDER BY data_caricamento DESC");
-        $stmtDocumenti->execute([$id]);
-        $documenti = $stmtDocumenti->fetchAll(PDO::FETCH_ASSOC);
-        $hasDocumenti = true;
+        $stmtAllegati = $pdo->prepare("SELECT * FROM mac_anag_allegati WHERE mac_id = ? ORDER BY data_caricamento DESC");
+        $stmtAllegati->execute([$id]);
+        $allegati = $stmtAllegati->fetchAll(PDO::FETCH_ASSOC);
+        $hasAllegati = $stmtAllegati->rowCount() > 0;
     } catch (PDOException $e) {
-        // La tabella documenti potrebbe non esistere ancora
-        $documenti = [];
+        // La tabella potrebbe non esistere ancora
+        $allegati = [];
     }
     
 } catch (PDOException $e) {
@@ -100,16 +98,15 @@ require_once BASE_PATH . '/components/header.php';
                             <a href="edit_macchinario?id=<?= $id ?>" class="btn btn-primary btn-sm shadow-sm">
                                 <i class="fas fa-edit fa-sm text-white-50"></i> Modifica
                             </a>
-                            <a href="#" class="btn btn-warning btn-sm shadow-sm ml-2">
+                            <a href="manutenzioni.php?id=<?= $id ?>" class="btn btn-warning btn-sm shadow-sm ml-2">
                                 <i class="fas fa-tools fa-sm text-white-50"></i> Manutenzioni
                             </a>
-                            <a href="#" onclick="printDetails()" class="btn btn-info btn-sm shadow-sm ml-2">
+                            <a href="makePDF.php?id=<?= $id ?>"  class="btn btn-info btn-sm shadow-sm ml-2">
                                 <i class="fas fa-print fa-sm text-white-50"></i> Stampa Scheda
                             </a>
                             <a href="qrcode?id=<?= $id ?>" class="btn btn-indigo btn-sm shadow-sm ml-2">
                                 <i class="fas fa-qrcode fa-sm text-white-50"></i> QR Code
                             </a>
-                          
                         </div>
                     </div>
                     
@@ -157,20 +154,41 @@ require_once BASE_PATH . '/components/header.php';
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                 <?= date('d/m/Y', strtotime($macchinario['data_acquisto'])) ?>
                                             </div>
+                                        </div>
+                                        
+                                        <div class="col-md-4 mb-3">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Rif. Fattura
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                            <?= htmlspecialchars($macchinario['rif_fattura']) ?>
+                                                <?= htmlspecialchars($macchinario['rif_fattura'] ?: '-') ?>
                                             </div>
                                         </div>
-                                    
                                         <div class="col-md-4 mb-3">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                fornitore
+                                                Fornitore
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                 <?= htmlspecialchars($macchinario['fornitore']) ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Locazione Documenti
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <?= htmlspecialchars($macchinario['locazione_documenti'] ?: '-') ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row no-gutters">
+                                        <div class="col-md-4 mb-3">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Marca
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <?= htmlspecialchars($macchinario['marca'] ?: '-') ?>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-3">
@@ -183,10 +201,10 @@ require_once BASE_PATH . '/components/header.php';
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                ID Sistema
+                                                Anno di Costruzione
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                #<?= $macchinario['id'] ?>
+                                                <?= htmlspecialchars($macchinario['anno_costruzione'] ?: '-') ?>
                                             </div>
                                         </div>
                                     </div>
@@ -289,7 +307,10 @@ require_once BASE_PATH . '/components/header.php';
                                         </div>
                                     </div>
                                     
-                                    <h4 class="text-center mb-3"><?= htmlspecialchars($macchinario['fornitore']) ?> <?= htmlspecialchars($macchinario['modello']) ?></h4>
+                                    <h4 class="text-center mb-3">
+                                        <?= htmlspecialchars($macchinario['marca'] ?: '') ?> 
+                                        <?= htmlspecialchars($macchinario['modello']) ?>
+                                    </h4>
                                     
                                     <div class="mb-3">
                                         <div class="text-xs font-weight-bold text-uppercase mb-1">
@@ -343,28 +364,34 @@ require_once BASE_PATH . '/components/header.php';
                                 </div>
                             </div>
                             
-                            <!-- Documenti allegati -->
-                            <?php if ($hasDocumenti): ?>
+                            <!-- Allegati del macchinario -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">
-                                        <i class="fas fa-file-alt mr-1"></i> Documenti
+                                        <i class="fas fa-file-alt mr-1"></i> Allegati
                                     </h6>
                                 </div>
                                 <div class="card-body">
-                                    <?php if (count($documenti) > 0): ?>
+                                    <?php if ($hasAllegati): ?>
                                         <ul class="list-group">
-                                            <?php foreach ($documenti as $documento): ?>
+                                            <?php foreach ($allegati as $allegato): ?>
                                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                                     <div>
-                                                        <i class="fas fa-file-<?= getFileIcon($documento['tipo_file']) ?> mr-2"></i>
-                                                        <?= htmlspecialchars($documento['nome_file']) ?>
+                                                        <i class="fas fa-file-<?= getFileIcon($allegato['tipo_file']) ?> mr-2"></i>
+                                                        <?= htmlspecialchars($allegato['nome_file']) ?>
+                                                        <span class="badge badge-info ml-2"><?= htmlspecialchars(ucfirst($allegato['categoria'])) ?></span>
+                                                        <?php if (!empty($allegato['descrizione'])): ?>
+                                                            <small class="d-block text-muted">
+                                                                <?= htmlspecialchars($allegato['descrizione']) ?>
+                                                            </small>
+                                                        <?php endif; ?>
                                                         <small class="d-block text-muted">
-                                                            <?= date('d/m/Y', strtotime($documento['data_caricamento'])) ?>
+                                                            <?= date('d/m/Y', strtotime($allegato['data_caricamento'])) ?>
+                                                            (<?= formatFileSize($allegato['dimensione']) ?>)
                                                         </small>
                                                     </div>
                                                     <div>
-                                                        <a href="documenti/download?id=<?= $documento['id'] ?>" class="btn btn-sm btn-outline-primary">
+                                                        <a href="allegati/download?id=<?= $allegato['id'] ?>" class="btn btn-sm btn-outline-primary">
                                                             <i class="fas fa-download"></i>
                                                         </a>
                                                     </div>
@@ -373,18 +400,17 @@ require_once BASE_PATH . '/components/header.php';
                                         </ul>
                                     <?php else: ?>
                                         <div class="alert alert-info">
-                                            <i class="fas fa-info-circle mr-1"></i> Nessun documento caricato.
+                                            <i class="fas fa-info-circle mr-1"></i> Nessun allegato disponibile per questo macchinario.
                                         </div>
                                     <?php endif; ?>
                                     
                                     <div class="text-center mt-3">
-                                        <a href="documenti?mac_id=<?= $id ?>" class="btn btn-sm btn-primary">
-                                            <i class="fas fa-file-upload mr-1"></i> Gestisci Documenti
+                                        <a href="edit_macchinario?id=<?= $id ?>#allegati" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-file-upload mr-1"></i> Gestisci Allegati
                                         </a>
                                     </div>
                                 </div>
                             </div>
-                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -396,31 +422,60 @@ require_once BASE_PATH . '/components/header.php';
                 function printDetails() {
                     window.print();
                 }
-                
-                <?php
-                // Helper per determinare l'icona del file
-                function getFileIcon($fileType) {
-                    switch (strtolower($fileType)) {
-                        case 'pdf':
-                            return 'pdf';
-                        case 'doc':
-                        case 'docx':
-                            return 'word';
-                        case 'xls':
-                        case 'xlsx':
-                            return 'excel';
-                        case 'jpg':
-                        case 'jpeg':
-                        case 'png':
-                            return 'image';
-                        default:
-                            return 'alt';
-                    }
-                }
-                ?>
             </script>
+            
+            <?php
+            // Helper per determinare l'icona del file
+            function getFileIcon($fileType) {
+                if (empty($fileType)) return 'alt';
+                
+                $type = strtolower(pathinfo($fileType, PATHINFO_EXTENSION));
+                if (empty($type)) {
+                    // Try to get the MIME type part
+                    $parts = explode('/', $fileType);
+                    $type = end($parts);
+                }
+                
+                switch ($type) {
+                    case 'pdf':
+                        return 'pdf';
+                    case 'doc':
+                    case 'docx':
+                    case 'msword':
+                    case 'vnd.openxmlformats-officedocument.wordprocessingml.document':
+                        return 'word';
+                    case 'xls':
+                    case 'xlsx':
+                    case 'vnd.ms-excel':
+                    case 'vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                        return 'excel';
+                    case 'jpg':
+                    case 'jpeg':
+                    case 'png':
+                    case 'gif':
+                    case 'image':
+                        return 'image';
+                    default:
+                        return 'alt';
+                }
+            }
+            
+            // Helper per formattare la dimensione del file
+            function formatFileSize($bytes) {
+                if ($bytes >= 1073741824) {
+                    return number_format($bytes / 1073741824, 2) . ' GB';
+                } elseif ($bytes >= 1048576) {
+                    return number_format($bytes / 1048576, 2) . ' MB';
+                } elseif ($bytes >= 1024) {
+                    return number_format($bytes / 1024, 2) . ' KB';
+                } else {
+                    return $bytes . ' bytes';
+                }
+            }
+            ?>
             
             <?php include_once BASE_PATH . '/components/footer.php'; ?>
         </div>
     </div>
 </body>
+</html>
