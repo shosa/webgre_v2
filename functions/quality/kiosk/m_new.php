@@ -2,7 +2,7 @@
 session_start();
 require_once '../../../config/config.php';
 $edit = false;
-require_once BASE_PATH . '/components/header.php';
+require_once BASE_PATH . '/components/header_kiosk.php';
 ?>
 <!DOCTYPE html>
 <html lang="it">
