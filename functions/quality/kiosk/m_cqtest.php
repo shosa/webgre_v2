@@ -21,7 +21,6 @@ $paia = filter_input(INPUT_POST, 'paia', FILTER_UNSAFE_RAW);
 $stmt = $db->prepare("SELECT * FROM dati WHERE Cartel = :cartellino");
 $stmt->execute(['cartellino' => $cartellino]);
 $informazione = $stmt->fetch(PDO::FETCH_ASSOC);
-logActivity($_SESSION['user_id'], 'CQ', 'INIZIO', 'Test', 'Cartellino ' . $cartellino, '');
 $cartellino = $informazione["Cartel"];
 $commessa = $informazione["Commessa Cli"];
 // Query per ottenere le opzioni per il menu a tendina 'CALZATA' dalla tabella 'id_numerate'
