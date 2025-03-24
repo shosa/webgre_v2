@@ -63,7 +63,7 @@ try {
 
         if ($exists) {
             // Se esiste, recupera anche alcuni dati di base
-            $stmt = $pdo->prepare("SELECT Cartel, Cliente FROM dati WHERE Cartel = :cartellino LIMIT 1");
+            $stmt = $pdo->prepare("SELECT Cartel FROM dati WHERE Cartel = :cartellino LIMIT 1");
             $stmt->bindParam(':cartellino', $cartellino, PDO::PARAM_STR);
             $stmt->execute();
             $cartellino_data = $stmt->fetch(PDO::FETCH_ASSOC);
