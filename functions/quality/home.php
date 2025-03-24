@@ -151,7 +151,7 @@ require_once BASE_PATH . '/components/header.php';
                                                 <i class="fas fa-users"></i>
                                             </div>
                                             <div>
-                                                <div class="text-xs text-warning text-uppercase">Operatori</div>
+                                                <div class="text-xs text-success text-uppercase">Operatori</div>
                                                 <div class="font-weight-bold">Gestisci gli utenti per il controllo qualità</div>
                                                 <div class="small text-gray-600">Modifica utenti</div>
                                             </div>
