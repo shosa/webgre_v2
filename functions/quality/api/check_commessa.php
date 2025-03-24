@@ -68,8 +68,6 @@ try {
                 'message' => 'Commessa trovata',
                 'data' => [
                     'cartellino' => $result['cartel'],
-                    'id' => $result['id'],
-                    'cliente' => $result['Cliente']
                 ]
             ];
         } else {
