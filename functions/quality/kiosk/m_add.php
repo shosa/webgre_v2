@@ -61,7 +61,7 @@ require_once BASE_PATH . '/components/header.php';
                             sarà
                             registrata **
                         </h4>
-                        <form class="form" action="cqtest.php" method="post" id="customer_form"
+                        <form class="form" action="m_cqtest.php" method="post" id="customer_form"
                             enctype="multipart/form-data">
                             <fieldset class="p-3">
                                 <h5 class=" bg-success text-white p-2 rounded"><?php echo $nomeLinea; ?></h5>
