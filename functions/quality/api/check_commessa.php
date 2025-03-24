@@ -52,11 +52,10 @@ try {
         ];
     } else {
         // Connessione al database usando PDO
-        $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo = getDbInstance();
 
         // Prepara la query per verificare se la commessa esiste
-        $stmt = $pdo->prepare("SELECT cartel, id, Cliente FROM dati WHERE `Commessa Cli` = :commessa LIMIT 1");
+        $stmt = $pdo->prepare("SELECT cartel FROM dati WHERE `Commessa Cli` = :commessa LIMIT 1");
         $stmt->bindParam(':commessa', $commessa, PDO::PARAM_STR);
         $stmt->execute();
 
