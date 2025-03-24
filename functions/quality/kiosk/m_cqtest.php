@@ -1,8 +1,6 @@
 <?php
 session_start();
-require_once '../../config/config.php';
-require_once BASE_PATH . '/components/auth_validate.php';
-require_once '../../utils/log_utils.php';
+require_once '../../../config/config.php';
 $db = getDbInstance();
 // Recupera la variabile cartellino dall'URL
 $cartellino = filter_input(INPUT_POST, 'cartellino', FILTER_UNSAFE_RAW);
@@ -204,20 +202,19 @@ require_once BASE_PATH . '/components/header.php';
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <?php include (BASE_PATH . "/components/navbar.php"); ?>
+
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <?php include (BASE_PATH . "/components/topbar.php"); ?>
+
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Controllo Qualità</h1>
                     </div>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="../../functions/quality/home">Home</a></li>
-                        <li class="breadcrumb-item"><a href="../../functions/quality/new">Sistema CQ</a></li>
+                        <li class="breadcrumb-item"><a href="../../functions/quality/new">Indietro</a></li>
                         <li class="breadcrumb-item"><a
                                 href="../../functions/quality/add?cartellino=<?php echo $cartellino ?>">Controllo Dati
                             </a></li>

@@ -26,7 +26,6 @@ require_once BASE_PATH . '/components/header_kiosk.php';
                     
                     <!-- Breadcrumbs -->
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="../../functions/quality/home">Home</a></li>
                         <li class="breadcrumb-item active">Nuova Registrazione</li>
                     </ol>
                     

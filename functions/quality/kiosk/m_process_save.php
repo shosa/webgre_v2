@@ -1,8 +1,6 @@
 <?php
 session_start();
-require_once '../../config/config.php';
-require_once BASE_PATH . '/components/auth_validate.php';
-require_once '../../utils/log_utils.php';
+require_once '../../../config/config.php';
 // Ottieni l'orario corrente
 $orario = date('H:i');
 // Variabile per tracciare se l'inserimento è riuscito
@@ -111,12 +109,12 @@ require_once BASE_PATH . '/components/header.php';
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <?php include (BASE_PATH . "/components/navbar.php"); ?>
+       
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <?php include (BASE_PATH . "/components/topbar.php"); ?>
+                
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <div class="card shadow mb-4">
