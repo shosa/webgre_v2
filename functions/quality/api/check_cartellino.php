@@ -63,7 +63,7 @@ try {
 
         if ($exists) {
             // Se esiste, recupera anche alcuni dati di base
-            $stmt = $pdo->prepare("SELECT id, Cartel, Cliente FROM dati WHERE Cartel = :cartellino LIMIT 1");
+            $stmt = $pdo->prepare("SELECT Cartel, Cliente FROM dati WHERE Cartel = :cartellino LIMIT 1");
             $stmt->bindParam(':cartellino', $cartellino, PDO::PARAM_STR);
             $stmt->execute();
             $cartellino_data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -87,7 +87,10 @@ try {
     error_log("Errore API check_cartellino: " . $e->getMessage());
 
     // Risposta client (senza dettagli sensibili)
-    $response =  $e->getMessage();
+    $response = [
+        'status' => 'error',
+        'message' => 'Errore di connessione al database'
+    ];
 } catch (Exception $e) {
     // Log dell'errore (su server)
     error_log("Errore generico API check_cartellino: " . $e->getMessage());
