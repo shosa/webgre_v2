@@ -87,10 +87,7 @@ try {
     error_log("Errore API check_cartellino: " . $e->getMessage());
 
     // Risposta client (senza dettagli sensibili)
-    $response = [
-        'status' => 'error',
-        'message' => 'Errore di connessione al database'
-    ];
+    $response = $e->getMessage();
 } catch (Exception $e) {
     // Log dell'errore (su server)
     error_log("Errore generico API check_cartellino: " . $e->getMessage());
