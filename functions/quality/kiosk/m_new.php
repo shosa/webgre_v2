@@ -116,7 +116,7 @@ require_once BASE_PATH . '/components/header_kiosk.php';
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
                 if (response.exists) {
-                    window.location.href = 'add?cartellino=' + encodeURIComponent(cartellino);
+                    window.location.href = 'm_add?cartellino=' + encodeURIComponent(cartellino);
                 } else {
                     Swal.fire({
                         icon: 'error',
