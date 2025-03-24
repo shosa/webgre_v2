@@ -13,19 +13,11 @@ if (isset($_GET['testid'])) {
         if ($record) {
             // Recupera il campo note dal record
             $note = $record['note'];
-            // Recupera il nome dell'operatore dalla tabella utenti
-            $stmt = $pdo->prepare("SELECT Nome FROM utenti WHERE user_name = :operatore");
-            $stmt->execute(['operatore' => $record['operatore']]);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($user) {
-                $operatore = $user['Nome'];
-            } else {
-                $operatore = 'Operatore non trovato';
-            }
+           
             $response = [
                 'test' => $record['test'],
                 'note' => $note,
-                'operatore' => $operatore,
+                'operatore' => $record['operatore'],
                 'articolo' => $record['articolo'],
                 'cartellino' => $record['cartellino'],
                 'commessa' => $record['commessa'],

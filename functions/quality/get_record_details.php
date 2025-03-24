@@ -15,20 +15,11 @@ if (isset($_GET['testid'])) {
             // Recupera il campo note dalla tabella cq_records
             $note = $record['note'];
             // Preparazione e esecuzione della query per utenti
-            $sqlUser = "SELECT Nome FROM utenti WHERE user_name = :user_name";
-            $stmtUser = $db->prepare($sqlUser);
-            $stmtUser->bindParam(':user_name', $record['operatore'], PDO::PARAM_STR);
-            $stmtUser->execute();
-            $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
-            if ($user) {
-                $operatore = $user['Nome'];
-            } else {
-                $operatore = 'Operatore non trovato';
-            }
+           
             $response = [
                 'test' => $record['test'],
                 'note' => $note,
-                'operatore' => $operatore,
+                'operatore' => $record['operatore'],
                 'articolo' => $record['articolo'],
                 'cartellino' => $record['cartellino'],
                 'commessa' => $record['commessa'],
