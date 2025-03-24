@@ -145,6 +145,17 @@ require_once BASE_PATH . '/components/header.php';
                                                 <div class="small text-gray-600">PDF per il Cliente</div>
                                             </div>
                                         </a>
+
+                                        <a href="#" class="btn btn-light border-left-warning shadow-sm btn-block text-left d-flex align-items-center py-3">
+                                            <div class="btn btn-success btn-circle mr-3">
+                                                <i class="fas fa-users"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-xs text-warning text-uppercase">Operatori</div>
+                                                <div class="font-weight-bold">Gestisci gli utenti per il controllo qualità</div>
+                                                <div class="small text-gray-600">Modifica utenti</div>
+                                            </div>
+                                        </a>
                                     </div>
                                     
                                    
