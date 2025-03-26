@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../../config/config.php';
+require_once '../config/config.php';
 require_once BASE_PATH . '/components/auth_validate.php';
 require_once BASE_PATH . '/components/header.php';
 
