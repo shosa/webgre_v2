@@ -9,8 +9,8 @@ if (!isset($_GET['filename'])) {
     die('Nome file non specificato');
 }
 
-$filename = basename($_GET['filename']); // Sanitize filename
-$filePath = $uploadDir . $filename;
+$filename = $currentFolder ? $currentFolder . '/' . basename($_GET['filename']) : basename($_GET['filename']);
+$filePath = BASE_PATH . '/uploads/' . $filename;
 
 if (!file_exists($filePath)) {
     die('File non trovato');

@@ -362,7 +362,9 @@ $uploadDir = BASE_PATH . '/uploads/';
             $('#confirmModal').modal('show');
         }
 
-        function getFileIcon(filename) {
+        function getFileIcon(filename, type = 'file') {
+            if (type === 'folder') return '<i class="fas fa-folder text-warning"></i>';
+
             const ext = filename.split('.').pop().toLowerCase();
             const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
             const docExts = ['pdf', 'doc', 'docx', 'txt', 'rtf'];
@@ -422,38 +424,64 @@ $uploadDir = BASE_PATH . '/uploads/';
                 }
             });
         }
+        let currentPath = '';
 
-        function loadFiles() {
+        function loadFiles(path = '') {
+            currentPath = path;
             $.ajax({
                 url: 'get_files.php',
                 method: 'GET',
+                data: { folder: path },
                 success: function (response) {
                     try {
-                        const files = JSON.parse(response);
-                        if (files.error) {
-                            console.error("Error fetching files:", files.error);
-                            $('#files-list').html(`<li class="list-group-item text-danger">${files.error}</li>`);
+                        const result = JSON.parse(response);
+                        if (result.error) {
+                            console.error("Error fetching files:", result.error);
+                            $('#files-list').html(`<li class="list-group-item text-danger">${result.error}</li>`);
                             return;
                         }
 
                         const filesList = $('#files-list');
                         filesList.empty();
 
-                        if (files.length === 0) {
-                            filesList.append('<li class="list-group-item text-muted">Nessun file trovato</li>');
-                            return;
+                        // Aggiungi pulsante per tornare indietro se non siamo nella root
+                        if (path) {
+                            const parentPath = path.split('/').slice(0, -1).join('/');
+                            const goBackItem = $(`
+                        <li class="list-group-item file-item go-back-item" data-path="${parentPath}">
+                            <i class="fas fa-arrow-left text-muted mr-2"></i>Torna indietro
+                        </li>
+                    `);
+                            filesList.append(goBackItem);
                         }
 
-                        files.forEach(file => {
+                        // Aggiungi cartelle
+                        result.folders.forEach(folder => {
+                            const fullPath = path ? `${path}/${folder.name}` : folder.name;
+                            const folderItem = $(`
+                        <li class="list-group-item file-item folder-item" data-path="${fullPath}">
+                            ${getFileIcon(folder.name, 'folder')} ${folder.name}
+                            <span class="badge badge-secondary float-right">CARTELLA</span>
+                        </li>
+                    `);
+                            filesList.append(folderItem);
+                        });
+
+                        // Aggiungi file
+                        result.files.forEach(file => {
                             const fileInfo = getFileType(file.name);
                             const fileItem = $(`
-                                <li class="list-group-item file-item" data-filename="${file.name}">
-                                    ${getFileIcon(file.name)} ${file.name}
-                                    <span class="badge ${fileInfo.badge} float-right">${fileInfo.type.toUpperCase()}</span>
-                                </li>
-                            `);
+                        <li class="list-group-item file-item" data-filename="${path ? `${path}/${file.name}` : file.name}">
+                            ${getFileIcon(file.name)} ${file.name}
+                            <span class="badge ${fileInfo.badge} float-right">${fileInfo.type.toUpperCase()}</span>
+                        </li>
+                    `);
                             filesList.append(fileItem);
                         });
+
+                        // Aggiorna informazioni cartella
+                        $('#folder-path').text(`/uploads/${path || ''}`);
+
                     } catch (e) {
                         console.error("Failed to parse files response:", e);
                     }
@@ -463,6 +491,7 @@ $uploadDir = BASE_PATH . '/uploads/';
                 }
             });
         }
+
 
         function previewFile(filename) {
             const fileInfo = getFileType(filename);
@@ -543,7 +572,6 @@ $uploadDir = BASE_PATH . '/uploads/';
                 }
             });
         }
-
         $(document).ready(function () {
             // Initial load
             loadFolderInfo();
@@ -563,9 +591,18 @@ $uploadDir = BASE_PATH . '/uploads/';
                 $("#files-list li").show();
             });
 
-            // File selection
+            // Evento di selezione per gestire cartelle e file
             $(document).on('click', '.file-item', function () {
                 const filename = $(this).data('filename');
+                const folderPath = $(this).data('path');
+
+                // Se è una cartella, carica i file della cartella
+                if ($(this).hasClass('folder-item') || $(this).hasClass('go-back-item')) {
+                    loadFiles(folderPath);
+                    return;
+                }
+
+                // Altrimenti, gestisci come prima
                 currentFile = filename;
 
                 $('.file-item').removeClass('active');
@@ -595,11 +632,11 @@ $uploadDir = BASE_PATH . '/uploads/';
                 for (let i = 0; i < files.length; i++) {
                     const file = files[i];
                     fileList.append(`
-                        <div class="mb-2">
-                            <span class="badge badge-primary mr-2">${getFileIcon(file.name)} ${file.name}</span>
-                            <small class="text-muted">(${formatFileSize(file.size)})</small>
-                        </div>
-                    `);
+                <div class="mb-2">
+                    <span class="badge badge-primary mr-2">${getFileIcon(file.name)} ${file.name}</span>
+                    <small class="text-muted">(${formatFileSize(file.size)})</small>
+                </div>
+            `);
                 }
             });
 
@@ -612,6 +649,8 @@ $uploadDir = BASE_PATH . '/uploads/';
                 }
 
                 const formData = new FormData($('#uploadForm')[0]);
+                // Aggiungi il percorso corrente ai dati del form
+                formData.append('current_folder', currentPath);
 
                 // Show progress bar
                 $('.progress').show();
@@ -649,7 +688,7 @@ $uploadDir = BASE_PATH . '/uploads/';
                                 $('#fileList').empty();
 
                                 // Refresh file list and folder info
-                                loadFiles();
+                                loadFiles(currentPath);
                                 loadFolderInfo();
                             }
                         } catch (e) {
@@ -686,7 +725,10 @@ $uploadDir = BASE_PATH . '/uploads/';
                     $.ajax({
                         url: 'delete_file.php',
                         method: 'POST',
-                        data: { filename: currentFile },
+                        data: {
+                            filename: currentFile,
+                            current_folder: currentPath
+                        },
                         success: function (response) {
                             try {
                                 const result = JSON.parse(response);
@@ -703,7 +745,7 @@ $uploadDir = BASE_PATH . '/uploads/';
                                     currentFile = null;
 
                                     // Refresh file list and folder info
-                                    loadFiles();
+                                    loadFiles(currentPath);
                                     loadFolderInfo();
                                 }
                             } catch (e) {
@@ -719,7 +761,7 @@ $uploadDir = BASE_PATH . '/uploads/';
 
             // Refresh files
             $('#refreshFiles').on('click', function () {
-                loadFiles();
+                loadFiles(currentPath);
                 loadFolderInfo();
                 showAlert('Elenco file aggiornato', 'success');
             });
@@ -804,6 +846,266 @@ $uploadDir = BASE_PATH . '/uploads/';
                     }
                 });
             });
+        });
+        // Initial load
+        loadFolderInfo();
+        loadFiles();
+
+        // File search
+        $('#fileSearch').on('keyup', function () {
+            const value = $(this).val().toLowerCase();
+            $("#files-list li").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+
+        // Clear search
+        $('#clearSearch').on('click', function () {
+            $('#fileSearch').val('');
+            $("#files-list li").show();
+        });
+
+        // File selection
+        $(document).on('click', '.file-item', function () {
+            const filename = $(this).data('filename');
+            currentFile = filename;
+
+            $('.file-item').removeClass('active');
+            $(this).addClass('active');
+
+            previewFile(filename);
+        });
+
+        // File upload
+        $('#uploadFileBtn').on('click', function () {
+            $('#uploadFileModal').modal('show');
+        });
+
+        // File input change (show selected files)
+        $('#fileUpload').on('change', function () {
+            const files = $(this)[0].files;
+            const fileList = $('#fileList');
+            fileList.empty();
+
+            if (files.length === 0) {
+                $('.custom-file-label').text('Scegli file');
+                return;
+            }
+
+            $('.custom-file-label').text(`${files.length} file selezionati`);
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                fileList.append(`
+                        <div class="mb-2">
+                            <span class="badge badge-primary mr-2">${getFileIcon(file.name)} ${file.name}</span>
+                            <small class="text-muted">(${formatFileSize(file.size)})</small>
+                        </div>
+                    `);
+            }
+        });
+
+        // Start upload
+        $('#startUploadBtn').on('click', function () {
+            const files = $('#fileUpload')[0].files;
+            if (files.length === 0) {
+                showAlert('Seleziona prima alcuni file', 'warning');
+                return;
+            }
+
+            const formData = new FormData($('#uploadForm')[0]);
+
+            // Show progress bar
+            $('.progress').show();
+            $('.progress-bar').css('width', '0%').attr('aria-valuenow', 0);
+
+            $.ajax({
+                url: 'upload_files.php',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                xhr: function () {
+                    const xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener("progress", function (evt) {
+                        if (evt.lengthComputable) {
+                            const percentComplete = evt.loaded / evt.total;
+                            $('.progress-bar').css('width', (percentComplete * 100) + '%')
+                                .attr('aria-valuenow', percentComplete * 100);
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success: function (response) {
+                    try {
+                        const result = JSON.parse(response);
+                        if (result.error) {
+                            showAlert(result.error, 'danger');
+                        } else {
+                            showAlert('File caricati con successo', 'success');
+                            $('#uploadFileModal').modal('hide');
+
+                            // Reset file input
+                            $('#fileUpload').val('');
+                            $('.custom-file-label').text('Scegli file');
+                            $('#fileList').empty();
+
+                            // Refresh file list and folder info
+                            loadFiles();
+                            loadFolderInfo();
+                        }
+                    } catch (e) {
+                        console.error("Failed to parse upload response:", e);
+                    }
+                },
+                error: function () {
+                    showAlert('Errore durante il caricamento dei file', 'danger');
+                },
+                complete: function () {
+                    $('.progress').hide();
+                }
+            });
+        });
+
+        // Download file
+        $('#downloadFileBtn').on('click', function () {
+            if (!currentFile) {
+                showAlert('Seleziona prima un file', 'warning');
+                return;
+            }
+
+            window.location.href = `download_file.php?filename=${encodeURIComponent(currentFile)}`;
+        });
+
+        // Delete file
+        $('#deleteFileBtn').on('click', function () {
+            if (!currentFile) {
+                showAlert('Seleziona prima un file', 'warning');
+                return;
+            }
+
+            confirmAction(`Sei sicuro di voler eliminare il file ${currentFile}?`, function () {
+                $.ajax({
+                    url: 'delete_file.php',
+                    method: 'POST',
+                    data: { filename: currentFile },
+                    success: function (response) {
+                        try {
+                            const result = JSON.parse(response);
+                            if (result.error) {
+                                showAlert(result.error, 'danger');
+                            } else {
+                                showAlert('File eliminato con successo', 'success');
+
+                                // Reset preview and details
+                                $('#file-preview').html('<div class="text-center py-5 text-muted"><i class="fas fa-file fa-3x mb-3"></i><p>Seleziona un file per visualizzare l\'anteprima</p></div>');
+                                $('#file-details').html('<div class="text-center py-5 text-muted"><i class="fas fa-info-circle fa-3x mb-3"></i><p>Seleziona un file per visualizzare i dettagli</p></div>');
+                                $('#current-file-name').text('Seleziona un file');
+                                $('#downloadFileBtn, #deleteFileBtn').addClass('d-none');
+                                currentFile = null;
+
+                                // Refresh file list and folder info
+                                loadFiles();
+                                loadFolderInfo();
+                            }
+                        } catch (e) {
+                            console.error("Failed to parse delete response:", e);
+                        }
+                    },
+                    error: function () {
+                        showAlert('Errore durante l\'eliminazione del file', 'danger');
+                    }
+                });
+            });
+        });
+
+        // Refresh files
+        $('#refreshFiles').on('click', function () {
+            loadFiles();
+            loadFolderInfo();
+            showAlert('Elenco file aggiornato', 'success');
+        });
+
+        // Copy file link
+        $('#copyLinkBtn').on('click', function () {
+            if (!currentFile) {
+                showAlert('Seleziona prima un file', 'warning');
+                return;
+            }
+
+            const fullLink = `${uploadDir}${currentFile}`;
+
+            // Create a temporary textarea to copy the link
+            const tempInput = $('<textarea>');
+            $('body').append(tempInput);
+            tempInput.val(fullLink).select();
+            document.execCommand('copy');
+            tempInput.remove();
+
+            showAlert('Link copiato negli appunti', 'success');
+        });
+
+        // Share file (placeholder - could be implemented with more advanced sharing logic)
+        $('#shareFileBtn').on('click', function () {
+            if (!currentFile) {
+                showAlert('Seleziona prima un file', 'warning');
+                return;
+            }
+
+            // Example of how you might implement sharing
+            if (navigator.share) {
+                navigator.share({
+                    title: currentFile,
+                    text: 'Guarda questo file',
+                    url: `${uploadDir}${currentFile}`
+                }).then(() => {
+                    showAlert('File condiviso con successo', 'success');
+                }).catch((error) => {
+                    showAlert('Errore durante la condivisione', 'danger');
+                });
+            } else {
+                showAlert('Condivisione non supportata sul tuo dispositivo', 'warning');
+            }
+        });
+
+        // Generate private link
+        $('#generateLinkBtn').on('click', function () {
+            if (!currentFile) {
+                showAlert('Seleziona prima un file', 'warning');
+                return;
+            }
+
+            $.ajax({
+                url: 'generate_private_link.php',
+                method: 'POST',
+                data: {
+                    filename: currentFile,
+                    is_private: $('#makePrivateToggle').is(':checked')
+                },
+                success: function (response) {
+                    try {
+                        const result = JSON.parse(response);
+                        if (result.error) {
+                            showAlert(result.error, 'danger');
+                        } else {
+                            // Create a temporary textarea to copy the link
+                            const tempInput = $('<textarea>');
+                            $('body').append(tempInput);
+                            tempInput.val(result.link).select();
+                            document.execCommand('copy');
+                            tempInput.remove();
+
+                            showAlert('Link privato generato e copiato', 'success');
+                        }
+                    } catch (e) {
+                        console.error("Failed to parse private link response:", e);
+                    }
+                },
+                error: function () {
+                    showAlert('Errore durante la generazione del link privato', 'danger');
+                }
+            });
+        });
         });
     </script>
 </body>

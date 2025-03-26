@@ -10,8 +10,8 @@ if (!isset($_GET['filename'])) {
     exit;
 }
 
-$filename = basename($_GET['filename']); // Sanitize filename
-$filePath = $uploadDir . $filename;
+$filename = $currentFolder ? $currentFolder . '/' . basename($_GET['filename']) : basename($_GET['filename']);
+$filePath = BASE_PATH . '/uploads/' . $filename;
 
 if (!file_exists($filePath)) {
     echo json_encode(['error' => 'File non trovato']);

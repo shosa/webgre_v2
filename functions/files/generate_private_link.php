@@ -10,7 +10,8 @@ if (!isset($_POST['filename'])) {
     exit;
 }
 
-$filename = basename($_POST['filename']); // Sanitize filename
+$filename = $currentFolder ? $currentFolder . '/' . basename($_GET['filename']) : basename($_GET['filename']);
+$filePath = BASE_PATH . '/uploads/' . $filename;
 $isPrivate = isset($_POST['is_private']) && $_POST['is_private'] === 'true';
 
 try {
