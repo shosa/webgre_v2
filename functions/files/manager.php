@@ -1,11 +1,11 @@
 <?php
 session_start();
-require_once '../config/config.php';
+require_once '../../config/config.php';
 require_once BASE_PATH . '/components/auth_validate.php';
 require_once BASE_PATH . '/components/header.php';
 
 // Define the upload directory
-$uploadDir = BASE_PATH . '/uploads/hermes/';
+$uploadDir = BASE_PATH . '/uploads/';
 ?>
 
 <body id="page-top">
@@ -62,7 +62,7 @@ $uploadDir = BASE_PATH . '/uploads/hermes/';
                                     <div id="folder-info">
                                         <div class="d-flex justify-content-between mb-2">
                                             <span><i class="fas fa-folder mr-2"></i>Percorso:</span>
-                                            <span class="font-weight-bold" id="folder-path">/uploads/hermes/</span>
+                                            <span class="font-weight-bold" id="folder-path">/uploads/</span>
                                         </div>
                                         <div class="d-flex justify-content-between mb-2">
                                             <span><i class="fas fa-hdd mr-2"></i>Spazio Utilizzato:</span>
@@ -335,7 +335,7 @@ $uploadDir = BASE_PATH . '/uploads/hermes/';
     </style>
     <script>
         // Configuration and utility functions
-        const uploadDir = '<?php echo BASE_URL . "/uploads/hermes/"; ?>';
+        const uploadDir = '<?php echo BASE_URL . "/uploads/"; ?>';
         let currentFile = null;
 
         function showAlert(message, type = 'success') {
