@@ -1,6 +1,6 @@
 <?php
 /**
- * API per ottenere opzioni di test e calzate
+ * API per ottenere opzioni di test, calzate, reparti e altre configurazioni
  * Endpoint: /api/get_options.php
  * Metodo: POST
  * Formato richiesta: JSON o form-data
@@ -68,6 +68,48 @@ try {
         $repartiOptions[] = $reparto['Nome'];
     }
     
+    // NUOVA FUNZIONALITÀ: Recupera i reparti HERMES
+    $repartiHermesOptions = [];
+    $stmt = $db->query("SELECT id, nome_reparto FROM cq_hermes_reparti WHERE attivo = 1 ORDER BY ordine ASC, nome_reparto ASC");
+    $repartiHermes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($repartiHermes as $reparto) {
+        $repartiHermesOptions[] = [
+            'id' => $reparto['id'],
+            'nome' => $reparto['nome_reparto']
+        ];
+    }
+    
+    // NUOVA FUNZIONALITÀ: Recupera i tipi di difetti HERMES
+    $difettiOptions = [];
+    $stmt = $db->query("SELECT id, descrizione, categoria FROM cq_hermes_tipi_difetti WHERE attivo = 1 ORDER BY ordine ASC, descrizione ASC");
+    $difetti = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($difetti as $difetto) {
+        $difettiOptions[] = [
+            'id' => $difetto['id'],
+            'descrizione' => $difetto['descrizione'],
+            'categoria' => $difetto['categoria']
+        ];
+    }
+    
+    // NUOVA FUNZIONALITÀ: Recupera le taglie predefinite HERMES (se esistono)
+    $taglieHermesOptions = [];
+    try {
+        // Verifichiamo prima se la tabella esiste
+        $stmt = $db->query("SELECT 1 FROM cq_hermes_taglie LIMIT 1");
+        
+        $stmt = $db->query("SELECT id, taglia FROM cq_hermes_taglie WHERE attivo = 1 ORDER BY ordine ASC, taglia ASC");
+        $taglieHermes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($taglieHermes as $taglia) {
+            $taglieHermesOptions[] = [
+                'id' => $taglia['id'],
+                'taglia' => $taglia['taglia']
+            ];
+        }
+    } catch (PDOException $e) {
+        // La tabella potrebbe non esistere ancora, quindi usiamo le calzate standard
+        $taglieHermesOptions = $calzateOptions;
+    }
+    
     // Prepara la risposta
     $response = [
         'status' => 'success',
@@ -75,7 +117,13 @@ try {
         'data' => [
             'calzate' => $calzateOptions,
             'tests' => $testOptions,
-            'reparti' => $repartiOptions
+            'reparti' => $repartiOptions,
+            // Aggiungiamo i nuovi dati per HERMES
+            'hermes' => [
+                'reparti' => $repartiHermesOptions,
+                'tipi_difetti' => $difettiOptions,
+                'taglie' => !empty($taglieHermesOptions) ? $taglieHermesOptions : $calzateOptions
+            ]
         ]
     ];
     
