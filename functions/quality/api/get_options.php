@@ -91,23 +91,15 @@ try {
         ];
     }
     
-    // NUOVA FUNZIONALITÀ: Recupera le taglie predefinite HERMES (se esistono)
+    // Usa le calzate standard già recuperate per HERMES
     $taglieHermesOptions = [];
-    try {
-        // Verifichiamo prima se la tabella esiste
-        $stmt = $db->query("SELECT 1 FROM cq_hermes_taglie LIMIT 1");
-        
-        $stmt = $db->query("SELECT id, taglia FROM cq_hermes_taglie WHERE attivo = 1 ORDER BY ordine ASC, taglia ASC");
-        $taglieHermes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($taglieHermes as $taglia) {
+    if (!empty($calzateOptions)) {
+        foreach ($calzateOptions as $index => $taglia) {
             $taglieHermesOptions[] = [
-                'id' => $taglia['id'],
-                'taglia' => $taglia['taglia']
+                'id' => $index + 1, // Generare un ID incrementale
+                'taglia' => $taglia
             ];
         }
-    } catch (PDOException $e) {
-        // La tabella potrebbe non esistere ancora, quindi usiamo le calzate standard
-        $taglieHermesOptions = $calzateOptions;
     }
     
     // Prepara la risposta
@@ -122,7 +114,7 @@ try {
             'hermes' => [
                 'reparti' => $repartiHermesOptions,
                 'tipi_difetti' => $difettiOptions,
-                'taglie' => !empty($taglieHermesOptions) ? $taglieHermesOptions : $calzateOptions
+                'taglie' => $taglieHermesOptions
             ]
         ]
     ];
