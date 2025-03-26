@@ -129,13 +129,14 @@ try {
                 ':cartellino_id' => $main_record_id,
                 ':taglia' => $exception['taglia'],
                 ':tipo_difetto' => $exception['tipo_difetto'],
-                ':note_operatore' => isset($exception['note_operatore']) ? $exception['note_operatore'] : null
+                ':note_operatore' => isset($exception['note_operatore']) ? $exception['note_operatore'] : null,
+                ':fotoPath' => isset($exception['fotoPath']) ? $exception['fotoPath'] : null
             ];
             
             $sql_exception = "INSERT INTO cq_hermes_eccezioni (
-                cartellino_id, taglia, tipo_difetto, note_operatore
+                cartellino_id, taglia, tipo_difetto, note_operatore, fotoPATH
             ) VALUES (
-                :cartellino_id, :taglia, :tipo_difetto, :note_operatore
+                :cartellino_id, :taglia, :tipo_difetto, :note_operatore, :fotoPath
             )";
             
             $stmt_exception = $pdo->prepare($sql_exception);
