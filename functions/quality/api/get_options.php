@@ -91,17 +91,6 @@ try {
         ];
     }
     
-    // Usa le calzate standard già recuperate per HERMES
-    $taglieHermesOptions = [];
-    if (!empty($calzateOptions)) {
-        foreach ($calzateOptions as $index => $taglia) {
-            $taglieHermesOptions[] = [
-                'id' => $index + 1, // Generare un ID incrementale
-                'taglia' => $taglia
-            ];
-        }
-    }
-    
     // Prepara la risposta
     $response = [
         'status' => 'success',
@@ -113,8 +102,7 @@ try {
             // Aggiungiamo i nuovi dati per HERMES
             'hermes' => [
                 'reparti' => $repartiHermesOptions,
-                'tipi_difetti' => $difettiOptions,
-                'taglie' => $taglieHermesOptions
+                'tipi_difetti' => $difettiOptions
             ]
         ]
     ];
