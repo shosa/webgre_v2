@@ -3,15 +3,17 @@ session_start();
 require_once '../../config/config.php';
 require_once BASE_PATH . '/components/auth_validate.php';
 
-$uploadDir = BASE_PATH . '/uploads/';
+// Define the upload directory
+$currentFolder = isset($_GET['folder']) ? $_GET['folder'] : '';
+$uploadDir = BASE_PATH . '/uploads/' . $currentFolder;
 
 if (!isset($_GET['filename'])) {
     echo json_encode(['error' => 'Nome file non specificato']);
     exit;
 }
 
-$filename = $currentFolder ? $currentFolder . '/' . basename($_GET['filename']) : basename($_GET['filename']);
-$filePath = BASE_PATH . '/uploads/' . $filename;
+$filename = basename($_GET['filename']); // Sanitize filename
+$filePath = $uploadDir . '/' . $filename;
 
 if (!file_exists($filePath)) {
     echo json_encode(['error' => 'File non trovato']);
