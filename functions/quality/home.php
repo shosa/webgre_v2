@@ -14,7 +14,7 @@ require_once BASE_PATH . '/components/header.php';
                 <?php include(BASE_PATH . "/components/topbar.php"); ?>
                 <div class="container-fluid">
                     <?php include(BASE_PATH . "/utils/alerts.php"); ?>
-                    
+
                     <!-- Header con icona e titoli -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <div class="d-flex align-items-center">
@@ -26,9 +26,9 @@ require_once BASE_PATH . '/components/header.php';
                                 <p class="mb-0 text-gray-600">Controllo Qualità e Gestione Test</p>
                             </div>
                         </div>
-                      
+
                     </div>
-                    
+
                     <!-- Barra di navigazione personalizzata -->
                     <div class="row mb-4">
                         <div class="col-12">
@@ -62,13 +62,14 @@ require_once BASE_PATH . '/components/header.php';
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Area di lavoro principale -->
                     <div class="row">
                         <!-- Colonna sinistra: Azioni veloci -->
                         <div class="col-xl-8 col-lg-7">
                             <div class="card shadow mb-4">
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Azioni veloci</h6>
                                 </div>
                                 <div class="card-body">
@@ -80,12 +81,14 @@ require_once BASE_PATH . '/components/header.php';
                                                         <i class="fad fa-plus-circle fa-4x opacity-50"></i>
                                                     </div>
                                                     <h5 class="text-center">Nuovo Test</h5>
-                                                    <p class="small text-center mb-3">Avvia un nuovo controllo qualità</p>
-                                                    <a href="new" class="btn btn-light btn-sm btn-block">Inizia <i class="fas fa-arrow-right ml-1"></i></a>
+                                                    <p class="small text-center mb-3">Avvia un nuovo controllo qualità
+                                                    </p>
+                                                    <a href="new" class="btn btn-light btn-sm btn-block">Inizia <i
+                                                            class="fas fa-arrow-right ml-1"></i></a>
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-md-6 col-lg-4 mb-4">
                                             <div class="card bg-gradient-info text-white shadow h-100">
                                                 <div class="card-body">
@@ -93,12 +96,14 @@ require_once BASE_PATH . '/components/header.php';
                                                         <i class="fad fa-folder-open fa-4x opacity-50"></i>
                                                     </div>
                                                     <h5 class="text-center">Consulta</h5>
-                                                    <p class="small text-center mb-3">Visualizza registrazioni per data</p>
-                                                    <a href="read" class="btn btn-light btn-sm btn-block">Visualizza <i class="fas fa-eye ml-1"></i></a>
+                                                    <p class="small text-center mb-3">Visualizza registrazioni per data
+                                                    </p>
+                                                    <a href="read" class="btn btn-light btn-sm btn-block">Visualizza <i
+                                                            class="fas fa-eye ml-1"></i></a>
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-md-6 col-lg-4 mb-4">
                                             <div class="card bg-gradient-dark text-white shadow h-100">
                                                 <div class="card-body">
@@ -107,7 +112,8 @@ require_once BASE_PATH . '/components/header.php';
                                                     </div>
                                                     <h5 class="text-center">Cerca</h5>
                                                     <p class="small text-center mb-3">Ricerca avanzata</p>
-                                                    <a href="search" class="btn btn-light btn-sm btn-block">Cerca <i class="fas fa-search ml-1"></i></a>
+                                                    <a href="search" class="btn btn-light btn-sm btn-block">Cerca <i
+                                                            class="fas fa-search ml-1"></i></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -115,7 +121,7 @@ require_once BASE_PATH . '/components/header.php';
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Colonna destra: Strumenti -->
                         <div class="col-xl-4 col-lg-5">
                             <div class="card shadow mb-4">
@@ -124,7 +130,8 @@ require_once BASE_PATH . '/components/header.php';
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3">
-                                        <a href="barcode" class="btn btn-light border-left-indigo shadow-sm btn-block text-left d-flex align-items-center py-3 mb-3">
+                                        <a href="barcode"
+                                            class="btn btn-light border-left-indigo shadow-sm btn-block text-left d-flex align-items-center py-3 mb-3">
                                             <div class="btn btn-indigo btn-circle mr-3">
                                                 <i class="fas fa-barcode"></i>
                                             </div>
@@ -134,8 +141,9 @@ require_once BASE_PATH . '/components/header.php';
                                                 <div class="small text-gray-600">Codici e motivi rapidi</div>
                                             </div>
                                         </a>
-                                        
-                                        <a href="makePList" class="btn btn-light border-left-warning shadow-sm btn-block text-left d-flex align-items-center py-3">
+
+                                        <a href="makePList"
+                                            class="btn btn-light border-left-warning shadow-sm btn-block text-left d-flex align-items-center py-3">
                                             <div class="btn btn-warning btn-circle mr-3">
                                                 <i class="fas fa-file-pdf"></i>
                                             </div>
@@ -146,19 +154,32 @@ require_once BASE_PATH . '/components/header.php';
                                             </div>
                                         </a>
 
-                                        <a href="#" class="btn btn-light border-left-success shadow-sm btn-block text-left d-flex align-items-center py-3">
+                                        <a href="#"
+                                            class="btn btn-light border-left-success shadow-sm btn-block text-left d-flex align-items-center py-3">
                                             <div class="btn btn-success btn-circle mr-3">
                                                 <i class="fas fa-users"></i>
                                             </div>
                                             <div>
                                                 <div class="text-xs text-success text-uppercase">Operatori</div>
-                                                <div class="font-weight-bold">Gestisci gli utenti per il controllo qualità</div>
+                                                <div class="font-weight-bold">Gestisci gli utenti per il controllo
+                                                    qualità</div>
                                                 <div class="small text-gray-600">Modifica utenti</div>
                                             </div>
                                         </a>
+                                        <a href="manageHermes"
+                                            class="btn btn-light border-left-orange shadow-sm btn-block text-left d-flex align-items-center py-3">
+                                            <div class="btn btn-orange btn-circle mr-3">
+                                                <i class="fas fa-hospital-symbol"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-xs text-orange text-uppercase">Parametri CQ Hermes</div>
+                                                <div class="font-weight-bold">Modifica le impostazionie relative al CQ</div>
+                                                <div class="small text-gray-600">Per la griffe Hermes</div>
+                                            </div>
+                                        </a>
                                     </div>
-                                    
-                                   
+
+
                                 </div>
                             </div>
                         </div>
@@ -169,23 +190,23 @@ require_once BASE_PATH . '/components/header.php';
             <?php include_once BASE_PATH . '/components/footer.php'; ?>
         </div>
     </div>
-    
+
     <script>
-    // Attiva gli hover effetti sui menu nav
-    document.addEventListener('DOMContentLoaded', function() {
-        const navLinks = document.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('mouseenter', function() {
-                if (!this.classList.contains('active')) {
-                    this.classList.add('bg-light');
-                }
-            });
-            link.addEventListener('mouseleave', function() {
-                if (!this.classList.contains('active')) {
-                    this.classList.remove('bg-light');
-                }
+        // Attiva gli hover effetti sui menu nav
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('mouseenter', function () {
+                    if (!this.classList.contains('active')) {
+                        this.classList.add('bg-light');
+                    }
+                });
+                link.addEventListener('mouseleave', function () {
+                    if (!this.classList.contains('active')) {
+                        this.classList.remove('bg-light');
+                    }
+                });
             });
         });
-    });
     </script>
 </body>
