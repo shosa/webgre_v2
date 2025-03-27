@@ -64,11 +64,11 @@ include(BASE_PATH . "/components/header.php");
                 <div class="container-fluid">
                     <?php include(BASE_PATH . "/utils/alerts.php"); ?>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Riparazioni</h1>
+                        <h1 class="h3 mb-0 text-gray-800">CQ Dashboard Hermes</h1>
                     </div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href=".home">Controllo Qualità</a></li>
+                        <li class="breadcrumb-item"><a href="home">Controllo Qualità</a></li>
                         <li class="breadcrumb-item active">Divisione Hermes</li>
                     </ol>
                     <div class="card shadow mb-4">
