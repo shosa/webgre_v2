@@ -23,6 +23,33 @@ include(BASE_PATH . "/components/header.php");
         document.head.appendChild(script);
     }
 </script>
+<style>
+    /* Personalizzazione tab */
+    .nav-tabs {
+        border-bottom: 1px solid #e3e6f0 !important;
+    }
+
+    .nav-tabs .nav-link {
+        border: none !important;
+        color: #6c757d !important;
+        padding: 0.75rem 1.25rem !important;
+        font-weight: 500 !important;
+        font-size: 0.85rem !important;
+        border-radius: 0 !important;
+    }
+
+    .nav-tabs .nav-link.active {
+        color: #4e73df !important;
+        background-color: transparent !important;
+        border-bottom: 3px solid #4e73df !important;
+        width: 100% !important;
+    }
+
+    .nav-tabs .nav-link:hover {
+        color: #4e73df !important;
+        border-bottom: 3px solid #e3e6f0 !important;
+    }
+</style>
 
 <body id="page-top">
     <!-- Page Wrapper -->
@@ -51,30 +78,39 @@ include(BASE_PATH . "/components/header.php");
                         </div>
                         <div class="card-body">
                             <!-- Nav tabs per le diverse funzionalità -->
-                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <ul class="nav nav-tabs" id="hermesTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview"
-                                        role="tab" aria-controls="overview" aria-selected="true">Dashboard</a>
+                                        role="tab">
+                                        <i class="fas fa-chart-pie mr-1"></i>Dashboard
+                                    </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="records-tab" data-toggle="tab" href="#records" role="tab"
-                                        aria-controls="records" aria-selected="false">Cartellini</a>
+                                    <a class="nav-link" id="records-tab" data-toggle="tab" href="#records" role="tab">
+                                        <i class="fas fa-clipboard-list mr-1"></i>Cartellini
+                                    </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" id="exceptions-tab" data-toggle="tab" href="#exceptions"
-                                        role="tab" aria-controls="exceptions" aria-selected="false">Eccezioni</a>
+                                        role="tab">
+                                        <i class="fas fa-exclamation-triangle mr-1"></i>Eccezioni
+                                    </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" id="departments-tab" data-toggle="tab" href="#departments"
-                                        role="tab" aria-controls="departments" aria-selected="false">Reparti</a>
+                                        role="tab">
+                                        <i class="fas fa-building mr-1"></i>Reparti
+                                    </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="defects-tab" data-toggle="tab" href="#defects" role="tab"
-                                        aria-controls="defects" aria-selected="false">Tipi Difetti</a>
+                                    <a class="nav-link" id="defects-tab" data-toggle="tab" href="#defects" role="tab">
+                                        <i class="fas fa-bug mr-1"></i>Tipi Difetti
+                                    </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="reports-tab" data-toggle="tab" href="#reports" role="tab"
-                                        aria-controls="reports" aria-selected="false">Reports</a>
+                                    <a class="nav-link" id="reports-tab" data-toggle="tab" href="#reports" role="tab">
+                                        <i class="fas fa-file-alt mr-1"></i>Reports
+                                    </a>
                                 </li>
                             </ul>
 
@@ -708,7 +744,7 @@ include(BASE_PATH . "/components/header.php");
 
 
     <!-- Chart.js - IMPORTANTE -->
-<script src="<?php echo BASE_URL ?>/vendor/chart.js/Chart.min.js"></script>
+    <script src="<?php echo BASE_URL ?>/vendor/chart.js/Chart.min.js"></script>
     <!-- Estensioni Buttons -->
     <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.html5.min.js"></script>
     <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.print.min.js"></script>
