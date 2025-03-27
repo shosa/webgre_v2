@@ -394,7 +394,6 @@ if ($reportFormat == 'pdf') {
                         <td>' . $reparto['cartellini_eccezioni'] . '</td>
                         <td>' . $reparto['eccezioni'] . '</td>
                         <td>' . $reparto['percentuale_eccezioni_paia'] . '%</td>
-                        <td>' . $reparto['percentuale_cartellini_eccezioni'] . '%</td>
                       </tr>';
             }
 
