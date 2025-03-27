@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
 require_once '../../../config/config.php';
-require_once BASE_PATH . '/components/auth_validate.php';
+
 require_once BASE_PATH . '/utils/helpers.php';
 
 header('Content-Type: application/json');
