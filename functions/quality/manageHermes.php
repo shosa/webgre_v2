@@ -14,6 +14,15 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 include(BASE_PATH . "/components/header.php");
 ?>
 
+<!-- Aggiungi questo nell'intestazione <head> o proprio prima del tuo script personalizzato -->
+<script>
+    // Fallback se jQuery non è caricato
+    if (typeof jQuery == 'undefined') {
+        var script = document.createElement('script');
+        script.src = '<?php echo BASE_URL ?>/vendor/jquery/jquery.min.js';
+        document.head.appendChild(script);
+    }
+</script>
 
 <body id="page-top">
     <!-- Page Wrapper -->
@@ -668,745 +677,6 @@ include(BASE_PATH . "/components/header.php");
                                 </div>
                             </div>
 
-                            <!-- JavaScript per gestire la logica dell'interfaccia -->
-                            <script>
-                                $(document).ready(function () {
-                                    // Inizializza i DataTables
-                                    initDataTables();
-
-                                    // Carica i dati per la dashboard
-                                    loadDashboardData();
-
-                                    // Carica le opzioni per i select nei form
-                                    loadSelectOptions();
-
-                                    // Event listeners per i pulsanti di salvataggio
-                                    $('#saveRecordBtn').on('click', saveRecord);
-                                    $('#saveExceptionBtn').on('click', saveException);
-                                    $('#saveDepartmentBtn').on('click', saveDepartment);
-                                    $('#saveDefectBtn').on('click', saveDefect);
-
-                                    // Inizializza i grafici
-                                    initCharts();
-                                });
-
-                                function initDataTables() {
-                                    // DataTable per i cartellini
-                                    $('#recordsDataTable').DataTable({
-                                        processing: true,
-                                        serverSide: false,
-                                        ajax: {
-                                            url: 'hermes/get_records.php',
-                                            dataSrc: ''
-                                        },
-                                        columns: [
-                                            { data: 'id' },
-                                            { data: 'numero_cartellino' },
-                                            { data: 'reparto' },
-                                            { data: 'data_controllo' },
-                                            { data: 'operatore' },
-                                            { data: 'tipo_cq' },
-                                            { data: 'paia_totali' },
-                                            { data: 'cod_articolo' },
-                                            { data: 'articolo' },
-                                            { data: 'linea' },
-                                            {
-                                                data: 'ha_eccezioni',
-                                                render: function (data) {
-                                                    return data == 1 ? '<span class="badge badge-warning">Sì</span>' : '<span class="badge badge-success">No</span>';
-                                                }
-                                            },
-                                            {
-                                                data: null,
-                                                render: function (data) {
-                                                    return `
-                                                        <div class="btn-group" role="group">
-                                                            <button type="button" class="btn btn-sm btn-info edit-record" data-id="${data.id}"><i class="fas fa-edit"></i></button>
-                                                            <button type="button" class="btn btn-sm btn-danger delete-record" data-id="${data.id}"><i class="fas fa-trash"></i></button>
-                                                        </div>
-                                                    `;
-                                                }
-                                            }
-                                        ],
-                                        order: [[0, 'desc']]
-                                    });
-
-                                    // DataTable per le eccezioni
-                                    $('#exceptionsDataTable').DataTable({
-                                        processing: true,
-                                        serverSide: false,
-                                        ajax: {
-                                            url: 'hermes/get_exceptions.php',
-                                            dataSrc: ''
-                                        },
-                                        columns: [
-                                            { data: 'id' },
-                                            { data: 'cartellino_id' },
-                                            { data: 'numero_cartellino' },
-                                            { data: 'taglia' },
-                                            { data: 'tipo_difetto' },
-                                            { data: 'note_operatore' },
-                                            {
-                                                data: 'fotoPath',
-                                                render: function (data) {
-                                                    if (data) {
-                                                        return `<button class="btn btn-sm btn-info view-photo" data-path="${data}"><i class="fas fa-image"></i> Visualizza</button>`;
-                                                    } else {
-                                                        return '<span class="badge badge-secondary">No foto</span>';
-                                                    }
-                                                }
-                                            },
-                                            { data: 'data_creazione' },
-                                            {
-                                                data: null,
-                                                render: function (data) {
-                                                    return `
-                                                        <div class="btn-group" role="group">
-                                                            <button type="button" class="btn btn-sm btn-info edit-exception" data-id="${data.id}"><i class="fas fa-edit"></i></button>
-                                                            <button type="button" class="btn btn-sm btn-danger delete-exception" data-id="${data.id}"><i class="fas fa-trash"></i></button>
-                                                        </div>
-                                                    `;
-                                                }
-                                            }
-                                        ],
-                                        order: [[0, 'desc']]
-                                    });
-
-                                    // DataTable per i reparti
-                                    $('#departmentsDataTable').DataTable({
-                                        processing: true,
-                                        serverSide: false,
-                                        ajax: {
-                                            url: 'hermes/get_departments.php',
-                                            dataSrc: ''
-                                        },
-                                        columns: [
-                                            { data: 'id' },
-                                            { data: 'nome_reparto' },
-                                            {
-                                                data: 'attivo',
-                                                render: function (data) {
-                                                    return data == 1 ? '<span class="badge badge-success">Attivo</span>' : '<span class="badge badge-danger">Inattivo</span>';
-                                                }
-                                            },
-                                            { data: 'ordine' },
-                                            { data: 'data_creazione' },
-                                            {
-                                                data: null,
-                                                render: function (data) {
-                                                    return `
-                                                        <div class="btn-group" role="group">
-                                                            <button type="button" class="btn btn-sm btn-info edit-department" data-id="${data.id}"><i class="fas fa-edit"></i></button>
-                                                            <button type="button" class="btn btn-sm btn-danger delete-department" data-id="${data.id}"><i class="fas fa-trash"></i></button>
-                                                        </div>
-                                                    `;
-                                                }
-                                            }
-                                        ],
-                                        order: [[3, 'asc']]
-                                    });
-
-                                    // DataTable per i tipi di difetti
-                                    $('#defectsDataTable').DataTable({
-                                        processing: true,
-                                        serverSide: false,
-                                        ajax: {
-                                            url: 'hermes/get_defects.php',
-                                            dataSrc: ''
-                                        },
-                                        columns: [
-                                            { data: 'id' },
-                                            { data: 'descrizione' },
-                                            { data: 'categoria' },
-                                            {
-                                                data: 'attivo',
-                                                render: function (data) {
-                                                    return data == 1 ? '<span class="badge badge-success">Attivo</span>' : '<span class="badge badge-danger">Inattivo</span>';
-                                                }
-                                            },
-                                            { data: 'ordine' },
-                                            { data: 'data_creazione' },
-                                            {
-                                                data: null,
-                                                render: function (data) {
-                                                    return `
-                                                        <div class="btn-group" role="group">
-                                                            <button type="button" class="btn btn-sm btn-info edit-defect" data-id="${data.id}"><i class="fas fa-edit"></i></button>
-                                                            <button type="button" class="btn btn-sm btn-danger delete-defect" data-id="${data.id}"><i class="fas fa-trash"></i></button>
-                                                        </div>
-                                                    `;
-                                                }
-                                            }
-                                        ],
-                                        order: [[4, 'asc']]
-                                    });
-
-                                    // Event listener per visualizzare le foto
-                                    $('#exceptionsDataTable').on('click', '.view-photo', function () {
-                                        var path = $(this).data('path');
-                                        $('#exceptionPhoto').attr('src', path);
-                                        $('#viewPhotoModal').modal('show');
-                                    });
-
-                                    // Event listeners per i pulsanti di modifica
-                                    $('#recordsDataTable').on('click', '.edit-record', function () {
-                                        var id = $(this).data('id');
-                                        editRecord(id);
-                                    });
-
-                                    $('#exceptionsDataTable').on('click', '.edit-exception', function () {
-                                        var id = $(this).data('id');
-                                        editException(id);
-                                    });
-
-                                    $('#departmentsDataTable').on('click', '.edit-department', function () {
-                                        var id = $(this).data('id');
-                                        editDepartment(id);
-                                    });
-
-                                    $('#defectsDataTable').on('click', '.edit-defect', function () {
-                                        var id = $(this).data('id');
-                                        editDefect(id);
-                                    });
-
-                                    // Event listeners per i pulsanti di eliminazione
-                                    $('#recordsDataTable').on('click', '.delete-record', function () {
-                                        var id = $(this).data('id');
-                                        deleteRecord(id);
-                                    });
-
-                                    $('#exceptionsDataTable').on('click', '.delete-exception', function () {
-                                        var id = $(this).data('id');
-                                        deleteException(id);
-                                    });
-
-                                    $('#departmentsDataTable').on('click', '.delete-department', function () {
-                                        var id = $(this).data('id');
-                                        deleteDepartment(id);
-                                    });
-
-                                    $('#defectsDataTable').on('click', '.delete-defect', function () {
-                                        var id = $(this).data('id');
-                                        deleteDefect(id);
-                                    });
-                                }
-
-                                function loadDashboardData() {
-                                    // Carica i conteggi per la dashboard
-                                    $.ajax({
-                                        url: 'hermes/get_dashboard_stats.php',
-                                        type: 'GET',
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            $('#total-records').text(data.total_records);
-                                            $('#today-records').text(data.today_records);
-                                            $('#total-exceptions').text(data.total_exceptions);
-                                            $('#today-exceptions').text(data.today_exceptions);
-                                        },
-                                        error: function (xhr, status, error) {
-                                            console.error('Errore nel caricamento delle statistiche dashboard:', error);
-                                        }
-                                    });
-                                }
-
-                                function loadSelectOptions() {
-                                    // Carica le opzioni per il select dei reparti
-                                    $.ajax({
-                                        url: 'hermes/get_departments.php',
-                                        type: 'GET',
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            var options = '';
-                                            $.each(data, function (index, department) {
-                                                if (department.attivo == 1) {
-                                                    options += `<option value="${department.nome_reparto}">${department.nome_reparto}</option>`;
-                                                }
-                                            });
-                                            $('#reparto').html(options);
-                                        }
-                                    });
-
-                                    // Carica le opzioni per il select dei cartellini
-                                    $.ajax({
-                                        url: 'hermes/get_records.php',
-                                        type: 'GET',
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            var options = '';
-                                            $.each(data, function (index, record) {
-                                                options += `<option value="${record.id}">${record.numero_cartellino} - ${record.articolo}</option>`;
-                                            });
-                                            $('#cartellino_id').html(options);
-                                        }
-                                    });
-
-                                    // Carica le opzioni per il select dei tipi di difetti
-                                    $.ajax({
-                                        url: 'hermes/get_defects.php',
-                                        type: 'GET',
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            var options = '';
-                                            $.each(data, function (index, defect) {
-                                                if (defect.attivo == 1) {
-                                                    options += `<option value="${defect.descrizione}">${defect.descrizione}</option>`;
-                                                }
-                                            });
-                                            $('#tipo_difetto').html(options);
-                                        }
-                                    });
-                                }
-
-                                function saveRecord() {
-                                    var formData = new FormData($('#addRecordForm')[0]);
-
-                                    $.ajax({
-                                        url: 'hermes/save_record.php',
-                                        type: 'POST',
-                                        data: formData,
-                                        processData: false,
-                                        contentType: false,
-                                        success: function (response) {
-                                            $('#addRecordModal').modal('hide');
-                                            $('#recordsDataTable').DataTable().ajax.reload();
-                                            showAlert('success', 'Cartellino salvato con successo');
-                                            $('#addRecordForm')[0].reset();
-                                        },
-                                        error: function (xhr, status, error) {
-                                            showAlert('danger', 'Errore nel salvataggio del cartellino: ' + error);
-                                        }
-                                    });
-                                }
-
-                                function saveException() {
-                                    var formData = new FormData($('#addExceptionForm')[0]);
-
-                                    $.ajax({
-                                        url: 'hermes/save_exception.php',
-                                        type: 'POST',
-                                        data: formData,
-                                        processData: false,
-                                        contentType: false,
-                                        success: function (response) {
-                                            $('#addExceptionModal').modal('hide');
-                                            $('#exceptionsDataTable').DataTable().ajax.reload();
-                                            $('#recordsDataTable').DataTable().ajax.reload();
-                                            showAlert('success', 'Eccezione salvata con successo');
-                                            $('#addExceptionForm')[0].reset();
-                                        },
-                                        error: function (xhr, status, error) {
-                                            showAlert('danger', 'Errore nel salvataggio dell\'eccezione: ' + error);
-                                        }
-                                    });
-                                }
-
-                                function saveDepartment() {
-                                    var formData = new FormData($('#addDepartmentForm')[0]);
-                                    formData.append('attivo', $('#attivo').is(':checked') ? 1 : 0);
-
-                                    $.ajax({
-                                        url: 'hermes/save_department.php',
-                                        type: 'POST',
-                                        data: formData,
-                                        processData: false,
-                                        contentType: false,
-                                        success: function (response) {
-                                            $('#addDepartmentModal').modal('hide');
-                                            $('#departmentsDataTable').DataTable().ajax.reload();
-                                            loadSelectOptions();
-                                            showAlert('success', 'Reparto salvato con successo');
-                                            $('#addDepartmentForm')[0].reset();
-                                        },
-                                        error: function (xhr, status, error) {
-                                            showAlert('danger', 'Errore nel salvataggio del reparto: ' + error);
-                                        }
-                                    });
-                                }
-
-                                function saveDefect() {
-                                    var formData = new FormData($('#addDefectForm')[0]);
-                                    formData.append('attivo', $('#defect_attivo').is(':checked') ? 1 : 0);
-
-                                    $.ajax({
-                                        url: 'hermes/save_defect.php',
-                                        type: 'POST',
-                                        data: formData,
-                                        processData: false,
-                                        contentType: false,
-                                        success: function (response) {
-                                            $('#addDefectModal').modal('hide');
-                                            $('#defectsDataTable').DataTable().ajax.reload();
-                                            loadSelectOptions();
-                                            showAlert('success', 'Tipo difetto salvato con successo');
-                                            $('#addDefectForm')[0].reset();
-                                        },
-                                        error: function (xhr, status, error) {
-                                            showAlert('danger', 'Errore nel salvataggio del tipo difetto: ' + error);
-                                        }
-                                    });
-                                }
-
-                                function editRecord(id) {
-                                    $.ajax({
-                                        url: 'hermes/get_record.php',
-                                        type: 'GET',
-                                        data: { id: id },
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            $('#addRecordModalLabel').text('Modifica Cartellino');
-                                            $('#numero_cartellino').val(data.numero_cartellino);
-                                            $('#reparto').val(data.reparto);
-                                            $('#operatore').val(data.operatore);
-                                            $('#tipo_cq').val(data.tipo_cq);
-                                            $('#paia_totali').val(data.paia_totali);
-                                            $('#cod_articolo').val(data.cod_articolo);
-                                            $('#articolo').val(data.articolo);
-                                            $('#linea').val(data.linea);
-                                            $('#note').val(data.note);
-
-                                            // Aggiungi l'ID nascosto per l'aggiornamento
-                                            if ($('#record_id').length === 0) {
-                                                $('#addRecordForm').append('<input type="hidden" id="record_id" name="id" value="' + id + '">');
-                                            } else {
-                                                $('#record_id').val(id);
-                                            }
-
-                                            $('#addRecordModal').modal('show');
-                                        },
-                                        error: function (xhr, status, error) {
-                                            showAlert('danger', 'Errore nel caricamento dei dati del cartellino: ' + error);
-                                        }
-                                    });
-                                }
-
-                                function editException(id) {
-                                    $.ajax({
-                                        url: 'hermes/get_exception.php',
-                                        type: 'GET',
-                                        data: { id: id },
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            $('#addExceptionModalLabel').text('Modifica Eccezione');
-                                            $('#cartellino_id').val(data.cartellino_id);
-                                            $('#taglia').val(data.taglia);
-                                            $('#tipo_difetto').val(data.tipo_difetto);
-                                            $('#note_operatore').val(data.note_operatore);
-
-                                            // Aggiungi l'ID nascosto per l'aggiornamento
-                                            if ($('#exception_id').length === 0) {
-                                                $('#addExceptionForm').append('<input type="hidden" id="exception_id" name="id" value="' + id + '">');
-                                            } else {
-                                                $('#exception_id').val(id);
-                                            }
-
-                                            $('#addExceptionModal').modal('show');
-                                        },
-                                        error: function (xhr, status, error) {
-                                            showAlert('danger', 'Errore nel caricamento dei dati dell\'eccezione: ' + error);
-                                        }
-                                    });
-                                }
-
-                                function editDepartment(id) {
-                                    $.ajax({
-                                        url: 'hermes/get_department.php',
-                                        type: 'GET',
-                                        data: { id: id },
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            $('#addDepartmentModalLabel').text('Modifica Reparto');
-                                            $('#nome_reparto').val(data.nome_reparto);
-                                            $('#ordine').val(data.ordine);
-                                            $('#attivo').prop('checked', data.attivo == 1);
-
-                                            // Aggiungi l'ID nascosto per l'aggiornamento
-                                            if ($('#department_id').length === 0) {
-                                                $('#addDepartmentForm').append('<input type="hidden" id="department_id" name="id" value="' + id + '">');
-                                            } else {
-                                                $('#department_id').val(id);
-                                            }
-
-                                            $('#addDepartmentModal').modal('show');
-                                        },
-                                        error: function (xhr, status, error) {
-                                            showAlert('danger', 'Errore nel caricamento dei dati del reparto: ' + error);
-                                        }
-                                    });
-                                }
-
-                                function editDefect(id) {
-                                    $.ajax({
-                                        url: 'hermes/get_defect.php',
-                                        type: 'GET',
-                                        data: { id: id },
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            $('#addDefectModalLabel').text('Modifica Tipo Difetto');
-                                            $('#descrizione').val(data.descrizione);
-                                            $('#categoria').val(data.categoria);
-                                            $('#defect_ordine').val(data.ordine);
-                                            $('#defect_attivo').prop('checked', data.attivo == 1);
-
-                                            // Aggiungi l'ID nascosto per l'aggiornamento
-                                            if ($('#defect_id').length === 0) {
-                                                $('#addDefectForm').append('<input type="hidden" id="defect_id" name="id" value="' + id + '">');
-                                            } else {
-                                                $('#defect_id').val(id);
-                                            }
-
-                                            $('#addDefectModal').modal('show');
-                                        },
-                                        error: function (xhr, status, error) {
-                                            showAlert('danger', 'Errore nel caricamento dei dati del tipo difetto: ' + error);
-                                        }
-                                    });
-                                }
-
-                                function deleteRecord(id) {
-                                    if (confirm('Sei sicuro di voler eliminare questo cartellino? Questa azione non può essere annullata.')) {
-                                        $.ajax({
-                                            url: 'hermes/delete_record.php',
-                                            type: 'POST',
-                                            data: { id: id },
-                                            success: function (response) {
-                                                $('#recordsDataTable').DataTable().ajax.reload();
-                                                showAlert('success', 'Cartellino eliminato con successo');
-                                            },
-                                            error: function (xhr, status, error) {
-                                                showAlert('danger', 'Errore nell\'eliminazione del cartellino: ' + error);
-                                            }
-                                        });
-                                    }
-                                }
-
-                                function deleteException(id) {
-                                    if (confirm('Sei sicuro di voler eliminare questa eccezione? Questa azione non può essere annullata.')) {
-                                        $.ajax({
-                                            url: 'hermes/delete_exception.php',
-                                            type: 'POST',
-                                            data: { id: id },
-                                            success: function (response) {
-                                                $('#exceptionsDataTable').DataTable().ajax.reload();
-                                                $('#recordsDataTable').DataTable().ajax.reload();
-                                                showAlert('success', 'Eccezione eliminata con successo');
-                                            },
-                                            error: function (xhr, status, error) {
-                                                showAlert('danger', 'Errore nell\'eliminazione dell\'eccezione: ' + error);
-                                            }
-                                        });
-                                    }
-                                }
-
-                                function deleteDepartment(id) {
-                                    if (confirm('Sei sicuro di voler eliminare questo reparto? Questa azione non può essere annullata.')) {
-                                        $.ajax({
-                                            url: 'hermes/delete_department.php',
-                                            type: 'POST',
-                                            data: { id: id },
-                                            success: function (response) {
-                                                $('#departmentsDataTable').DataTable().ajax.reload();
-                                                showAlert('success', 'Reparto eliminato con successo');
-                                                loadSelectOptions();
-                                            },
-                                            error: function (xhr, status, error) {
-                                                showAlert('danger', 'Errore nell\'eliminazione del reparto: ' + error);
-                                            }
-                                        });
-                                    }
-                                }
-
-                                function deleteDefect(id) {
-                                    if (confirm('Sei sicuro di voler eliminare questo tipo difetto? Questa azione non può essere annullata.')) {
-                                        $.ajax({
-                                            url: 'hermes/delete_defect.php',
-                                            type: 'POST',
-                                            data: { id: id },
-                                            success: function (response) {
-                                                $('#defectsDataTable').DataTable().ajax.reload();
-                                                showAlert('success', 'Tipo difetto eliminato con successo');
-                                                loadSelectOptions();
-                                            },
-                                            error: function (xhr, status, error) {
-                                                showAlert('danger', 'Errore nell\'eliminazione del tipo difetto: ' + error);
-                                            }
-                                        });
-                                    }
-                                }
-
-                                function initCharts() {
-                                    // Grafico settimanale dei controlli
-                                    $.ajax({
-                                        url: 'hermes/get_weekly_data.php',
-                                        type: 'GET',
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            var ctx = document.getElementById('weeklyCQChart').getContext('2d');
-                                            var chart = new Chart(ctx, {
-                                                type: 'line',
-                                                data: {
-                                                    labels: data.labels,
-                                                    datasets: [
-                                                        {
-                                                            label: 'Controlli Totali',
-                                                            backgroundColor: 'rgba(78, 115, 223, 0.05)',
-                                                            borderColor: 'rgba(78, 115, 223, 1)',
-                                                            pointRadius: 3,
-                                                            pointBackgroundColor: 'rgba(78, 115, 223, 1)',
-                                                            pointBorderColor: 'rgba(78, 115, 223, 1)',
-                                                            pointHoverRadius: 3,
-                                                            pointHoverBackgroundColor: 'rgba(78, 115, 223, 1)',
-                                                            pointHoverBorderColor: 'rgba(78, 115, 223, 1)',
-                                                            pointHitRadius: 10,
-                                                            pointBorderWidth: 2,
-                                                            data: data.countRecords
-                                                        },
-                                                        {
-                                                            label: 'Eccezioni',
-                                                            backgroundColor: 'rgba(231, 74, 59, 0.05)',
-                                                            borderColor: 'rgba(231, 74, 59, 1)',
-                                                            pointRadius: 3,
-                                                            pointBackgroundColor: 'rgba(231, 74, 59, 1)',
-                                                            pointBorderColor: 'rgba(231, 74, 59, 1)',
-                                                            pointHoverRadius: 3,
-                                                            pointHoverBackgroundColor: 'rgba(231, 74, 59, 1)',
-                                                            pointHoverBorderColor: 'rgba(231, 74, 59, 1)',
-                                                            pointHitRadius: 10,
-                                                            pointBorderWidth: 2,
-                                                            data: data.countExceptions
-                                                        }
-                                                    ]
-                                                },
-                                                options: {
-                                                    maintainAspectRatio: false,
-                                                    layout: {
-                                                        padding: {
-                                                            left: 10,
-                                                            right: 25,
-                                                            top: 25,
-                                                            bottom: 0
-                                                        }
-                                                    },
-                                                    scales: {
-                                                        xAxes: [{
-                                                            time: {
-                                                                unit: 'day'
-                                                            },
-                                                            gridLines: {
-                                                                display: false,
-                                                                drawBorder: false
-                                                            },
-                                                            ticks: {
-                                                                maxTicksLimit: 7
-                                                            }
-                                                        }],
-                                                        yAxes: [{
-                                                            ticks: {
-                                                                maxTicksLimit: 5,
-                                                                padding: 10,
-                                                                beginAtZero: true
-                                                            },
-                                                            gridLines: {
-                                                                color: "rgb(234, 236, 244)",
-                                                                zeroLineColor: "rgb(234, 236, 244)",
-                                                                drawBorder: false,
-                                                                borderDash: [2],
-                                                                zeroLineBorderDash: [2]
-                                                            }
-                                                        }],
-                                                    },
-                                                    legend: {
-                                                        display: true
-                                                    },
-                                                    tooltips: {
-                                                        backgroundColor: "rgb(255,255,255)",
-                                                        bodyFontColor: "#858796",
-                                                        titleMarginBottom: 10,
-                                                        titleFontColor: '#6e707e',
-                                                        titleFontSize: 14,
-                                                        borderColor: '#dddfeb',
-                                                        borderWidth: 1,
-                                                        xPadding: 15,
-                                                        yPadding: 15,
-                                                        displayColors: false,
-                                                        intersect: false,
-                                                        mode: 'index',
-                                                        caretPadding: 10
-                                                    }
-                                                }
-                                            });
-                                        },
-                                        error: function (xhr, status, error) {
-                                            console.error('Errore nel caricamento dei dati settimanali:', error);
-                                        }
-                                    });
-
-                                    // Grafico a torta per i tipi di difetti
-                                    $.ajax({
-                                        url: 'hermes/get_defects_stats.php',
-                                        type: 'GET',
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            var ctx = document.getElementById('defectsPieChart').getContext('2d');
-                                            var chart = new Chart(ctx, {
-                                                type: 'doughnut',
-                                                data: {
-                                                    labels: data.labels,
-                                                    datasets: [{
-                                                        data: data.counts,
-                                                        backgroundColor: [
-                                                            '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#5a5c69', '#858796'
-                                                        ],
-                                                        hoverBackgroundColor: [
-                                                            '#2e59d9', '#17a673', '#2c9faf', '#dda20a', '#be2617', '#3a3b45', '#60616f'
-                                                        ],
-                                                        hoverBorderColor: "rgba(234, 236, 244, 1)",
-                                                    }],
-                                                },
-                                                options: {
-                                                    maintainAspectRatio: false,
-                                                    tooltips: {
-                                                        backgroundColor: "rgb(255,255,255)",
-                                                        bodyFontColor: "#858796",
-                                                        borderColor: '#dddfeb',
-                                                        borderWidth: 1,
-                                                        xPadding: 15,
-                                                        yPadding: 15,
-                                                        displayColors: false,
-                                                        caretPadding: 10,
-                                                    },
-                                                    legend: {
-                                                        display: true,
-                                                        position: 'bottom'
-                                                    },
-                                                    cutoutPercentage: 70,
-                                                },
-                                            });
-                                        },
-                                        error: function (xhr, status, error) {
-                                            console.error('Errore nel caricamento delle statistiche difetti:', error);
-                                        }
-                                    });
-                                }
-
-                                function showAlert(type, message) {
-                                    var alertHtml = `
-                                        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-                                            ${message}
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    `;
-
-                                    // Aggiungi l'alert sopra il contenuto e imposta un timer per rimuoverlo
-                                    $('.container-fluid').prepend(alertHtml);
-
-                                    // Rimuovi l'alert dopo 5 secondi
-                                    setTimeout(function () {
-                                        $('.alert').alert('close');
-                                    }, 5000);
-                                }
-                            </script>
                         </div>
                     </div>
                 </div>
@@ -1417,25 +687,779 @@ include(BASE_PATH . "/components/header.php");
         </div>
 
     </div>
-
-
+    <!-- Script essenziali -->
     <script src="<?php echo BASE_URL ?>/vendor/jquery/jquery.min.js"></script>
     <script src="<?php echo BASE_URL ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="<?php echo BASE_URL ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="<?php echo BASE_URL ?>/js/sb-admin-2.min.js"></script>
+
+    <!-- DataTables Core -->
     <script src="<?php echo BASE_URL ?>/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="<?php echo BASE_URL ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- DataTables Buttons -->
     <script src="<?php echo BASE_URL ?>/vendor/datatables/dataTables.buttons.min.js"></script>
     <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.bootstrap4.min.js"></script>
+
+    <!-- Dipendenze dei Buttons -->
     <script src="<?php echo BASE_URL ?>/vendor/jszip/jszip.min.js"></script>
     <script src="<?php echo BASE_URL ?>/vendor/pdfmake/pdfmake.min.js"></script>
     <script src="<?php echo BASE_URL ?>/vendor/pdfmake/vfs_fonts.js"></script>
+
+
+    <!-- Chart.js - IMPORTANTE -->
+<script src="<?php echo BASE_URL ?>/vendor/chart.js/Chart.min.js"></script>
+    <!-- Estensioni Buttons -->
     <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.html5.min.js"></script>
     <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.print.min.js"></script>
     <script src="<?php echo BASE_URL ?>/vendor/datatables/buttons.colVis.min.js"></script>
-    <script src="<?php echo BASE_URL ?>/vendor/datatables/dataTables.colReorder.min.js"></script>
-    <script src="<?php echo BASE_URL ?>/js/datatables.js"></script>
-   
-</body>
 
-</html>
+    <!-- Altre estensioni DataTables -->
+    <script src="<?php echo BASE_URL ?>/vendor/datatables/dataTables.colReorder.min.js"></script>
+
+    <!-- Script personalizzati -->
+    <script src="<?php echo BASE_URL ?>/js/datatables.js"></script>
+    <!-- JavaScript per gestire la logica dell'interfaccia -->
+    <script>
+
+        function initDataTables() {
+            // DataTable per i cartellini
+            $('#recordsDataTable').DataTable({
+                processing: true,
+                serverSide: false,
+                ajax: {
+                    url: 'hermes/get_records.php',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: 'id' },
+                    { data: 'numero_cartellino' },
+                    { data: 'reparto' },
+                    { data: 'data_controllo' },
+                    { data: 'operatore' },
+                    { data: 'tipo_cq' },
+                    { data: 'paia_totali' },
+                    { data: 'cod_articolo' },
+                    { data: 'articolo' },
+                    { data: 'linea' },
+                    {
+                        data: 'ha_eccezioni',
+                        render: function (data) {
+                            return data == 1 ? '<span class="badge badge-warning">Sì</span>' : '<span class="badge badge-success">No</span>';
+                        }
+                    },
+                    {
+                        data: null,
+                        render: function (data) {
+                            return `
+                                                        <div class="btn-group" role="group">
+                                                            <button type="button" class="btn btn-sm btn-info edit-record" data-id="${data.id}"><i class="fas fa-edit"></i></button>
+                                                            <button type="button" class="btn btn-sm btn-danger delete-record" data-id="${data.id}"><i class="fas fa-trash"></i></button>
+                                                        </div>
+                                                    `;
+                        }
+                    }
+                ],
+                order: [[0, 'desc']]
+            });
+
+            // DataTable per le eccezioni
+            $('#exceptionsDataTable').DataTable({
+                processing: true,
+                serverSide: false,
+                ajax: {
+                    url: 'hermes/get_exceptions.php',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: 'id' },
+                    { data: 'cartellino_id' },
+                    { data: 'numero_cartellino' },
+                    { data: 'taglia' },
+                    { data: 'tipo_difetto' },
+                    { data: 'note_operatore' },
+                    {
+                        data: 'fotoPath',
+                        render: function (data) {
+                            if (data) {
+                                return `<button class="btn btn-sm btn-info view-photo" data-path="${data}"><i class="fas fa-image"></i> Visualizza</button>`;
+                            } else {
+                                return '<span class="badge badge-secondary">No foto</span>';
+                            }
+                        }
+                    },
+                    { data: 'data_creazione' },
+                    {
+                        data: null,
+                        render: function (data) {
+                            return `
+                                                        <div class="btn-group" role="group">
+                                                            <button type="button" class="btn btn-sm btn-info edit-exception" data-id="${data.id}"><i class="fas fa-edit"></i></button>
+                                                            <button type="button" class="btn btn-sm btn-danger delete-exception" data-id="${data.id}"><i class="fas fa-trash"></i></button>
+                                                        </div>
+                                                    `;
+                        }
+                    }
+                ],
+                order: [[0, 'desc']]
+            });
+
+            // DataTable per i reparti
+            $('#departmentsDataTable').DataTable({
+                processing: true,
+                serverSide: false,
+                ajax: {
+                    url: 'hermes/get_departments.php',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: 'id' },
+                    { data: 'nome_reparto' },
+                    {
+                        data: 'attivo',
+                        render: function (data) {
+                            return data == 1 ? '<span class="badge badge-success">Attivo</span>' : '<span class="badge badge-danger">Inattivo</span>';
+                        }
+                    },
+                    { data: 'ordine' },
+                    { data: 'data_creazione' },
+                    {
+                        data: null,
+                        render: function (data) {
+                            return `
+                                                        <div class="btn-group" role="group">
+                                                            <button type="button" class="btn btn-sm btn-info edit-department" data-id="${data.id}"><i class="fas fa-edit"></i></button>
+                                                            <button type="button" class="btn btn-sm btn-danger delete-department" data-id="${data.id}"><i class="fas fa-trash"></i></button>
+                                                        </div>
+                                                    `;
+                        }
+                    }
+                ],
+                order: [[3, 'asc']]
+            });
+
+            // DataTable per i tipi di difetti
+            $('#defectsDataTable').DataTable({
+                processing: true,
+                serverSide: false,
+                ajax: {
+                    url: 'hermes/get_defects.php',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: 'id' },
+                    { data: 'descrizione' },
+                    { data: 'categoria' },
+                    {
+                        data: 'attivo',
+                        render: function (data) {
+                            return data == 1 ? '<span class="badge badge-success">Attivo</span>' : '<span class="badge badge-danger">Inattivo</span>';
+                        }
+                    },
+                    { data: 'ordine' },
+                    { data: 'data_creazione' },
+                    {
+                        data: null,
+                        render: function (data) {
+                            return `
+                                                        <div class="btn-group" role="group">
+                                                            <button type="button" class="btn btn-sm btn-info edit-defect" data-id="${data.id}"><i class="fas fa-edit"></i></button>
+                                                            <button type="button" class="btn btn-sm btn-danger delete-defect" data-id="${data.id}"><i class="fas fa-trash"></i></button>
+                                                        </div>
+                                                    `;
+                        }
+                    }
+                ],
+                order: [[4, 'asc']]
+            });
+
+            // Event listener per visualizzare le foto
+            $('#exceptionsDataTable').on('click', '.view-photo', function () {
+                var path = $(this).data('path');
+                $('#exceptionPhoto').attr('src', path);
+                $('#viewPhotoModal').modal('show');
+            });
+
+            // Event listeners per i pulsanti di modifica
+            $('#recordsDataTable').on('click', '.edit-record', function () {
+                var id = $(this).data('id');
+                editRecord(id);
+            });
+
+            $('#exceptionsDataTable').on('click', '.edit-exception', function () {
+                var id = $(this).data('id');
+                editException(id);
+            });
+
+            $('#departmentsDataTable').on('click', '.edit-department', function () {
+                var id = $(this).data('id');
+                editDepartment(id);
+            });
+
+            $('#defectsDataTable').on('click', '.edit-defect', function () {
+                var id = $(this).data('id');
+                editDefect(id);
+            });
+
+            // Event listeners per i pulsanti di eliminazione
+            $('#recordsDataTable').on('click', '.delete-record', function () {
+                var id = $(this).data('id');
+                deleteRecord(id);
+            });
+
+            $('#exceptionsDataTable').on('click', '.delete-exception', function () {
+                var id = $(this).data('id');
+                deleteException(id);
+            });
+
+            $('#departmentsDataTable').on('click', '.delete-department', function () {
+                var id = $(this).data('id');
+                deleteDepartment(id);
+            });
+
+            $('#defectsDataTable').on('click', '.delete-defect', function () {
+                var id = $(this).data('id');
+                deleteDefect(id);
+            });
+        }
+
+        function loadDashboardData() {
+            // Carica i conteggi per la dashboard
+            $.ajax({
+                url: 'hermes/get_dashboard_stats.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $('#total-records').text(data.total_records);
+                    $('#today-records').text(data.today_records);
+                    $('#total-exceptions').text(data.total_exceptions);
+                    $('#today-exceptions').text(data.today_exceptions);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Errore nel caricamento delle statistiche dashboard:', error);
+                }
+            });
+        }
+
+        function loadSelectOptions() {
+            // Carica le opzioni per il select dei reparti
+            $.ajax({
+                url: 'hermes/get_departments.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var options = '';
+                    $.each(data, function (index, department) {
+                        if (department.attivo == 1) {
+                            options += `<option value="${department.nome_reparto}">${department.nome_reparto}</option>`;
+                        }
+                    });
+                    $('#reparto').html(options);
+                }
+            });
+
+            // Carica le opzioni per il select dei cartellini
+            $.ajax({
+                url: 'hermes/get_records.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var options = '';
+                    $.each(data, function (index, record) {
+                        options += `<option value="${record.id}">${record.numero_cartellino} - ${record.articolo}</option>`;
+                    });
+                    $('#cartellino_id').html(options);
+                }
+            });
+
+            // Carica le opzioni per il select dei tipi di difetti
+            $.ajax({
+                url: 'hermes/get_defects.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var options = '';
+                    $.each(data, function (index, defect) {
+                        if (defect.attivo == 1) {
+                            options += `<option value="${defect.descrizione}">${defect.descrizione}</option>`;
+                        }
+                    });
+                    $('#tipo_difetto').html(options);
+                }
+            });
+        }
+
+        function saveRecord() {
+            var formData = new FormData($('#addRecordForm')[0]);
+
+            $.ajax({
+                url: 'hermes/save_record.php',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    $('#addRecordModal').modal('hide');
+                    $('#recordsDataTable').DataTable().ajax.reload();
+                    showAlert('success', 'Cartellino salvato con successo');
+                    $('#addRecordForm')[0].reset();
+                },
+                error: function (xhr, status, error) {
+                    showAlert('danger', 'Errore nel salvataggio del cartellino: ' + error);
+                }
+            });
+        }
+
+        function saveException() {
+            var formData = new FormData($('#addExceptionForm')[0]);
+
+            $.ajax({
+                url: 'hermes/save_exception.php',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    $('#addExceptionModal').modal('hide');
+                    $('#exceptionsDataTable').DataTable().ajax.reload();
+                    $('#recordsDataTable').DataTable().ajax.reload();
+                    showAlert('success', 'Eccezione salvata con successo');
+                    $('#addExceptionForm')[0].reset();
+                },
+                error: function (xhr, status, error) {
+                    showAlert('danger', 'Errore nel salvataggio dell\'eccezione: ' + error);
+                }
+            });
+        }
+
+        function saveDepartment() {
+            var formData = new FormData($('#addDepartmentForm')[0]);
+            formData.append('attivo', $('#attivo').is(':checked') ? 1 : 0);
+
+            $.ajax({
+                url: 'hermes/save_department.php',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    $('#addDepartmentModal').modal('hide');
+                    $('#departmentsDataTable').DataTable().ajax.reload();
+                    loadSelectOptions();
+                    showAlert('success', 'Reparto salvato con successo');
+                    $('#addDepartmentForm')[0].reset();
+                },
+                error: function (xhr, status, error) {
+                    showAlert('danger', 'Errore nel salvataggio del reparto: ' + error);
+                }
+            });
+        }
+
+        function saveDefect() {
+            var formData = new FormData($('#addDefectForm')[0]);
+            formData.append('attivo', $('#defect_attivo').is(':checked') ? 1 : 0);
+
+            $.ajax({
+                url: 'hermes/save_defect.php',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    $('#addDefectModal').modal('hide');
+                    $('#defectsDataTable').DataTable().ajax.reload();
+                    loadSelectOptions();
+                    showAlert('success', 'Tipo difetto salvato con successo');
+                    $('#addDefectForm')[0].reset();
+                },
+                error: function (xhr, status, error) {
+                    showAlert('danger', 'Errore nel salvataggio del tipo difetto: ' + error);
+                }
+            });
+        }
+
+        function editRecord(id) {
+            $.ajax({
+                url: 'hermes/get_record.php',
+                type: 'GET',
+                data: { id: id },
+                dataType: 'json',
+                success: function (data) {
+                    $('#addRecordModalLabel').text('Modifica Cartellino');
+                    $('#numero_cartellino').val(data.numero_cartellino);
+                    $('#reparto').val(data.reparto);
+                    $('#operatore').val(data.operatore);
+                    $('#tipo_cq').val(data.tipo_cq);
+                    $('#paia_totali').val(data.paia_totali);
+                    $('#cod_articolo').val(data.cod_articolo);
+                    $('#articolo').val(data.articolo);
+                    $('#linea').val(data.linea);
+                    $('#note').val(data.note);
+
+                    // Aggiungi l'ID nascosto per l'aggiornamento
+                    if ($('#record_id').length === 0) {
+                        $('#addRecordForm').append('<input type="hidden" id="record_id" name="id" value="' + id + '">');
+                    } else {
+                        $('#record_id').val(id);
+                    }
+
+                    $('#addRecordModal').modal('show');
+                },
+                error: function (xhr, status, error) {
+                    showAlert('danger', 'Errore nel caricamento dei dati del cartellino: ' + error);
+                }
+            });
+        }
+
+        function editException(id) {
+            $.ajax({
+                url: 'hermes/get_exception.php',
+                type: 'GET',
+                data: { id: id },
+                dataType: 'json',
+                success: function (data) {
+                    $('#addExceptionModalLabel').text('Modifica Eccezione');
+                    $('#cartellino_id').val(data.cartellino_id);
+                    $('#taglia').val(data.taglia);
+                    $('#tipo_difetto').val(data.tipo_difetto);
+                    $('#note_operatore').val(data.note_operatore);
+
+                    // Aggiungi l'ID nascosto per l'aggiornamento
+                    if ($('#exception_id').length === 0) {
+                        $('#addExceptionForm').append('<input type="hidden" id="exception_id" name="id" value="' + id + '">');
+                    } else {
+                        $('#exception_id').val(id);
+                    }
+
+                    $('#addExceptionModal').modal('show');
+                },
+                error: function (xhr, status, error) {
+                    showAlert('danger', 'Errore nel caricamento dei dati dell\'eccezione: ' + error);
+                }
+            });
+        }
+
+        function editDepartment(id) {
+            $.ajax({
+                url: 'hermes/get_department.php',
+                type: 'GET',
+                data: { id: id },
+                dataType: 'json',
+                success: function (data) {
+                    $('#addDepartmentModalLabel').text('Modifica Reparto');
+                    $('#nome_reparto').val(data.nome_reparto);
+                    $('#ordine').val(data.ordine);
+                    $('#attivo').prop('checked', data.attivo == 1);
+
+                    // Aggiungi l'ID nascosto per l'aggiornamento
+                    if ($('#department_id').length === 0) {
+                        $('#addDepartmentForm').append('<input type="hidden" id="department_id" name="id" value="' + id + '">');
+                    } else {
+                        $('#department_id').val(id);
+                    }
+
+                    $('#addDepartmentModal').modal('show');
+                },
+                error: function (xhr, status, error) {
+                    showAlert('danger', 'Errore nel caricamento dei dati del reparto: ' + error);
+                }
+            });
+        }
+
+        function editDefect(id) {
+            $.ajax({
+                url: 'hermes/get_defect.php',
+                type: 'GET',
+                data: { id: id },
+                dataType: 'json',
+                success: function (data) {
+                    $('#addDefectModalLabel').text('Modifica Tipo Difetto');
+                    $('#descrizione').val(data.descrizione);
+                    $('#categoria').val(data.categoria);
+                    $('#defect_ordine').val(data.ordine);
+                    $('#defect_attivo').prop('checked', data.attivo == 1);
+
+                    // Aggiungi l'ID nascosto per l'aggiornamento
+                    if ($('#defect_id').length === 0) {
+                        $('#addDefectForm').append('<input type="hidden" id="defect_id" name="id" value="' + id + '">');
+                    } else {
+                        $('#defect_id').val(id);
+                    }
+
+                    $('#addDefectModal').modal('show');
+                },
+                error: function (xhr, status, error) {
+                    showAlert('danger', 'Errore nel caricamento dei dati del tipo difetto: ' + error);
+                }
+            });
+        }
+
+        function deleteRecord(id) {
+            if (confirm('Sei sicuro di voler eliminare questo cartellino? Questa azione non può essere annullata.')) {
+                $.ajax({
+                    url: 'hermes/delete_record.php',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (response) {
+                        $('#recordsDataTable').DataTable().ajax.reload();
+                        showAlert('success', 'Cartellino eliminato con successo');
+                    },
+                    error: function (xhr, status, error) {
+                        showAlert('danger', 'Errore nell\'eliminazione del cartellino: ' + error);
+                    }
+                });
+            }
+        }
+
+        function deleteException(id) {
+            if (confirm('Sei sicuro di voler eliminare questa eccezione? Questa azione non può essere annullata.')) {
+                $.ajax({
+                    url: 'hermes/delete_exception.php',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (response) {
+                        $('#exceptionsDataTable').DataTable().ajax.reload();
+                        $('#recordsDataTable').DataTable().ajax.reload();
+                        showAlert('success', 'Eccezione eliminata con successo');
+                    },
+                    error: function (xhr, status, error) {
+                        showAlert('danger', 'Errore nell\'eliminazione dell\'eccezione: ' + error);
+                    }
+                });
+            }
+        }
+
+        function deleteDepartment(id) {
+            if (confirm('Sei sicuro di voler eliminare questo reparto? Questa azione non può essere annullata.')) {
+                $.ajax({
+                    url: 'hermes/delete_department.php',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (response) {
+                        $('#departmentsDataTable').DataTable().ajax.reload();
+                        showAlert('success', 'Reparto eliminato con successo');
+                        loadSelectOptions();
+                    },
+                    error: function (xhr, status, error) {
+                        showAlert('danger', 'Errore nell\'eliminazione del reparto: ' + error);
+                    }
+                });
+            }
+        }
+
+        function deleteDefect(id) {
+            if (confirm('Sei sicuro di voler eliminare questo tipo difetto? Questa azione non può essere annullata.')) {
+                $.ajax({
+                    url: 'hermes/delete_defect.php',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (response) {
+                        $('#defectsDataTable').DataTable().ajax.reload();
+                        showAlert('success', 'Tipo difetto eliminato con successo');
+                        loadSelectOptions();
+                    },
+                    error: function (xhr, status, error) {
+                        showAlert('danger', 'Errore nell\'eliminazione del tipo difetto: ' + error);
+                    }
+                });
+            }
+        }
+
+        function initCharts() {
+            // Grafico settimanale dei controlli
+            $.ajax({
+                url: 'hermes/get_weekly_data.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var ctx = document.getElementById('weeklyCQChart').getContext('2d');
+                    var chart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: data.labels,
+                            datasets: [
+                                {
+                                    label: 'Controlli Totali',
+                                    backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                                    borderColor: 'rgba(78, 115, 223, 1)',
+                                    pointRadius: 3,
+                                    pointBackgroundColor: 'rgba(78, 115, 223, 1)',
+                                    pointBorderColor: 'rgba(78, 115, 223, 1)',
+                                    pointHoverRadius: 3,
+                                    pointHoverBackgroundColor: 'rgba(78, 115, 223, 1)',
+                                    pointHoverBorderColor: 'rgba(78, 115, 223, 1)',
+                                    pointHitRadius: 10,
+                                    pointBorderWidth: 2,
+                                    data: data.countRecords
+                                },
+                                {
+                                    label: 'Eccezioni',
+                                    backgroundColor: 'rgba(231, 74, 59, 0.05)',
+                                    borderColor: 'rgba(231, 74, 59, 1)',
+                                    pointRadius: 3,
+                                    pointBackgroundColor: 'rgba(231, 74, 59, 1)',
+                                    pointBorderColor: 'rgba(231, 74, 59, 1)',
+                                    pointHoverRadius: 3,
+                                    pointHoverBackgroundColor: 'rgba(231, 74, 59, 1)',
+                                    pointHoverBorderColor: 'rgba(231, 74, 59, 1)',
+                                    pointHitRadius: 10,
+                                    pointBorderWidth: 2,
+                                    data: data.countExceptions
+                                }
+                            ]
+                        },
+                        options: {
+                            maintainAspectRatio: false,
+                            layout: {
+                                padding: {
+                                    left: 10,
+                                    right: 25,
+                                    top: 25,
+                                    bottom: 0
+                                }
+                            },
+                            scales: {
+                                xAxes: [{
+                                    time: {
+                                        unit: 'day'
+                                    },
+                                    gridLines: {
+                                        display: false,
+                                        drawBorder: false
+                                    },
+                                    ticks: {
+                                        maxTicksLimit: 7
+                                    }
+                                }],
+                                yAxes: [{
+                                    ticks: {
+                                        maxTicksLimit: 5,
+                                        padding: 10,
+                                        beginAtZero: true
+                                    },
+                                    gridLines: {
+                                        color: "rgb(234, 236, 244)",
+                                        zeroLineColor: "rgb(234, 236, 244)",
+                                        drawBorder: false,
+                                        borderDash: [2],
+                                        zeroLineBorderDash: [2]
+                                    }
+                                }],
+                            },
+                            legend: {
+                                display: true
+                            },
+                            tooltips: {
+                                backgroundColor: "rgb(255,255,255)",
+                                bodyFontColor: "#858796",
+                                titleMarginBottom: 10,
+                                titleFontColor: '#6e707e',
+                                titleFontSize: 14,
+                                borderColor: '#dddfeb',
+                                borderWidth: 1,
+                                xPadding: 15,
+                                yPadding: 15,
+                                displayColors: false,
+                                intersect: false,
+                                mode: 'index',
+                                caretPadding: 10
+                            }
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Errore nel caricamento dei dati settimanali:', error);
+                }
+            });
+
+            // Grafico a torta per i tipi di difetti
+            $.ajax({
+                url: 'hermes/get_defects_stats.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var ctx = document.getElementById('defectsPieChart').getContext('2d');
+                    var chart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                data: data.counts,
+                                backgroundColor: [
+                                    '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#5a5c69', '#858796'
+                                ],
+                                hoverBackgroundColor: [
+                                    '#2e59d9', '#17a673', '#2c9faf', '#dda20a', '#be2617', '#3a3b45', '#60616f'
+                                ],
+                                hoverBorderColor: "rgba(234, 236, 244, 1)",
+                            }],
+                        },
+                        options: {
+                            maintainAspectRatio: false,
+                            tooltips: {
+                                backgroundColor: "rgb(255,255,255)",
+                                bodyFontColor: "#858796",
+                                borderColor: '#dddfeb',
+                                borderWidth: 1,
+                                xPadding: 15,
+                                yPadding: 15,
+                                displayColors: false,
+                                caretPadding: 10,
+                            },
+                            legend: {
+                                display: true,
+                                position: 'bottom'
+                            },
+                            cutoutPercentage: 70,
+                        },
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Errore nel caricamento delle statistiche difetti:', error);
+                }
+            });
+        }
+
+        function showAlert(type, message) {
+            var alertHtml = `
+                                        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                                            ${message}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    `;
+
+            // Aggiungi l'alert sopra il contenuto e imposta un timer per rimuoverlo
+            $('.container-fluid').prepend(alertHtml);
+
+            // Rimuovi l'alert dopo 5 secondi
+            setTimeout(function () {
+                $('.alert').alert('close');
+            }, 5000);
+        }
+
+        $(document).ready(function () {
+            // Inizializza i DataTables
+            initDataTables();
+
+            // Carica i dati per la dashboard
+            loadDashboardData();
+
+            // Carica le opzioni per i select nei form
+            loadSelectOptions();
+
+            // Event listeners per i pulsanti di salvataggio
+            $('#saveRecordBtn').on('click', saveRecord);
+            $('#saveExceptionBtn').on('click', saveException);
+            $('#saveDepartmentBtn').on('click', saveDepartment);
+            $('#saveDefectBtn').on('click', saveDefect);
+
+            // Inizializza i grafici
+            initCharts();
+        });
+
+    </script>
+
+
+</body>
