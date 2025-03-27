@@ -334,7 +334,7 @@ if ($reportFormat == 'pdf') {
 
     // Intestazione con logo e titolo
     echo '<div style="text-align: center; margin-bottom: 20px;">
-            <img src="../../img/logo.png" style="max-height: 50px;" />
+            <img src="../../../img/logo.png" style="max-height: 50px;" />
             <h1>' . $reportTitle . '</h1>
           </div>';
 
