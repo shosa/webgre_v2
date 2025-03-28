@@ -302,6 +302,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 <span>Database</span>
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" id="filemanager" href="<?php echo BASE_URL ?>/functions/files/manager"
+                aria-expanded="true" aria-controls="collapseProd">
+                <i class="far fa-folders"></i>
+                <span>Files</span>
+            </a>
+        </li>
     <?php endif; ?>
     <?php if (isset($_SESSION['permessi_settings']) && $_SESSION['permessi_settings'] == 1): ?>
         <li class="nav-item">
@@ -370,6 +377,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             '/functions/users/manageUsers': 'users',
             '/functions/settings/settings': 'settings',
             '/functions/database/manager': 'database',
+            '/functions/files/manager': 'filemanager',
             '/functions/shipTracker/index': 'shipTracker',
             '/functions/attrezzatura/manage': 'attrezzatura-manage',
             '/functions/attrezzatura/return': 'attrezzatura-return',
