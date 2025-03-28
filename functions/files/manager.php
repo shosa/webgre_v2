@@ -530,7 +530,9 @@ $uploadDir = BASE_PATH . '/uploads/';
             $.ajax({
                 url: 'get_file_details.php',
                 method: 'GET',
-                data: { filename: filename },
+                data: { filename: filename, 
+                        folder: currentPath 
+                },
                 success: function (response) {
                     try {
                         const fileDetails = JSON.parse(response);

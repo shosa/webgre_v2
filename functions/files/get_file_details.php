@@ -55,7 +55,7 @@ if (!file_exists($filePath)) {
     // Se ancora non trovato
     if (!file_exists($filePath)) {
         echo json_encode(['error' => 'File non trovato']);
-        echo json_encode(['percorso' => $filePath]);
+        echo json_encode(['error' => $filePath]);
         exit;
     }
 }
