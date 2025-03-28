@@ -7,6 +7,33 @@ require_once BASE_PATH . '/components/header.php';
 // Define the upload directory
 $uploadDir = BASE_PATH . '/uploads/';
 ?>
+<style>
+    /* Personalizzazione tab */
+    .nav-tabs {
+        border-bottom: 1px solid #e3e6f0 !important;
+    }
+
+    .nav-tabs .nav-link {
+        border: none !important;
+        color: #6c757d !important;
+        padding: 0.75rem 1.25rem !important;
+        font-weight: 500 !important;
+        font-size: 0.85rem !important;
+        border-radius: 0 !important;
+    }
+
+    .nav-tabs .nav-link.active {
+        color: #4e73df !important;
+        background-color: transparent !important;
+        border-bottom: 3px solid #4e73df !important;
+        width: 100% !important;
+    }
+
+    .nav-tabs .nav-link:hover {
+        color: #4e73df !important;
+        border-bottom: 3px solid #e3e6f0 !important;
+    }
+</style>
 
 <body id="page-top">
     <div id="wrapper">
