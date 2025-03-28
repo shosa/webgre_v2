@@ -818,7 +818,7 @@ include(BASE_PATH . "/components/header.php");
                         data: 'fotoPath',
                         render: function (data) {
                             if (data) {
-                                return `<button class="btn btn-sm btn-info view-photo" data-path="<?php echo $BASE_URL; ?>${data}"><i class="fas fa-image"></i> Visualizza</button>`;
+                                return `<button class="btn btn-sm btn-info view-photo" data-path="<?php echo BASE_URL; ?>${data}"><i class="fas fa-image"></i> Visualizza</button>`;
                             } else {
                                 return '<span class="badge badge-secondary">No foto</span>';
                             }
