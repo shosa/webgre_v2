@@ -108,7 +108,7 @@ if ($reportType == 'summary' || $reportType == 'detailed') {
 if ($reportType == 'detailed' || $reportType == 'exceptions') {
     // Recupera tutte le eccezioni per la data specificata
     $stmt = $pdo->prepare("
-        SELECT e.*, r.numero_cartellino, r.articolo, r.reparto 
+        SELECT e.*, r.numero_cartellino, r.cod_articolo, r.articolo, r.reparto 
         FROM cq_hermes_eccezioni e
         INNER JOIN cq_hermes_records r ON e.cartellino_id = r.id
         WHERE DATE(r.data_controllo) = :date
@@ -201,11 +201,6 @@ if ($reportFormat == 'pdf') {
         .exception {
             background-color: #ffecec;
         }
-        .chart-container {
-            width: 100%;
-            height: 300px;
-            margin: 20px 0;
-        }
     </style>
     ';
 
@@ -225,40 +220,6 @@ if ($reportFormat == 'pdf') {
                 <div class="summary-item"><span class="summary-label">Cartellini con Eccezioni:</span> ' . $statisticheData['cartellini_con_eccezioni'] . ' (' . $statisticheData['percentuale_cartellini_eccezioni'] . '%)</div>
                 <div class="summary-item"><span class="summary-label">Eccezioni Totali:</span> ' . $statisticheData['totale_eccezioni'] . '</div>
               </div>';
-
-        // Grafico a torta per i controlli per reparto
-        if (!empty($statistichePerReparto)) {
-            echo '<h2>Distribuzione Controlli per Reparto</h2>';
-            
-            // Preparazione dati per il grafico
-            $labels = array();
-            $values = array();
-            $colors = array('#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#5a5c69', '#858796', '#4c0099', '#009933', '#cc3300');
-            
-            foreach ($statistichePerReparto as $index => $reparto) {
-                $labels[] = $reparto['reparto'];
-                $values[] = $reparto['cartellini'];
-            }
-            
-            // Genera il grafico a torta con jpgraph (o qualsiasi altra libreria di grafici)
-            // Qui dobbiamo generare un'immagine e includerla nel PDF
-            
-            // Esempio con generazione di HTML/CSS per un grafico a barre semplice (sostituzione temporanea)
-            echo '<div style="width: 100%; height: 200px; margin: 20px 0; text-align: center;">';
-            echo '<table style="width: 80%; margin: 0 auto; border-collapse: collapse;">';
-            foreach ($statistichePerReparto as $index => $reparto) {
-                $width = ($reparto['cartellini'] / array_sum(array_column($statistichePerReparto, 'cartellini'))) * 100;
-                $colorIndex = $index % count($colors);
-                echo '<tr>';
-                echo '<td style="width: 30%; text-align: right; padding-right: 10px;">' . htmlspecialchars($reparto['reparto']) . '</td>';
-                echo '<td style="width: 70%;">';
-                echo '<div style="background-color: ' . $colors[$colorIndex] . '; height: 20px; width: ' . $width . '%; text-align: right; padding-right: 5px; color: white;">' . $reparto['cartellini'] . '</div>';
-                echo '</td>';
-                echo '</tr>';
-            }
-            echo '</table>';
-            echo '</div>';
-        }
 
         // Statistiche per reparto
         echo '<h2>Statistiche per Reparto</h2>';
@@ -306,12 +267,14 @@ if ($reportFormat == 'pdf') {
         echo '<h2>Cartellini ' . $displayDate . '</h2>';
         echo '<table>
                 <tr>
+                    <th>ID</th>
                     <th>Numero Cartellino</th>
                     <th>Reparto</th>
-                    <th>Orario</th>
+                    <th>Data Controllo</th>
                     <th>Operatore</th>
                     <th>Tipo CQ</th>
                     <th>Paia</th>
+                    <th>Cod. Articolo</th>
                     <th>Articolo</th>
                     <th>Linea</th>
                     <th>Note</th>
@@ -321,12 +284,14 @@ if ($reportFormat == 'pdf') {
         foreach ($cartelliniData as $cartellino) {
             $rowClass = $cartellino['ha_eccezioni'] == 1 ? ' class="exception"' : '';
             echo '<tr' . $rowClass . '>
+                    <td>' . $cartellino['id'] . '</td>
                     <td>' . htmlspecialchars($cartellino['numero_cartellino']) . '</td>
                     <td>' . htmlspecialchars($cartellino['reparto']) . '</td>
-                    <td>' . date('H:i', strtotime($cartellino['data_controllo'])) . '</td>
+                    <td>' . date('d/m/Y H:i', strtotime($cartellino['data_controllo'])) . '</td>
                     <td>' . htmlspecialchars($cartellino['operatore']) . '</td>
                     <td>' . $cartellino['tipo_cq'] . '</td>
                     <td>' . $cartellino['paia_totali'] . '</td>
+                    <td>' . htmlspecialchars($cartellino['cod_articolo']) . '</td>
                     <td>' . htmlspecialchars($cartellino['articolo']) . '</td>
                     <td>' . htmlspecialchars($cartellino['linea']) . '</td>
                     <td>' . htmlspecialchars($cartellino['note']) . '</td>
@@ -346,24 +311,26 @@ if ($reportFormat == 'pdf') {
         } else {
             echo '<table>
                     <tr>
+                        <th>ID</th>
                         <th>Cartellino</th>
                         <th>Reparto</th>
                         <th>Articolo</th>
                         <th>Taglia</th>
                         <th>Tipo Difetto</th>
                         <th>Note</th>
-                        <th>Orario</th>
+                        <th>Data</th>
                     </tr>';
 
             foreach ($eccezioniData as $eccezione) {
                 echo '<tr>
+                        <td>' . $eccezione['id'] . '</td>
                         <td>' . htmlspecialchars($eccezione['numero_cartellino']) . '</td>
                         <td>' . htmlspecialchars($eccezione['reparto']) . '</td>
                         <td>' . htmlspecialchars($eccezione['articolo']) . '</td>
                         <td>' . htmlspecialchars($eccezione['taglia']) . '</td>
                         <td>' . htmlspecialchars($eccezione['tipo_difetto']) . '</td>
                         <td>' . htmlspecialchars($eccezione['note_operatore']) . '</td>
-                        <td>' . date('H:i', strtotime($eccezione['data_creazione'])) . '</td>
+                        <td>' . date('d/m/Y H:i', strtotime($eccezione['data_creazione'])) . '</td>
                       </tr>';
             }
 
@@ -494,12 +461,14 @@ if ($reportFormat == 'pdf') {
         echo '<h2>Cartellini ' . $displayDate . '</h2>';
         echo '<table>
                 <tr>
+                    <th>ID</th>
                     <th>Numero Cartellino</th>
                     <th>Reparto</th>
-                    <th>Orario</th>
+                    <th>Data Controllo</th>
                     <th>Operatore</th>
                     <th>Tipo CQ</th>
                     <th>Paia</th>
+                    <th>Codice Articolo</th>
                     <th>Articolo</th>
                     <th>Linea</th>
                     <th>Note</th>
@@ -508,12 +477,14 @@ if ($reportFormat == 'pdf') {
         foreach ($cartelliniData as $cartellino) {
             $rowClass = $cartellino['ha_eccezioni'] == 1 ? ' class="exception"' : '';
             echo '<tr' . $rowClass . '>
+                    <td>' . $cartellino['id'] . '</td>
                     <td>' . htmlspecialchars($cartellino['numero_cartellino']) . '</td>
                     <td>' . htmlspecialchars($cartellino['reparto']) . '</td>
-                    <td>' . date('H:i', strtotime($cartellino['data_controllo'])) . '</td>
+                    <td>' . date('d/m/Y H:i', strtotime($cartellino['data_controllo'])) . '</td>
                     <td>' . htmlspecialchars($cartellino['operatore']) . '</td>
                     <td>' . $cartellino['tipo_cq'] . '</td>
                     <td>' . $cartellino['paia_totali'] . '</td>
+                    <td>' . htmlspecialchars($cartellino['cod_articolo']) . '</td>
                     <td>' . htmlspecialchars($cartellino['articolo']) . '</td>
                     <td>' . htmlspecialchars($cartellino['linea']) . '</td>
                     <td>' . htmlspecialchars($cartellino['note']) . '</td>
@@ -533,24 +504,26 @@ if ($reportFormat == 'pdf') {
         } else {
             echo '<table>
                     <tr>
+                        <th>ID</th>
                         <th>Cartellino</th>
                         <th>Reparto</th>
                         <th>Articolo</th>
                         <th>Taglia</th>
                         <th>Tipo Difetto</th>
                         <th>Note</th>
-                        <th>Orario</th>
+                        <th>Data</th>
                     </tr>';
 
             foreach ($eccezioniData as $eccezione) {
                 echo '<tr>
+                        <td>' . $eccezione['id'] . '</td>
                         <td>' . htmlspecialchars($eccezione['numero_cartellino']) . '</td>
                         <td>' . htmlspecialchars($eccezione['reparto']) . '</td>
                         <td>' . htmlspecialchars($eccezione['articolo']) . '</td>
                         <td>' . htmlspecialchars($eccezione['taglia']) . '</td>
                         <td>' . htmlspecialchars($eccezione['tipo_difetto']) . '</td>
                         <td>' . htmlspecialchars($eccezione['note_operatore']) . '</td>
-                        <td>' . date('H:i', strtotime($eccezione['data_creazione'])) . '</td>
+                        <td>' . date('d/m/Y H:i', strtotime($eccezione['data_creazione'])) . '</td>
                       </tr>';
             }
 
