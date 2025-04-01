@@ -640,7 +640,7 @@ include(BASE_PATH . "/components/header.php");
                             <!-- Modal Aggiungi Eccezione -->
                             <div class="modal fade" id="addExceptionModal" tabindex="-1" role="dialog"
                                 aria-labelledby="addExceptionModalLabel" aria-hidden="true">
-                                < class="modal-dialog" role="document">
+                                <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="addExceptionModalLabel">Aggiungi Nuova
@@ -684,131 +684,132 @@ include(BASE_PATH . "/components/header.php");
                                                 id="saveExceptionBtn">Salva</button>
                                         </div>
                                     </div>
-                            </div>
-                        </div><!-- Modal Visualizza Foto -->
-                        <div class="modal fade" id="viewPhotoModal" tabindex="-1" role="dialog"
-                            aria-labelledby="viewPhotoModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="viewPhotoModalLabel">Visualizza Foto
-                                        </h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body text-center">
-                                        <img id="exceptionPhoto" src="" class="img-fluid" alt="Foto eccezione">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Chiudi</button>
+                                </div>
+                            </div><!-- Modal Visualizza Foto -->
+                            <div class="modal fade" id="viewPhotoModal" tabindex="-1" role="dialog"
+                                aria-labelledby="viewPhotoModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="viewPhotoModalLabel">Visualizza Foto
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            <img id="exceptionPhoto" src="" class="img-fluid" alt="Foto eccezione">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Chiudi</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Modal Aggiungi Reparto -->
-                        <div class="modal fade" id="addDepartmentModal" tabindex="-1" role="dialog"
-                            aria-labelledby="addDepartmentModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="addDepartmentModalLabel">Aggiungi Nuovo
-                                            Reparto
-                                        </h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="addDepartmentForm">
-                                            <div class="form-group">
-                                                <label for="nome_reparto">Nome Reparto*</label>
-                                                <input type="text" class="form-control" id="nome_reparto"
-                                                    name="nome_reparto" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="ordine">Ordine</label>
-                                                <input type="number" class="form-control" id="ordine" name="ordine"
-                                                    value="0" min="0">
-                                            </div>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" id="attivo"
-                                                    name="attivo" checked>
-                                                <label class="form-check-label" for="attivo">Attivo</label>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Annulla</button>
-                                        <button type="button" class="btn btn-primary"
-                                            id="saveDepartmentBtn">Salva</button>
+                            <!-- Modal Aggiungi Reparto -->
+                            <div class="modal fade" id="addDepartmentModal" tabindex="-1" role="dialog"
+                                aria-labelledby="addDepartmentModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="addDepartmentModalLabel">Aggiungi Nuovo
+                                                Reparto
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="addDepartmentForm">
+                                                <div class="form-group">
+                                                    <label for="nome_reparto">Nome Reparto*</label>
+                                                    <input type="text" class="form-control" id="nome_reparto"
+                                                        name="nome_reparto" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="ordine">Ordine</label>
+                                                    <input type="number" class="form-control" id="ordine" name="ordine"
+                                                        value="0" min="0">
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="attivo"
+                                                        name="attivo" checked>
+                                                    <label class="form-check-label" for="attivo">Attivo</label>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Annulla</button>
+                                            <button type="button" class="btn btn-primary"
+                                                id="saveDepartmentBtn">Salva</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Modal Aggiungi Tipo Difetto -->
-                        <div class="modal fade" id="addDefectModal" tabindex="-1" role="dialog"
-                            aria-labelledby="addDefectModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="addDefectModalLabel">Aggiungi Nuovo Tipo
-                                            Difetto
-                                        </h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="addDefectForm">
-                                            <div class="form-group">
-                                                <label for="descrizione">Descrizione*</label>
-                                                <input type="text" class="form-control" id="descrizione"
-                                                    name="descrizione" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="categoria">Categoria</label>
-                                                <input type="text" class="form-control" id="categoria" name="categoria"
-                                                    list="categorie">
-                                                <datalist id="categorie">
-                                                    <option value="CUCITURE">
-                                                    <option value="MATERIALE">
-                                                    <option value="FINITURE">
-                                                </datalist>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="defect_ordine">Ordine</label>
-                                                <input type="number" class="form-control" id="defect_ordine"
-                                                    name="ordine" value="0" min="0">
-                                            </div>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" id="defect_attivo"
-                                                    name="attivo" checked>
-                                                <label class="form-check-label" for="defect_attivo">Attivo</label>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Annulla</button>
-                                        <button type="button" class="btn btn-primary" id="saveDefectBtn">Salva</button>
+                            <!-- Modal Aggiungi Tipo Difetto -->
+                            <div class="modal fade" id="addDefectModal" tabindex="-1" role="dialog"
+                                aria-labelledby="addDefectModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="addDefectModalLabel">Aggiungi Nuovo Tipo
+                                                Difetto
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="addDefectForm">
+                                                <div class="form-group">
+                                                    <label for="descrizione">Descrizione*</label>
+                                                    <input type="text" class="form-control" id="descrizione"
+                                                        name="descrizione" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="categoria">Categoria</label>
+                                                    <input type="text" class="form-control" id="categoria"
+                                                        name="categoria" list="categorie">
+                                                    <datalist id="categorie">
+                                                        <option value="CUCITURE">
+                                                        <option value="MATERIALE">
+                                                        <option value="FINITURE">
+                                                    </datalist>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="defect_ordine">Ordine</label>
+                                                    <input type="number" class="form-control" id="defect_ordine"
+                                                        name="ordine" value="0" min="0">
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="defect_attivo"
+                                                        name="attivo" checked>
+                                                    <label class="form-check-label" for="defect_attivo">Attivo</label>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Annulla</button>
+                                            <button type="button" class="btn btn-primary"
+                                                id="saveDefectBtn">Salva</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <?php include(BASE_PATH . "/components/footer.php"); ?>
+
         </div>
-
-        <?php include(BASE_PATH . "/components/footer.php"); ?>
-
-    </div>
 
     </div>
     <!-- Script essenziali -->
