@@ -956,9 +956,13 @@ include(BASE_PATH . "/components/header.php");
                                 } else {
                                     // Aggiungi click event solo per date non future
                                     cell.addEventListener("click", function () {
+                                        // Crea una data locale con anno, mese e giorno
                                         selectedDate = new Date(currentYear, currentMonth, parseInt(this.textContent));
                                         updateSelectedDateDisplay();
-                                        loadRecordsByDate(selectedDate.toISOString().split('T')[0]);
+
+                                        // Usa formatDateForAPI per ottenere il formato corretto
+                                        const apiDate = formatDateForAPI(selectedDate);
+                                        loadRecordsByDate(apiDate);
 
                                         // Rimuovi eventuali evidenziazioni precedenti
                                         document.querySelectorAll('.giorno.selected').forEach(el => {
@@ -1022,7 +1026,7 @@ include(BASE_PATH . "/components/header.php");
                 }
 
                 function loadRecordsByDate(dateStr) {
-                    const formattedDate = dateStr || selectedDate.toISOString().split('T')[0];
+                    const formattedDate = dateStr || formatDateForAPI(selectedDate);
 
                     // Usa DataTables API per ricaricare i dati con filtro data
                     $('#recordsDataTable').DataTable().clear().destroy();
@@ -1078,6 +1082,20 @@ include(BASE_PATH . "/components/header.php");
                     selectedRecordId = null;
                 }
 
+                // Funzione aggiuntiva per assicurarsi che la data sia formattata correttamente
+                function formatDateForAPI(date) {
+                    // Aggiungi 1 giorno per compensare lo sfasamento
+                    const adjustedDate = new Date(date);
+                    adjustedDate.setDate(adjustedDate.getDate());
+
+                    // Formatta come YYYY-MM-DD assicurandosi di usare i valori locali
+                    const year = adjustedDate.getFullYear();
+                    // Nota: getMonth() restituisce 0-11, quindi aggiungiamo 1
+                    const month = String(adjustedDate.getMonth() + 1).padStart(2, '0');
+                    const day = String(adjustedDate.getDate()).padStart(2, '0');
+
+                    return `${year}-${month}-${day}`;
+                }
                 function loadExceptionsForRecord(recordId, recordNumber) {
                     selectedRecordId = recordId;
                     $('#selected-record-number').text(recordNumber);
