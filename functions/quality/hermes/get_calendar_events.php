@@ -12,17 +12,18 @@ header('Content-Type: application/json');
 $pdo = getDbInstance();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Default: ultimi 3 mesi
-$startDate = date('Y-m-d', strtotime('-3 months'));
-$endDate = date('Y-m-d', strtotime('+1 month'));
+// Default: mese corrente
+$currentMonth = isset($_GET['month']) ? intval($_GET['month']) : date('n');
+$currentYear = isset($_GET['year']) ? intval($_GET['year']) : date('Y');
 
-// Prendi le date dal parametro di query, se fornito
-if (isset($_GET['start']) && !empty($_GET['start'])) {
-    $startDate = $_GET['start'];
-}
-if (isset($_GET['end']) && !empty($_GET['end'])) {
-    $endDate = $_GET['end'];
-}
+// Assicurati che il mese sia formattato correttamente (1-12)
+if ($currentMonth < 1) $currentMonth = 1;
+if ($currentMonth > 12) $currentMonth = 12;
+
+// Calcola il primo e l'ultimo giorno del mese
+$startDate = sprintf('%04d-%02d-01', $currentYear, $currentMonth);
+$lastDay = date('t', strtotime($startDate)); // ottiene l'ultimo giorno del mese
+$endDate = sprintf('%04d-%02d-%02d', $currentYear, $currentMonth, $lastDay);
 
 try {
     // Ottieni il conteggio dei record per ogni giorno nel periodo specificato
@@ -40,8 +41,12 @@ try {
             date ASC
     ");
     
-    $stmt->bindParam(':startDate', $startDate, PDO::PARAM_STR);
-    $stmt->bindParam(':endDate', $endDate, PDO::PARAM_STR);
+    // Esegui con date per l'inizio e fine del mese corrente
+    $dateStart = $startDate . ' 00:00:00';
+    $dateEnd = $endDate . ' 23:59:59';
+    
+    $stmt->bindParam(':startDate', $dateStart, PDO::PARAM_STR);
+    $stmt->bindParam(':endDate', $dateEnd, PDO::PARAM_STR);
     $stmt->execute();
     
     $calendarData = $stmt->fetchAll(PDO::FETCH_ASSOC);

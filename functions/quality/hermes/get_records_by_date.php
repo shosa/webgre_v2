@@ -17,6 +17,13 @@ if (!isset($_GET['date']) || empty($_GET['date'])) {
     $date = $_GET['date'];
 }
 
+// Assicurati che la data sia in formato corretto (YYYY-MM-DD)
+if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Formato data non valido. Utilizzare YYYY-MM-DD']);
+    exit;
+}
+
 $pdo = getDbInstance();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -26,25 +33,25 @@ try {
     // tra l'inizio e la fine della data fornita
     $dateStart = $date . ' 00:00:00';
     $dateEnd = $date . ' 23:59:59';
-
+    
     $stmt = $pdo->prepare("
         SELECT * 
         FROM cq_hermes_records 
         WHERE data_controllo BETWEEN :dateStart AND :dateEnd
         ORDER BY data_controllo DESC
     ");
-
+    
     $stmt->bindParam(':dateStart', $dateStart, PDO::PARAM_STR);
     $stmt->bindParam(':dateEnd', $dateEnd, PDO::PARAM_STR);
     $stmt->execute();
-
+    
     $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+    
     // Formatta le date per la visualizzazione
     foreach ($records as &$record) {
         $record['data_controllo'] = date('d/m/Y H:i', strtotime($record['data_controllo']));
     }
-
+    
     echo json_encode($records);
 } catch (PDOException $e) {
     http_response_code(500);

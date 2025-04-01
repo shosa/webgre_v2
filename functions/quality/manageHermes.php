@@ -988,8 +988,8 @@ include(BASE_PATH . "/components/header.php");
                     url: 'hermes/get_calendar_events.php',
                     type: 'GET',
                     data: {
-                        start: `${currentYear}-${currentMonth + 1}-01`,
-                        end: `${currentYear}-${currentMonth + 1}-31`
+                        month: currentMonth + 1, // JavaScript month è 0-based (0-11), PHP è 1-based (1-12)
+                        year: currentYear
                     },
                     dataType: 'json',
                     success: function (data) {
