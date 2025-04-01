@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
 require_once '../../../config/config.php';
-
+require_once BASE_PATH . '/components/auth_validate.php';
 require_once BASE_PATH . '/utils/helpers.php';
 
 header('Content-Type: application/json');
@@ -28,21 +28,15 @@ $pdo = getDbInstance();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 try {
-    // Ottieni tutti i cartellini per la data selezionata
-    // Nota: la data di controllo è in formato DATETIME, quindi dobbiamo cercare record 
-    // tra l'inizio e la fine della data fornita
-    $dateStart = $date . ' 00:00:00';
-    $dateEnd = $date . ' 23:59:59';
-    
+    // CORREZIONE: Usa DATE() per estrarre solo la data dal timestamp e confronta con la data richiesta
     $stmt = $pdo->prepare("
         SELECT * 
         FROM cq_hermes_records 
-        WHERE data_controllo BETWEEN :dateStart AND :dateEnd
+        WHERE DATE(data_controllo) = :date
         ORDER BY data_controllo DESC
     ");
     
-    $stmt->bindParam(':dateStart', $dateStart, PDO::PARAM_STR);
-    $stmt->bindParam(':dateEnd', $dateEnd, PDO::PARAM_STR);
+    $stmt->bindParam(':date', $date, PDO::PARAM_STR);
     $stmt->execute();
     
     $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
