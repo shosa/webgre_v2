@@ -1873,10 +1873,10 @@ include(BASE_PATH . "/components/header.php");
                 loadSelectOptions();
 
                 // Event listeners per i pulsanti di salvataggio
-                $('#saveRecordBtn').on('click', saveRecord);
-                $('#saveExceptionBtn').on('click', saveException);
-                $('#saveDepartmentBtn').on('click', saveDepartment);
-                $('#saveDefectBtn').on('click', saveDefect);
+                $(document).on('click', '#saveRecordBtn', saveRecord);
+                $(document).on('click', '#saveExceptionBtn', saveException);
+                $(document).on('click', '#saveDepartmentBtn', saveDepartment);
+                $(document).on('click', '#saveDefectBtn', saveDefect);
 
                 // Inizializza i grafici
                 initCharts();
