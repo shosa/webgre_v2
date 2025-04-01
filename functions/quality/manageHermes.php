@@ -338,9 +338,7 @@ include(BASE_PATH . "/components/header.php");
                                                                     <th>Tipo CQ</th>
                                                                     <th>Paia Totali</th>
                                                                     <th>Eccezioni</th>
-                                                                    <th>Cod. Articolo</th>
                                                                     <th>Articolo</th>
-                                                                    <th>Linea</th>
                                                                     <th>Azioni</th>
                                                                 </tr>
                                                             </thead>
@@ -1052,9 +1050,8 @@ include(BASE_PATH . "/components/header.php");
                                 }
                             }
                         },
-                        { data: 'cod_articolo' },
+                       
                         { data: 'articolo' },
-                        { data: 'linea' },
                         {
                             data: null,
                             render: function (data) {
