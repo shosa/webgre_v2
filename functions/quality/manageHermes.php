@@ -23,7 +23,6 @@ include(BASE_PATH . "/components/header.php");
         document.head.appendChild(script);
     }
 </script>
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
 <style>
     /* Personalizzazione tab */
     .nav-tabs {
@@ -51,51 +50,44 @@ include(BASE_PATH . "/components/header.php");
         border-bottom: 3px solid #e3e6f0 !important;
     }
 
-    /* Stile per il layout calendario-records */
-    #calendar-records-container {
-        display: flex;
-        gap: 15px;
-        margin-top: 20px;
+    /* Stile per il calendario manuale */
+    .future {
+        color: #f2a5a0;
+        cursor: not-allowed;
     }
 
-    #calendar-wrapper {
-        flex: 0 0 350px;
+    .future:hover {
+        background-color: #f07067;
     }
 
-    #records-wrapper {
-        flex: 1;
+    .giorno:hover {
+        background-color: #DFF0FF;
     }
 
-    /* Personalizzazione calendario */
-    .fc-daygrid-day.fc-day-today {
-        background-color: rgba(78, 115, 223, 0.1) !important;
+    .today {
+        background-color: #B4E8C9;
+        color: #439876;
+        font-weight: bolder;
     }
 
-    .fc-daygrid-day-number {
-        padding: 8px !important;
+    .has-records {
+        position: relative;
     }
 
-    .fc-event {
-        cursor: pointer;
-    }
-
-    /* Media query per mobile */
-    @media (max-width: 768px) {
-        #calendar-records-container {
-            flex-direction: column;
-        }
-
-        #calendar-wrapper {
-            flex: 0 0 auto;
-        }
-    }
-
-    .record-count-badge {
+    .has-records::after {
+        content: "";
         position: absolute;
-        top: 4px;
-        right: 4px;
-        font-size: 0.7rem;
-        padding: 0.2rem 0.5rem;
+        bottom: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 6px;
+        height: 6px;
+        background-color: #4e73df;
+        border-radius: 50%;
+    }
+
+    .has-records.many::after {
+        background-color: #1cc88a;
     }
 </style>
 
@@ -289,7 +281,35 @@ include(BASE_PATH . "/components/header.php");
                                         <!-- Calendario sulla sinistra -->
                                         <div id="calendar-wrapper" class="card shadow">
                                             <div class="card-body">
-                                                <div id="records-calendar"></div>
+                                                <div class="calendar">
+                                                    <div
+                                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                                        <button id="prev-month" class="btn btn-danger shadow"><i
+                                                                class="fas fa-chevron-double-left"></i></button>
+                                                        <span>
+                                                            <h5 class="m-0 font-weight-bold text-primary"
+                                                                id="calendar-month-year"></h5>
+                                                        </span>
+                                                        <button id="next-month" class="btn btn-danger shadow"><i
+                                                                class="fas fa-chevron-double-right"></i></button>
+                                                    </div>
+                                                    <table class="table table-bordered table-sm table-condensed mt-3">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Lun</th>
+                                                                <th scope="col">Mar</th>
+                                                                <th scope="col">Mer</th>
+                                                                <th scope="col">Gio</th>
+                                                                <th scope="col">Ven</th>
+                                                                <th scope="col">Sab</th>
+                                                                <th scope="col">Dom</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="calendar-body">
+                                                            <!-- Generato dinamicamente con JavaScript -->
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -822,43 +842,138 @@ include(BASE_PATH . "/components/header.php");
         <!-- Script personalizzati -->
         <script src="<?php echo BASE_URL ?>/js/datatables.js"></script>
         <!-- JavaScript per gestire la logica dell'interfaccia -->
+        <!-- JavaScript per gestire la logica dell'interfaccia -->
         <script>
             // Variabili globali
             let selectedDate = new Date();
+            let currentMonth = selectedDate.getMonth();
+            let currentYear = selectedDate.getFullYear();
             let selectedRecordId = null;
-            let calendarInstance = null;
             let recordsCalendarEvents = [];
+            const monthNames = ["GENNAIO", "FEBBRAIO", "MARZO", "APRILE", "MAGGIO", "GIUGNO", "LUGLIO", "AGOSTO", "SETTEMBRE", "OTTOBRE", "NOVEMBRE", "DICEMBRE"];
 
             function initCalendar() {
-                const calendarEl = document.getElementById('records-calendar');
+                // Inizializza il calendario manuale
+                updateCalendar();
 
-                calendarInstance = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
-                    locale: 'it',
-                    headerToolbar: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: ''
-                    },
-                    dateClick: function (info) {
-                        // Quando si clicca su una data, carica i record per quella data
-                        selectedDate = info.date;
-                        updateSelectedDateDisplay();
-                        loadRecordsByDate(info.dateStr);
-                    },
-                    eventClick: function (info) {
-                        // Quando si clicca su un evento, va alla data corrispondente
-                        selectedDate = info.event.start;
-                        updateSelectedDateDisplay();
-                        loadRecordsByDate(info.event.start.toISOString().split('T')[0]);
-                    },
-                    events: []
+                // Aggiungi listener per i pulsanti di navigazione mese
+                $('#prev-month').on('click', function () {
+                    currentMonth--;
+                    if (currentMonth < 0) {
+                        currentMonth = 11;
+                        currentYear--;
+                    }
+                    updateCalendar();
                 });
 
-                calendarInstance.render();
+                $('#next-month').on('click', function () {
+                    currentMonth++;
+                    if (currentMonth > 11) {
+                        currentMonth = 0;
+                        currentYear++;
+                    }
+                    updateCalendar();
+                });
 
-                // Carica eventi del calendario
+                // Carica gli eventi del calendario
                 loadCalendarEvents();
+            }
+
+            function updateCalendar() {
+                // Aggiorna l'intestazione del mese/anno
+                $('#calendar-month-year').text(monthNames[currentMonth] + " " + currentYear);
+
+                // Calcola il primo giorno del mese (0 = Domenica, 1 = Lunedì, ..., 6 = Sabato)
+                let firstDay = new Date(currentYear, currentMonth, 1).getDay();
+                // Adatta per iniziare dal lunedì (1) invece che dalla domenica (0)
+                firstDay = firstDay === 0 ? 7 : firstDay;
+
+                // Calcola i giorni nel mese corrente
+                let daysInMonth = 32 - new Date(currentYear, currentMonth, 32).getDate();
+
+                // Pulisci il corpo del calendario
+                let calendarBody = document.getElementById("calendar-body");
+                calendarBody.innerHTML = "";
+
+                // Riempimento del calendario
+                let date = 1;
+                for (let i = 0; i < 6; i++) {
+                    // Crea una riga per ogni settimana
+                    let row = document.createElement("tr");
+
+                    // Riempimento delle celle per ogni settimana
+                    for (let j = 1; j <= 7; j++) {
+                        if (i === 0 && j < firstDay) {
+                            // Celle vuote prima del primo giorno del mese
+                            let cell = document.createElement("td");
+                            cell.style.backgroundColor = "#ededed";
+                            row.appendChild(cell);
+                        } else if (date > daysInMonth) {
+                            // Celle vuote dopo l'ultimo giorno del mese
+                            let cell = document.createElement("td");
+                            cell.style.backgroundColor = "#ededed";
+                            row.appendChild(cell);
+                        } else {
+                            // Celle con date
+                            let cell = document.createElement("td");
+                            cell.textContent = date;
+                            cell.style.height = "4.5em";
+                            cell.style.cursor = "pointer";
+                            cell.classList.add("giorno");
+
+                            // Verifica se è oggi
+                            let today = new Date();
+                            if (date === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+                                cell.classList.add("today");
+                            }
+
+                            // Verifica se è una data futura
+                            let cellDate = new Date(currentYear, currentMonth, date);
+                            let isToday = cellDate.toDateString() === today.toDateString();
+                            let isFuture = !isToday && cellDate > today;
+
+                            if (isFuture) {
+                                cell.classList.add("future");
+                            } else {
+                                // Aggiungi click event solo per date non future
+                                cell.addEventListener("click", function () {
+                                    selectedDate = new Date(currentYear, currentMonth, parseInt(this.textContent));
+                                    updateSelectedDateDisplay();
+                                    loadRecordsByDate(selectedDate.toISOString().split('T')[0]);
+
+                                    // Rimuovi eventuali evidenziazioni precedenti
+                                    document.querySelectorAll('.giorno.selected').forEach(el => {
+                                        el.classList.remove('selected');
+                                    });
+
+                                    // Evidenzia la cella selezionata
+                                    this.classList.add('selected');
+                                });
+                            }
+
+                            // Aggiungi indicatore se ci sono record per questa data
+                            let dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+                            let eventData = recordsCalendarEvents.find(e => e.date === dateStr);
+
+                            if (eventData) {
+                                cell.classList.add('has-records');
+                                if (eventData.count > 5) {
+                                    cell.classList.add('many');
+                                }
+                            }
+
+                            row.appendChild(cell);
+                            date++;
+                        }
+                    }
+
+                    calendarBody.appendChild(row);
+
+                    // Esci dal ciclo se abbiamo raggiunto la fine del mese
+                    if (date > daysInMonth) {
+                        break;
+                    }
+                }
             }
 
             function updateSelectedDateDisplay() {
@@ -868,24 +983,18 @@ include(BASE_PATH . "/components/header.php");
             }
 
             function loadCalendarEvents() {
+                // Carica gli eventi del calendario dal server
                 $.ajax({
                     url: 'hermes/get_calendar_events.php',
                     type: 'GET',
+                    data: {
+                        start: `${currentYear}-${currentMonth + 1}-01`,
+                        end: `${currentYear}-${currentMonth + 1}-31`
+                    },
                     dataType: 'json',
                     success: function (data) {
-                        recordsCalendarEvents = data.map(item => {
-                            return {
-                                title: item.count + ' cartellini',
-                                start: item.date,
-                                backgroundColor: item.count > 5 ? '#1cc88a' : '#4e73df',
-                                borderColor: item.count > 5 ? '#1cc88a' : '#4e73df',
-                                count: item.count
-                            };
-                        });
-
-                        // Aggiungi gli eventi al calendario
-                        calendarInstance.removeAllEvents();
-                        calendarInstance.addEventSource(recordsCalendarEvents);
+                        recordsCalendarEvents = data;
+                        updateCalendar(); // Aggiorna il calendario con i nuovi dati
                     },
                     error: function (xhr, status, error) {
                         console.error('Errore nel caricamento degli eventi del calendario:', error);
@@ -1721,7 +1830,7 @@ include(BASE_PATH . "/components/header.php");
             }
 
             $(document).ready(function () {
-                // Inizializza il calendario
+                // Inizializza il calendario manuale
                 initCalendar();
 
                 // Inizializza i DataTables
@@ -1745,10 +1854,10 @@ include(BASE_PATH . "/components/header.php");
                 // Imposta la visualizzazione della data corrente
                 updateSelectedDateDisplay();
 
-                // Quando cambia il tab, si assicura che il calendario sia ridisegnato
+                // Quando cambia il tab, si assicura che il calendario sia aggiornato
                 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                    if (e.target.id === 'records-tab' && calendarInstance) {
-                        calendarInstance.updateSize();
+                    if (e.target.id === 'records-tab') {
+                        updateCalendar();
                     }
                 });
             });
