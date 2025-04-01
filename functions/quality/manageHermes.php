@@ -23,7 +23,7 @@ include(BASE_PATH . "/components/header.php");
         document.head.appendChild(script);
     }
 </script>
-<link rel="stylesheet" href="<?php echo BASE_URL ?>/vendor/fullcalendar/main.min.css">
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
 <style>
     /* Personalizzazione tab */
     .nav-tabs {
@@ -805,8 +805,9 @@ include(BASE_PATH . "/components/header.php");
         <script src="<?php echo BASE_URL ?>/vendor/pdfmake/vfs_fonts.js"></script>
 
         <!-- FullCalendar - AGGIUNTO -->
-        <script src="<?php echo BASE_URL ?>/vendor/fullcalendar/main.min.js"></script>
-        <script src="<?php echo BASE_URL ?>/vendor/fullcalendar/locales/it.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/it.js"></script>
 
         <!-- Chart.js - IMPORTANTE -->
         <script src="<?php echo BASE_URL ?>/vendor/chart.js/Chart.min.js"></script>

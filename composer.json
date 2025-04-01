@@ -20,6 +20,14 @@
         "phpseclib/phpseclib": "^3.0",
         "mpdf/mpdf": "^8.2",
         "mpdf/qrcode": "^1.2",
-        "endroid/qr-code": "^4.6"
+        "endroid/qr-code": "^4.6",
+        "fullcalendar/fullcalendar": "^3.10"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "robloach/component-installer": true,
+            "oomphinc/composer-installers-extender": true
+        }
     }
 }
