@@ -1,4 +1,5 @@
 <?php
+/*
 // Funzione personalizzata per gestire gli errori
 function customErrorHandler($errno, $errstr, $errfile, $errline)
 {
@@ -52,3 +53,4 @@ ini_set('error_log', __DIR__ . '/error_log.txt');
 // Opzionalmente, imposta il livello di error reporting (puoi scegliere il livello desiderato)
 error_reporting(E_ALL); // Per mostrare tutti gli errori
 ?>
+*/
