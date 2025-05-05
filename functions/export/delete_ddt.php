@@ -8,7 +8,7 @@ session_start();
 require_once '../../config/config.php';
 require_once BASE_PATH . '/components/auth_validate.php';
 require_once BASE_PATH . '/utils/helpers.php';
-require_once BASE_PATH . '/utils/log_utils.php';
+
 
 // Verifica che la richiesta sia di tipo POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -55,11 +55,7 @@ try {
     // Commit della transazione
     $conn->commit();
     
-    // Log dell'operazione
-    if (isset($_SESSION['user_id'])) {
-        logActivity($_SESSION['user_id'], 'DDT', 'ELIMINAZIONE', 'Eliminato documento', $recordId, '');
-    }
-    
+
     echo json_encode(['success' => true, 'message' => 'Record eliminato con successo!']);
     
 } catch (PDOException $e) {

@@ -112,200 +112,215 @@ include(BASE_PATH . "/components/header.php");
                     </div>
                     
                     <!-- Tabella documenti -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">Lista Documenti</h6>
-                            <div>
-                                <button class="btn btn-sm btn-outline-primary mr-2" id="refreshTable">
-                                    <i class="fas fa-sync-alt"></i> Aggiorna
-                                </button>
-                              
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered " id="documentiTable" width="100%" cellspacing="0">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th style="text-align:center;" width="10%">Numero</th>
-                                            <th width="30%">Destinatario</th>
-                                            <th style="text-align:center;" width="20%">Data</th>
-                                            <th style="text-align:center;" width="15%">Stato</th>
-                                            <th style="text-align:center;" width="25%">Azioni</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($rows as $row): ?>
-                                            <?php
-                                            try {
-                                                $stmt = $conn->prepare("SELECT ragione_sociale, nazione FROM exp_terzisti WHERE id = :id");
-                                                $stmt->bindParam(':id', $row['id_terzista'], PDO::PARAM_INT);
-                                                $stmt->execute();
-                                                $terzista = $stmt->fetch(PDO::FETCH_ASSOC);
-                                                
-                                                $badge_class = ($row['stato'] == 'Aperto') ? 'badge-warning' : 'badge-success';
-                                            } catch (PDOException $e) {
-                                                $terzista = ['ragione_sociale' => 'N/A', 'nazione' => 'N/A'];
-                                                $badge_class = 'badge-secondary';
-                                            }
-                                            ?>
-                                            <tr>
-                                                <td style="vertical-align: middle; text-align:center;" class="font-weight-bold">
-                                                    <?php echo $row['id']; ?>
-                                                </td>
-                                                <td style="vertical-align: middle;">
-                                                    <div><?php echo htmlspecialchars($terzista['ragione_sociale']); ?></div>
-                                                    <small class="text-muted"><?php echo htmlspecialchars($terzista['nazione']); ?></small>
-                                                </td>
-                                                <td style="vertical-align: middle; text-align:center;">
-                                                    <?php 
-                                                    $data = new DateTime($row['data']);
-                                                    echo $data->format('d/m/Y'); 
-                                                    ?>
-                                                </td>
-                                                <td style="vertical-align: middle; text-align:center;">
-                                                    <span class="badge <?php echo $badge_class; ?> px-3 py-2">
-                                                        <?php echo htmlspecialchars($row['stato']); ?>
-                                                    </span>
-                                                </td>
-                                                <td style="vertical-align: middle; text-align:center;">
-                                                    <div class="btn-group">
-                                                        <?php if ($row['stato'] == 'Aperto'): ?>
-                                                            <a href="continue_ddt?progressivo=<?php echo $row['id']; ?>" 
-                                                               class="btn btn-primary btn-sm" 
-                                                               data-toggle="tooltip" 
-                                                               title="Continua">
-                                                                <i class="fal fa-edit"></i>
-                                                            </a>
-                                                        <?php elseif ($row['stato'] == 'Chiuso'): ?>
-                                                            <a href="view_ddt_export?progressivo=<?php echo $row['id']; ?>" 
-                                                               class="btn btn-info btn-sm" 
-                                                               data-toggle="tooltip" 
-                                                               title="Visualizza">
-                                                                <i class="fal fa-eye"></i>
-                                                            </a>
-                                                        <?php endif; ?>
-                                                        
-                                                        <a href="#" 
-                                                           class="btn btn-success btn-sm show-record-details" 
-                                                           data-record-id="<?php echo $row['id']; ?>" 
-                                                           data-toggle="tooltip" 
-                                                           title="Dettagli">
-                                                            <i class="fal fa-search"></i>
-                                                        </a>
-                                                        
-                                                        <div class="btn-group">
-                                                            <button type="button" 
-                                                                   class="btn btn-secondary btn-sm dropdown-toggle" 
-                                                                   data-toggle="dropdown" 
-                                                                   aria-haspopup="true" 
-                                                                   aria-expanded="false">
-                                                                <i class="fal fa-ellipsis-v"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu dropdown-menu-right">
-                                                                <a class="dropdown-item" href="#" onclick="printDDT(<?php echo $row['id']; ?>)">
-                                                                    <i class="fas fa-print mr-2"></i> Stampa
-                                                                </a>
-                                                                <?php if ($row['stato'] == 'Aperto'): ?>
-                                                                   
-                                                                    <a class="dropdown-item text-danger delete-record" href="#" data-record-id="<?php echo $row['id']; ?>">
-                                                                        <i class="fas fa-trash-alt mr-2"></i> Elimina
-                                                                    </a>
-                                                                <?php endif; ?>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                        
-                                        <?php if (empty($rows)): ?>
-                                            <tr>
-                                                <td colspan="5" class="text-center py-4">
-                                                    <div class="text-muted mb-3">
-                                                        <i class="fas fa-inbox fa-3x"></i>
-                                                    </div>
-                                                    <h5>Nessun documento trovato</h5>
-                                                    <p>Crea un nuovo documento facendo clic sul pulsante "Nuovo Documento".</p>
-                                                </td>
-                                            </tr>
-                                        <?php endif; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                            <!-- Pagination -->
-                            <div class="mt-4">
-                                <nav aria-label="Navigazione pagine">
-                                    <ul class="pagination justify-content-center">
-                                        <?php if ($page > 1): ?>
-                                            <li class="page-item">
-                                                <a class="page-link" href="documenti?page=<?php echo ($page - 1); ?>" aria-label="Precedente">
-                                                    <span aria-hidden="true">&laquo;</span>
-                                                </a>
-                                            </li>
-                                        <?php else: ?>
-                                            <li class="page-item disabled">
-                                                <a class="page-link" href="#" aria-label="Precedente">
-                                                    <span aria-hidden="true">&laquo;</span>
-                                                </a>
-                                            </li>
+                    <!-- Tabella documenti -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Lista Documenti</h6>
+        <div>
+            <button class="btn btn-sm btn-outline-primary mr-2" id="refreshTable">
+                <i class="fas fa-sync-alt"></i> Aggiorna
+            </button>
+            <div class="dropdown d-inline-block">
+                <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown">
+                    <i class="fas fa-download"></i> Esporta
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="exportDropdown">
+                    <a class="dropdown-item" href="#" id="exportPDF">PDF</a>
+                    <a class="dropdown-item" href="#" id="exportExcel">Excel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <?php if (empty($rows)): ?>
+            <!-- Visualizzazione quando non ci sono documenti -->
+            <div class="text-center py-5">
+                <div class="text-muted mb-3">
+                    <i class="fas fa-inbox fa-3x"></i>
+                </div>
+                <h5>Nessun documento trovato</h5>
+                <p>Crea un nuovo documento facendo clic sul pulsante "Nuovo Documento".</p>
+                <a href="new_step1.php" class="btn btn-primary mt-3">
+                    <i class="fas fa-plus mr-2"></i>Nuovo Documento
+                </a>
+            </div>
+        <?php else: ?>
+            <!-- Visualizzazione quando ci sono documenti -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="documentiTable" width="100%" cellspacing="0">
+                    <thead class="thead-light">
+                        <tr>
+                            <th style="text-align:center;" width="10%">Numero</th>
+                            <th width="30%">Destinatario</th>
+                            <th style="text-align:center;" width="20%">Data</th>
+                            <th style="text-align:center;" width="15%">Stato</th>
+                            <th style="text-align:center;" width="25%">Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($rows as $row): ?>
+                            <?php
+                            try {
+                                $stmt = $conn->prepare("SELECT ragione_sociale, nazione FROM exp_terzisti WHERE id = :id");
+                                $stmt->bindParam(':id', $row['id_terzista'], PDO::PARAM_INT);
+                                $stmt->execute();
+                                $terzista = $stmt->fetch(PDO::FETCH_ASSOC);
+                                
+                                $badge_class = ($row['stato'] == 'Aperto') ? 'badge-warning' : 'badge-success';
+                            } catch (PDOException $e) {
+                                $terzista = ['ragione_sociale' => 'N/A', 'nazione' => 'N/A'];
+                                $badge_class = 'badge-secondary';
+                            }
+                            ?>
+                            <tr>
+                                <td style="vertical-align: middle; text-align:center;" class="font-weight-bold">
+                                    <?php echo $row['id']; ?>
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    <div><?php echo htmlspecialchars($terzista['ragione_sociale']); ?></div>
+                                    <small class="text-muted"><?php echo htmlspecialchars($terzista['nazione']); ?></small>
+                                </td>
+                                <td style="vertical-align: middle; text-align:center;">
+                                    <?php 
+                                    $data = new DateTime($row['data']);
+                                    echo $data->format('d/m/Y'); 
+                                    ?>
+                                </td>
+                                <td style="vertical-align: middle; text-align:center;">
+                                    <span class="badge <?php echo $badge_class; ?> px-3 py-2">
+                                        <?php echo htmlspecialchars($row['stato']); ?>
+                                    </span>
+                                </td>
+                                <td style="vertical-align: middle; text-align:center;">
+                                    <div class="btn-group">
+                                        <?php if ($row['stato'] == 'Aperto'): ?>
+                                            <a href="continue_ddt.php?progressivo=<?php echo $row['id']; ?>" 
+                                               class="btn btn-primary btn-sm" 
+                                               data-toggle="tooltip" 
+                                               title="Continua">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        <?php elseif ($row['stato'] == 'Chiuso'): ?>
+                                            <a href="view_ddt_export.php?progressivo=<?php echo $row['id']; ?>" 
+                                               class="btn btn-info btn-sm" 
+                                               data-toggle="tooltip" 
+                                               title="Visualizza">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
                                         <?php endif; ?>
                                         
-                                        <?php 
-                                        // Calcola il range di pagine da mostrare
-                                        $range = 2; // Numero di pagine da mostrare prima e dopo la pagina corrente
-                                        $start_page = max(1, $page - $range);
-                                        $end_page = min($total_pages, $page + $range);
+                                 <a href="#" 
+                                           class="btn btn-success btn-sm show-record-details" 
+                                           data-record-id="<?php echo $row['id']; ?>" 
+                                           data-toggle="tooltip" 
+                                           title="Dettagli">
+                                            <i class="fas fa-search"></i>
+                                        </a>
                                         
-                                        // Mostra il pulsante per la prima pagina se necessario
-                                        if ($start_page > 1) {
-                                            echo '<li class="page-item"><a class="page-link" href="documenti?page=1">1</a></li>';
-                                            if ($start_page > 2) {
-                                                echo '<li class="page-item disabled"><a class="page-link" href="#">...</a></li>';
-                                            }
-                                        }
-                                        
-                                        // Mostra le pagine nel range
-                                        for ($i = $start_page; $i <= $end_page; $i++) {
-                                            if ($i == $page) {
-                                                echo '<li class="page-item active"><a class="page-link" href="#">' . $i . '</a></li>';
-                                            } else {
-                                                echo '<li class="page-item"><a class="page-link" href="documenti?page=' . $i . '">' . $i . '</a></li>';
-                                            }
-                                        }
-                                        
-                                        // Mostra il pulsante per l'ultima pagina se necessario
-                                        if ($end_page < $total_pages) {
-                                            if ($end_page < $total_pages - 1) {
-                                                echo '<li class="page-item disabled"><a class="page-link" href="#">...</a></li>';
-                                            }
-                                            echo '<li class="page-item"><a class="page-link" href="documenti?page=' . $total_pages . '">' . $total_pages . '</a></li>';
-                                        }
-                                        ?>
-                                        
-                                        <?php if ($page < $total_pages): ?>
-                                            <li class="page-item">
-                                                <a class="page-link" href="documenti?page=<?php echo ($page + 1); ?>" aria-label="Successivo">
-                                                    <span aria-hidden="true">&raquo;</span>
+                                        <div class="btn-group">
+                                            <button type="button" 
+                                                   class="btn btn-secondary btn-sm dropdown-toggle" 
+                                                   data-toggle="dropdown" 
+                                                   aria-haspopup="true" 
+                                                   aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="#" onclick="printDDT(<?php echo $row['id']; ?>)">
+                                                    <i class="fas fa-print mr-2"></i> Stampa
                                                 </a>
-                                            </li>
-                                        <?php else: ?>
-                                            <li class="page-item disabled">
-                                                <a class="page-link" href="#" aria-label="Successivo">
-                                                    <span aria-hidden="true">&raquo;</span>
-                                                </a>
-                                            </li>
-                                        <?php endif; ?>
-                                    </ul>
-                                </nav>
-                                <div class="text-center text-muted small">
-                                    Mostrando <?php echo count($rows); ?> di <?php echo $total_records; ?> documenti totali
-                                </div>
-                            </div>
-                            <!-- //Pagination -->
-                        </div>
-                    </div>
+                                                <?php if ($row['stato'] == 'Aperto'): ?>
+                                                    <a class="dropdown-item" href="#" onclick="duplicateDDT(<?php echo $row['id']; ?>)">
+                                                        <i class="fas fa-copy mr-2"></i> Duplica
+                                                    </a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item text-danger delete-record" href="#" data-record-id="<?php echo $row['id']; ?>">
+                                                        <i class="fas fa-trash-alt mr-2"></i> Elimina
+                                                    </a>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="mt-4">
+                <nav aria-label="Navigazione pagine">
+                    <ul class="pagination justify-content-center">
+                        <?php if ($page > 1): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="documenti.php?page=<?php echo ($page - 1); ?>" aria-label="Precedente">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        <?php else: ?>
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Precedente">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        
+                        <?php 
+                        // Calcola il range di pagine da mostrare
+                        $range = 2; // Numero di pagine da mostrare prima e dopo la pagina corrente
+                        $start_page = max(1, $page - $range);
+                        $end_page = min($total_pages, $page + $range);
+                        
+                        // Mostra il pulsante per la prima pagina se necessario
+                        if ($start_page > 1) {
+                            echo '<li class="page-item"><a class="page-link" href="documenti.php?page=1">1</a></li>';
+                            if ($start_page > 2) {
+                                echo '<li class="page-item disabled"><a class="page-link" href="#">...</a></li>';
+                            }
+                        }
+                        
+                        // Mostra le pagine nel range
+                        for ($i = $start_page; $i <= $end_page; $i++) {
+                            if ($i == $page) {
+                                echo '<li class="page-item active"><a class="page-link" href="#">' . $i . '</a></li>';
+                            } else {
+                                echo '<li class="page-item"><a class="page-link" href="documenti.php?page=' . $i . '">' . $i . '</a></li>';
+                            }
+                        }
+                        
+                        // Mostra il pulsante per l'ultima pagina se necessario
+                        if ($end_page < $total_pages) {
+                            if ($end_page < $total_pages - 1) {
+                                echo '<li class="page-item disabled"><a class="page-link" href="#">...</a></li>';
+                            }
+                            echo '<li class="page-item"><a class="page-link" href="documenti.php?page=' . $total_pages . '">' . $total_pages . '</a></li>';
+                        }
+                        ?>
+                        
+                        <?php if ($page < $total_pages): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="documenti.php?page=<?php echo ($page + 1); ?>" aria-label="Successivo">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        <?php else: ?>
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Successivo">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+                <div class="text-center text-muted small">
+                    Mostrando <?php echo count($rows); ?> di <?php echo $total_records; ?> documenti totali
+                </div>
+            </div>
+            <!-- //Pagination -->
+        <?php endif; ?>
+    </div>
+</div>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -379,11 +394,6 @@ include(BASE_PATH . "/components/header.php");
             location.reload();
         });
         
-        // Gestione dell'esportazione
-       
-        
-        
-
         // Aggiungi un gestore di eventi al clic sul pulsante di visualizzazione dettagli
         $('.show-record-details').click(function (e) {
             e.preventDefault();
