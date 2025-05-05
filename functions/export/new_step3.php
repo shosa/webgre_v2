@@ -71,7 +71,7 @@ include(BASE_PATH . "/components/header.php");
                     
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="documenti.php">Registro DDT</a></li>
+                        <li class="breadcrumb-item">Registro DDT</a></li>
                         <li class="breadcrumb-item active">Nuovo DDT - Step 3</li>
                     </ol>
                     

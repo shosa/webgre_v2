@@ -156,7 +156,14 @@ function getUniqueDoganaleCodes($articoli)
                 </table>
             </div>
         </div>
-        <h2 class="mt-3">DDT VALORIZZATO n° <?php echo $progressivo; ?></h2>
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h2 class="mt-3">
+        DDT VALORIZZATO n° <?php echo $progressivo; ?>
+        <?php if (isset($documento['stato']) && $documento['stato'] == 'Aperto'): ?>
+            <span class="text-danger font-weight-bold ml-3">PROVVISORIO DA CHIUDERE</span>
+        <?php endif; ?>
+    </h2>
+</div> 
         <div class="row mt-4">
             <div class="col-md-12">
                 <table class="table table-bordered">

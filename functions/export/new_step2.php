@@ -36,6 +36,12 @@ require_once BASE_PATH . '/components/header.php';
     #file-list li {
         margin-bottom: 10px;
     }
+    
+    .processed-check {
+        color: green;
+        font-weight: bold;
+        margin-left: 5px;
+    }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -155,6 +161,8 @@ require_once BASE_PATH . '/components/header.php';
     document.addEventListener('DOMContentLoaded', function () {
         let dropZone = document.getElementById('drop-zone');
         let fileList = document.getElementById('file-list');
+        // Set per tracciare i file già processati
+        let processedFiles = new Set();
 
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             dropZone.addEventListener(eventName, preventDefaults, false);
@@ -190,7 +198,13 @@ require_once BASE_PATH . '/components/header.php';
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            fileList.innerHTML += `<li>${file.name} <button class="btn btn-sm btn-primary" onclick="showExcelContent('${file.name}')">Visualizza</button></li>`;
+                            let fileId = `file-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                            fileList.innerHTML += `
+                                <li id="${fileId}">
+                                    ${file.name} 
+                                    <button class="btn btn-sm btn-primary" onclick="showExcelContent('${file.name}', '${fileId}')">Visualizza</button>
+                                    <span class="processed-check" style="display:none;">✓</span>
+                                </li>`;
                         } else {
                             alert(data.error);
                         }
@@ -201,11 +215,11 @@ require_once BASE_PATH . '/components/header.php';
             });
         }
 
-        window.showExcelContent = function (fileName) {
-            fetchExcelContent(fileName);
+        window.showExcelContent = function (fileName, fileId) {
+            fetchExcelContent(fileName, fileId);
         }
 
-        function fetchExcelContent(fileName) {
+        function fetchExcelContent(fileName, fileId) {
             fetch(`process-excel.php?fileName=${fileName}`)
                 .then(response => response.json())
                 .then(data => {
@@ -217,10 +231,67 @@ require_once BASE_PATH . '/components/header.php';
                     modelloDiv.innerHTML = `<strong>Modello:</strong> ${data.modello.split('Lancio:')[0].trim()}`;
                     opzioniDiv.innerHTML = `<strong>Lancio:</strong> <input type="text" id="lancio"> <strong>Qtà:</strong> <input type="number" id="qty" value="1">`;
 
-                    tableTaglio.innerHTML = `<thead><tr><th></th>${data.headers.map(header => `<th>${header}</th>`).join('')}<th>Totale</th></tr></thead><tbody>${data.rows.taglio.map(row => `<tr><td><button class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fa fa-trash"></i></button></td>${row.slice(0, 5).map(cell => `<td>${cell}</td>`).join('')}<td>${(document.getElementById('qty').value * row[4]).toFixed(2)}</td></tr>`).join('')}</tbody>`;
+                    // Filtriamo le righe fino a trovare "06 - MONTAGGIO" o simili
+                    let taglioRows = [];
+                    let montaggioFoundTaglio = false;
+                    for (let i = 0; i < data.rows.taglio.length; i++) {
+                        let row = data.rows.taglio[i];
+                        
+                        // Controlla se questa riga contiene "06 - MONTAGGIO"
+                        let containsMontaggio = row.some(cell => {
+                            if (typeof cell === 'string') {
+                                return cell.includes("06 - MONTAGGIO") || 
+                                       cell.includes("06 - 1 MONTAGGIO") || 
+                                       cell.includes("06-MONTAGGIO") ||
+                                       cell.includes("06-1 MONTAGGIO");
+                            }
+                            return false;
+                        });
+                        
+                        if (containsMontaggio) {
+                            montaggioFoundTaglio = true;
+                            break; // Interrompi il ciclo quando trovi la riga con "06 - MONTAGGIO"
+                        }
+                        
+                        if (!montaggioFoundTaglio) {
+                            taglioRows.push(row);
+                        }
+                    }
 
-                    tableOrlatura.innerHTML = `<thead><tr><th></th>${data.headers.map(header => `<th>${header}</th>`).join('')}<th>Totale</th></tr></thead><tbody>${data.rows.orlatura.map(row => `<tr><td><button class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fa fa-trash"></i></button></td>${row.slice(0, 5).map(cell => `<td>${cell}</td>`).join('')}<td>${(document.getElementById('qty').value * row[4]).toFixed(2)}</td></tr>`).join('')}</tbody>`;
+                    // Facciamo lo stesso per le righe di orlatura
+                    let orlaturaRows = [];
+                    let montaggioFoundOrlatura = false;
+                    for (let i = 0; i < data.rows.orlatura.length; i++) {
+                        let row = data.rows.orlatura[i];
+                        
+                        // Controlla se questa riga contiene "06 - MONTAGGIO"
+                        let containsMontaggio = row.some(cell => {
+                            if (typeof cell === 'string') {
+                                return cell.includes("06 - MONTAGGIO") || 
+                                       cell.includes("06 - 1 MONTAGGIO") || 
+                                       cell.includes("06-MONTAGGIO") ||
+                                       cell.includes("06-1 MONTAGGIO");
+                            }
+                            return false;
+                        });
+                        
+                        if (containsMontaggio) {
+                            montaggioFoundOrlatura = true;
+                            break; // Interrompi il ciclo quando trovi la riga con "06 - MONTAGGIO"
+                        }
+                        
+                        if (!montaggioFoundOrlatura) {
+                            orlaturaRows.push(row);
+                        }
+                    }
 
+                    tableTaglio.innerHTML = `<thead><tr><th></th>${data.headers.map(header => `<th>${header}</th>`).join('')}<th>Totale</th></tr></thead><tbody>${taglioRows.map(row => `<tr><td><button class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fa fa-trash"></i></button></td>${row.slice(0, 5).map(cell => `<td>${cell}</td>`).join('')}<td>${(document.getElementById('qty').value * row[4]).toFixed(2)}</td></tr>`).join('')}</tbody>`;
+
+                    tableOrlatura.innerHTML = `<thead><tr><th></th>${data.headers.map(header => `<th>${header}</th>`).join('')}<th>Totale</th></tr></thead><tbody>${orlaturaRows.map(row => `<tr><td><button class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fa fa-trash"></i></button></td>${row.slice(0, 5).map(cell => `<td>${cell}</td>`).join('')}<td>${(document.getElementById('qty').value * row[4]).toFixed(2)}</td></tr>`).join('')}</tbody>`;
+
+                    // Salviamo l'ID del file corrente per aggiornare lo stato dopo il salvataggio
+                    $('#excelModal').data('currentFileId', fileId);
+                    
                     $('#excelModal').modal('show');
 
                     // Aggiornamento in tempo reale del totale quando cambia il valore di Qtà
@@ -308,6 +379,13 @@ require_once BASE_PATH . '/components/header.php';
             .then(response => response.json())  // Converti la risposta in JSON
             .then(data => {
                 if (data.success) {
+                    // Ottieni l'ID del file corrente dal modale
+                    let currentFileId = $('#excelModal').data('currentFileId');
+                    if (currentFileId) {
+                        // Mostra il segno di spunta verde accanto al file
+                        $(`#${currentFileId} .processed-check`).show();
+                    }
+                    
                     Swal.fire({
                         title: 'Scheda Salvata!',
                         text: 'Carica la scheda successiva o vai al prossimo Step.',

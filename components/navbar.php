@@ -89,8 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
 
         <!-- EXPORT -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseExport"
-                aria-expanded="true" aria-controls="collapseExport">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseExport" aria-expanded="true"
+                aria-controls="collapseExport">
                 <i class="fas fa-fw fa-globe-europe"></i>
                 <span>Export</span>
             </a>
@@ -101,10 +101,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                     <a id="export-add-step1" class="collapse-item"
                         href="<?php echo BASE_URL ?>/functions/export/new_step1"><i class="fa fa-plus fa-fw"></i>
                         Nuova</a>
-                    <a id="export-elenco" class="collapse-item"
-                        href="<?php echo BASE_URL ?>/functions/export/documenti"><i class="fa fa-list fa-fw"></i>
+                    <a id="export-elenco" class="collapse-item" href="<?php echo BASE_URL ?>/functions/export/documenti"><i
+                            class="fa fa-list fa-fw"></i>
                         Elenco</a>
-                  
+                    <a id="export-terzisti" class="collapse-item" href="<?php echo BASE_URL ?>/functions/export/terzisti"><i
+                            class="fa fa-user fa-fw"></i>
+                        Terzisti</a>
+
                 </div>
             </div>
         </li>
@@ -385,6 +388,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             '/functions/shipTracker/index': 'shipTracker',
             '/functions/attrezzatura/manage': 'attrezzatura-manage',
             '/functions/attrezzatura/return': 'attrezzatura-return',
+            '/functions/export/documenti': 'export-elenco',
+            '/functions/export/new_step1': 'export-add-step1',
+            '/functions/export/terzisti': 'export-terzisti',
 
             // Aggiungi qui altri link come necessario
         };
