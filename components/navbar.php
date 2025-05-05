@@ -86,6 +86,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 </div>
             </div>
         </li>
+
+        <!-- EXPORT -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseExport"
+                aria-expanded="true" aria-controls="collapseExport">
+                <i class="fas fa-fw fa-globe-europe"></i>
+                <span>Export</span>
+            </a>
+            <div id="collapseExport" class="collapse" style="z-index:9999" aria-labelledby="headingExport"
+                data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Sezioni:</h6>
+                    <a id="export-add-step1" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/export/new_step1"><i class="fa fa-plus fa-fw"></i>
+                        Nuova</a>
+                    <a id="export-elenco" class="collapse-item"
+                        href="<?php echo BASE_URL ?>/functions/export/documenti"><i class="fa fa-list fa-fw"></i>
+                        Elenco</a>
+                  
+                </div>
+            </div>
+        </li>
+
         <!--
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAttrezzatura"
@@ -142,8 +165,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
         </li>
 
     <?php endif; ?>
-  
-    
+
+
     <!-- PRODUZIONE & SPEDIZIONE -->
     <?php if (isset($_SESSION['permessi_produzione']) && $_SESSION['permessi_produzione'] == 1): ?>
         <li class="nav-item">
@@ -168,6 +191,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
                 </div>
             </div>
         </li>
+
+
     <?php endif; ?>
     <!-- CAMPIONARIO -->
     <?php if (isset($_SESSION['permessi_campionario']) && $_SESSION['permessi_campionario'] == 1): ?>
@@ -360,7 +385,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             '/functions/shipTracker/index': 'shipTracker',
             '/functions/attrezzatura/manage': 'attrezzatura-manage',
             '/functions/attrezzatura/return': 'attrezzatura-return',
-         
+
             // Aggiungi qui altri link come necessario
         };
         // Controlla se l'URL corrente corrisponde a uno degli URL nel menu
