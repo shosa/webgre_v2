@@ -15,7 +15,7 @@ $stmt->execute([$progressivo]);
 $documento = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Articoli
-$stmt = $db->prepare("SELECT * FROM exp_dati_articoli WHERE id_documento = ? ORDER BY voce_doganale ASC , codice_articolo ASC");
+$stmt = $db->prepare("SELECT * FROM exp_dati_articoli WHERE id_documento = ? ORDER BY voce_doganale ASC, codice_articolo ASC");
 $stmt->execute([$progressivo]);
 $articoli = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -62,8 +62,6 @@ function getUniqueDoganaleCodes($articoli)
     }
     return $codes;
 }
-
-// HTML output below remains unchanged...
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -92,6 +90,11 @@ function getUniqueDoganaleCodes($articoli)
 
             tfoot tr:last-child {
                 display: table-row !important;
+            }
+            
+            /* Per contenuti ripetuti su ogni pagina */
+            thead {
+                display: table-header-group;
             }
         }
 
@@ -122,11 +125,19 @@ function getUniqueDoganaleCodes($articoli)
             line-height: 1;
             height: 20px !important;
         }
+        
+        /* Stile per la firma */
+        .signature-block {
+            margin-top: 30px;
+            padding-top: 10px;
+            text-align: right;
+        }
     </style>
 </head>
 
 <body>
     <div class="container mt-6">
+        <!-- Logo e dati terzista -->
         <div class="row">
             <div class="col-md-12 left-align">
                 <table class="table table-bordered terzista-table">
@@ -156,6 +167,8 @@ function getUniqueDoganaleCodes($articoli)
                 </table>
             </div>
         </div>
+        
+        <!-- Titolo del documento -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h2 class="mt-3">
                 DDT VALORIZZATO n° <?php echo $progressivo; ?>
@@ -164,6 +177,8 @@ function getUniqueDoganaleCodes($articoli)
                 <?php endif; ?>
             </h2>
         </div>
+        
+        <!-- Informazioni del documento -->
         <div class="row mt-4">
             <div class="col-md-12">
                 <table class="table table-bordered">
@@ -180,12 +195,14 @@ function getUniqueDoganaleCodes($articoli)
                             <td><strong>TRASPORTATORE:</strong></td>
                             <td colspan="3"><?php echo $piede['trasportatore']; ?></td>
                             <td><strong>CONSEGNA:</strong></td>
-                            <td colspan="3"><?php echo $terzista['consegna']; ?></td>
+                            <td colspan="1"><?php echo $terzista['consegna']; ?></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+        
+        <!-- Tabella articoli -->
         <div class="row mt-4">
             <div class="col-md-12">
                 <table class="table table-bordered" style="font-size:9pt;">
@@ -196,7 +213,7 @@ function getUniqueDoganaleCodes($articoli)
                             <th class="no-border-left">NOM.COM.</th>
                             <th>UM</th>
                             <th>QTA</th>
-                            <th>COSTO</th>
+                            <th>VALORE</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -235,8 +252,7 @@ function getUniqueDoganaleCodes($articoli)
                         <?php foreach ($mancantiByDDT as $rif => $mancanti): ?>
                             <tr>
                                 <td colspan="1"></td>
-                                <td class="no-border-right" colspan="5"><strong>MANCANTI SU <?php echo $rif; ?></strong>
-                                </td>
+                                <td class="no-border-right" colspan="5"><strong>MANCANTI SU <?php echo $rif; ?></strong></td>
                             </tr>
                             <?php foreach ($mancanti as $articolo):
                                 $subtotal = round($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2);
@@ -271,6 +287,7 @@ function getUniqueDoganaleCodes($articoli)
                                 </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>
+
                         <!-- Righe per voce e peso -->
                         <tr>
                             <td colspan="6"> </td>
@@ -297,6 +314,7 @@ function getUniqueDoganaleCodes($articoli)
                                 </tr>
                             <?php endif; ?>
                         <?php endfor; ?>
+
                         <!-- Righe per autorizzazione -->
                         <tr>
                             <td colspan="6">
@@ -328,19 +346,28 @@ function getUniqueDoganaleCodes($articoli)
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="5" class="text-right"><strong>Totale in €:</strong></td>
+                            <td colspan="5" class="text-right"><strong>Valore totale in €:</strong></td>
                             <td><?php echo number_format($total, 2, ',', '.'); ?></td>
+                        </tr>
+                        <!-- Riga per la firma -->
+                        <tr>
+                            <td colspan="6" class="text-right">
+                                <div class="signature-block">
+                                    <div style="display: inline-block; margin-top: 50px; border-top: 1px solid #000; width: 250px; text-align: center;">
+                                        <p style="margin-top: 5px;">Firma per accettazione</p>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                     </tfoot>
                 </table>
-
             </div>
         </div>
     </div>
+
     <script src="<?php echo BASE_URL ?>/vendor/jquery/jquery.min.js"></script>
     <script src="<?php echo BASE_URL ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="<?php echo BASE_URL ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="<?php echo BASE_URL ?>/js/sb-admin-2.min.js"></script>
 </body>
-
 </html>

@@ -400,7 +400,19 @@ include(BASE_PATH . "/components/header.php");
                                 <h1 class="h3 mb-0 text-gray-800">
                                     <span class="text-primary">DA CONFERMARE</span> - DDT n° <?php echo $progressivo; ?>
                                 </h1>
+                                <div class="text-right"> <!-- Aggiunto text-right per garantire l'allineamento -->
+                                    <?php if ($documento['stato'] == 'Aperto'): ?>
+                                        <button class="btn btn-success float-right" onclick="completaDdt()">
+                                            <!-- Aggiunto float-right -->
+                                            <i class="fas fa-check-circle mr-1"></i> TERMINA
+                                        </button>
+                                    <?php else: ?>
+                                        <span class="badge badge-success p-2 float-right">COMPLETATO</span>
+                                        <!-- Aggiunto float-right -->
+                                    <?php endif; ?>
+                                </div>
                             </div>
+
 
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
@@ -521,6 +533,14 @@ include(BASE_PATH . "/components/header.php");
                                                             <?php endif; ?>
                                                         </div>
                                                     </div>
+                                                    <?php if (!empty($files)): ?>
+                                                        <div class="mt-3 text-center">
+                                                            <a href="download_all_attachments.php?progressivo=<?php echo $progressivo; ?>"
+                                                                class="btn btn-sm btn-success">
+                                                                <i class="fas fa-download mr-1"></i> Scarica tutti (ZIP)
+                                                            </a>
+                                                        </div>
+                                                    <?php endif; ?>
                                                 </div>
                                                 <div class="col-auto">
                                                     <i class="fas fa-paperclip fa-2x text-success card-icon"></i>
@@ -571,7 +591,8 @@ include(BASE_PATH . "/components/header.php");
                                                 <button class="btn btn-success btn-icon" onclick="exportToExcel()">
                                                     <i class="fas fa-file-excel"></i> Excel
                                                 </button>
-                                                <a href="view_ddt_export.php?progressivo=<?php echo $progressivo; ?>"
+                                                <a target="_blank"
+                                                    href="view_ddt_export?progressivo=<?php echo $progressivo; ?>"
                                                     class="btn btn-primary btn-icon">
                                                     <i class="fas fa-file-invoice"></i> Visualizza
                                                 </a>
@@ -607,9 +628,11 @@ include(BASE_PATH . "/components/header.php");
                                             <?php
                                             // Ordiniamo gli articoli: prima i normali, poi i mancanti
                                             $articoliNormali = array_filter($articoli, function ($art) {
-                                                return $art['is_mancante'] == 0; });
+                                                return $art['is_mancante'] == 0;
+                                            });
                                             $articoliMancanti = array_filter($articoli, function ($art) {
-                                                return $art['is_mancante'] == 1; });
+                                                return $art['is_mancante'] == 1;
+                                            });
 
                                             // Raggruppiamo i mancanti per DDT di origine
                                             $mancantiByDDT = [];
@@ -1841,17 +1864,8 @@ include(BASE_PATH . "/components/header.php");
         // Tooltip
         $('[data-toggle="tooltip"]').tooltip();
 
-        // Effetti hover sulle righe della tabella
-        $('#dataTable tbody tr').hover(
-            function () {
-                if (!$(this).hasClass('mancanti-header')) {
-                    $(this).addClass('bg-light');
-                }
-            },
-            function () {
-                $(this).removeClass('bg-light');
-            }
-        );
+
+
 
         // Evidenzia le celle editabili
         $('[contenteditable="true"]').hover(
@@ -1863,4 +1877,63 @@ include(BASE_PATH . "/components/header.php");
             }
         );
     });
+    function completaDdt() {
+        Swal.fire({
+            title: 'Conferma completamento',
+            text: "Sei sicuro di voler completare questo DDT? Questa azione lo segnerà come 'Chiuso'.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sì, completa',
+            cancelButtonText: 'Annulla'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Mostra un loader
+                Swal.fire({
+                    title: 'Completamento in corso',
+                    text: 'Attendere prego...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Effettua la richiesta al server
+                fetch('completa_ddt.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `progressivo=<?php echo $progressivo; ?>`
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'DDT completato!',
+                                text: data.message || 'Il DDT è stato contrassegnato come completato.',
+                            }).then(() => {
+                                window.location.href = 'documenti';
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Errore!',
+                                text: data.message || 'Si è verificato un errore durante il completamento del DDT.',
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Errore!',
+                            text: 'Si è verificato un errore durante il completamento del DDT.',
+                        });
+                    });
+            }
+        });
+    }
 </script>

@@ -198,14 +198,14 @@ include(BASE_PATH . "/components/header.php");
                                                class="btn btn-primary btn-sm" 
                                                data-toggle="tooltip" 
                                                title="Continua">
-                                                <i class="fas fa-edit"></i>
+                                                <i class="fal fa-edit"></i>
                                             </a>
                                         <?php elseif ($row['stato'] == 'Chiuso'): ?>
-                                            <a href="view_ddt_export.php?progressivo=<?php echo $row['id']; ?>" 
+                                            <a target="_blank" href="view_ddt_export?progressivo=<?php echo $row['id']; ?>" 
                                                class="btn btn-info btn-sm" 
                                                data-toggle="tooltip" 
                                                title="Visualizza">
-                                                <i class="fas fa-eye"></i>
+                                                <i class="fal fa-eye"></i>
                                             </a>
                                         <?php endif; ?>
                                         
@@ -214,7 +214,7 @@ include(BASE_PATH . "/components/header.php");
                                            data-record-id="<?php echo $row['id']; ?>" 
                                            data-toggle="tooltip" 
                                            title="Dettagli">
-                                            <i class="fas fa-search"></i>
+                                            <i class="fal fa-search"></i>
                                         </a>
                                         
                                         <div class="btn-group">
@@ -223,19 +223,17 @@ include(BASE_PATH . "/components/header.php");
                                                    data-toggle="dropdown" 
                                                    aria-haspopup="true" 
                                                    aria-expanded="false">
-                                                <i class="fas fa-ellipsis-v"></i>
+                                                <i class="fal fa-ellipsis-v"></i>
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <a class="dropdown-item" href="#" onclick="printDDT(<?php echo $row['id']; ?>)">
-                                                    <i class="fas fa-print mr-2"></i> Stampa
+                                                    <i class="fal fa-print mr-2"></i> Stampa
                                                 </a>
                                                 <?php if ($row['stato'] == 'Aperto'): ?>
-                                                    <a class="dropdown-item" href="#" onclick="duplicateDDT(<?php echo $row['id']; ?>)">
-                                                        <i class="fas fa-copy mr-2"></i> Duplica
-                                                    </a>
+                                                
                                                     <div class="dropdown-divider"></div>
                                                     <a class="dropdown-item text-danger delete-record" href="#" data-record-id="<?php echo $row['id']; ?>">
-                                                        <i class="fas fa-trash-alt mr-2"></i> Elimina
+                                                        <i class="fal fa-trash-alt mr-2"></i> Elimina
                                                     </a>
                                                 <?php endif; ?>
                                             </div>
@@ -359,7 +357,7 @@ include(BASE_PATH . "/components/header.php");
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                    <button type="button" class="btn btn-primary" id="print-details">Stampa</button>
+                  
                 </div>
             </div>
         </div>
@@ -433,22 +431,7 @@ include(BASE_PATH . "/components/header.php");
             });
         });
 
-        // Gestione stampa dettagli
-        $('#print-details').click(function() {
-            var printContents = document.getElementById('record-details').innerHTML;
-            var originalContents = document.body.innerHTML;
-            
-            document.body.innerHTML = `
-                <div class="container mt-4">
-                    <h2 class="text-center mb-4">Dettagli DDT</h2>
-                    ${printContents}
-                </div>
-            `;
-            
-            window.print();
-            document.body.innerHTML = originalContents;
-            location.reload();
-        });
+        
 
         // Aggiungi un gestore di eventi al clic sul pulsante "delete-record"
         $('.delete-record').click(function (e) {
