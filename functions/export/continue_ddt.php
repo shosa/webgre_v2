@@ -1,8 +1,8 @@
 <?php
 /**
- * Dettaglio DDT da confermare
+ * File: continue_ddt.php
  * 
- * Questo script gestisce la visualizzazione e la modifica dei dettagli di un DDT.
+ * Gestisce la visualizzazione e la modifica dei dettagli di un DDT.
  */
 session_start();
 require_once '../../config/config.php';
@@ -29,7 +29,7 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Recupera i dati del documento
-    $stmt = $conn->prepare("SELECT * FROM exp_documenti WHERE id = :id");
+    $stmt = $conn->prepare("SELECT * FROM exp_documenti WHERE id = :id ");
     $stmt->bindParam(':id', $progressivo, PDO::PARAM_INT);
     $stmt->execute();
 
@@ -42,7 +42,7 @@ try {
     $documento = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // Recupera gli articoli
-    $stmt = $conn->prepare("SELECT * FROM exp_dati_articoli WHERE id_documento = :id_documento order by voce_doganale");
+    $stmt = $conn->prepare("SELECT * FROM exp_dati_articoli WHERE id_documento = :id_documento ORDER BY is_mancante ASC, voce_doganale ASC , codice_articolo ASC");
     $stmt->bindParam(':id_documento', $progressivo, PDO::PARAM_INT);
     $stmt->execute();
     $articoli = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -94,10 +94,12 @@ function getUniqueDoganaleCodes($articoli)
     return $codes;
 }
 
+// Includi l'header della pagina
 include(BASE_PATH . "/components/header.php");
 ?>
+
 <style>
-    /* Stili generali */
+    /* CSS Style del document non modificato */
     .card {
         border-radius: 12px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -345,69 +347,16 @@ include(BASE_PATH . "/components/header.php");
         margin-bottom: 0;
     }
 
-    /* Progress indicator */
-    .progress-step {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 30px;
-    }
-
-    .step {
-        text-align: center;
-        position: relative;
-        flex: 1;
-    }
-
-    .step::before {
-        content: '';
-        position: absolute;
-        top: 20px;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background-color: #e9ecef;
-        z-index: 0;
-    }
-
-    .step:first-child::before {
-        width: 50%;
-        left: 50%;
-    }
-
-    .step:last-child::before {
-        width: 50%;
-    }
-
-    .step-number {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: #e9ecef;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 10px;
-        position: relative;
-        z-index: 1;
+    /* Stile per l'intestazione dei mancanti */
+    .mancanti-header {
+        background-color: #6c757d;
+        color: white;
         font-weight: bold;
-        transition: all 0.3s ease;
     }
 
-    .step.completed .step-number {
-        background-color: #1cc88a;
-        color: white;
-    }
-
-    .step.active .step-number {
-        background-color: #4e73df;
-        color: white;
-        box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.3);
-    }
-
-    .step-label {
-        font-weight: 600;
-        font-size: 0.85rem;
-        color: #5a5c69;
+    /* Stile per le righe dei mancanti */
+    .table-info td {
+        background-color: #e3f6fc;
     }
 
     /* Responsiveness */
@@ -447,7 +396,6 @@ include(BASE_PATH . "/components/header.php");
 
                     <div class="card mb-4">
                         <div class="card-body py-3">
-
                             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                                 <h1 class="h3 mb-0 text-gray-800">
                                     <span class="text-primary">DA CONFERMARE</span> - DDT n° <?php echo $progressivo; ?>
@@ -483,7 +431,7 @@ include(BASE_PATH . "/components/header.php");
 
                                 <!-- Destinatario Box -->
                                 <div class="col-lg-3 mb-3">
-                                    <div class="card bg-white  shadow info-card">
+                                    <div class="card bg-white shadow info-card">
                                         <div class="card-body py-3">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
@@ -550,7 +498,7 @@ include(BASE_PATH . "/components/header.php");
 
                                 <!-- Allegati Box -->
                                 <div class="col-lg-3 mb-3">
-                                    <div class="card bg-white  shadow info-card">
+                                    <div class="card bg-white shadow info-card">
                                         <div class="card-body py-3">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
@@ -587,41 +535,45 @@ include(BASE_PATH . "/components/header.php");
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-6 mb-2">
+                                        <div class="col-md-5 mb-2">
                                             <div class="action-buttons">
                                                 <button class="btn btn-secondary btn-icon" onclick="openModal()">
-                                                    <i class="fal fa-weight"></i> Pesi e Aspetto Merce
+                                                    <i class="fas fa-weight"></i> Pesi e Aspetto Merce
                                                 </button>
                                                 <button class="btn btn-primary btn-icon"
                                                     onclick="openAutorizzazioneModal()">
-                                                    <i class="fal fa-pencil-alt"></i> Autorizzazione
+                                                    <i class="fas fa-pencil-alt"></i> Autorizzazione
                                                 </button>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 mb-2">
+                                        <div class="col-md-7 mb-2">
                                             <div class="action-buttons justify-content-md-end">
                                                 <?php if ($documento['first_boot'] == 1): ?>
                                                     <button class="btn btn-light border-dark btn-icon"
                                                         onclick="cercaNcECosti()">
-                                                        <i class="fal fa-search-plus"></i> Cerca Voci e Costi
+                                                        <i class="fas fa-search-plus"></i> Cerca Voci e Costi
                                                     </button>
                                                 <?php endif; ?>
                                                 <button class="btn btn-warning btn-icon" onclick="elaboraMancanti()">
-                                                    <i class="fal fa-sync-alt"></i> Elabora Mancanti
+                                                    <i class="fas fa-sync-alt"></i> Elabora Mancanti
                                                 </button>
                                                 <button class="btn btn-info btn-icon" disabled>
-                                                    <i class="fal fa-exclamation-triangle"></i> Mancanze
+                                                    <i class="fas fa-exclamation-triangle"></i> Mancanze
                                                     <?php if ($mancanzeCount > 0): ?>
                                                         <span
                                                             class="badge badge-danger"><?php echo $mancanzeCount; ?></span>
                                                     <?php endif; ?>
                                                 </button>
+                                                <button class="btn btn-indigo btn-icon" onclick="openMancantiModal()">
+                                                    <i class="fas fa-plus-circle mr-2"></i> Aggiungi Mancanti
+                                                </button>
+
                                                 <button class="btn btn-success btn-icon" onclick="exportToExcel()">
-                                                    <i class="fal fa-file-excel"></i> Excel
+                                                    <i class="fas fa-file-excel"></i> Excel
                                                 </button>
                                                 <a href="view_ddt_export.php?progressivo=<?php echo $progressivo; ?>"
                                                     class="btn btn-primary btn-icon">
-                                                    <i class="fal fa-file-invoice"></i> Visualizza
+                                                    <i class="fas fa-file-invoice"></i> Visualizza
                                                 </a>
                                             </div>
                                         </div>
@@ -629,15 +581,14 @@ include(BASE_PATH . "/components/header.php");
                                 </div>
                             </div>
 
-                            <!-- Tabella Articoli -->
-                            <div class="card shadow mb-4 ">
-                                <div
-                                    class="card-header py-3 d-flex justify-content-between align-items-center  border-primary">
+                            <!-- Tabella Articoli con mancanti raggruppati alla fine -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex justify-content-between align-items-center">
                                     <h6 class="m-0 font-weight-bold text-primary">Dettaglio Articoli</h6>
                                     <span class="badge badge-pill badge-primary"><?php echo count($articoli); ?>
                                         articoli</span>
                                 </div>
-                                <div class="table-responsive ">
+                                <div class="table-responsive">
                                     <table class="table table-bordered table-hover" id="dataTable" width="100%"
                                         cellspacing="0">
                                         <thead>
@@ -653,8 +604,25 @@ include(BASE_PATH . "/components/header.php");
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach ($articoli as $articolo): ?>
-                                                <?php
+                                            <?php
+                                            // Ordiniamo gli articoli: prima i normali, poi i mancanti
+                                            $articoliNormali = array_filter($articoli, function ($art) {
+                                                return $art['is_mancante'] == 0; });
+                                            $articoliMancanti = array_filter($articoli, function ($art) {
+                                                return $art['is_mancante'] == 1; });
+
+                                            // Raggruppiamo i mancanti per DDT di origine
+                                            $mancantiByDDT = [];
+                                            foreach ($articoliMancanti as $articolo) {
+                                                $rif = $articolo['rif_mancante'] ?: 'Senza riferimento';
+                                                if (!isset($mancantiByDDT[$rif])) {
+                                                    $mancantiByDDT[$rif] = [];
+                                                }
+                                                $mancantiByDDT[$rif][] = $articolo;
+                                            }
+
+                                            // Prima visualizziamo gli articoli normali
+                                            foreach ($articoliNormali as $articolo):
                                                 $subtotal = round($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2);
                                                 $qta_mancante = $articolo['qta_originale'] - $articolo['qta_reale'];
                                                 $style = ($qta_mancante > 0) ? 'style="background-color: #ffe8c3"' : '';
@@ -689,6 +657,49 @@ include(BASE_PATH . "/components/header.php");
                                                         <?php echo number_format($subtotal, 2, ',', '.'); ?>
                                                     </td>
                                                 </tr>
+                                            <?php endforeach; ?>
+
+                                            <!-- Ora visualizziamo i mancanti, raggruppati per DDT di origine -->
+                                            <?php foreach ($mancantiByDDT as $rif => $mancanti): ?>
+                                                <tr class="mancanti-header bg-secondary text-white">
+                                                    <td colspan="8" class="text-center font-weight-bold">
+                                                        MANCANTI SU <?php echo htmlspecialchars($rif); ?>
+                                                    </td>
+                                                </tr>
+                                                <?php foreach ($mancanti as $articolo):
+                                                    $subtotal = round($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2);
+                                                    ?>
+                                                    <tr class="table-info">
+                                                        <td contenteditable="false" style="background-color:#e3f6fc;">
+                                                            <?php echo htmlspecialchars($articolo['codice_articolo']); ?>
+                                                        </td>
+                                                        <td contenteditable="true"
+                                                            onBlur="updateData(<?php echo $articolo['id']; ?>, 'descrizione', this)">
+                                                            <?php echo htmlspecialchars($articolo['descrizione']); ?>
+                                                        </td>
+                                                        <td contenteditable="true"
+                                                            onBlur="updateData(<?php echo $articolo['id']; ?>, 'voce_doganale', this)">
+                                                            <?php echo htmlspecialchars($articolo['voce_doganale']); ?>
+                                                        </td>
+                                                        <td contenteditable="false" style="background-color:#e3f6fc;">
+                                                            <?php echo htmlspecialchars($articolo['um']); ?>
+                                                        </td>
+                                                        <td contenteditable="false" style="background-color:#e3f6fc;">
+                                                            <?php echo htmlspecialchars($articolo['qta_originale']); ?>
+                                                        </td>
+                                                        <td contenteditable="true"
+                                                            onBlur="updateData(<?php echo $articolo['id']; ?>, 'qta_reale', this)">
+                                                            <?php echo htmlspecialchars($articolo['qta_reale']); ?>
+                                                        </td>
+                                                        <td contenteditable="true"
+                                                            onBlur="updateData(<?php echo $articolo['id']; ?>, 'prezzo_unitario', this)">
+                                                            <?php echo htmlspecialchars($articolo['prezzo_unitario']); ?>
+                                                        </td>
+                                                        <td style="background-color:#d9fae2;">
+                                                            <?php echo number_format($subtotal, 2, ',', '.'); ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
                                             <?php endforeach; ?>
                                         </tbody>
                                         <tfoot>
@@ -817,6 +828,47 @@ include(BASE_PATH . "/components/header.php");
                         </div>
                     </div>
 
+                    <!-- MODALE MANCANTI -->
+                    <div class="modal fade" id="mancantiModal" tabindex="-1" aria-labelledby="mancantiModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="mancantiModalLabel">
+                                        <i class="fas fa-dolly-flatbed mr-2"></i> Seleziona Mancanti da Aggiungere
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3 text-muted">
+                                        <i class="fas fa-info-circle mr-1"></i> Seleziona i mancanti che desideri
+                                        aggiungere al DDT corrente. Gli articoli selezionati verranno rimossi
+                                        dall'elenco mancanti e aggiunti al DDT.
+                                    </div>
+
+                                    <div id="mancantiContainer">
+                                        <div class="text-center py-5">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="sr-only">Caricamento...</span>
+                                            </div>
+                                            <p class="mt-2">Caricamento mancanti...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-dismiss="modal">Annulla</button>
+                                    <button type="button" class="btn btn-primary"
+                                        onclick="aggiungiMancantiSelezionati()">
+                                        <i class="fas fa-save mr-1"></i> Aggiungi Selezionati
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -843,6 +895,14 @@ include(BASE_PATH . "/components/header.php");
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
 
 <script>
+    /**
+     * JavaScript per la gestione dei DDT
+     */
+
+    // =============================================
+    // FUNZIONI DI ESPORTAZIONE E GESTIONE ARTICOLI
+    // =============================================
+
     /**
      * Esporta i dati degli articoli in un file Excel
      */
@@ -1002,6 +1062,9 @@ include(BASE_PATH . "/components/header.php");
                     // Ricalcola il totale
                     let total = 0;
                     document.querySelectorAll("#dataTable tbody tr").forEach(row => {
+                        // Salta le righe di intestazione dei mancanti
+                        if (row.classList.contains('mancanti-header')) return;
+
                         const qta_reale = parseFloat(row.cells[5].innerText.replace(',', '.'));
                         const qta_originale = parseFloat(row.cells[4].innerText.replace(',', '.'));
                         const prezzo_unitario = parseFloat(row.cells[6].innerText.replace(',', '.'));
@@ -1010,9 +1073,9 @@ include(BASE_PATH . "/components/header.php");
                         total += subtotal;
 
                         // Applica lo stile arancione se qta_reale è inferiore a qta_originale
-                        if (qta_reale < qta_originale) {
+                        if (qta_reale < qta_originale && !row.classList.contains('table-info')) {
                             row.cells[5].style.backgroundColor = "#ffe8c3";
-                        } else {
+                        } else if (!row.classList.contains('table-info')) {
                             row.cells[5].style.backgroundColor = ""; // resetta il colore di sfondo
                         }
                     });
@@ -1036,6 +1099,10 @@ include(BASE_PATH . "/components/header.php");
                 });
             });
     }
+
+    // ======================
+    // FUNZIONI DI UTILITÀ
+    // ======================
 
     /**
      * Arrotonda un numero al numero specificato di decimali
@@ -1086,6 +1153,10 @@ include(BASE_PATH . "/components/header.php");
         cell.addEventListener('keydown', handleKeyPress);
     });
 
+    // ======================
+    // FUNZIONI DEI MODALI
+    // ======================
+
     /**
      * Apre il modal per i pesi e l'aspetto della merce
      */
@@ -1126,18 +1197,18 @@ include(BASE_PATH . "/components/header.php");
                     for (let i = 1; i <= 10; i++) {
                         if (data.data['voce_' + i]) {
                             doganaleTableBody.innerHTML += `
-                            <tr>
-                                <td>${data.data['voce_' + i]}</td>
-                                <td>
-                                    <div class="input-group">
-                                        <input type="number" step="0.01" class="form-control" name="pesoDoganale[]" value="${data.data['peso_' + i]}">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text">kg</span>
-                                        </div>
+                        <tr>
+                            <td>${data.data['voce_' + i]}</td>
+                            <td>
+                                <div class="input-group">
+                                <input type="number" step="0.01" class="form-control" name="pesoDoganale[]" value="${data.data['peso_' + i]}">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">kg</span>
                                     </div>
-                                </td>
-                            </tr>
-                            `;
+                                </div>
+                            </td>
+                        </tr>
+                        `;
                         }
                     }
                 } else {
@@ -1155,18 +1226,18 @@ include(BASE_PATH . "/components/header.php");
                             doganaleTableBody.innerHTML = '';
                             data.forEach(voce => {
                                 doganaleTableBody.innerHTML += `
-                                <tr>
-                                    <td>${voce}</td>
-                                    <td>
-                                        <div class="input-group">
-                                            <input type="number" step="0.01" class="form-control" name="pesoDoganale[]">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">kg</span>
-                                            </div>
+                            <tr>
+                                <td>${voce}</td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="number" step="0.01" class="form-control" name="pesoDoganale[]">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">kg</span>
                                         </div>
-                                    </td>
-                                </tr>
-                                `;
+                                    </div>
+                                </td>
+                            </tr>
+                            `;
                             });
                         });
                 }
@@ -1502,14 +1573,280 @@ include(BASE_PATH . "/components/header.php");
         });
     }
 
-    // Inizializzazione tooltips
+    // ========================
+    // FUNZIONI PER I MANCANTI
+    // ========================
+
+    /**
+     * Apre il modal per la gestione dei mancanti
+     */
+    function openMancantiModal() {
+        // Mostra il modal
+        $('#mancantiModal').modal('show');
+
+        // Carica i mancanti
+        loadMancanti();
+    }
+
+    /**
+     * Carica i mancanti disponibili dal server
+     */
+    function loadMancanti() {
+        // Mostra il loader nel contenitore
+        $('#mancantiContainer').html(`
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Caricamento...</span>
+            </div>
+            <p class="mt-2">Caricamento mancanti...</p>
+        </div>
+    `);
+
+        // Effettua la chiamata al server - passiamo il progressivo solo per escluderlo dai risultati
+        fetch('get_mancanti.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `progressivo=<?php echo $progressivo; ?>`
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Organizza i mancanti per documento
+                    const mancantiByDocumento = {};
+                    data.mancanti.forEach(mancante => {
+                        if (!mancantiByDocumento[mancante.id_documento]) {
+                            mancantiByDocumento[mancante.id_documento] = {
+                                documento: `DDT ${mancante.id_documento} - ${mancante.data_documento || 'N/A'}`,
+                                id_documento: mancante.id_documento,
+                                items: []
+                            };
+                        }
+                        mancantiByDocumento[mancante.id_documento].items.push(mancante);
+                    });
+
+                    // Costruisci l'HTML per i mancanti
+                    let html = '';
+
+                    if (Object.keys(mancantiByDocumento).length === 0) {
+                        // Non ci sono mancanti
+                        html = `
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle mr-2"></i> Non ci sono mancanti disponibili da aggiungere.
+                    </div>
+                `;
+                    } else {
+                        // Ci sono mancanti, mostra il gruppo per ogni documento
+                        Object.values(mancantiByDocumento).forEach(gruppo => {
+                            // Usa l'ID del documento come identificatore sicuro per jQuery
+                            const groupId = `gruppo_${gruppo.id_documento}`;
+
+                            html += `
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0 font-weight-bold">${gruppo.documento}</h6>
+                                    <div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input select-all-group" 
+                                                id="selectAll_${groupId}" 
+                                                data-group="${groupId}">
+                                            <label class="custom-control-label" 
+                                                for="selectAll_${groupId}">
+                                                Seleziona tutti
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 50px;"></th>
+                                                <th>Codice Articolo</th>
+                                                <th>Descrizione</th>
+                                                <th>Qtà Mancante</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                    `;
+
+                            gruppo.items.forEach(item => {
+                                html += `
+                            <tr>
+                                <td>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input mancante-checkbox" 
+                                            id="mancante_${item.id}" 
+                                            value="${item.id}" 
+                                            data-group="${groupId}">
+                                        <label class="custom-control-label" for="mancante_${item.id}"></label>
+                                    </div>
+                                </td>
+                                <td><strong>${item.codice_articolo}</strong></td>
+                                <td>${item.descrizione || 'N/A'}</td>
+                                <td>${item.qta_mancante}</td>
+                            </tr>
+                        `;
+                            });
+
+                            html += `
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                        });
+                    }
+
+                    // Inserisci l'HTML nel contenitore
+                    $('#mancantiContainer').html(html);
+
+                    // Inizializza gli eventi per le checkbox
+                    initCheckboxes();
+                } else {
+                    // Errore nel caricamento
+                    $('#mancantiContainer').html(`
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle mr-2"></i> 
+                    ${data.message || 'Si è verificato un errore durante il caricamento dei mancanti.'}
+                </div>
+            `);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                $('#mancantiContainer').html(`
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle mr-2"></i> 
+                Si è verificato un errore durante il caricamento dei mancanti.
+            </div>
+        `);
+            });
+    }
+
+    /**
+     * Inizializza gli eventi per le checkbox di selezione
+     */
+    function initCheckboxes() {
+        // Gestione "Seleziona tutti" per gruppo
+        $('.select-all-group').on('change', function () {
+            const group = $(this).data('group');
+            const isChecked = $(this).prop('checked');
+            $(`.mancante-checkbox[data-group="${group}"]`).prop('checked', isChecked);
+        });
+
+        // Aggiorna lo stato del "Seleziona tutti" quando cambia una checkbox
+        $('.mancante-checkbox').on('change', function () {
+            const group = $(this).data('group');
+            const totalCheckboxes = $(`.mancante-checkbox[data-group="${group}"]`).length;
+            const checkedCheckboxes = $(`.mancante-checkbox[data-group="${group}"]:checked`).length;
+
+            $(`#selectAll_${group}`).prop('checked', totalCheckboxes === checkedCheckboxes);
+        });
+    }
+
+    /**
+     * Aggiunge i mancanti selezionati al DDT corrente
+     */
+    function aggiungiMancantiSelezionati() {
+        // Recupera gli ID dei mancanti selezionati
+        const selectedIds = [];
+        $('.mancante-checkbox:checked').each(function () {
+            selectedIds.push($(this).val());
+        });
+
+        // Verifica se ci sono mancanti selezionati
+        if (selectedIds.length === 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Nessun mancante selezionato',
+                text: 'Seleziona almeno un mancante da aggiungere.',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
+
+        // Chiedi conferma all'utente
+        Swal.fire({
+            title: 'Conferma aggiunta',
+            text: `Sei sicuro di voler aggiungere ${selectedIds.length} mancanti a questo DDT?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sì, aggiungi',
+            cancelButtonText: 'Annulla'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Mostra un loader
+                Swal.fire({
+                    title: 'Aggiunta in corso',
+                    text: 'Attendere prego...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Invia la richiesta al server
+                fetch('add_mancanti_to_ddt.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        progressivo: <?php echo $progressivo; ?>,
+                        mancantiIds: selectedIds
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Mancanti aggiunti!',
+                                text: data.message || 'I mancanti selezionati sono stati aggiunti con successo.',
+                            }).then(() => {
+                                // Chiudi il modal e ricarica la pagina
+                                $('#mancantiModal').modal('hide');
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Errore!',
+                                text: data.message || 'Si è verificato un errore durante l\'aggiunta dei mancanti.',
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Errore!',
+                            text: 'Si è verificato un errore durante l\'aggiunta dei mancanti.',
+                        });
+                    });
+            }
+        });
+    }
+
+    // Inizializzazione
     $(function () {
+        // Tooltip
         $('[data-toggle="tooltip"]').tooltip();
 
-        // Evidenzia la riga quando il mouse passa sopra
+        // Effetti hover sulle righe della tabella
         $('#dataTable tbody tr').hover(
             function () {
-                $(this).addClass('bg-light');
+                if (!$(this).hasClass('mancanti-header')) {
+                    $(this).addClass('bg-light');
+                }
             },
             function () {
                 $(this).removeClass('bg-light');
