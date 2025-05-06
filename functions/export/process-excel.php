@@ -45,8 +45,18 @@ if (file_exists($filePath)) {
             continue;
         }
 
-        if (count($rowData) > 0 && $rowData[0] == null) {
-            continue;
+        // Controllo migliorato: 
+        // - Se la colonna A è vuota ma la colonna B contiene dati, mantieni la riga e imposta colonna A come "ALTRO"
+        // - Altrimenti, se la colonna A è vuota, salta la riga
+        if (count($rowData) > 0 && ($rowData[0] == null || $rowData[0] === '')) {
+            // Controlla se la colonna B ha contenuti
+            if (isset($rowData[1]) && $rowData[1] !== null && $rowData[1] !== '') {
+                // Se B ha contenuti, imposta A come "ALTRO"
+                $rowData[0] = "ALTRO";
+            } else {
+                // Se B è vuota, salta questa riga
+                continue;
+            }
         }
 
         if ($isTaglio && !$isOrlatura) {

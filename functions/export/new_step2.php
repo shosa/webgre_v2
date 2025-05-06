@@ -16,12 +16,12 @@ require_once BASE_PATH . '/components/header.php';
         transition: all 0.3s ease;
         margin-bottom: 20px;
     }
-    
+
     .card:hover {
         box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
         transform: translateY(-2px);
     }
-    
+
     .drop-zone {
         width: 100%;
         height: 150px;
@@ -34,7 +34,7 @@ require_once BASE_PATH . '/components/header.php';
         border-radius: 10px;
         transition: all 0.3s ease;
     }
-    
+
     .drop-zone:hover {
         background-color: #d1e7ff;
         border-color: #0056b3;
@@ -61,85 +61,87 @@ require_once BASE_PATH . '/components/header.php';
         justify-content: space-between;
         transition: all 0.2s ease;
     }
-    
+
     #file-list li:hover {
         background-color: #e9ecef;
     }
-    
+
     .processed-check {
         color: green;
         font-weight: bold;
         margin-left: 5px;
     }
-    
+
     .btn-primary {
         background-color: #007BFF;
         border-color: #007BFF;
         border-radius: 6px;
         transition: all 0.3s ease;
     }
-    
+
     .btn-primary:hover {
         background-color: #0056b3;
         border-color: #0056b3;
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-    
+
     .btn-danger {
         border-radius: 6px;
     }
-    
+
     .modal-content {
         border-radius: 12px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     }
-    
+
     .modal-header {
         border-radius: 12px 12px 0 0;
         background-color: #f0f8ff;
     }
-    
+
     .modal-footer {
         border-radius: 0 0 12px 12px;
     }
-    
+
     /* Responsive tables */
     .table-responsive {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
-    
+
     .info-box {
         background-color: #f0e8fc;
         border-radius: 8px;
         padding: 12px;
         margin-bottom: 15px;
     }
-    
+
     .breadcrumb {
         background-color: #f8f9fa;
         border-radius: 8px;
         padding: 12px 20px;
     }
-    
+
     /* Smartphone e tablet */
     @media (max-width: 991.98px) {
-        .table th, .table td {
+
+        .table th,
+        .table td {
             white-space: nowrap;
             font-size: 14px;
         }
-        
+
         .drop-zone {
             height: 120px;
             padding: 30px 0;
         }
-        
+
         h4 {
             font-size: 18px;
             margin-top: 15px;
         }
-        
+
         .modal-dialog {
             margin: 10px;
             max-width: 100%;
@@ -160,7 +162,7 @@ require_once BASE_PATH . '/components/header.php';
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <?php require_once(BASE_PATH . "/utils/alerts.php"); ?>
-                    
+
                     <div class="card">
                         <div class="card-body">
                             <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -182,10 +184,11 @@ require_once BASE_PATH . '/components/header.php';
                                     <?php echo $error; ?>
                                 </div>
                             <?php endif; ?>
-                            
+
                             <!-- Istruzioni -->
                             <div class="alert alert-info mb-4">
-                                <i class="fas fa-info-circle mr-2"></i> Carica le schede tecniche trascinandole nell'area sottostante o cliccando su di essa per selezionarle.
+                                <i class="fas fa-info-circle mr-2"></i> Carica le schede tecniche trascinandole
+                                nell'area sottostante o cliccando su di essa per selezionarle.
                             </div>
 
                             <!-- Drag and Drop Area -->
@@ -193,7 +196,8 @@ require_once BASE_PATH . '/components/header.php';
                                 <div class="col-lg-12">
                                     <div class="drop-zone" id="drop-zone">
                                         <i class="fas fa-file-excel mb-2" style="color:#007BFF;font-size:28pt;"></i>
-                                        <p>Trascina qui le schede tecniche in formato Excel<br>o clicca per selezionarle</p>
+                                        <p>Trascina qui le schede tecniche in formato Excel<br>o clicca per selezionarle
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -211,7 +215,7 @@ require_once BASE_PATH . '/components/header.php';
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row mt-4">
                                 <div class="col-lg-12 text-right">
                                     <!-- Pulsante "Avanti" allineato a destra -->
@@ -223,7 +227,7 @@ require_once BASE_PATH . '/components/header.php';
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Excel Content Modal -->
                     <div class="modal fade" id="excelModal" tabindex="-1" aria-labelledby="excelModalLabel"
                         aria-hidden="true">
@@ -234,7 +238,7 @@ require_once BASE_PATH . '/components/header.php';
                                         <i class="fas fa-file-excel mr-2"></i> Contenuto Excel
                                     </h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
+                                        <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
@@ -248,13 +252,14 @@ require_once BASE_PATH . '/components/header.php';
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="mt-4">
                                         <h4>
                                             <i class="fas fa-cut mr-2"></i> TAGLIO
                                         </h4>
                                         <div class="table-responsive">
-                                            <table class="table table-striped table-bordered" id="excelTableTaglio"></table>
+                                            <table class="table table-striped table-bordered" id="excelTableTaglio">
+                                            </table>
                                         </div>
                                     </div>
 
@@ -263,7 +268,8 @@ require_once BASE_PATH . '/components/header.php';
                                             <i class="fas fa-ruler mr-2"></i> ORLATURA
                                         </h4>
                                         <div class="table-responsive">
-                                            <table class="table table-striped table-bordered" id="excelTableOrlatura"></table>
+                                            <table class="table table-striped table-bordered" id="excelTableOrlatura">
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -448,6 +454,11 @@ require_once BASE_PATH . '/components/header.php';
                     for (let i = 0; i < data.rows.taglio.length; i++) {
                         let row = data.rows.taglio[i];
 
+                        // Prima controlla e sostituisci se la cella A è vuota
+                        if (!row[0] || row[0] === '') {
+                            row[0] = "ALTRO";
+                        }
+
                         // Controlla se questa riga contiene "06 - MONTAGGIO"
                         let containsMontaggio = row.some(cell => {
                             if (typeof cell === 'string') {
@@ -474,6 +485,11 @@ require_once BASE_PATH . '/components/header.php';
                     let montaggioFoundOrlatura = false;
                     for (let i = 0; i < data.rows.orlatura.length; i++) {
                         let row = data.rows.orlatura[i];
+
+                        // Prima controlla e sostituisci se la cella A è vuota
+                        if (!row[0] || row[0] === '') {
+                            row[0] = "ALTRO";
+                        }
 
                         // Controlla se questa riga contiene "06 - MONTAGGIO"
                         let containsMontaggio = row.some(cell => {
@@ -518,7 +534,7 @@ require_once BASE_PATH . '/components/header.php';
                 });
         }
     });
-    
+
     function updateTotals() {
         let qty = parseFloat(document.getElementById('qty').value);
         let tableTaglioRows = [...document.getElementById('excelTableTaglio').querySelectorAll('tbody tr')];
@@ -536,7 +552,7 @@ require_once BASE_PATH . '/components/header.php';
             cells[cells.length - 1].innerText = isNaN(totale) ? '0.00' : totale.toFixed(2);
         });
     }
-    
+
     function saveToExcel() {
         let modello = document.getElementById('modello').innerText.split(':')[1].trim();
         let lancio = document.getElementById('lancio').value;
