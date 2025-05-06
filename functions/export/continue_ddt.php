@@ -96,6 +96,341 @@ function getUniqueDoganaleCodes($articoli)
 
 include(BASE_PATH . "/components/header.php");
 ?>
+<style>
+    /* Stili generali */
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+        border: none;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .card-header {
+        border-radius: 12px 12px 0 0 !important;
+        padding: 15px 20px;
+        background-color: #f8f9fc;
+        border-bottom: 1px solid #e3e6f0;
+    }
+
+    .info-card {
+        height: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .info-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-card .card-body {
+        padding: 15px;
+    }
+
+    .info-card .card-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .info-card:hover .card-icon {
+        transform: scale(1.1);
+    }
+
+    /* Info cards */
+    .ddt-number {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .ddt-date {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .info-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .info-text {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+    /* Tabella */
+    .table-responsive {
+        border-radius: 0 0 12px 12px;
+        overflow: hidden;
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    .table th {
+        background-color: #f8f9fc;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        padding: 15px;
+        border-top: none;
+    }
+
+    .table td {
+        padding: 12px 15px;
+        vertical-align: middle;
+    }
+
+    .table [contenteditable="true"] {
+        padding: 8px 10px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        min-height: 38px;
+    }
+
+    .table [contenteditable="true"]:hover {
+        background-color: #f8f9fc;
+    }
+
+    .table [contenteditable="true"]:focus {
+        outline: none;
+        background-color: #f0f7ff;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+
+    /* Badges e bottoni */
+    .badge {
+        padding: 6px 10px;
+        font-weight: 600;
+        font-size: 0.75rem;
+        border-radius: 30px;
+    }
+
+    .btn {
+        border-radius: 8px;
+        padding: 8px 15px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .btn-icon {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .btn-icon i {
+        margin-right: 8px;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Attachments */
+    .attachment-icon {
+        font-size: 2rem;
+        color: #28a745;
+        transition: all 0.3s ease;
+    }
+
+    .attachment-icon:hover {
+        transform: scale(1.1);
+    }
+
+    /* Modali */
+    .modal-content {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+        border-radius: 12px 12px 0 0;
+        background-color: #f8f9fc;
+        padding: 15px 20px;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-footer {
+        padding: 15px 20px;
+        border-top: 1px solid #e9ecef;
+        border-radius: 0 0 12px 12px;
+    }
+
+    /* Form controls */
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #d1d3e2;
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+    }
+
+    .form-control:focus {
+        border-color: #4e73df;
+        box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+    }
+
+    .form-label {
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        color: #5a5c69;
+    }
+
+    /* Scrollbar personalizzata */
+    .custom-scrollbar {
+        max-height: 130px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #4e73df #f8f9fc;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f8f9fc;
+        border-radius: 10px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: #4e73df;
+        border-radius: 10px;
+    }
+
+    /* Tabella totali */
+    .totals-row {
+        background-color: #f8f9fc;
+        font-weight: 700;
+    }
+
+    .totals-value {
+        background-color: #e8f4f0 !important;
+        color: #1cc88a;
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+
+    /* Action buttons container */
+    .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .action-buttons .btn {
+        margin-bottom: 0;
+    }
+
+    /* Progress indicator */
+    .progress-step {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
+
+    .step {
+        text-align: center;
+        position: relative;
+        flex: 1;
+    }
+
+    .step::before {
+        content: '';
+        position: absolute;
+        top: 20px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: #e9ecef;
+        z-index: 0;
+    }
+
+    .step:first-child::before {
+        width: 50%;
+        left: 50%;
+    }
+
+    .step:last-child::before {
+        width: 50%;
+    }
+
+    .step-number {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 10px;
+        position: relative;
+        z-index: 1;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    .step.completed .step-number {
+        background-color: #1cc88a;
+        color: white;
+    }
+
+    .step.active .step-number {
+        background-color: #4e73df;
+        color: white;
+        box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.3);
+    }
+
+    .step-label {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #5a5c69;
+    }
+
+    /* Responsiveness */
+    @media (max-width: 768px) {
+        .action-buttons {
+            justify-content: center;
+        }
+
+        .info-card {
+            margin-bottom: 15px;
+        }
+
+        .table td,
+        .table th {
+            padding: 8px;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            font-size: 0.9rem;
+        }
+    }
+</style>
 
 <body id="page-top">
     <!-- Page Wrapper -->
@@ -109,217 +444,264 @@ include(BASE_PATH . "/components/header.php");
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <?php require_once(BASE_PATH . "/utils/alerts.php"); ?>
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">
-                            <span class="text-primary">DA CONFERMARE</span> - DDT n° <?php echo $progressivo; ?>
-                        </h1>
-                    </div>
 
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="documenti.php">Documenti</a></li>
-                        <li class="breadcrumb-item active">Dettaglio DDT</li>
-                    </ol>
+                    <div class="card mb-4">
+                        <div class="card-body py-3">
 
-                    <!-- Informazioni Documento -->
-                    <div class="row mb-4">
-                        <!-- Documento Box -->
-                        <div class="col-lg-3 mb-3">
-                            <div class="card bg-warning text-white shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="h5 mb-0 font-weight-bold">DDT N°:   <?php echo $progressivo; ?>
+                            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                <h1 class="h3 mb-0 text-gray-800">
+                                    <span class="text-primary">DA CONFERMARE</span> - DDT n° <?php echo $progressivo; ?>
+                                </h1>
+                            </div>
+
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="documenti.php">Documenti</a></li>
+                                <li class="breadcrumb-item active">Dettaglio DDT</li>
+                            </ol>
+
+                            <!-- Informazioni Documento -->
+                            <div class="row mb-4">
+                                <!-- Documento Box -->
+                                <div class="col-lg-3 mb-3">
+                                    <div class="card bg-warning text-white shadow info-card">
+                                        <div class="card-body py-3">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                                        Documento</div>
+                                                    <div class="ddt-number">DDT N° <?php echo $progressivo; ?></div>
+                                                    <div class="ddt-date">Del: <?php echo $documento['data']; ?></div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-file-invoice fa-3x text-white-50 card-icon"></i>
+                                                </div>
                                             </div>
-                                            <div class="h6 mb-0 font-weight-bold">Del:
-                                                <?php echo $documento['data']; ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-file-invoice fa-2x "></i>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <!-- Destinatario Box -->
-                        <div class="col-lg-3 mb-3">
-                            <div class="card bg-light border-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Destinatario</div>
-                                            <div class="h6 mb-0 font-weight-bold">
-                                                <?php echo htmlspecialchars($terzista['ragione_sociale']); ?></div>
-                                            <div class="small"><?php echo htmlspecialchars($terzista['indirizzo_1']); ?>
+                                <!-- Destinatario Box -->
+                                <div class="col-lg-3 mb-3">
+                                    <div class="card bg-white  shadow info-card">
+                                        <div class="card-body py-3">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="info-title text-primary">Destinatario</div>
+                                                    <div class="info-value">
+                                                        <?php echo htmlspecialchars($terzista['ragione_sociale']); ?>
+                                                    </div>
+                                                    <div class="info-text">
+                                                        <?php echo htmlspecialchars($terzista['indirizzo_1']); ?>
+                                                    </div>
+                                                    <?php if (!empty($terzista['indirizzo_2'])): ?>
+                                                        <div class="info-text">
+                                                            <?php echo htmlspecialchars($terzista['indirizzo_2']); ?>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                    <?php if (!empty($terzista['indirizzo_3'])): ?>
+                                                        <div class="info-text">
+                                                            <?php echo htmlspecialchars($terzista['indirizzo_3']); ?>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                    <div class="info-text font-weight-bold">
+                                                        <?php echo htmlspecialchars($terzista['nazione']); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-user-tie fa-2x text-primary card-icon"></i>
+                                                </div>
                                             </div>
-                                            <?php if (!empty($terzista['indirizzo_2'])): ?>
-                                                <div class="small"><?php echo htmlspecialchars($terzista['indirizzo_2']); ?>
-                                                </div>
-                                            <?php endif; ?>
-                                            <?php if (!empty($terzista['indirizzo_3'])): ?>
-                                                <div class="small"><?php echo htmlspecialchars($terzista['indirizzo_3']); ?>
-                                                </div>
-                                            <?php endif; ?>
-                                            <div class="small font-weight-bold">
-                                                <?php echo htmlspecialchars($terzista['nazione']); ?></div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-user fa-2x text-primary"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Lanci Associati Box -->
+                                <div class="col-lg-3 mb-3">
+                                    <div class="card bg-info text-white shadow info-card">
+                                        <div class="card-body py-3">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="info-title text-white">Lanci Associati</div>
+                                                    <div class="custom-scrollbar">
+                                                        <ul class="list-unstyled mb-0">
+                                                            <?php foreach ($lanci as $lancio): ?>
+                                                                <li class="mb-1">
+                                                                    <span
+                                                                        class="badge badge-light mr-1"><?php echo $lancio['lancio']; ?></span>
+                                                                    <small>
+                                                                        <strong>Art:</strong>
+                                                                        <?php echo $lancio['articolo']; ?> |
+                                                                        <strong>Paia:</strong>
+                                                                        <?php echo $lancio['paia']; ?>
+                                                                    </small>
+                                                                </li>
+                                                            <?php endforeach; ?>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-tags fa-2x text-white-50 card-icon"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Allegati Box -->
+                                <div class="col-lg-3 mb-3">
+                                    <div class="card bg-white  shadow info-card">
+                                        <div class="card-body py-3">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="info-title text-success">Allegati</div>
+                                                    <div class="custom-scrollbar">
+                                                        <div class="d-flex flex-wrap">
+                                                            <?php foreach ($files as $file): ?>
+                                                                <div class="text-center mx-2 mb-2">
+                                                                    <a href="<?php echo $file; ?>" download
+                                                                        class="text-decoration-none">
+                                                                        <i class="fas fa-file-excel attachment-icon"></i>
+                                                                        <div class="small mt-1">
+                                                                            <?php echo basename($file); ?>
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                            <?php endforeach; ?>
+                                                            <?php if (empty($files)): ?>
+                                                                <div class="text-muted">Nessun allegato disponibile</div>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-paperclip fa-2x text-success card-icon"></i>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Lanci Associati Box -->
-                        <div class="col-lg-3 mb-3">
-                            <div class="card bg-info text-white shadow h-100 py-2">
+                            <!-- Action Buttons -->
+                            <div class="card mb-4">
                                 <div class="card-body">
-                                    <div class="text-xs font-weight-bold text-white text-uppercase mb-1">Lanci Associati
-                                    </div>
-                                    <div style="max-height: 120px; overflow-y: auto;">
-                                        <ul class="list-unstyled">
-                                            <?php foreach ($lanci as $lancio): ?>
-                                                <li class="small">
-                                                    <strong>#</strong> <?php echo $lancio['lancio']; ?> |
-                                                    <strong>Art:</strong> <?php echo $lancio['articolo']; ?> |
-                                                    <strong>Paia:</strong> <?php echo $lancio['paia']; ?>
-                                                </li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Allegati Box -->
-                        <div class="col-lg-3 mb-3">
-                            <div class="card shadow border-primary h-100 py-2">
-                                <div class="card-body">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Allegati
-                                    </div>
-                                    <div style="max-height: 120px; overflow-y: auto;">
-                                        <div class="d-flex flex-wrap">
-                                            <?php foreach ($files as $file): ?>
-                                                <div class="text-center mx-2 mb-2">
-                                                    <a href="<?php echo $file; ?>" download class="text-decoration-none">
-                                                        <i class="fas fa-file-excel fa-2x text-success"></i>
-                                                        <div class="small mt-1"><?php echo basename($file); ?></div>
-                                                    </a>
-                                                </div>
-                                            <?php endforeach; ?>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-2">
+                                            <div class="action-buttons">
+                                                <button class="btn btn-secondary btn-icon" onclick="openModal()">
+                                                    <i class="fal fa-weight"></i> Pesi e Aspetto Merce
+                                                </button>
+                                                <button class="btn btn-primary btn-icon"
+                                                    onclick="openAutorizzazioneModal()">
+                                                    <i class="fal fa-pencil-alt"></i> Autorizzazione
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <div class="action-buttons justify-content-md-end">
+                                                <?php if ($documento['first_boot'] == 1): ?>
+                                                    <button class="btn btn-light border-dark btn-icon"
+                                                        onclick="cercaNcECosti()">
+                                                        <i class="fal fa-search-plus"></i> Cerca Voci e Costi
+                                                    </button>
+                                                <?php endif; ?>
+                                                <button class="btn btn-warning btn-icon" onclick="elaboraMancanti()">
+                                                    <i class="fal fa-sync-alt"></i> Elabora Mancanti
+                                                </button>
+                                                <button class="btn btn-info btn-icon" disabled>
+                                                    <i class="fal fa-exclamation-triangle"></i> Mancanze
+                                                    <?php if ($mancanzeCount > 0): ?>
+                                                        <span
+                                                            class="badge badge-danger"><?php echo $mancanzeCount; ?></span>
+                                                    <?php endif; ?>
+                                                </button>
+                                                <button class="btn btn-success btn-icon" onclick="exportToExcel()">
+                                                    <i class="fal fa-file-excel"></i> Excel
+                                                </button>
+                                                <a href="view_ddt_export.php?progressivo=<?php echo $progressivo; ?>"
+                                                    class="btn btn-primary btn-icon">
+                                                    <i class="fal fa-file-invoice"></i> Visualizza
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <!-- Action Buttons -->
-                    <div class="row mb-4">
-                        <div class="col-lg-6">
-                            <button class="btn btn-secondary mr-2" onclick="openModal()">
-                                <i class="fas fa-weight"></i> Pesi e Aspetto Merce
-                            </button>
-                            <button class="btn btn-primary" onclick="openAutorizzazioneModal()">
-                                <i class="fas fa-pencil-alt"></i> Autorizzazione
-                            </button>
-                        </div>
-                        <div class="col-lg-6 text-right">
-                            <?php if ($documento['first_boot'] == 1): ?>
-                                <button class="btn btn-light border-dark mr-2" onclick="cercaNcECosti()">
-                                    <i class="fas fa-search-plus"></i> Cerca Voci Doganali e Costi
-                                </button>
-                            <?php endif; ?>
-                            <button class="btn btn-warning mr-2" onclick="elaboraMancanti()">
-                                <i class="fas fa-sync-alt"></i> Elabora Mancanti
-                            </button>
-                            <button class="btn btn-info mr-2" disabled>
-                                Mancanze Registrate
-                                <?php if ($mancanzeCount > 0): ?>
-                                    <span class="badge badge-danger"><?php echo $mancanzeCount; ?></span>
-                                <?php endif; ?>
-                            </button>
-                            <button class="btn btn-success mr-2" onclick="exportToExcel()">
-                                <i class="fas fa-file-excel"></i> Excel
-                            </button>
-                            <a href="view_ddt_export.php?progressivo=<?php echo $progressivo; ?>"
-                                class="btn btn-primary">
-                                <i class="fas fa-file-invoice"></i> Visualizza
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Tabella Articoli -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Dettaglio Articoli</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>CODICE ARTICOLO</th>
-                                            <th>DESCRIZIONE</th>
-                                            <th>VOCE DOGANALE</th>
-                                            <th>UM</th>
-                                            <th>QTA</th>
-                                            <th>QTA REALE</th>
-                                            <th>COSTO UNIT.</th>
-                                            <th>TOTALE</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($articoli as $articolo): ?>
-                                            <?php
-                                            $subtotal = round($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2);
-                                            $qta_mancante = $articolo['qta_originale'] - $articolo['qta_reale'];
-                                            $style = ($qta_mancante > 0) ? 'style="background-color: #ffdeb0"' : '';
-                                            ?>
+                            <!-- Tabella Articoli -->
+                            <div class="card shadow mb-4 ">
+                                <div
+                                    class="card-header py-3 d-flex justify-content-between align-items-center  border-primary">
+                                    <h6 class="m-0 font-weight-bold text-primary">Dettaglio Articoli</h6>
+                                    <span class="badge badge-pill badge-primary"><?php echo count($articoli); ?>
+                                        articoli</span>
+                                </div>
+                                <div class="table-responsive ">
+                                    <table class="table table-bordered table-hover" id="dataTable" width="100%"
+                                        cellspacing="0">
+                                        <thead>
                                             <tr>
-                                                <td contenteditable="false" style="background-color:#f0f0f0;">
-                                                    <?php echo htmlspecialchars($articolo['codice_articolo']); ?>
-                                                </td>
-                                                <td contenteditable="true"
-                                                    onBlur="updateData(<?php echo $articolo['id']; ?>, 'descrizione', this)">
-                                                    <?php echo htmlspecialchars($articolo['descrizione']); ?>
-                                                </td>
-                                                <td contenteditable="true"
-                                                    onBlur="updateData(<?php echo $articolo['id']; ?>, 'voce_doganale', this)">
-                                                    <?php echo htmlspecialchars($articolo['voce_doganale']); ?>
-                                                </td>
-                                                <td contenteditable="false" style="background-color:#f0f0f0;">
-                                                    <?php echo htmlspecialchars($articolo['um']); ?>
-                                                </td>
-                                                <td contenteditable="false" style="background-color:#f0f0f0;">
-                                                    <?php echo htmlspecialchars($articolo['qta_originale']); ?>
-                                                </td>
-                                                <td contenteditable="true" <?php echo $style; ?>
-                                                    onBlur="updateData(<?php echo $articolo['id']; ?>, 'qta_reale', this)">
-                                                    <?php echo htmlspecialchars($articolo['qta_reale']); ?>
-                                                </td>
-                                                <td contenteditable="true"
-                                                    onBlur="updateData(<?php echo $articolo['id']; ?>, 'prezzo_unitario', this)">
-                                                    <?php echo htmlspecialchars($articolo['prezzo_unitario']); ?>
-                                                </td>
-                                                <td style="background-color:#d9fae2;">
-                                                    <?php echo number_format($subtotal, 2, ',', '.'); ?>
+                                                <th>CODICE ARTICOLO</th>
+                                                <th>DESCRIZIONE</th>
+                                                <th>VOCE DOGANALE</th>
+                                                <th>UM</th>
+                                                <th>QTA</th>
+                                                <th>QTA REALE</th>
+                                                <th>COSTO UNIT.</th>
+                                                <th>TOTALE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($articoli as $articolo): ?>
+                                                <?php
+                                                $subtotal = round($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2);
+                                                $qta_mancante = $articolo['qta_originale'] - $articolo['qta_reale'];
+                                                $style = ($qta_mancante > 0) ? 'style="background-color: #ffe8c3"' : '';
+                                                ?>
+                                                <tr>
+                                                    <td contenteditable="false" style="background-color:#f0f0f0;">
+                                                        <?php echo htmlspecialchars($articolo['codice_articolo']); ?>
+                                                    </td>
+                                                    <td contenteditable="true"
+                                                        onBlur="updateData(<?php echo $articolo['id']; ?>, 'descrizione', this)">
+                                                        <?php echo htmlspecialchars($articolo['descrizione']); ?>
+                                                    </td>
+                                                    <td contenteditable="true"
+                                                        onBlur="updateData(<?php echo $articolo['id']; ?>, 'voce_doganale', this)">
+                                                        <?php echo htmlspecialchars($articolo['voce_doganale']); ?>
+                                                    </td>
+                                                    <td contenteditable="false" style="background-color:#f0f0f0;">
+                                                        <?php echo htmlspecialchars($articolo['um']); ?>
+                                                    </td>
+                                                    <td contenteditable="false" style="background-color:#f0f0f0;">
+                                                        <?php echo htmlspecialchars($articolo['qta_originale']); ?>
+                                                    </td>
+                                                    <td contenteditable="true" <?php echo $style; ?>
+                                                        onBlur="updateData(<?php echo $articolo['id']; ?>, 'qta_reale', this)">
+                                                        <?php echo htmlspecialchars($articolo['qta_reale']); ?>
+                                                    </td>
+                                                    <td contenteditable="true"
+                                                        onBlur="updateData(<?php echo $articolo['id']; ?>, 'prezzo_unitario', this)">
+                                                        <?php echo htmlspecialchars($articolo['prezzo_unitario']); ?>
+                                                    </td>
+                                                    <td style="background-color:#d9fae2;">
+                                                        <?php echo number_format($subtotal, 2, ',', '.'); ?>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="totals-row">
+                                                <td colspan="7" class="text-right"><strong>Totale in €:</strong></td>
+                                                <td id="totalValue" class="totals-value"
+                                                    data-total="<?php echo $total; ?>">
+                                                    <?php echo number_format($total, 2, ',', '.'); ?>
                                                 </td>
                                             </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td colspan="7" class="text-right"><strong>Totale in €:</strong></td>
-                                            <td id="totalValue" data-total="<?php echo $total; ?>">
-                                                <?php echo number_format($total, 2, ',', '.'); ?>
-                                            </td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                                        </tfoot>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -330,7 +712,9 @@ include(BASE_PATH . "/components/header.php");
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="pesiModalLabel">Dati piede documento:</h5>
+                                    <h5 class="modal-title" id="pesiModalLabel">
+                                        <i class="fas fa-weight mr-2"></i> Dati piede documento
+                                    </h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -338,41 +722,62 @@ include(BASE_PATH . "/components/header.php");
                                 <div class="modal-body">
                                     <div class="mb-3">
                                         <label for="aspettoMerce" class="form-label">ASPETTO MERCE:</label>
-                                        <input type="text" class="form-control" id="aspettoMerce">
+                                        <input type="text" class="form-control" id="aspettoMerce"
+                                            placeholder="Es. Scatole, Pacchi, ecc.">
                                     </div>
                                     <div class="mb-3">
                                         <label for="numeroColli" class="form-label">NUMERO COLLI:</label>
-                                        <input type="number" class="form-control" id="numeroColli">
+                                        <input type="number" class="form-control" id="numeroColli"
+                                            placeholder="Inserisci il numero di colli">
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="pesoLordo" class="form-label">PESO LORDO:</label>
-                                        <input type="number" step="0.01" class="form-control" id="pesoLordo">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="pesoNetto" class="form-label">PESO NETTO:</label>
-                                        <input type="number" step="0.01" class="form-control" id="pesoNetto">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="pesoLordo" class="form-label">PESO LORDO (kg):</label>
+                                                <input type="number" step="0.01" class="form-control" id="pesoLordo"
+                                                    placeholder="0.00">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="pesoNetto" class="form-label">PESO NETTO (kg):</label>
+                                                <input type="number" step="0.01" class="form-control" id="pesoNetto"
+                                                    placeholder="0.00">
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="trasportatore" class="form-label">TRASPORTATORE:</label>
-                                        <input type="text" class="form-control" id="trasportatore">
+                                        <input type="text" class="form-control" id="trasportatore"
+                                            placeholder="Nome del trasportatore">
                                     </div>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Voce Doganale</th>
-                                                <th>Peso Netto</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="doganaleTableBody">
-                                            <!-- I dati verranno caricati dinamicamente -->
-                                        </tbody>
-                                    </table>
+
+                                    <div class="card mt-4">
+                                        <div class="card-header py-2">
+                                            <h6 class="mb-0 font-weight-bold">Dettaglio Voci Doganali</h6>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <table class="table mb-0">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>Voce Doganale</th>
+                                                        <th>Peso Netto (kg)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="doganaleTableBody">
+                                                    <!-- I dati verranno caricati dinamicamente -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger"
-                                        onclick="resetPesiData()">Resetta</button>
-                                    <button type="button" class="btn btn-primary"
-                                        onclick="savePesiData()">Salva</button>
+                                    <button type="button" class="btn btn-danger btn-icon" onclick="resetPesiData()">
+                                        <i class="fas fa-trash-alt mr-1"></i> Resetta
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-icon" onclick="savePesiData()">
+                                        <i class="fas fa-save mr-1"></i> Salva
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -384,7 +789,9 @@ include(BASE_PATH . "/components/header.php");
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="autorizzazioneModalLabel">Modifica Autorizzazione</h5>
+                                    <h5 class="modal-title" id="autorizzazioneModalLabel">
+                                        <i class="fas fa-pencil-alt mr-2"></i> Modifica Autorizzazione
+                                    </h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -392,14 +799,19 @@ include(BASE_PATH . "/components/header.php");
                                 <div class="modal-body">
                                     <div class="mb-3">
                                         <label for="autorizzazione" class="form-label">AUTORIZZAZIONE:</label>
-                                        <textarea class="form-control" id="autorizzazione" rows="4"></textarea>
+                                        <textarea class="form-control" id="autorizzazione" rows="4"
+                                            placeholder="Inserisci il testo dell'autorizzazione"></textarea>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger"
-                                        onclick="resetAutorizzazioneData()">Resetta</button>
-                                    <button type="button" class="btn btn-primary"
-                                        onclick="saveAutorizzazioneData()">Salva</button>
+                                    <button type="button" class="btn btn-danger btn-icon"
+                                        onclick="resetAutorizzazioneData()">
+                                        <i class="fas fa-trash-alt mr-1"></i> Resetta
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-icon"
+                                        onclick="saveAutorizzazioneData()">
+                                        <i class="fas fa-save mr-1"></i> Salva
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -473,6 +885,16 @@ include(BASE_PATH . "/components/header.php");
         workbook.xlsx.writeBuffer().then((data) => {
             const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
             saveAs(blob, `DDT_<?php echo $progressivo; ?>.xlsx`);
+
+            // Notifica all'utente
+            Swal.fire({
+                icon: 'success',
+                title: 'File Excel generato!',
+                text: 'Il download dovrebbe iniziare automaticamente',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
         });
     }
 
@@ -487,9 +909,20 @@ include(BASE_PATH . "/components/header.php");
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Conferma'
+            confirmButtonText: 'Conferma',
+            cancelButtonText: 'Annulla'
         }).then((result) => {
             if (result.isConfirmed) {
+                // Mostra un loader
+                Swal.fire({
+                    title: 'Elaborazione in corso',
+                    text: 'Attendere prego...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
                 fetch('elabora_mancanti.php', {
                     method: 'POST',
                     headers: {
@@ -532,6 +965,11 @@ include(BASE_PATH . "/components/header.php");
      */
     function updateData(id, field, element) {
         const newValue = element.innerText;
+
+        // Mostra un mini loader nell'elemento
+        const originalText = element.innerText;
+        element.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
         fetch('ddt_update_data.php', {
             method: 'POST',
             headers: {
@@ -541,13 +979,26 @@ include(BASE_PATH . "/components/header.php");
         })
             .then(response => response.json())
             .then(data => {
+                // Ripristina il testo originale
+                element.innerText = originalText;
+
                 if (!data.success) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Errore!',
                         text: data.message,
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
                     });
                 } else {
+                    // Feedback visivo di successo
+                    element.style.backgroundColor = '#d4edda';
+                    setTimeout(() => {
+                        element.style.backgroundColor = '';
+                    }, 1000);
+
                     // Ricalcola il totale
                     let total = 0;
                     document.querySelectorAll("#dataTable tbody tr").forEach(row => {
@@ -560,7 +1011,7 @@ include(BASE_PATH . "/components/header.php");
 
                         // Applica lo stile arancione se qta_reale è inferiore a qta_originale
                         if (qta_reale < qta_originale) {
-                            row.cells[5].style.backgroundColor = "#ffdeb0";
+                            row.cells[5].style.backgroundColor = "#ffe8c3";
                         } else {
                             row.cells[5].style.backgroundColor = ""; // resetta il colore di sfondo
                         }
@@ -570,11 +1021,18 @@ include(BASE_PATH . "/components/header.php");
                 }
             })
             .catch(error => {
+                // Ripristina il testo originale in caso di errore
+                element.innerText = originalText;
+
                 console.error('Error:', error);
                 Swal.fire({
                     icon: 'error',
                     title: 'Errore!',
                     text: 'Si è verificato un errore durante l\'aggiornamento dei dati',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
                 });
             });
     }
@@ -632,6 +1090,16 @@ include(BASE_PATH . "/components/header.php");
      * Apre il modal per i pesi e l'aspetto della merce
      */
     function openModal() {
+        // Mostra un loader
+        Swal.fire({
+            title: 'Caricamento dati',
+            text: 'Recupero informazioni in corso...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
         fetch('check_piedi_data.php', {
             method: 'POST',
             headers: {
@@ -641,6 +1109,9 @@ include(BASE_PATH . "/components/header.php");
         })
             .then(response => response.json())
             .then(data => {
+                // Chiudi il loader
+                Swal.close();
+
                 if (data.success) {
                     // Carica i dati esistenti nel form
                     document.getElementById('aspettoMerce').value = data.data.aspetto_colli;
@@ -655,11 +1126,18 @@ include(BASE_PATH . "/components/header.php");
                     for (let i = 1; i <= 10; i++) {
                         if (data.data['voce_' + i]) {
                             doganaleTableBody.innerHTML += `
-                        <tr>
-                            <td>${data.data['voce_' + i]}</td>
-                            <td><input type="number" step="0.01" class="form-control" name="pesoDoganale[]" value="${data.data['peso_' + i]}"></td>
-                        </tr>
-                        `;
+                            <tr>
+                                <td>${data.data['voce_' + i]}</td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="number" step="0.01" class="form-control" name="pesoDoganale[]" value="${data.data['peso_' + i]}">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">kg</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            `;
                         }
                     }
                 } else {
@@ -677,19 +1155,25 @@ include(BASE_PATH . "/components/header.php");
                             doganaleTableBody.innerHTML = '';
                             data.forEach(voce => {
                                 doganaleTableBody.innerHTML += `
-                        <tr>
-                            <td>${voce}</td>
-                            <td><input type="number" step="0.01" class="form-control" name="pesoDoganale[]"></td>
-                        </tr>
-                        `;
+                                <tr>
+                                    <td>${voce}</td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="number" step="0.01" class="form-control" name="pesoDoganale[]">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">kg</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                `;
                             });
                         });
                 }
             });
 
         // Mostra il modal
-        var myModal = new bootstrap.Modal(document.getElementById('pesiModal'));
-        myModal.show();
+        $('#pesiModal').modal('show');
     }
 
     /**
@@ -702,12 +1186,33 @@ include(BASE_PATH . "/components/header.php");
         let pesoNetto = document.getElementById('pesoNetto').value;
         let trasportatore = document.getElementById('trasportatore').value;
 
+        // Validazione
+        if (!aspettoMerce || !numeroColli || !pesoLordo || !pesoNetto) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Campi mancanti',
+                text: 'Compila tutti i campi obbligatori',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
+
         // Raccolta dati delle voci doganali
         let vociDoganali = [];
         document.querySelectorAll('#doganaleTableBody tr').forEach(row => {
             let voce = row.cells[0].innerText;
             let peso = row.cells[1].querySelector('input').value;
             vociDoganali.push({ voce: voce, peso: peso });
+        });
+
+        // Mostra un loader
+        Swal.fire({
+            title: 'Salvataggio in corso',
+            text: 'Attendere prego...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
         });
 
         // Invio dei dati al server
@@ -812,6 +1317,16 @@ include(BASE_PATH . "/components/header.php");
      * Apre il modal per l'autorizzazione
      */
     function openAutorizzazioneModal() {
+        // Mostra un loader
+        Swal.fire({
+            title: 'Caricamento dati',
+            text: 'Recupero informazioni in corso...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
         const formData = new FormData();
         formData.append('progressivo', <?php echo $progressivo; ?>);
         formData.append('azione', 'get');
@@ -822,13 +1337,15 @@ include(BASE_PATH . "/components/header.php");
         })
             .then(response => response.json())
             .then(data => {
+                // Chiudi il loader
+                Swal.close();
+
                 if (data.success) {
                     document.getElementById('autorizzazione').value = data.data.autorizzazione;
                 } else {
                     document.getElementById('autorizzazione').value = '';
                 }
-                var autorizzazioneModal = new bootstrap.Modal(document.getElementById('autorizzazioneModal'));
-                autorizzazioneModal.show();
+                $('#autorizzazioneModal').modal('show');
             });
     }
 
@@ -842,6 +1359,16 @@ include(BASE_PATH . "/components/header.php");
         formData.append('data', JSON.stringify({
             'autorizzazione': document.getElementById('autorizzazione').value
         }));
+
+        // Mostra un loader
+        Swal.fire({
+            title: 'Salvataggio in corso',
+            text: 'Attendere prego...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
 
         fetch('op_autorizzazione.php', {
             method: 'POST',
@@ -871,32 +1398,45 @@ include(BASE_PATH . "/components/header.php");
      * Resetta i dati dell'autorizzazione
      */
     function resetAutorizzazioneData() {
-        const formData = new FormData();
-        formData.append('progressivo', <?php echo $progressivo; ?>);
-        formData.append('azione', 'reset');
+        Swal.fire({
+            title: 'Sei sicuro?',
+            text: "Questa azione ripristinerà i dati predefiniti. Vuoi procedere?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sì, ripristina!',
+            cancelButtonText: 'Annulla'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const formData = new FormData();
+                formData.append('progressivo', <?php echo $progressivo; ?>);
+                formData.append('azione', 'reset');
 
-        fetch('op_autorizzazione.php', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.text())
-            .then(text => {
-                if (text.startsWith('Dati ripristinati con successo')) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Ripristino riuscito!',
-                        text: text,
-                    }).then(() => {
-                        location.reload();
+                fetch('op_autorizzazione.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.text())
+                    .then(text => {
+                        if (text.startsWith('Dati ripristinati con successo')) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Ripristino riuscito!',
+                                text: text,
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Errore!',
+                                text: text,
+                            });
+                        }
                     });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Errore!',
-                        text: text,
-                    });
-                }
-            });
+            }
+        });
     }
 
     /**
@@ -914,6 +1454,16 @@ include(BASE_PATH . "/components/header.php");
             cancelButtonText: 'Annulla'
         }).then((result) => {
             if (result.isConfirmed) {
+                // Mostra un loader
+                Swal.fire({
+                    title: 'Ricerca in corso',
+                    text: 'Attendere prego...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
                 // Effettua la ricerca e sovrascrivi i dati
                 fetch('cerca_dati_presenti.php', {
                     method: 'POST',
@@ -951,4 +1501,29 @@ include(BASE_PATH . "/components/header.php");
             }
         });
     }
+
+    // Inizializzazione tooltips
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+
+        // Evidenzia la riga quando il mouse passa sopra
+        $('#dataTable tbody tr').hover(
+            function () {
+                $(this).addClass('bg-light');
+            },
+            function () {
+                $(this).removeClass('bg-light');
+            }
+        );
+
+        // Evidenzia le celle editabili
+        $('[contenteditable="true"]').hover(
+            function () {
+                $(this).addClass('border border-primary');
+            },
+            function () {
+                $(this).removeClass('border border-primary');
+            }
+        );
+    });
 </script>
