@@ -15,7 +15,7 @@ $stmt->execute([$progressivo]);
 $documento = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Articoli
-$stmt = $db->prepare("SELECT * FROM exp_dati_articoli WHERE id_documento = ? ORDER BY voce_doganale ASC , codice_articolo ASC");
+$stmt = $db->prepare("SELECT * FROM exp_dati_articoli WHERE id_documento = ? ORDER BY voce_doganale");
 $stmt->execute([$progressivo]);
 $articoli = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -157,13 +157,13 @@ function getUniqueDoganaleCodes($articoli)
             </div>
         </div>
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h2 class="mt-3">
-                DDT VALORIZZATO n° <?php echo $progressivo; ?>
-                <?php if (isset($documento['stato']) && $documento['stato'] == 'Aperto'): ?>
-                    <span class="text-danger font-weight-bold ml-3">PROVVISORIO DA CHIUDERE</span>
-                <?php endif; ?>
-            </h2>
-        </div>
+    <h2 class="mt-3">
+        DDT VALORIZZATO n° <?php echo $progressivo; ?>
+        <?php if (isset($documento['stato']) && $documento['stato'] == 'Aperto'): ?>
+            <span class="text-danger font-weight-bold ml-3">PROVVISORIO DA CHIUDERE</span>
+        <?php endif; ?>
+    </h2>
+</div> 
         <div class="row mt-4">
             <div class="col-md-12">
                 <table class="table table-bordered">
@@ -200,10 +200,10 @@ function getUniqueDoganaleCodes($articoli)
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Dati del DDT (articoli normali) -->
+                        <!-- Dati del DDT -->
                         <?php foreach ($articoli as $articolo): ?>
                             <?php
-                            if ($articolo['qta_reale'] > 0 && $articolo['is_mancante'] == 0) {
+                            if ($articolo['qta_reale'] > 0) {
                                 $subtotal = round($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2);
                                 ?>
                                 <tr>
@@ -217,42 +217,7 @@ function getUniqueDoganaleCodes($articoli)
                             <?php } ?>
                         <?php endforeach; ?>
 
-                        <!-- Raggruppa i mancanti per DDT di origine -->
-                        <?php
-                        $mancantiByDDT = [];
-                        foreach ($articoli as $articolo) {
-                            if ($articolo['qta_reale'] > 0 && $articolo['is_mancante'] == 1) {
-                                $rif = $articolo['rif_mancante'] ?: 'Senza riferimento';
-                                if (!isset($mancantiByDDT[$rif])) {
-                                    $mancantiByDDT[$rif] = [];
-                                }
-                                $mancantiByDDT[$rif][] = $articolo;
-                            }
-                        }
-                        ?>
-
-                        <!-- Visualizza i mancanti raggruppati per DDT di origine -->
-                        <?php foreach ($mancantiByDDT as $rif => $mancanti): ?>
-                            <tr>
-                                <td colspan="1"></td>
-                                <td class="no-border-right" colspan="5"><strong>MANCANTI SU <?php echo $rif; ?></strong>
-                                </td>
-                            </tr>
-                            <?php foreach ($mancanti as $articolo):
-                                $subtotal = round($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2);
-                                ?>
-                                <tr>
-                                    <td><?php echo $articolo['codice_articolo']; ?></td>
-                                    <td class="no-border-right"><?php echo $articolo['descrizione']; ?></td>
-                                    <td class="no-border-left"><?php echo $articolo['voce_doganale']; ?></td>
-                                    <td><?php echo $articolo['um']; ?></td>
-                                    <td><?php echo $articolo['qta_reale']; ?></td>
-                                    <td><?php echo number_format($subtotal, 2, ',', '.'); ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php endforeach; ?>
-
-                        <!-- Righe vuote e Materiali Mancanti (sezione esistente per i mancanti) -->
+                        <!-- Righe vuote e Materiali Mancanti -->
                         <?php if (!empty($datiMancanti)): ?>
                             <tr>
                                 <td colspan="6"></td>
@@ -271,6 +236,34 @@ function getUniqueDoganaleCodes($articoli)
                                 </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>
+
+                        <!-- Righe per voce e peso -->
+                        <tr>
+                            <td colspan="6"> </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" class="text-center"><strong>RIEPILOGO PESI</strong></td>
+                        </tr>
+                        <?php for ($i = 1; $i <= 15; $i++): ?>
+                            <?php if (!empty($piede['voce_' . $i]) && !empty($piede['peso_' . $i])): ?>
+                                <tr>
+                                    <td></td>
+                                    <td style="text-align:right;">N.C. <?php echo $piede['voce_' . $i]; ?> PESO NETTO KG.</td>
+                                    <td><?php echo $piede['peso_' . $i]; ?></td>
+                                    <?php if ($i == 1): ?>
+                                        <td rowspan="<?php echo count(array_filter(range(1, 15), function ($j) use ($piede) {
+                                            return !empty($piede['voce_' . $j]) && !empty($piede['peso_' . $j]);
+                                        })); ?>"
+                                            colspan="3" style="vertical-align: middle; text-align: center;">
+                                            <strong>TOT. COLLI <?php echo $piede['n_colli']; ?>
+                                                <?php echo $piede['aspetto_colli']; ?></strong><br><br><br><br>
+                                            Tot. Peso Lordo kg. <?php echo $piede['tot_peso_lordo']; ?><br><br>
+                                            Tot. Peso Netto kg. <?php echo $piede['tot_peso_netto']; ?>
+                                        </td>
+                                    <?php endif; ?>
+                                </tr>
+                            <?php endif; ?>
+                        <?php endfor; ?>
 
                         <!-- Righe per autorizzazione -->
                         <tr>
