@@ -36,6 +36,9 @@ try {
     $total_records = $count['total'];
     $total_pages = ceil($total_records / $pagelimit);
 
+
+
+
 } catch (PDOException $e) {
     error_log("Errore nel recupero dei documenti: " . $e->getMessage());
     $rows = [];
@@ -164,6 +167,13 @@ include(BASE_PATH . "/components/header.php");
                                         <tbody>
                                             <?php foreach ($rows as $row): ?>
                                                 <?php
+
+                                                // Verifica se ci sono articoli associati al documento
+                                                $articoli_stmt = $conn->prepare("SELECT COUNT(*) as totale_articoli FROM exp_dati_articoli WHERE id_documento = :id_doc");
+                                                $articoli_stmt->bindParam(':id_doc', $row['id'], PDO::PARAM_INT);
+                                                $articoli_stmt->execute();
+                                                $articoli_count = $articoli_stmt->fetch(PDO::FETCH_ASSOC);
+                                                $ha_articoli = ($articoli_count['totale_articoli'] > 0);
                                                 try {
                                                     $stmt = $conn->prepare("SELECT ragione_sociale, nazione FROM exp_terzisti WHERE id = :id");
                                                     $stmt->bindParam(':id', $row['id_terzista'], PDO::PARAM_INT);
@@ -196,26 +206,46 @@ include(BASE_PATH . "/components/header.php");
                                                         <span class="badge <?php echo $badge_class; ?> px-3 py-2">
                                                             <?php echo htmlspecialchars($row['stato']); ?>
                                                         </span>
+                                                        <?php if (!$ha_articoli): ?>
+                                                            <span class="badge badge-danger px-3 py-2">Vuoto</span>
+                                                        <?php endif; ?>
+
+
                                                     </td>
                                                     <td style="vertical-align: middle; text-align:center;">
                                                         <div class="btn-group">
                                                             <?php if ($row['stato'] == 'Aperto'): ?>
                                                                 <!-- Per documenti APERTI -->
-                                                                <a href="continue_ddt.php?progressivo=<?php echo $row['id']; ?>"
-                                                                    class="btn btn-info btn-sm mr-1" data-toggle="tooltip"
-                                                                    title="Modifica">
-                                                                    <i class="fal fa-edit"></i> Continua
-                                                                </a>
+
+                                                                <?php if (!$ha_articoli): ?>
+                                                                    <!-- Pulsante per aggiungere articoli se non ce ne sono -->
+                                                                    <a href="new_step2.php?progressivo=<?php echo $row['id']; ?>"
+                                                                        class="btn btn-warning btn-sm mr-1" data-toggle="tooltip"
+                                                                        title="Aggiungi Articoli">
+                                                                        <i class="fal fa-plus-circle"></i> Aggiungi Articoli
+                                                                    </a>
+                                                                <?php else: ?>
+                                                                    <a href="continue_ddt.php?progressivo=<?php echo $row['id']; ?>"
+                                                                        class="btn btn-info btn-sm mr-1" data-toggle="tooltip"
+                                                                        title="Modifica">
+                                                                        <i class="fal fa-edit"></i> Continua
+                                                                    </a>
+                                                                <?php endif; ?>
+
                                                                 <a href="#" class="btn btn-success btn-sm mr-1 show-record-details"
                                                                     data-record-id="<?php echo $row['id']; ?>" data-toggle="tooltip"
                                                                     title="Dettagli">
                                                                     <i class="fal fa-info-circle"></i>
                                                                 </a>
+
                                                                 <a class="btn btn-danger btn-sm delete-record" href="#"
                                                                     data-record-id="<?php echo $row['id']; ?>" data-toggle="tooltip"
                                                                     title="Elimina">
                                                                     <i class="fal fa-trash-alt"></i>
                                                                 </a>
+
+
+
                                                             <?php elseif ($row['stato'] == 'Chiuso'): ?>
                                                                 <!-- Per documenti CHIUSI -->
                                                                 <a target="_blank"
@@ -231,6 +261,8 @@ include(BASE_PATH . "/components/header.php");
                                                                     <i class="fal fa-info-circle"></i>
                                                                 </a>
                                                             <?php endif; ?>
+
+
                                                         </div>
                                                     </td>
                                                 </tr>
