@@ -787,8 +787,15 @@ include(BASE_PATH . "/components/header.php");
                                     </div>
 
                                     <div class="card mt-4">
-                                        <div class="card-header py-2">
+                                        <div class="card-header py-2 d-flex justify-content-between align-items-center">
                                             <h6 class="mb-0 font-weight-bold">Dettaglio Voci Doganali</h6>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="presentiSottopiedi"
+                                                    onchange="toggleSottopiedi()">
+                                                <label class="form-check-label" for="presentiSottopiedi">
+                                                    Presenti SOTTOPIEDI
+                                                </label>
+                                            </div>
                                         </div>
                                         <div class="card-body p-0">
                                             <table class="table mb-0">
@@ -1217,57 +1224,118 @@ include(BASE_PATH . "/components/header.php");
                     // Carica i dati delle voci doganali
                     let doganaleTableBody = document.getElementById('doganaleTableBody');
                     doganaleTableBody.innerHTML = '';
+                    let hasSottopiedi = false;
+
                     for (let i = 1; i <= 10; i++) {
                         if (data.data['voce_' + i]) {
+                            // Verifica se esiste già la voce SOTTOPIEDI
+                            if (data.data['voce_' + i] === 'SOTTOPIEDI') {
+                                hasSottopiedi = true;
+                            }
+
                             doganaleTableBody.innerHTML += `
-                        <tr>
-                            <td>${data.data['voce_' + i]}</td>
-                            <td>
-                                <div class="input-group">
-                                <input type="number" step="0.01" class="form-control" name="pesoDoganale[]" value="${data.data['peso_' + i]}">
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">kg</span>
-                                    </div>
+                    <tr data-voce="${data.data['voce_' + i]}">
+                        <td>${data.data['voce_' + i]}</td>
+                        <td>
+                            <div class="input-group">
+                            <input type="number" step="0.01" class="form-control" name="pesoDoganale[]" value="${data.data['peso_' + i]}">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">kg</span>
                                 </div>
-                            </td>
-                        </tr>
-                        `;
+                            </div>
+                        </td>
+                    </tr>
+                    `;
                         }
                     }
+
+                    // Imposta la casella di spunta in base alla presenza della voce SOTTOPIEDI
+                    document.getElementById('presentiSottopiedi').checked = hasSottopiedi;
+
                 } else {
                     // Se non ci sono dati esistenti, carica le voci doganali univoche
-                    fetch('get_unique_doganale.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: `progressivo=<?php echo $progressivo; ?>`
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            let doganaleTableBody = document.getElementById('doganaleTableBody');
-                            doganaleTableBody.innerHTML = '';
-                            data.forEach(voce => {
-                                doganaleTableBody.innerHTML += `
-                            <tr>
-                                <td>${voce}</td>
-                                <td>
-                                    <div class="input-group">
-                                        <input type="number" step="0.01" class="form-control" name="pesoDoganale[]">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text">kg</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            `;
-                            });
-                        });
+                    loadUniqueDoganale();
                 }
             });
 
         // Mostra il modal
         $('#pesiModal').modal('show');
+    }
+
+    /**
+     * Carica le voci doganali univoche dal server
+     */
+    function loadUniqueDoganale() {
+        fetch('get_unique_doganale.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `progressivo=<?php echo $progressivo; ?>`
+        })
+            .then(response => response.json())
+            .then(data => {
+                let doganaleTableBody = document.getElementById('doganaleTableBody');
+                doganaleTableBody.innerHTML = '';
+                data.forEach(voce => {
+                    doganaleTableBody.innerHTML += `
+            <tr data-voce="${voce}">
+                <td>${voce}</td>
+                <td>
+                    <div class="input-group">
+                        <input type="number" step="0.01" class="form-control" name="pesoDoganale[]">
+                        <div class="input-group-append">
+                            <span class="input-group-text">kg</span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            `;
+                });
+
+                // Controlla se la casella SOTTOPIEDI è spuntata e aggiungi la voce se necessario
+                if (document.getElementById('presentiSottopiedi').checked) {
+                    addSottopiediRow();
+                }
+            });
+    }
+
+    /**
+     * Gestisce l'aggiunta o la rimozione della voce SOTTOPIEDI
+     */
+    function toggleSottopiedi() {
+        const isChecked = document.getElementById('presentiSottopiedi').checked;
+        const tableBody = document.getElementById('doganaleTableBody');
+        const existingSottopiedi = tableBody.querySelector('tr[data-voce="SOTTOPIEDI"]');
+
+        if (isChecked && !existingSottopiedi) {
+            // Aggiungi la voce SOTTOPIEDI
+            addSottopiediRow();
+        } else if (!isChecked && existingSottopiedi) {
+            // Rimuovi la voce SOTTOPIEDI
+            existingSottopiedi.remove();
+        }
+    }
+
+    /**
+     * Aggiunge una riga SOTTOPIEDI alla tabella delle voci doganali
+     */
+    function addSottopiediRow() {
+        const tableBody = document.getElementById('doganaleTableBody');
+        const row = document.createElement('tr');
+        row.setAttribute('data-voce', 'SOTTOPIEDI');
+        row.innerHTML = `
+        <td>SOTTOPIEDI</td>
+        <td>
+            <div class="input-group">
+                <input type="number" step="0.01" class="form-control" name="pesoDoganale[]">
+                <div class="input-group-append">
+                    <span class="input-group-text">kg</span>
+                </div>
+            </div>
+        </td>
+    `;
+        tableBody.appendChild(row);
     }
 
     /**
