@@ -557,6 +557,12 @@ require_once BASE_PATH . '/components/header.php';
         let modello = document.getElementById('modello').innerText.split(':')[1].trim();
         let lancio = document.getElementById('lancio').value;
         let qty = parseFloat(document.getElementById('qty').value);
+        
+        // Otteniamo l'ID del documento dalla pagina, ad esempio dall'URL o da un campo nascosto
+        // Modifica questa riga in base a come è disponibile l'ID documento nella tua pagina
+        let id_documento = new URLSearchParams(window.location.search).get('progressivo') || 
+                          document.getElementById('id_documento')?.value || 
+                          $('#excelModal').data('id_documento');
 
         // Validazione
         if (!lancio) {
@@ -576,7 +582,8 @@ require_once BASE_PATH . '/components/header.php';
             'lancio': lancio,
             'qty': qty,
             'tableTaglio': [],
-            'tableOrlatura': []
+            'tableOrlatura': [],
+            'id_documento': id_documento  // Aggiungiamo l'ID documento
         };
 
         // Aggiungi dati dalla tabella Taglio

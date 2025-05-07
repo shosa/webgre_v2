@@ -87,7 +87,9 @@ try {
             if ($row[0] === 'ORLATURA') {
                 continue;
             }
-
+            if ($row[0] === 'AUTORIZZAZIONE:') {
+                continue;
+            }
             // Verifica che ci siano dati validi
             if (empty($row[1])) {
                 continue;

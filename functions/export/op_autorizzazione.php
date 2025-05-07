@@ -27,7 +27,7 @@ switch ($azione) {
 
 function getAutorizzazione($progressivo, $db)
 {
-    $sql = "SELECT autorizzazione FROM exp_piede_documenti WHERE id_documento = :progressivo";
+    $sql = "SELECT autorizzazione FROM exp_documenti WHERE id = :progressivo";
     $stmt = $db->prepare($sql);
     $stmt->execute([':progressivo' => $progressivo]);
     $data = $stmt->fetch();
@@ -46,7 +46,7 @@ function saveAutorizzazione($progressivo, $data, $db)
         $fields[] = "$key = :$key";
     }
 
-    $sql = "UPDATE exp_piede_documenti SET " . implode(', ', $fields) . " WHERE id_documento = :progressivo";
+    $sql = "UPDATE exp_documenti SET " . implode(', ', $fields) . " WHERE id = :progressivo";
     $stmt = $db->prepare($sql);
 
     $params = $data;
@@ -61,7 +61,7 @@ function saveAutorizzazione($progressivo, $data, $db)
 
 function resetAutorizzazione($progressivo, $db)
 {
-    $sql = "UPDATE exp_piede_documenti SET autorizzazione = '' WHERE id_documento = :progressivo";
+    $sql = "UPDATE exp_documenti SET autorizzazione = '' WHERE id = :progressivo";
     $stmt = $db->prepare($sql);
     if ($stmt->execute(['progressivo' => $progressivo])) {
         echo 'Dati ripristinati con successo';

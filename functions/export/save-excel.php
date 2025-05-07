@@ -7,6 +7,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Font;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
 header('Content-Type: application/json');  // Imposta l'header per la risposta JSON
 
@@ -18,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $qty = $data['qty'];
     $tableTaglio = $data['tableTaglio'];
     $tableOrlatura = $data['tableOrlatura'];
+    $id_documento = isset($data['id_documento']) ? $data['id_documento'] : null;
 
     require_once BASE_PATH . '/vendor/autoload.php';
 
@@ -96,8 +98,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $rowIndex++;
     }
 
-    // Remove the 7th column
-    $sheet->removeColumn('G');
+    // Recupera l'autorizzazione se abbiamo un ID documento
+    $autorizzazione = "";
+    if ($id_documento) {
+        try {
+            $conn = getDbInstance();
+            $stmt = $conn->prepare("SELECT autorizzazione FROM exp_piede_documenti WHERE id_documento = :id_documento");
+            $stmt->bindParam(':id_documento', $id_documento, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if ($result && isset($result['autorizzazione'])) {
+                $autorizzazione = $result['autorizzazione'];
+            }
+        } catch (PDOException $e) {
+            // Log error or handle it
+            error_log("Errore nel recupero dell'autorizzazione: " . $e->getMessage());
+        }
+    }
+
+    // Lascia una riga vuota dopo la tabella
+    $rowIndex += 2;
+    
+    // Aggiungi l'autorizzazione al foglio
+    if (!empty($autorizzazione)) {
+        $sheet->setCellValue('A' . $rowIndex, 'AUTORIZZAZIONE:');
+        $sheet->getStyle('A' . $rowIndex)
+            ->getFont()
+            ->setBold(true);
+        
+        // Unisci le celle per l'autorizzazione che può essere lunga
+        $sheet->mergeCells('B' . $rowIndex . ':F' . $rowIndex);
+        $sheet->setCellValue('B' . $rowIndex, $autorizzazione);
+        
+        // Imposta lo stile per le celle dell'autorizzazione
+        $sheet->getStyle('A' . $rowIndex . ':F' . $rowIndex)
+            ->getBorders()
+            ->getAllBorders()
+            ->setBorderStyle(Border::BORDER_THIN);
+            
+        $sheet->getStyle('B' . $rowIndex)
+            ->getAlignment()
+            ->setWrapText(true)
+            ->setVertical(Alignment::VERTICAL_TOP);
+            
+        // Imposta l'altezza della riga in base al contenuto
+        $sheet->getRowDimension($rowIndex)->setRowHeight(-1);
+    }
+
+    // Remove the 7th column if exists
+    if ($sheet->getHighestColumn() === 'G') {
+        $sheet->removeColumn('G');
+    }
+
+    // Autosize columns
+    foreach (range('A', 'F') as $col) {
+        $sheet->getColumnDimension($col)->setAutoSize(true);
+    }
 
     $filename = "temp/{$modello}.xlsx";
     $writer = new Xlsx($spreadsheet);

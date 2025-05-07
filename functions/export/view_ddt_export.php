@@ -341,7 +341,7 @@ function getUniqueDoganaleCodes($articoli)
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="6" class="text-center"><?php echo $piede['autorizzazione']; ?></td>
+                            <td colspan="6" class="text-center"><?php echo $documento['autorizzazione']; ?></td>
                         </tr>
                     </tbody>
                     <tfoot>
