@@ -6,3 +6,6 @@
 /reports/
 /temp/
 /uploads/
+/functions/export/src
+/functions/export/temp
+/functions/export/uploads
