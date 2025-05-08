@@ -402,13 +402,13 @@ include(BASE_PATH . "/components/header.php");
                                 </h1>
                                 <div class="text-right"> <!-- Aggiunto text-right per garantire l'allineamento -->
                                     <?php if ($documento['stato'] == 'Aperto'): ?>
-                                        <button class="btn btn-success float-right" onclick="completaDdt()">
-                                            <!-- Aggiunto float-right -->
-                                            <i class="fas fa-check-circle mr-1"></i> TERMINA
-                                        </button>
+                                            <button class="btn btn-success float-right" onclick="completaDdt()">
+                                                <!-- Aggiunto float-right -->
+                                                <i class="fas fa-check-circle mr-1"></i> TERMINA
+                                            </button>
                                     <?php else: ?>
-                                        <span class="badge badge-success p-2 float-right">COMPLETATO</span>
-                                        <!-- Aggiunto float-right -->
+                                            <span class="badge badge-success p-2 float-right">COMPLETATO</span>
+                                            <!-- Aggiunto float-right -->
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -455,14 +455,14 @@ include(BASE_PATH . "/components/header.php");
                                                         <?php echo htmlspecialchars($terzista['indirizzo_1']); ?>
                                                     </div>
                                                     <?php if (!empty($terzista['indirizzo_2'])): ?>
-                                                        <div class="info-text">
-                                                            <?php echo htmlspecialchars($terzista['indirizzo_2']); ?>
-                                                        </div>
+                                                            <div class="info-text">
+                                                                <?php echo htmlspecialchars($terzista['indirizzo_2']); ?>
+                                                            </div>
                                                     <?php endif; ?>
                                                     <?php if (!empty($terzista['indirizzo_3'])): ?>
-                                                        <div class="info-text">
-                                                            <?php echo htmlspecialchars($terzista['indirizzo_3']); ?>
-                                                        </div>
+                                                            <div class="info-text">
+                                                                <?php echo htmlspecialchars($terzista['indirizzo_3']); ?>
+                                                            </div>
                                                     <?php endif; ?>
                                                     <div class="info-text font-weight-bold">
                                                         <?php echo htmlspecialchars($terzista['nazione']); ?>
@@ -486,16 +486,16 @@ include(BASE_PATH . "/components/header.php");
                                                     <div class="custom-scrollbar">
                                                         <ul class="list-unstyled mb-0">
                                                             <?php foreach ($lanci as $lancio): ?>
-                                                                <li class="mb-1">
-                                                                    <span
-                                                                        class="badge badge-light mr-1"><?php echo $lancio['lancio']; ?></span>
-                                                                    <small>
-                                                                        <strong>Art:</strong>
-                                                                        <?php echo $lancio['articolo']; ?> |
-                                                                        <strong>Paia:</strong>
-                                                                        <?php echo $lancio['paia']; ?>
-                                                                    </small>
-                                                                </li>
+                                                                    <li class="mb-1">
+                                                                        <span
+                                                                            class="badge badge-light mr-1"><?php echo $lancio['lancio']; ?></span>
+                                                                        <small>
+                                                                            <strong>Art:</strong>
+                                                                            <?php echo $lancio['articolo']; ?> |
+                                                                            <strong>Paia:</strong>
+                                                                            <?php echo $lancio['paia']; ?>
+                                                                        </small>
+                                                                    </li>
                                                             <?php endforeach; ?>
                                                         </ul>
                                                     </div>
@@ -518,28 +518,28 @@ include(BASE_PATH . "/components/header.php");
                                                     <div class="custom-scrollbar">
                                                         <div class="d-flex flex-wrap">
                                                             <?php foreach ($files as $file): ?>
-                                                                <div class="text-center mx-2 mb-2">
-                                                                    <a href="<?php echo $file; ?>" download
-                                                                        class="text-decoration-none">
-                                                                        <i class="fas fa-file-excel attachment-icon"></i>
-                                                                        <div class="small mt-1">
-                                                                            <?php echo basename($file); ?>
-                                                                        </div>
-                                                                    </a>
-                                                                </div>
+                                                                    <div class="text-center mx-2 mb-2">
+                                                                        <a href="<?php echo $file; ?>" download
+                                                                            class="text-decoration-none">
+                                                                            <i class="fas fa-file-excel attachment-icon"></i>
+                                                                            <div class="small mt-1">
+                                                                                <?php echo basename($file); ?>
+                                                                            </div>
+                                                                        </a>
+                                                                    </div>
                                                             <?php endforeach; ?>
                                                             <?php if (empty($files)): ?>
-                                                                <div class="text-muted">Nessun allegato disponibile</div>
+                                                                    <div class="text-muted">Nessun allegato disponibile</div>
                                                             <?php endif; ?>
                                                         </div>
                                                     </div>
                                                     <?php if (!empty($files)): ?>
-                                                        <div class="mt-3 text-center">
-                                                            <a href="download_all_attachments.php?progressivo=<?php echo $progressivo; ?>"
-                                                                class="btn btn-sm btn-success">
-                                                                <i class="fas fa-download mr-1"></i> Scarica tutti (ZIP)
-                                                            </a>
-                                                        </div>
+                                                            <div class="mt-3 text-center">
+                                                                <a href="download_all_attachments.php?progressivo=<?php echo $progressivo; ?>"
+                                                                    class="btn btn-sm btn-success">
+                                                                    <i class="fas fa-download mr-1"></i> Scarica tutti (ZIP)
+                                                                </a>
+                                                            </div>
                                                     <?php endif; ?>
                                                 </div>
                                                 <div class="col-auto">
@@ -557,44 +557,44 @@ include(BASE_PATH . "/components/header.php");
                                     <div class="row">
                                         <div class="col-md-5 mb-2">
                                             <div class="action-buttons">
-                                                <button class="btn btn-secondary btn-icon" onclick="openModal()">
-                                                    <i class="fas fa-weight"></i> Pesi e Aspetto Merce
+                                                <button class="btn  btn-secondary btn-icon" onclick="openModal()">
+                                                    <i class="fal fa-weight"></i> Pesi e Aspetto Merce
                                                 </button>
                                                 <button class="btn btn-primary btn-icon"
                                                     onclick="openAutorizzazioneModal()">
-                                                    <i class="fas fa-pencil-alt"></i> Autorizzazione
+                                                    <i class="fal fa-pencil-alt"></i> Autorizzazione
                                                 </button>
                                             </div>
                                         </div>
                                         <div class="col-md-7 mb-2">
                                             <div class="action-buttons justify-content-md-end">
                                                 <?php if ($documento['first_boot'] == 1): ?>
-                                                    <button class="btn btn-light border-dark btn-icon"
-                                                        onclick="cercaNcECosti()">
-                                                        <i class="fas fa-search-plus"></i> Cerca Voci e Costi
-                                                    </button>
+                                                        <button class="btn btn-light border-dark btn-icon"
+                                                            onclick="cercaNcECosti()">
+                                                            <i class="fal fa-search-plus"></i> Cerca Voci e Costi
+                                                        </button>
                                                 <?php endif; ?>
                                                 <button class="btn btn-warning btn-icon" onclick="elaboraMancanti()">
-                                                    <i class="fas fa-sync-alt"></i> Elabora Mancanti
+                                                    <i class="fal fa-sync-alt"></i> Elabora Mancanti
                                                 </button>
                                                 <button class="btn btn-info btn-icon" disabled>
-                                                    <i class="fas fa-exclamation-triangle"></i> Mancanze
+                                                    <i class="fal fa-exclamation-triangle"></i> Mancanze
                                                     <?php if ($mancanzeCount > 0): ?>
-                                                        <span
-                                                            class="badge badge-danger"><?php echo $mancanzeCount; ?></span>
+                                                            <span
+                                                                class="badge badge-danger"><?php echo $mancanzeCount; ?></span>
                                                     <?php endif; ?>
                                                 </button>
                                                 <button class="btn btn-indigo btn-icon" onclick="openMancantiModal()">
-                                                    <i class="fas fa-plus-circle mr-2"></i> Aggiungi Mancanti
+                                                    <i class="fal fa-plus-circle mr-2"></i> Aggiungi Mancanti
                                                 </button>
 
                                                 <button class="btn btn-success btn-icon" onclick="exportToExcel()">
-                                                    <i class="fas fa-file-excel"></i> Excel
+                                                    <i class="fal fa-file-excel"></i> Excel
                                                 </button>
                                                 <a target="_blank"
                                                     href="view_ddt_export?progressivo=<?php echo $progressivo; ?>"
                                                     class="btn btn-primary btn-icon">
-                                                    <i class="fas fa-file-invoice"></i> Visualizza
+                                                    <i class="fal fa-file-invoice"></i> Visualizza
                                                 </a>
                                             </div>
                                         </div>
@@ -605,7 +605,7 @@ include(BASE_PATH . "/components/header.php");
                             <!-- Tabella Articoli con mancanti raggruppati alla fine -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                                    <h6 class="m-0 font-weight-bold text-primary">Dettaglio Articoli</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Corpo Documento</h6>
                                     <span class="badge badge-pill badge-primary"><?php echo count($articoli); ?>
                                         articoli</span>
                                 </div>
@@ -613,7 +613,7 @@ include(BASE_PATH . "/components/header.php");
                                     <table class="table table-bordered table-hover" id="dataTable" width="100%"
                                         cellspacing="0">
                                         <thead>
-                                            <tr>
+                                            <tr class="text-dark font-weight-bold">
                                                 <th>CODICE ARTICOLO</th>
                                                 <th>DESCRIZIONE</th>
                                                 <th>VOCE DOGANALE</th>
@@ -650,50 +650,8 @@ include(BASE_PATH . "/components/header.php");
                                                 $qta_mancante = $articolo['qta_originale'] - $articolo['qta_reale'];
                                                 $style = ($qta_mancante > 0) ? 'style="background-color: #ffe8c3"' : '';
                                                 ?>
-                                                <tr>
-                                                    <td contenteditable="false" style="background-color:#f0f0f0;">
-                                                        <?php echo htmlspecialchars($articolo['codice_articolo']); ?>
-                                                    </td>
-                                                    <td contenteditable="true"
-                                                        onBlur="updateData(<?php echo $articolo['id']; ?>, 'descrizione', this)">
-                                                        <?php echo htmlspecialchars($articolo['descrizione']); ?>
-                                                    </td>
-                                                    <td contenteditable="true"
-                                                        onBlur="updateData(<?php echo $articolo['id']; ?>, 'voce_doganale', this)">
-                                                        <?php echo htmlspecialchars($articolo['voce_doganale']); ?>
-                                                    </td>
-                                                    <td contenteditable="false" style="background-color:#f0f0f0;">
-                                                        <?php echo htmlspecialchars($articolo['um']); ?>
-                                                    </td>
-                                                    <td contenteditable="false" style="background-color:#f0f0f0;">
-                                                        <?php echo htmlspecialchars($articolo['qta_originale']); ?>
-                                                    </td>
-                                                    <td contenteditable="true" <?php echo $style; ?>
-                                                        onBlur="updateData(<?php echo $articolo['id']; ?>, 'qta_reale', this)">
-                                                        <?php echo htmlspecialchars($articolo['qta_reale']); ?>
-                                                    </td>
-                                                    <td contenteditable="true"
-                                                        onBlur="updateData(<?php echo $articolo['id']; ?>, 'prezzo_unitario', this)">
-                                                        <?php echo htmlspecialchars($articolo['prezzo_unitario']); ?>
-                                                    </td>
-                                                    <td style="background-color:#d9fae2;">
-                                                        <?php echo number_format($subtotal, 2, ',', '.'); ?>
-                                                    </td>
-                                                </tr>
-                                            <?php endforeach; ?>
-
-                                            <!-- Ora visualizziamo i mancanti, raggruppati per DDT di origine -->
-                                            <?php foreach ($mancantiByDDT as $rif => $mancanti): ?>
-                                                <tr class="mancanti-header bg-secondary text-white">
-                                                    <td colspan="8" class="text-center font-weight-bold">
-                                                        MANCANTI SU <?php echo htmlspecialchars($rif); ?>
-                                                    </td>
-                                                </tr>
-                                                <?php foreach ($mancanti as $articolo):
-                                                    $subtotal = round($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2);
-                                                    ?>
-                                                    <tr class="table-info">
-                                                        <td contenteditable="false" style="background-color:#e3f6fc;">
+                                                    <tr>
+                                                        <td contenteditable="false" style="background-color:#f0f0f0;">
                                                             <?php echo htmlspecialchars($articolo['codice_articolo']); ?>
                                                         </td>
                                                         <td contenteditable="true"
@@ -704,13 +662,13 @@ include(BASE_PATH . "/components/header.php");
                                                             onBlur="updateData(<?php echo $articolo['id']; ?>, 'voce_doganale', this)">
                                                             <?php echo htmlspecialchars($articolo['voce_doganale']); ?>
                                                         </td>
-                                                        <td contenteditable="false" style="background-color:#e3f6fc;">
+                                                        <td contenteditable="false" style="background-color:#f0f0f0;">
                                                             <?php echo htmlspecialchars($articolo['um']); ?>
                                                         </td>
-                                                        <td contenteditable="false" style="background-color:#e3f6fc;">
+                                                        <td contenteditable="false" style="background-color:#f0f0f0;">
                                                             <?php echo htmlspecialchars($articolo['qta_originale']); ?>
                                                         </td>
-                                                        <td contenteditable="true"
+                                                        <td contenteditable="true" <?php echo $style; ?>
                                                             onBlur="updateData(<?php echo $articolo['id']; ?>, 'qta_reale', this)">
                                                             <?php echo htmlspecialchars($articolo['qta_reale']); ?>
                                                         </td>
@@ -722,7 +680,49 @@ include(BASE_PATH . "/components/header.php");
                                                             <?php echo number_format($subtotal, 2, ',', '.'); ?>
                                                         </td>
                                                     </tr>
-                                                <?php endforeach; ?>
+                                            <?php endforeach; ?>
+
+                                            <!-- Ora visualizziamo i mancanti, raggruppati per DDT di origine -->
+                                            <?php foreach ($mancantiByDDT as $rif => $mancanti): ?>
+                                                    <tr class="mancanti-header bg-secondary text-white">
+                                                        <td colspan="8" class="text-center font-weight-bold">
+                                                            MANCANTI SU <?php echo htmlspecialchars($rif); ?>
+                                                        </td>
+                                                    </tr>
+                                                    <?php foreach ($mancanti as $articolo):
+                                                        $subtotal = round($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2);
+                                                        ?>
+                                                            <tr class="table-info">
+                                                                <td contenteditable="false" style="background-color:#e3f6fc;">
+                                                                    <?php echo htmlspecialchars($articolo['codice_articolo']); ?>
+                                                                </td>
+                                                                <td contenteditable="true"
+                                                                    onBlur="updateData(<?php echo $articolo['id']; ?>, 'descrizione', this)">
+                                                                    <?php echo htmlspecialchars($articolo['descrizione']); ?>
+                                                                </td>
+                                                                <td contenteditable="true"
+                                                                    onBlur="updateData(<?php echo $articolo['id']; ?>, 'voce_doganale', this)">
+                                                                    <?php echo htmlspecialchars($articolo['voce_doganale']); ?>
+                                                                </td>
+                                                                <td contenteditable="false" style="background-color:#e3f6fc;">
+                                                                    <?php echo htmlspecialchars($articolo['um']); ?>
+                                                                </td>
+                                                                <td contenteditable="false" style="background-color:#e3f6fc;">
+                                                                    <?php echo htmlspecialchars($articolo['qta_originale']); ?>
+                                                                </td>
+                                                                <td contenteditable="true"
+                                                                    onBlur="updateData(<?php echo $articolo['id']; ?>, 'qta_reale', this)">
+                                                                    <?php echo htmlspecialchars($articolo['qta_reale']); ?>
+                                                                </td>
+                                                                <td contenteditable="true"
+                                                                    onBlur="updateData(<?php echo $articolo['id']; ?>, 'prezzo_unitario', this)">
+                                                                    <?php echo htmlspecialchars($articolo['prezzo_unitario']); ?>
+                                                                </td>
+                                                                <td style="background-color:#d9fae2;">
+                                                                    <?php echo number_format($subtotal, 2, ',', '.'); ?>
+                                                                </td>
+                                                            </tr>
+                                                    <?php endforeach; ?>
                                             <?php endforeach; ?>
                                         </tbody>
                                         <tfoot>
@@ -743,7 +743,7 @@ include(BASE_PATH . "/components/header.php");
                     <!-- MODALE PESI E ASPETTO MERCE -->
                     <div class="modal fade" id="pesiModal" tabindex="-1" aria-labelledby="pesiModalLabel"
                         aria-hidden="true">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="pesiModalLabel">
@@ -803,6 +803,7 @@ include(BASE_PATH . "/components/header.php");
                                                     <tr>
                                                         <th>Voce Doganale</th>
                                                         <th>Peso Netto (kg)</th>
+                                                        <th>Somma QTA</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="doganaleTableBody">
@@ -952,14 +953,14 @@ include(BASE_PATH . "/components/header.php");
 
         // Aggiunta delle righe con i dati degli articoli
         <?php foreach ($articoli as $articolo): ?>
-            worksheet.addRow({
-                codice_articolo: '<?php echo addslashes($articolo['codice_articolo']); ?>',
-                descrizione: '<?php echo addslashes($articolo['descrizione']); ?>',
-                voce_doganale: '<?php echo addslashes($articolo['voce_doganale']); ?>',
-                um: '<?php echo addslashes($articolo['um']); ?>',
-                qta_reale: Number('<?php echo str_replace(',', '.', $articolo['qta_reale']); ?>'),
-                subtotal: Number('<?php echo number_format($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2, '.', ''); ?>')
-            });
+                worksheet.addRow({
+                    codice_articolo: '<?php echo addslashes($articolo['codice_articolo']); ?>',
+                    descrizione: '<?php echo addslashes($articolo['descrizione']); ?>',
+                    voce_doganale: '<?php echo addslashes($articolo['voce_doganale']); ?>',
+                    um: '<?php echo addslashes($articolo['um']); ?>',
+                    qta_reale: Number('<?php echo str_replace(',', '.', $articolo['qta_reale']); ?>'),
+                    subtotal: Number('<?php echo number_format($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2, '.', ''); ?>')
+                });
         <?php endforeach; ?>
 
         // Aggiunta delle voci doganali uniche
@@ -1190,6 +1191,9 @@ include(BASE_PATH . "/components/header.php");
     /**
      * Apre il modal per i pesi e l'aspetto della merce
      */
+    /**
+ * Apre il modal per i pesi e l'aspetto della merce
+ */
     function openModal() {
         // Mostra un loader
         Swal.fire({
@@ -1201,7 +1205,8 @@ include(BASE_PATH . "/components/header.php");
             }
         });
 
-        fetch('check_piedi_data.php', {
+        // Prima recupera le informazioni sulle quantità totali per voce doganale
+        fetch('get_unique_doganale.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -1209,53 +1214,97 @@ include(BASE_PATH . "/components/header.php");
             body: `progressivo=<?php echo $progressivo; ?>`
         })
             .then(response => response.json())
-            .then(data => {
-                // Chiudi il loader
-                Swal.close();
+            .then(vociQuantita => {
+                // Crea un oggetto per un accesso più facile ai dati per voce doganale
+                const quantitaMap = {};
+                vociQuantita.forEach(item => {
+                    quantitaMap[item.voce_doganale] = {
+                        totale_quantita: item.totale_quantita,
+                        um: item.um
+                    };
+                });
 
-                if (data.success) {
-                    // Carica i dati esistenti nel form
-                    document.getElementById('aspettoMerce').value = data.data.aspetto_colli;
-                    document.getElementById('numeroColli').value = data.data.n_colli;
-                    document.getElementById('pesoLordo').value = data.data.tot_peso_lordo;
-                    document.getElementById('pesoNetto').value = data.data.tot_peso_netto;
-                    document.getElementById('trasportatore').value = data.data.trasportatore;
+                // Ora recupera i dati salvati
+                return fetch('check_piedi_data.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `progressivo=<?php echo $progressivo; ?>`
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Chiudi il loader
+                        Swal.close();
 
-                    // Carica i dati delle voci doganali
-                    let doganaleTableBody = document.getElementById('doganaleTableBody');
-                    doganaleTableBody.innerHTML = '';
-                    let hasSottopiedi = false;
+                        if (data.success) {
+                            // Carica i dati esistenti nel form
+                            document.getElementById('aspettoMerce').value = data.data.aspetto_colli;
+                            document.getElementById('numeroColli').value = data.data.n_colli;
+                            document.getElementById('pesoLordo').value = data.data.tot_peso_lordo;
+                            document.getElementById('pesoNetto').value = data.data.tot_peso_netto;
+                            document.getElementById('trasportatore').value = data.data.trasportatore;
 
-                    for (let i = 1; i <= 10; i++) {
-                        if (data.data['voce_' + i]) {
-                            // Verifica se esiste già la voce SOTTOPIEDI
-                            if (data.data['voce_' + i] === 'SOTTOPIEDI') {
-                                hasSottopiedi = true;
+                            // Carica i dati delle voci doganali
+                            let doganaleTableBody = document.getElementById('doganaleTableBody');
+                            doganaleTableBody.innerHTML = '';
+                            let hasSottopiedi = false;
+
+                            for (let i = 1; i <= 10; i++) {
+                                if (data.data['voce_' + i]) {
+                                    // Verifica se esiste già la voce SOTTOPIEDI
+                                    if (data.data['voce_' + i] === 'SOTTOPIEDI') {
+                                        hasSottopiedi = true;
+                                    }
+
+                                    // Ottieni informazioni sulla quantità per questa voce doganale
+                                    const voceDoganale = data.data['voce_' + i];
+                                    let quantityInfo = '';
+
+                                    if (quantitaMap[voceDoganale]) {
+                                        const formattedQuantity = parseFloat(quantitaMap[voceDoganale].totale_quantita).toFixed(2);
+                                        const um = quantitaMap[voceDoganale].um;
+                                        quantityInfo = `<span class="badge badge-info">${formattedQuantity}</span> <span class="badge badge-secondary">${um}</span>`;
+                                    } else {
+                                        quantityInfo = '<span class="badge badge-secondary">...</span>';
+                                    }
+
+                                    doganaleTableBody.innerHTML += `
+                                <tr data-voce="${voceDoganale}">
+                                    <td>${voceDoganale}</td>
+                                    <td>
+                                        <div class="input-group">
+                                        <input type="number" step="0.01" class="form-control" name="pesoDoganale[]" value="${data.data['peso_' + i]}">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">kg</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-left">
+                                        ${quantityInfo}
+                                    </td>
+                                </tr>
+                                `;
+                                }
                             }
 
-                            doganaleTableBody.innerHTML += `
-                    <tr data-voce="${data.data['voce_' + i]}">
-                        <td>${data.data['voce_' + i]}</td>
-                        <td>
-                            <div class="input-group">
-                            <input type="number" step="0.01" class="form-control" name="pesoDoganale[]" value="${data.data['peso_' + i]}">
-                                <div class="input-group-append">
-                                    <span class="input-group-text">kg</span>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    `;
+                            // Imposta la casella di spunta in base alla presenza della voce SOTTOPIEDI
+                            document.getElementById('presentiSottopiedi').checked = hasSottopiedi;
+
+                        } else {
+                            // Se non ci sono dati esistenti, carica le voci doganali univoche
+                            loadUniqueDoganale();
                         }
-                    }
-
-                    // Imposta la casella di spunta in base alla presenza della voce SOTTOPIEDI
-                    document.getElementById('presentiSottopiedi').checked = hasSottopiedi;
-
-                } else {
-                    // Se non ci sono dati esistenti, carica le voci doganali univoche
-                    loadUniqueDoganale();
-                }
+                    });
+            })
+            .catch(error => {
+                console.error('Errore durante il recupero dei dati:', error);
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Errore',
+                    text: 'Si è verificato un errore durante il recupero dei dati.'
+                });
             });
 
         // Mostra il modal
@@ -1277,20 +1326,32 @@ include(BASE_PATH . "/components/header.php");
             .then(data => {
                 let doganaleTableBody = document.getElementById('doganaleTableBody');
                 doganaleTableBody.innerHTML = '';
-                data.forEach(voce => {
+
+                data.forEach(item => {
+                    // Formatta la quantità con 2 decimali
+                    const formattedQuantity = parseFloat(item.totale_quantita).toFixed(2);
+
                     doganaleTableBody.innerHTML += `
-            <tr data-voce="${voce}">
-                <td>${voce}</td>
-                <td>
-                    <div class="input-group">
-                        <input type="number" step="0.01" class="form-control" name="pesoDoganale[]">
-                        <div class="input-group-append">
-                            <span class="input-group-text">kg</span>
+                <tr data-voce="${item.voce_doganale}">
+                    <td>${item.voce_doganale}</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" step="0.01" class="form-control" name="pesoDoganale[]">
+                            <div class="input-group-append">
+                                <span class="input-group-text">kg</span>
+                            </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
-            `;
+                    </td>
+                    <td class="text-left">
+                        <span class="badge badge-info">
+                            ${formattedQuantity} 
+                        </span>
+                        <span class="badge badge-secondary">
+                        ${item.um}
+                        </span>
+                    </td>
+                </tr>
+                `;
                 });
 
                 // Controlla se la casella SOTTOPIEDI è spuntata e aggiungi la voce se necessario
@@ -1302,6 +1363,40 @@ include(BASE_PATH . "/components/header.php");
 
     /**
      * Gestisce l'aggiunta o la rimozione della voce SOTTOPIEDI
+     */
+    function addSottopiediRow() {
+        // Controlla se la riga dei sottopiedi esiste già
+        const existingRow = Array.from(document.querySelectorAll('#doganaleTableBody tr')).find(row =>
+            row.getAttribute('data-voce') === 'SOTTOPIEDI');
+
+        if (!existingRow) {
+            const tableBody = document.getElementById('doganaleTableBody');
+
+            // Aggiungi una nuova riga per i sottopiedi
+            const newRow = document.createElement('tr');
+            newRow.setAttribute('data-voce', 'SOTTOPIEDI');
+
+            newRow.innerHTML = `
+            <td>SOTTOPIEDI</td>
+            <td>
+                <div class="input-group">
+                    <input type="number" step="0.01" class="form-control" name="pesoDoganale[]">
+                    <div class="input-group-append">
+                        <span class="input-group-text">kg</span>
+                    </div>
+                </div>
+            </td>
+            <td class="text-left">
+                <span class="badge badge-secondary">...</span>
+            </td>
+        `;
+
+            tableBody.appendChild(newRow);
+        }
+    }
+
+    /**
+     * Aggiunge una riga SOTTOPIEDI alla tabella delle voci doganali
      */
     function toggleSottopiedi() {
         const isChecked = document.getElementById('presentiSottopiedi').checked;
@@ -1315,27 +1410,6 @@ include(BASE_PATH . "/components/header.php");
             // Rimuovi la voce SOTTOPIEDI
             existingSottopiedi.remove();
         }
-    }
-
-    /**
-     * Aggiunge una riga SOTTOPIEDI alla tabella delle voci doganali
-     */
-    function addSottopiediRow() {
-        const tableBody = document.getElementById('doganaleTableBody');
-        const row = document.createElement('tr');
-        row.setAttribute('data-voce', 'SOTTOPIEDI');
-        row.innerHTML = `
-        <td>SOTTOPIEDI</td>
-        <td>
-            <div class="input-group">
-                <input type="number" step="0.01" class="form-control" name="pesoDoganale[]">
-                <div class="input-group-append">
-                    <span class="input-group-text">kg</span>
-                </div>
-            </div>
-        </td>
-    `;
-        tableBody.appendChild(row);
     }
 
     /**

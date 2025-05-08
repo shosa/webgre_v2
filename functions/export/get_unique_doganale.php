@@ -7,18 +7,35 @@ try {
     $conn = getDbInstance();
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-    $stmt = $conn->prepare("SELECT DISTINCT voce_doganale FROM exp_dati_articoli WHERE id_documento = :id_documento");
+    // Query modificata per ottenere anche la somma di qta_reale e l'unità di misura per ogni voce doganale
+    $stmt = $conn->prepare("
+        SELECT 
+            voce_doganale, 
+            SUM(qta_reale) as totale_quantita,
+            um
+        FROM 
+            exp_dati_articoli 
+        WHERE 
+            id_documento = :id_documento 
+        GROUP BY 
+            voce_doganale, um
+        HAVING 
+            voce_doganale IS NOT NULL AND voce_doganale != ''
+    ");
+    
     $stmt->bindParam(':id_documento', $progressivo, PDO::PARAM_INT);
     $stmt->execute();
     
-    $uniqueDoganale = [];
+    $result = [];
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        if (!empty($row['voce_doganale'])) {
-            $uniqueDoganale[] = $row['voce_doganale'];
-        }
+        $result[] = [
+            'voce_doganale' => $row['voce_doganale'],
+            'totale_quantita' => $row['totale_quantita'],
+            'um' => $row['um']
+        ];
     }
     
-    echo json_encode($uniqueDoganale);
+    echo json_encode($result);
     
 } catch (PDOException $e) {
     error_log("Errore nel recupero delle voci doganali: " . $e->getMessage());
