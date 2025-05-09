@@ -325,7 +325,7 @@ function getUniqueDoganaleCodes($articoli)
                         <!-- Righe per autorizzazione -->
                         <tr>
                             <td colspan="6">
-                                <p><strong>Materiale consegnato per la realizzazione di:</strong></p>
+                                <p><strong>Materiale consegnato per la realizzazione di <?php echo $piede['consegnato_per']; ?>:</strong></p>
                                 <ul>
                                     <?php
                                     try {

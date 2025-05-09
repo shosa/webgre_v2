@@ -402,13 +402,13 @@ include(BASE_PATH . "/components/header.php");
                                 </h1>
                                 <div class="text-right"> <!-- Aggiunto text-right per garantire l'allineamento -->
                                     <?php if ($documento['stato'] == 'Aperto'): ?>
-                                            <button class="btn btn-success float-right" onclick="completaDdt()">
-                                                <!-- Aggiunto float-right -->
-                                                <i class="fas fa-check-circle mr-1"></i> TERMINA
-                                            </button>
-                                    <?php else: ?>
-                                            <span class="badge badge-success p-2 float-right">COMPLETATO</span>
+                                        <button class="btn btn-success float-right" onclick="completaDdt()">
                                             <!-- Aggiunto float-right -->
+                                            <i class="fas fa-check-circle mr-1"></i> TERMINA
+                                        </button>
+                                    <?php else: ?>
+                                        <span class="badge badge-success p-2 float-right">COMPLETATO</span>
+                                        <!-- Aggiunto float-right -->
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -455,14 +455,14 @@ include(BASE_PATH . "/components/header.php");
                                                         <?php echo htmlspecialchars($terzista['indirizzo_1']); ?>
                                                     </div>
                                                     <?php if (!empty($terzista['indirizzo_2'])): ?>
-                                                            <div class="info-text">
-                                                                <?php echo htmlspecialchars($terzista['indirizzo_2']); ?>
-                                                            </div>
+                                                        <div class="info-text">
+                                                            <?php echo htmlspecialchars($terzista['indirizzo_2']); ?>
+                                                        </div>
                                                     <?php endif; ?>
                                                     <?php if (!empty($terzista['indirizzo_3'])): ?>
-                                                            <div class="info-text">
-                                                                <?php echo htmlspecialchars($terzista['indirizzo_3']); ?>
-                                                            </div>
+                                                        <div class="info-text">
+                                                            <?php echo htmlspecialchars($terzista['indirizzo_3']); ?>
+                                                        </div>
                                                     <?php endif; ?>
                                                     <div class="info-text font-weight-bold">
                                                         <?php echo htmlspecialchars($terzista['nazione']); ?>
@@ -486,16 +486,16 @@ include(BASE_PATH . "/components/header.php");
                                                     <div class="custom-scrollbar">
                                                         <ul class="list-unstyled mb-0">
                                                             <?php foreach ($lanci as $lancio): ?>
-                                                                    <li class="mb-1">
-                                                                        <span
-                                                                            class="badge badge-light mr-1"><?php echo $lancio['lancio']; ?></span>
-                                                                        <small>
-                                                                            <strong>Art:</strong>
-                                                                            <?php echo $lancio['articolo']; ?> |
-                                                                            <strong>Paia:</strong>
-                                                                            <?php echo $lancio['paia']; ?>
-                                                                        </small>
-                                                                    </li>
+                                                                <li class="mb-1">
+                                                                    <span
+                                                                        class="badge badge-light mr-1"><?php echo $lancio['lancio']; ?></span>
+                                                                    <small>
+                                                                        <strong>Art:</strong>
+                                                                        <?php echo $lancio['articolo']; ?> |
+                                                                        <strong>Paia:</strong>
+                                                                        <?php echo $lancio['paia']; ?>
+                                                                    </small>
+                                                                </li>
                                                             <?php endforeach; ?>
                                                         </ul>
                                                     </div>
@@ -518,28 +518,28 @@ include(BASE_PATH . "/components/header.php");
                                                     <div class="custom-scrollbar">
                                                         <div class="d-flex flex-wrap">
                                                             <?php foreach ($files as $file): ?>
-                                                                    <div class="text-center mx-2 mb-2">
-                                                                        <a href="<?php echo $file; ?>" download
-                                                                            class="text-decoration-none">
-                                                                            <i class="fas fa-file-excel attachment-icon"></i>
-                                                                            <div class="small mt-1">
-                                                                                <?php echo basename($file); ?>
-                                                                            </div>
-                                                                        </a>
-                                                                    </div>
+                                                                <div class="text-center mx-2 mb-2">
+                                                                    <a href="<?php echo $file; ?>" download
+                                                                        class="text-decoration-none">
+                                                                        <i class="fas fa-file-excel attachment-icon"></i>
+                                                                        <div class="small mt-1">
+                                                                            <?php echo basename($file); ?>
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
                                                             <?php endforeach; ?>
                                                             <?php if (empty($files)): ?>
-                                                                    <div class="text-muted">Nessun allegato disponibile</div>
+                                                                <div class="text-muted">Nessun allegato disponibile</div>
                                                             <?php endif; ?>
                                                         </div>
                                                     </div>
                                                     <?php if (!empty($files)): ?>
-                                                            <div class="mt-3 text-center">
-                                                                <a href="download_all_attachments.php?progressivo=<?php echo $progressivo; ?>"
-                                                                    class="btn btn-sm btn-success">
-                                                                    <i class="fas fa-download mr-1"></i> Scarica tutti (ZIP)
-                                                                </a>
-                                                            </div>
+                                                        <div class="mt-3 text-center">
+                                                            <a href="download_all_attachments.php?progressivo=<?php echo $progressivo; ?>"
+                                                                class="btn btn-sm btn-success">
+                                                                <i class="fas fa-download mr-1"></i> Scarica tutti (ZIP)
+                                                            </a>
+                                                        </div>
                                                     <?php endif; ?>
                                                 </div>
                                                 <div class="col-auto">
@@ -569,10 +569,10 @@ include(BASE_PATH . "/components/header.php");
                                         <div class="col-md-7 mb-2">
                                             <div class="action-buttons justify-content-md-end">
                                                 <?php if ($documento['first_boot'] == 1): ?>
-                                                        <button class="btn btn-light border-dark btn-icon"
-                                                            onclick="cercaNcECosti()">
-                                                            <i class="fal fa-search-plus"></i> Cerca Voci e Costi
-                                                        </button>
+                                                    <button class="btn btn-light border-dark btn-icon"
+                                                        onclick="cercaNcECosti()">
+                                                        <i class="fal fa-search-plus"></i> Cerca Voci e Costi
+                                                    </button>
                                                 <?php endif; ?>
                                                 <button class="btn btn-warning btn-icon" onclick="elaboraMancanti()">
                                                     <i class="fal fa-sync-alt"></i> Elabora Mancanti
@@ -580,8 +580,8 @@ include(BASE_PATH . "/components/header.php");
                                                 <button class="btn btn-info btn-icon" disabled>
                                                     <i class="fal fa-exclamation-triangle"></i> Mancanze
                                                     <?php if ($mancanzeCount > 0): ?>
-                                                            <span
-                                                                class="badge badge-danger"><?php echo $mancanzeCount; ?></span>
+                                                        <span
+                                                            class="badge badge-danger"><?php echo $mancanzeCount; ?></span>
                                                     <?php endif; ?>
                                                 </button>
                                                 <button class="btn btn-indigo btn-icon" onclick="openMancantiModal()">
@@ -650,8 +650,50 @@ include(BASE_PATH . "/components/header.php");
                                                 $qta_mancante = $articolo['qta_originale'] - $articolo['qta_reale'];
                                                 $style = ($qta_mancante > 0) ? 'style="background-color: #ffe8c3"' : '';
                                                 ?>
-                                                    <tr>
-                                                        <td contenteditable="false" style="background-color:#f0f0f0;">
+                                                <tr>
+                                                    <td contenteditable="false" style="background-color:#f0f0f0;">
+                                                        <?php echo htmlspecialchars($articolo['codice_articolo']); ?>
+                                                    </td>
+                                                    <td contenteditable="true"
+                                                        onBlur="updateData(<?php echo $articolo['id']; ?>, 'descrizione', this)">
+                                                        <?php echo htmlspecialchars($articolo['descrizione']); ?>
+                                                    </td>
+                                                    <td contenteditable="true"
+                                                        onBlur="updateData(<?php echo $articolo['id']; ?>, 'voce_doganale', this)">
+                                                        <?php echo htmlspecialchars($articolo['voce_doganale']); ?>
+                                                    </td>
+                                                    <td contenteditable="false" style="background-color:#f0f0f0;">
+                                                        <?php echo htmlspecialchars($articolo['um']); ?>
+                                                    </td>
+                                                    <td contenteditable="false" style="background-color:#f0f0f0;">
+                                                        <?php echo htmlspecialchars($articolo['qta_originale']); ?>
+                                                    </td>
+                                                    <td contenteditable="true" <?php echo $style; ?>
+                                                        onBlur="updateData(<?php echo $articolo['id']; ?>, 'qta_reale', this)">
+                                                        <?php echo htmlspecialchars($articolo['qta_reale']); ?>
+                                                    </td>
+                                                    <td contenteditable="true"
+                                                        onBlur="updateData(<?php echo $articolo['id']; ?>, 'prezzo_unitario', this)">
+                                                        <?php echo htmlspecialchars($articolo['prezzo_unitario']); ?>
+                                                    </td>
+                                                    <td style="background-color:#d9fae2;">
+                                                        <?php echo number_format($subtotal, 2, ',', '.'); ?>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+
+                                            <!-- Ora visualizziamo i mancanti, raggruppati per DDT di origine -->
+                                            <?php foreach ($mancantiByDDT as $rif => $mancanti): ?>
+                                                <tr class="mancanti-header bg-secondary text-white">
+                                                    <td colspan="8" class="text-center font-weight-bold">
+                                                        MANCANTI SU <?php echo htmlspecialchars($rif); ?>
+                                                    </td>
+                                                </tr>
+                                                <?php foreach ($mancanti as $articolo):
+                                                    $subtotal = round($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2);
+                                                    ?>
+                                                    <tr class="table-info">
+                                                        <td contenteditable="false" style="background-color:#e3f6fc;">
                                                             <?php echo htmlspecialchars($articolo['codice_articolo']); ?>
                                                         </td>
                                                         <td contenteditable="true"
@@ -662,13 +704,13 @@ include(BASE_PATH . "/components/header.php");
                                                             onBlur="updateData(<?php echo $articolo['id']; ?>, 'voce_doganale', this)">
                                                             <?php echo htmlspecialchars($articolo['voce_doganale']); ?>
                                                         </td>
-                                                        <td contenteditable="false" style="background-color:#f0f0f0;">
+                                                        <td contenteditable="false" style="background-color:#e3f6fc;">
                                                             <?php echo htmlspecialchars($articolo['um']); ?>
                                                         </td>
-                                                        <td contenteditable="false" style="background-color:#f0f0f0;">
+                                                        <td contenteditable="false" style="background-color:#e3f6fc;">
                                                             <?php echo htmlspecialchars($articolo['qta_originale']); ?>
                                                         </td>
-                                                        <td contenteditable="true" <?php echo $style; ?>
+                                                        <td contenteditable="true"
                                                             onBlur="updateData(<?php echo $articolo['id']; ?>, 'qta_reale', this)">
                                                             <?php echo htmlspecialchars($articolo['qta_reale']); ?>
                                                         </td>
@@ -680,49 +722,7 @@ include(BASE_PATH . "/components/header.php");
                                                             <?php echo number_format($subtotal, 2, ',', '.'); ?>
                                                         </td>
                                                     </tr>
-                                            <?php endforeach; ?>
-
-                                            <!-- Ora visualizziamo i mancanti, raggruppati per DDT di origine -->
-                                            <?php foreach ($mancantiByDDT as $rif => $mancanti): ?>
-                                                    <tr class="mancanti-header bg-secondary text-white">
-                                                        <td colspan="8" class="text-center font-weight-bold">
-                                                            MANCANTI SU <?php echo htmlspecialchars($rif); ?>
-                                                        </td>
-                                                    </tr>
-                                                    <?php foreach ($mancanti as $articolo):
-                                                        $subtotal = round($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2);
-                                                        ?>
-                                                            <tr class="table-info">
-                                                                <td contenteditable="false" style="background-color:#e3f6fc;">
-                                                                    <?php echo htmlspecialchars($articolo['codice_articolo']); ?>
-                                                                </td>
-                                                                <td contenteditable="true"
-                                                                    onBlur="updateData(<?php echo $articolo['id']; ?>, 'descrizione', this)">
-                                                                    <?php echo htmlspecialchars($articolo['descrizione']); ?>
-                                                                </td>
-                                                                <td contenteditable="true"
-                                                                    onBlur="updateData(<?php echo $articolo['id']; ?>, 'voce_doganale', this)">
-                                                                    <?php echo htmlspecialchars($articolo['voce_doganale']); ?>
-                                                                </td>
-                                                                <td contenteditable="false" style="background-color:#e3f6fc;">
-                                                                    <?php echo htmlspecialchars($articolo['um']); ?>
-                                                                </td>
-                                                                <td contenteditable="false" style="background-color:#e3f6fc;">
-                                                                    <?php echo htmlspecialchars($articolo['qta_originale']); ?>
-                                                                </td>
-                                                                <td contenteditable="true"
-                                                                    onBlur="updateData(<?php echo $articolo['id']; ?>, 'qta_reale', this)">
-                                                                    <?php echo htmlspecialchars($articolo['qta_reale']); ?>
-                                                                </td>
-                                                                <td contenteditable="true"
-                                                                    onBlur="updateData(<?php echo $articolo['id']; ?>, 'prezzo_unitario', this)">
-                                                                    <?php echo htmlspecialchars($articolo['prezzo_unitario']); ?>
-                                                                </td>
-                                                                <td style="background-color:#d9fae2;">
-                                                                    <?php echo number_format($subtotal, 2, ',', '.'); ?>
-                                                                </td>
-                                                            </tr>
-                                                    <?php endforeach; ?>
+                                                <?php endforeach; ?>
                                             <?php endforeach; ?>
                                         </tbody>
                                         <tfoot>
@@ -784,6 +784,12 @@ include(BASE_PATH . "/components/header.php");
                                         <label for="trasportatore" class="form-label">TRASPORTATORE:</label>
                                         <input type="text" class="form-control" id="trasportatore"
                                             placeholder="Nome del trasportatore">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="consegnato" class="form-label">MATERIALE CONSEGNATO PER LA
+                                            REALIZZAZIONE DI:</label>
+                                        <input type="text" class="form-control" id="consegnato"
+                                            placeholder="Tomaie , sottopiedi , parti di tomaia">
                                     </div>
 
                                     <div class="card mt-4">
@@ -953,14 +959,14 @@ include(BASE_PATH . "/components/header.php");
 
         // Aggiunta delle righe con i dati degli articoli
         <?php foreach ($articoli as $articolo): ?>
-                worksheet.addRow({
-                    codice_articolo: '<?php echo addslashes($articolo['codice_articolo']); ?>',
-                    descrizione: '<?php echo addslashes($articolo['descrizione']); ?>',
-                    voce_doganale: '<?php echo addslashes($articolo['voce_doganale']); ?>',
-                    um: '<?php echo addslashes($articolo['um']); ?>',
-                    qta_reale: Number('<?php echo str_replace(',', '.', $articolo['qta_reale']); ?>'),
-                    subtotal: Number('<?php echo number_format($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2, '.', ''); ?>')
-                });
+            worksheet.addRow({
+                codice_articolo: '<?php echo addslashes($articolo['codice_articolo']); ?>',
+                descrizione: '<?php echo addslashes($articolo['descrizione']); ?>',
+                voce_doganale: '<?php echo addslashes($articolo['voce_doganale']); ?>',
+                um: '<?php echo addslashes($articolo['um']); ?>',
+                qta_reale: Number('<?php echo str_replace(',', '.', $articolo['qta_reale']); ?>'),
+                subtotal: Number('<?php echo number_format($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2, '.', ''); ?>')
+            });
         <?php endforeach; ?>
 
         // Aggiunta delle voci doganali uniche
@@ -1244,6 +1250,7 @@ include(BASE_PATH . "/components/header.php");
                             document.getElementById('pesoLordo').value = data.data.tot_peso_lordo;
                             document.getElementById('pesoNetto').value = data.data.tot_peso_netto;
                             document.getElementById('trasportatore').value = data.data.trasportatore;
+                            document.getElementById('consegnato').value = data.data.consegnato_per;
 
                             // Carica i dati delle voci doganali
                             let doganaleTableBody = document.getElementById('doganaleTableBody');
@@ -1421,6 +1428,7 @@ include(BASE_PATH . "/components/header.php");
         let pesoLordo = document.getElementById('pesoLordo').value;
         let pesoNetto = document.getElementById('pesoNetto').value;
         let trasportatore = document.getElementById('trasportatore').value;
+        let consegnato = document.getElementById('consegnato').value;
 
         // Validazione
         if (!aspettoMerce || !numeroColli || !pesoLordo || !pesoNetto) {
@@ -1464,6 +1472,7 @@ include(BASE_PATH . "/components/header.php");
                 pesoLordo: pesoLordo,
                 pesoNetto: pesoNetto,
                 trasportatore: trasportatore,
+                consegnato: consegnato,
                 vociDoganali: vociDoganali
             })
         })

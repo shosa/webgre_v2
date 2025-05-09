@@ -11,6 +11,8 @@ $pesoLordo = $data['pesoLordo'];
 $pesoNetto = $data['pesoNetto'];
 $vociDoganali = $data['vociDoganali'];
 $trasportatore = $data['trasportatore'];
+$consegnato = $data['consegnato'];
+
 
 // Verifica se esiste già un record per il progressivo
 $sqlCheck = "SELECT * FROM exp_piede_documenti WHERE id_documento = :progressivo LIMIT 1";
@@ -25,7 +27,8 @@ if ($existingData) {
         'n_colli' => $numeroColli,
         'tot_peso_lordo' => $pesoLordo,
         'tot_peso_netto' => $pesoNetto,
-        'trasportatore' => $trasportatore
+        'trasportatore' => $trasportatore,
+        'consegnato_per' => $consegnato
     ];
 
     for ($i = 0; $i < count($vociDoganali); $i++) {
@@ -57,7 +60,8 @@ if ($existingData) {
         'n_colli' => $numeroColli,
         'tot_peso_lordo' => $pesoLordo,
         'tot_peso_netto' => $pesoNetto,
-        'trasportatore' => $trasportatore
+        'trasportatore' => $trasportatore,
+        'consegnato_per' => $consegnato
     ];
 
     for ($i = 0; $i < count($vociDoganali); $i++) {
