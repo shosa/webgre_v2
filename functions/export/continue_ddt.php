@@ -1257,46 +1257,84 @@ include(BASE_PATH . "/components/header.php");
                             doganaleTableBody.innerHTML = '';
                             let hasSottopiedi = false;
 
-                            for (let i = 1; i <= 10; i++) {
+                            // Raccogli tutte le voci doganali per mostrare (sia dalle voci che da data)
+                            const allVoci = new Set();
+
+                            // Aggiungi le voci da quantitaMap
+                            Object.keys(quantitaMap).forEach(voce => {
+                                allVoci.add(voce);
+                            });
+
+                            // Trova il numero massimo di voci nei dati
+                            let maxVoceIndex = 0;
+                            for (const key in data.data) {
+                                if (key.startsWith('voce_')) {
+                                    const index = parseInt(key.replace('voce_', ''));
+                                    maxVoceIndex = Math.max(maxVoceIndex, index);
+                                }
+                            }
+
+                            // Aggiungi le voci dai dati salvati
+                            for (let i = 1; i <= maxVoceIndex; i++) {
                                 if (data.data['voce_' + i]) {
+                                    allVoci.add(data.data['voce_' + i]);
+
                                     // Verifica se esiste già la voce SOTTOPIEDI
                                     if (data.data['voce_' + i] === 'SOTTOPIEDI') {
                                         hasSottopiedi = true;
                                     }
-
-                                    // Ottieni informazioni sulla quantità per questa voce doganale
-                                    const voceDoganale = data.data['voce_' + i];
-                                    let quantityInfo = '';
-
-                                    if (quantitaMap[voceDoganale]) {
-                                        const formattedQuantity = parseFloat(quantitaMap[voceDoganale].totale_quantita).toFixed(2);
-                                        const um = quantitaMap[voceDoganale].um;
-                                        quantityInfo = `<span class="badge badge-info">${formattedQuantity}</span> <span class="badge badge-secondary">${um}</span>`;
-                                    } else {
-                                        quantityInfo = '<span class="badge badge-secondary">...</span>';
-                                    }
-
-                                    doganaleTableBody.innerHTML += `
-                                <tr data-voce="${voceDoganale}">
-                                    <td>${voceDoganale}</td>
-                                    <td>
-                                        <div class="input-group">
-                                        <input type="number" step="0.01" class="form-control" name="pesoDoganale[]" value="${data.data['peso_' + i]}">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">kg</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-left">
-                                        ${quantityInfo}
-                                    </td>
-                                </tr>
-                                `;
                                 }
                             }
 
+                            // Ora visualizza tutte le voci, inclusa SOTTOPIEDI se presente
+                            let index = 0;
+                            allVoci.forEach(voceDoganale => {
+                                // Trova il peso corrispondente nei dati salvati (se esiste)
+                                let pesoValue = '0.00';
+                                for (let i = 1; i <= maxVoceIndex; i++) {
+                                    if (data.data['voce_' + i] === voceDoganale) {
+                                        pesoValue = data.data['peso_' + i];
+                                        break;
+                                    }
+                                }
+
+                                // Ottieni informazioni sulla quantità per questa voce doganale
+                                let quantityInfo = '';
+                                if (quantitaMap[voceDoganale]) {
+                                    const formattedQuantity = parseFloat(quantitaMap[voceDoganale].totale_quantita).toFixed(2);
+                                    const um = quantitaMap[voceDoganale].um;
+                                    quantityInfo = `<span class="badge badge-info">${formattedQuantity}</span> <span class="badge badge-secondary">${um}</span>`;
+                                } else {
+                                    quantityInfo = '<span class="badge badge-secondary">...</span>';
+                                }
+
+                                doganaleTableBody.innerHTML += `
+                            <tr data-voce="${voceDoganale}">
+                                <td>${voceDoganale}</td>
+                                <td>
+                                    <div class="input-group">
+                                    <input type="number" step="0.01" class="form-control" name="pesoDoganale[]" value="${pesoValue}">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">kg</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-left">
+                                    ${quantityInfo}
+                                </td>
+                            </tr>
+                            `;
+
+                                index++;
+                            });
+
                             // Imposta la casella di spunta in base alla presenza della voce SOTTOPIEDI
                             document.getElementById('presentiSottopiedi').checked = hasSottopiedi;
+                            document.getElementById('presentiSottopiedi').setAttribute("disabled", "disabled");
+
+                            // Se SOTTOPIEDI è selezionato ma non è nella tabella, verrà aggiunto
+                            // dalla funzione toggleSottopiedi esistente quando viene modificata la casella
+                            // Non chiamiamo direttamente toggleSottopiedi qui per mantenere il comportamento esistente
 
                         } else {
                             // Se non ci sono dati esistenti, carica le voci doganali univoche

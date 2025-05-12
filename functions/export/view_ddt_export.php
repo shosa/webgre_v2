@@ -223,7 +223,7 @@ function getUniqueDoganaleCodes($articoli)
                             if ($articolo['qta_reale'] > 0 && $articolo['is_mancante'] == 0) {
                                 $subtotal = round($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2);
                                 ?>
-                                <tr>
+                                <tr style="border:none !important;">
                                     <td><?php echo $articolo['codice_articolo']; ?></td>
                                     <td class="no-border-right"><?php echo $articolo['descrizione']; ?></td>
                                     <td class="no-border-left"><?php echo $articolo['voce_doganale']; ?></td>
