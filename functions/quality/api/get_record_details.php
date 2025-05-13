@@ -65,7 +65,7 @@ try {
                 'data' => [
                     'record_id_info' => [
                         'record_id' => $informazione['id'],
-                        'cartellino' => $informazione['cartellino'],
+                        'cartellino' => $informazione['numero_cartellino'],
                         'reparto' => $informazione['reparto'],
                         'timestamp' => $informazione['data_controllo'],
                         'operatore' => $informazione['operatore'],
