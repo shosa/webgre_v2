@@ -112,7 +112,7 @@ try {
     // Risposta client (senza dettagli sensibili)
     $response = [
         'status' => 'error',
-        'message' => 'Errore di connessione al database'
+        'message' => $e->getMessage()
     ];
 } catch (Exception $e) {
     // Log dell'errore (su server)
@@ -121,7 +121,7 @@ try {
     // Risposta client
     $response = [
         'status' => 'error',
-        'message' => 'Si è verificato un errore'
+        'message' => $e->getMessage()
     ];
 }
 
