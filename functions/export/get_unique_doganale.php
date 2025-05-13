@@ -18,7 +18,7 @@ try {
         WHERE 
             id_documento = :id_documento 
         GROUP BY 
-            voce_doganale, um
+            voce_doganale
         HAVING 
             voce_doganale IS NOT NULL AND voce_doganale != ''
     ");
