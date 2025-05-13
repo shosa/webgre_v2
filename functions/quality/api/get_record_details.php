@@ -82,7 +82,7 @@ try {
             // Verifica se il record ha eccezioni (ha_eccezioni = 1)
             if (isset($informazione['ha_eccezioni']) && $informazione['ha_eccezioni'] == 1) {
                 // Cerca le eccezioni associate a questo record nella tabella CQ_HERMES_ECCEZIONI
-                $stmt_eccezioni = $db->prepare("SELECT * FROM CQ_HERMES_ECCEZIONI WHERE cartellino_id = :cartellino_id");
+                $stmt_eccezioni = $db->prepare("SELECT * FROM cq_hermes_eccezioni WHERE cartellino_id = :cartellino_id");
                 $stmt_eccezioni->bindParam(':cartellino_id', $informazione['cartellino'], PDO::PARAM_STR);
                 $stmt_eccezioni->execute();
                 $eccezioni = $stmt_eccezioni->fetchAll(PDO::FETCH_ASSOC);
@@ -112,7 +112,7 @@ try {
     // Risposta client (senza dettagli sensibili)
     $response = [
         'status' => 'error',
-        'message' => $e->getMessage()
+        'message' => 'Errore di connessione al database'
     ];
 } catch (Exception $e) {
     // Log dell'errore (su server)
@@ -121,7 +121,7 @@ try {
     // Risposta client
     $response = [
         'status' => 'error',
-        'message' => $e->getMessage()
+        'message' => 'Si è verificato un errore'
     ];
 }
 
