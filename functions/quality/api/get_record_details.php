@@ -2,15 +2,15 @@
 /**
  * API per ottenere i dettagli completi di un record_id
  * Endpoint: /api/get_record_id_details.php
- * Metodo: POST
- * Formato richiesta: JSON o form-data
+ * Metodo: GET
+ * Parametri: record_id
  * Formato risposta: JSON
  */
 
 // Abilita CORS per consentire richieste da app Android
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Methods: GET, OPTIONS");
 header("Content-Type: application/json; charset=UTF-8");
 
 // Gestisci le richieste OPTIONS (preflight per CORS)
@@ -19,8 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit;
 }
 
-// Verifica che il metodo di richiesta sia POST
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+// Verifica che il metodo di richiesta sia GET
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     http_response_code(405); // Method Not Allowed
     echo json_encode(['status' => 'error', 'message' => 'Metodo non consentito']);
     exit;
@@ -33,16 +33,8 @@ require_once '../../../config/config.php';
 $response = ['status' => 'error', 'message' => 'Errore sconosciuto'];
 
 try {
-    // Ottieni il payload JSON dalla richiesta
-    $json_data = file_get_contents('php://input');
-    $data = json_decode($json_data, true);
-
-    // Se non è JSON, prova a leggere dal POST standard
-    if (json_last_error() !== JSON_ERROR_NONE) {
-        $record_id = filter_input(INPUT_POST, 'record_id', FILTER_SANITIZE_STRING);
-    } else {
-        $record_id = isset($data['record_id']) ? trim($data['record_id']) : null;
-    }
+    // Ottieni il record_id dal parametro GET
+    $record_id = isset($_GET['record_id']) ? trim($_GET['record_id']) : null;
 
     // Verifica che il record_id sia stato fornito
     if (empty($record_id)) {
