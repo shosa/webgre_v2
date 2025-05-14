@@ -7,7 +7,7 @@ try {
     $conn = getDbInstance();
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-    // Query modificata per ottenere anche la somma di qta_reale e l'unità di misura per ogni voce doganale
+    // Query corretta: aggiunto um al GROUP BY
     $stmt = $conn->prepare("
         SELECT 
             voce_doganale, 
@@ -18,7 +18,7 @@ try {
         WHERE 
             id_documento = :id_documento 
         GROUP BY 
-            voce_doganale
+            voce_doganale, um  
         HAVING 
             voce_doganale IS NOT NULL AND voce_doganale != ''
     ");
