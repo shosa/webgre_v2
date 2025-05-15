@@ -302,7 +302,7 @@ function getUniqueDoganaleCodes($articoli)
                                     <td></td>
                                     <td style="text-align:right;">
                                         <?php if ($piede['voce_' . $i] === 'SOTTOPIEDI'): ?>
-                                            <b><u>SOTTOPIEDI</u></b> N.C. 58063290 PESO NETTO KG.
+                                            <b><u>SOTTOPIEDI</u></b> N.C. 56031480 PESO NETTO KG.
                                         <?php else: ?>
                                             N.C. <?php echo $piede['voce_' . $i]; ?> PESO NETTO KG.
                                         <?php endif; ?>
