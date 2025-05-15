@@ -62,6 +62,25 @@ function getUniqueDoganaleCodes($articoli)
     }
     return $codes;
 }
+
+// Funzione per separare gli articoli con voce doganale 64061010 dagli altri
+function separateArticlesByVoceDoganale($articoli)
+{
+    $priorityArticles = [];
+    $otherArticles = [];
+    
+    foreach ($articoli as $articolo) {
+        if ($articolo['qta_reale'] > 0 && $articolo['is_mancante'] == 0) {
+            if ($articolo['voce_doganale'] == '64061010') {
+                $priorityArticles[] = $articolo;
+            } else {
+                $otherArticles[] = $articolo;
+            }
+        }
+    }
+    
+    return ['priority' => $priorityArticles, 'others' => $otherArticles];
+}
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -218,20 +237,45 @@ function getUniqueDoganaleCodes($articoli)
                     </thead>
                     <tbody>
                         <!-- Dati del DDT (articoli normali) -->
-                        <?php foreach ($articoli as $articolo): ?>
-                            <?php
-                            if ($articolo['qta_reale'] > 0 && $articolo['is_mancante'] == 0) {
-                                $subtotal = round($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2);
-                                ?>
-                                <tr style="border:none !important;">
-                                    <td><?php echo $articolo['codice_articolo']; ?></td>
-                                    <td class="no-border-right"><?php echo $articolo['descrizione']; ?></td>
-                                    <td class="no-border-left"><?php echo $articolo['voce_doganale']; ?></td>
-                                    <td><?php echo $articolo['um']; ?></td>
-                                    <td><?php echo $articolo['qta_reale']; ?></td>
-                                    <td><?php echo number_format($subtotal, 2, ',', '.'); ?></td>
-                                </tr>
-                            <?php } ?>
+                        <?php
+                        // Separa gli articoli con voce doganale 64061010 dagli altri
+                        $separatedArticles = separateArticlesByVoceDoganale($articoli);
+                        $priorityArticles = $separatedArticles['priority'];
+                        $otherArticles = $separatedArticles['others'];
+                        
+                        // Prima visualizza gli articoli con voce doganale 64061010 (se ce ne sono)
+                        foreach ($priorityArticles as $articolo):
+                            $subtotal = round($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2);
+                        ?>
+                            <tr style="border:none !important;">
+                                <td><?php echo $articolo['codice_articolo']; ?></td>
+                                <td class="no-border-right"><?php echo $articolo['descrizione']; ?></td>
+                                <td class="no-border-left"><?php echo $articolo['voce_doganale']; ?></td>
+                                <td><?php echo $articolo['um']; ?></td>
+                                <td><?php echo $articolo['qta_reale']; ?></td>
+                                <td><?php echo number_format($subtotal, 2, ',', '.'); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        
+                        <!-- Aggiungi riga di commento solo se ci sono articoli prioritari E articoli normali -->
+                        <?php if (!empty($priorityArticles) && !empty($otherArticles)): ?>
+                            <tr>
+                                <td colspan="6"><strong>COMPLETE DI ACCESSORI:</strong></td>
+                            </tr>
+                        <?php endif; ?>
+                        
+                        <!-- Visualizza tutti gli altri articoli -->
+                        <?php foreach ($otherArticles as $articolo):
+                            $subtotal = round($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2);
+                        ?>
+                            <tr style="border:none !important;">
+                                <td><?php echo $articolo['codice_articolo']; ?></td>
+                                <td class="no-border-right"><?php echo $articolo['descrizione']; ?></td>
+                                <td class="no-border-left"><?php echo $articolo['voce_doganale']; ?></td>
+                                <td><?php echo $articolo['um']; ?></td>
+                                <td><?php echo $articolo['qta_reale']; ?></td>
+                                <td><?php echo number_format($subtotal, 2, ',', '.'); ?></td>
+                            </tr>
                         <?php endforeach; ?>
 
                         <!-- Raggruppa i mancanti per DDT di origine -->
