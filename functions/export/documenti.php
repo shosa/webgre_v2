@@ -119,11 +119,16 @@ include(BASE_PATH . "/components/header.php");
                     <!-- Tabella documenti -->
                     <!-- Tabella documenti -->
                     <div class="card shadow mb-4">
+                        <!-- Modifica questa parte del codice nella sezione header della card della tabella documenti -->
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">Lista Documenti</h6>
                             <div>
                                 <button class="btn btn-sm btn-outline-primary mr-2" id="refreshTable">
                                     <i class="fas fa-sync-alt"></i> Aggiorna
+                                </button>
+                                <button class="btn btn-sm btn-outline-info mr-2" id="stampaSovraccolliBtn"
+                                    data-toggle="modal" data-target="#segnacolli-modal">
+                                    <i class="fas fa-tags"></i> Stampa Sovraccolli
                                 </button>
                                 <div class="dropdown d-inline-block">
                                     <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button"
@@ -246,6 +251,7 @@ include(BASE_PATH . "/components/header.php");
 
 
 
+
                                                             <?php elseif ($row['stato'] == 'Chiuso'): ?>
                                                                 <!-- Per documenti CHIUSI -->
                                                                 <a target="_blank"
@@ -260,6 +266,7 @@ include(BASE_PATH . "/components/header.php");
                                                                     title="Dettagli">
                                                                     <i class="fal fa-info-circle"></i>
                                                                 </a>
+
                                                             <?php endif; ?>
 
 
@@ -390,7 +397,68 @@ include(BASE_PATH . "/components/header.php");
             </div>
         </div>
     </div>
+
+    <!-- Modale Stampa Segnacolli -->
+    <div class="modal fade" id="segnacolli-modal" tabindex="-1" role="dialog" aria-labelledby="segnacolli-modal-label"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="segnacolli-modal-label">Stampa Segnacolli</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Seleziona il documento per cui generare i segnacolli:</p>
+
+                    <div class="form-group">
+                        <select id="segnacolli-documento" class="form-control">
+                            <option value="">Seleziona documento...</option>
+                            <?php
+                            // Recupera tutti i documenti con colli per il dropdown
+                            try {
+                                $stmt = $conn->prepare("
+                                SELECT d.id, d.id_terzista, t.ragione_sociale, pd.n_colli 
+                                FROM exp_documenti d
+                                JOIN exp_terzisti t ON d.id_terzista = t.id
+                                JOIN exp_piede_documenti pd ON d.id = pd.id_documento
+                                WHERE pd.n_colli > 0
+                                ORDER BY d.id DESC
+                                LIMIT 50
+                            ");
+                                $stmt->execute();
+                                $documenti_colli = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                foreach ($documenti_colli as $doc) {
+                                    echo '<option value="' . $doc['id'] . '">DDT #' . $doc['id'] . ' - ' .
+                                        htmlspecialchars($doc['ragione_sociale']) . ' (' . $doc['n_colli'] . ' colli)</option>';
+                                }
+                            } catch (PDOException $e) {
+                                error_log("Errore nel recupero dei documenti per segnacolli: " . $e->getMessage());
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        I segnacolli verranno generati in base ai dati del documento selezionato.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                    <button type="button" class="btn btn-primary" id="stampa-segnacolli-btn">
+                        <i class="fas fa-print mr-2"></i>Stampa Segnacolli
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </body>
+
 
 <script src="<?php echo BASE_URL ?>/vendor/jquery/jquery.min.js"></script>
 <script src="<?php echo BASE_URL ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -541,6 +609,32 @@ include(BASE_PATH . "/components/header.php");
                     });
                 }
             });
+        });
+
+        if ($.fn.select2) {
+            $('#segnacolli-documento').select2({
+                dropdownParent: $('#segnacolli-modal'),
+                placeholder: "Seleziona documento...",
+                width: '100%'
+            });
+        }
+
+        // Gestore per il pulsante "Stampa Segnacolli"
+        $('#stampa-segnacolli-btn').click(function () {
+            const idDocumento = $('#segnacolli-documento').val();
+
+            if (!idDocumento) {
+                Swal.fire({
+                    title: 'Attenzione',
+                    text: 'Seleziona un documento per procedere',
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6'
+                });
+                return;
+            }
+
+            // Apri la pagina per la generazione dei segnacolli in una nuova scheda
+            window.open('make_segnacolli.php?id_documento=' + idDocumento, '_blank');
         });
     });
 
