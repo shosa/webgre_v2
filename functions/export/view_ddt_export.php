@@ -68,7 +68,7 @@ function separateArticlesByVoceDoganale($articoli)
 {
     $priorityArticles = [];
     $otherArticles = [];
-    
+
     foreach ($articoli as $articolo) {
         if ($articolo['qta_reale'] > 0 && $articolo['is_mancante'] == 0) {
             if ($articolo['voce_doganale'] == '64061010') {
@@ -78,7 +78,7 @@ function separateArticlesByVoceDoganale($articoli)
             }
         }
     }
-    
+
     return ['priority' => $priorityArticles, 'others' => $otherArticles];
 }
 ?>
@@ -242,11 +242,11 @@ function separateArticlesByVoceDoganale($articoli)
                         $separatedArticles = separateArticlesByVoceDoganale($articoli);
                         $priorityArticles = $separatedArticles['priority'];
                         $otherArticles = $separatedArticles['others'];
-                        
+
                         // Prima visualizza gli articoli con voce doganale 64061010 (se ce ne sono)
                         foreach ($priorityArticles as $articolo):
                             $subtotal = round($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2);
-                        ?>
+                            ?>
                             <tr style="border:none !important;">
                                 <td><?php echo $articolo['codice_articolo']; ?></td>
                                 <td class="no-border-right"><?php echo $articolo['descrizione']; ?></td>
@@ -256,18 +256,18 @@ function separateArticlesByVoceDoganale($articoli)
                                 <td><?php echo number_format($subtotal, 2, ',', '.'); ?></td>
                             </tr>
                         <?php endforeach; ?>
-                        
+
                         <!-- Aggiungi riga di commento solo se ci sono articoli prioritari E articoli normali -->
                         <?php if (!empty($priorityArticles) && !empty($otherArticles)): ?>
                             <tr>
                                 <td colspan="6"><strong>COMPLETE DI ACCESSORI:</strong></td>
                             </tr>
                         <?php endif; ?>
-                        
+
                         <!-- Visualizza tutti gli altri articoli -->
                         <?php foreach ($otherArticles as $articolo):
                             $subtotal = round($articolo['qta_reale'] * $articolo['prezzo_unitario'], 2);
-                        ?>
+                            ?>
                             <tr style="border:none !important;">
                                 <td><?php echo $articolo['codice_articolo']; ?></td>
                                 <td class="no-border-right"><?php echo $articolo['descrizione']; ?></td>
@@ -369,7 +369,8 @@ function separateArticlesByVoceDoganale($articoli)
                         <!-- Righe per autorizzazione -->
                         <tr>
                             <td colspan="6">
-                                <p><strong>Materiale consegnato per la realizzazione di <?php echo $piede['consegnato_per']; ?>:</strong></p>
+                                <p><strong>Materiale consegnato per la realizzazione di
+                                        <?php echo $piede['consegnato_per']; ?>:</strong></p>
                                 <ul>
                                     <?php
                                     try {
@@ -402,11 +403,23 @@ function separateArticlesByVoceDoganale($articoli)
                         </tr>
                         <!-- Riga per la firma -->
                         <tr>
-                            <td colspan="6" class="text-right">
-                                <div class="signature-block">
-                                    <div
-                                        style="display: inline-block; margin-top: 50px; border-top: 1px solid #000; width: 250px; text-align: center;">
-                                        <p style="margin-top: 5px;">Firma per accettazione</p>
+                            <td colspan="6">
+                                <div class="d-flex justify-content-between align-items-end">
+                                    <?php if (!empty($documento['commento'])): ?>
+                                        <div class="comment-block text-left" style="max-width: 60%;">
+
+                                            <span class="font-weight-bold"
+                                                style="font-size:12pt;"><?php echo htmlspecialchars($documento['commento']); ?></span>
+                                        </div>
+                                    <?php else: ?>
+                                        <div></div> <!-- Div vuoto quando non c'è commento, per mantenere il layout flex -->
+                                    <?php endif; ?>
+
+                                    <div class="signature-block text-right">
+                                        <div
+                                            style="display: inline-block; margin-top: 50px; border-top: 1px solid #000; width: 250px; text-align: center;">
+                                            <p style="margin-top: 5px;">Firma per accettazione</p>
+                                        </div>
                                     </div>
                                 </div>
                             </td>

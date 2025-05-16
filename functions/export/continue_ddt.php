@@ -553,49 +553,57 @@ include(BASE_PATH . "/components/header.php");
 
                             <!-- Action Buttons -->
                             <div class="card mb-4">
-                                <div class="card-body">
+                                <div class="card-body ">
                                     <div class="row">
                                         <div class="col-md-5 mb-2">
-                                            <div class="action-buttons">
-                                                <button class="btn  btn-secondary btn-icon" onclick="openModal()">
-                                                    <i class="fal fa-weight"></i> Pesi e Aspetto Merce
+                                            <div class="btn-group" role="group" aria-label="Azioni">
+                                                <button class="btn btn-secondary" onclick="openModal()">
+                                                    <i class="fal fa-weight mr-2"></i> Pesi e Aspetto Merce
                                                 </button>
-                                                <button class="btn btn-primary btn-icon"
-                                                    onclick="openAutorizzazioneModal()">
-                                                    <i class="fal fa-pencil-alt"></i> Autorizzazione
+                                                <button class="btn btn-primary" onclick="openAutorizzazioneModal()">
+                                                    <i class="fal fa-pencil-alt mr-2"></i> Autorizzazione
+                                                </button>
+                                                <button class="btn btn-light text-primary border-primary" onclick="openCommentoModal()">
+                                                    <i class="fal fa-pencil-alt mr-2"></i> Commento
                                                 </button>
                                             </div>
                                         </div>
                                         <div class="col-md-7 mb-2">
                                             <div class="action-buttons justify-content-md-end">
-                                                <?php if ($documento['first_boot'] == 1): ?>
-                                                    <button class="btn btn-light border-dark btn-icon"
-                                                        onclick="cercaNcECosti()">
-                                                        <i class="fal fa-search-plus"></i> Cerca Voci e Costi
-                                                    </button>
-                                                <?php endif; ?>
-                                                <button class="btn btn-warning btn-icon" onclick="elaboraMancanti()">
-                                                    <i class="fal fa-sync-alt"></i> Elabora Mancanti
-                                                </button>
-                                                <button class="btn btn-info btn-icon" disabled>
-                                                    <i class="fal fa-exclamation-triangle"></i> Mancanze
-                                                    <?php if ($mancanzeCount > 0): ?>
-                                                        <span
-                                                            class="badge badge-danger"><?php echo $mancanzeCount; ?></span>
+                                                <!-- Primo gruppo di pulsanti -->
+                                                <div class="btn-group mr-2" role="group"
+                                                    aria-label="Gestione documento">
+                                                    <?php if ($documento['first_boot'] == 1): ?>
+                                                        <button class="btn btn-success" onclick="cercaNcECosti()">
+                                                            <i class="fal fa-search-plus mr-2"></i> Cerca Voci e Costi
+                                                        </button>
                                                     <?php endif; ?>
-                                                </button>
-                                                <button class="btn btn-indigo btn-icon" onclick="openMancantiModal()">
-                                                    <i class="fal fa-plus-circle mr-2"></i> Aggiungi Mancanti
-                                                </button>
+                                                    <button class="btn btn-warning" onclick="elaboraMancanti()">
+                                                        <i class="fal fa-sync-alt mr-2"></i> Elabora Mancanti
+                                                    </button>
+                                                    <button class="btn btn-info" disabled>
+                                                        <i class="fal fa-exclamation-triangle mr-2"></i> Mancanze
+                                                        <?php if ($mancanzeCount > 0): ?>
+                                                            <span
+                                                                class="badge badge-danger"><?php echo $mancanzeCount; ?></span>
+                                                        <?php endif; ?>
+                                                    </button>
+                                                    <button class="btn btn-indigo" onclick="openMancantiModal()">
+                                                        <i class="fal fa-plus-circle mr-2"></i> Aggiungi Mancanti
+                                                    </button>
+                                                </div>
 
-                                                <button class="btn btn-success btn-icon" onclick="exportToExcel()">
-                                                    <i class="fal fa-file-excel"></i> Excel
-                                                </button>
-                                                <a target="_blank"
-                                                    href="view_ddt_export?progressivo=<?php echo $progressivo; ?>"
-                                                    class="btn btn-primary btn-icon">
-                                                    <i class="fal fa-file-invoice"></i> Visualizza
-                                                </a>
+                                                <!-- Secondo gruppo di pulsanti (esportazione e visualizzazione) -->
+                                                <div class="btn-group" role="group" aria-label="Esportazione">
+                                                    <button class="btn btn-light text-success border-success" onclick="exportToExcel()">
+                                                        <i class="fal fa-file-excel mr-2"></i> Excel
+                                                    </button>
+                                                    <a target="_blank"
+                                                        href="view_ddt_export?progressivo=<?php echo $progressivo; ?>"
+                                                        class="btn btn-light text-danger border-danger">
+                                                        <i class="fal fa-file-invoice mr-2"></i> PDF
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -858,6 +866,38 @@ include(BASE_PATH . "/components/header.php");
                                     </button>
                                     <button type="button" class="btn btn-primary btn-icon"
                                         onclick="saveAutorizzazioneData()">
+                                        <i class="fas fa-save mr-1"></i> Salva
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MODALE COMMENTO -->
+                    <div class="modal fade" id="commentoModal" tabindex="-1" aria-labelledby="commentoModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="commentoModalLabel">
+                                        <i class="fas fa-pencil-alt mr-2"></i> Aggiungi Commento
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="commento" class="form-label">COMMENTO:</label>
+                                        <textarea class="form-control" id="commento" rows="4"
+                                            placeholder="Inserisci il testo "></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger btn-icon" onclick="resetCommentoData()">
+                                        <i class="fas fa-trash-alt mr-1"></i> Resetta
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-icon" onclick="saveCommentoData()">
                                         <i class="fas fa-save mr-1"></i> Salva
                                     </button>
                                 </div>
@@ -1597,8 +1637,134 @@ include(BASE_PATH . "/components/header.php");
     }
 
     /**
-     * Apre il modal per l'autorizzazione
+     * Apre il modal per commento
      */
+    function openCommentoModal() {
+        // Mostra un loader
+        Swal.fire({
+            title: 'Caricamento dati',
+            text: 'Recupero informazioni in corso...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const formData = new FormData();
+        formData.append('progressivo', <?php echo $progressivo; ?>);
+        formData.append('azione', 'get');
+
+        fetch('op_commento.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Chiudi il loader
+                Swal.close();
+
+                if (data.success) {
+                    document.getElementById('commento').value = data.data.commento;
+                } else {
+                    document.getElementById('commento').value = '';
+                }
+                $('#commentoModal').modal('show');
+            });
+    }
+
+    /**
+     * Salva i dati del commento
+     */
+    function saveCommentoData() {
+        const formData = new FormData();
+        formData.append('progressivo', <?php echo $progressivo; ?>);
+        formData.append('azione', 'save');
+        formData.append('data', JSON.stringify({
+            'commento': document.getElementById('commento').value
+        }));
+
+        // Mostra un loader
+        Swal.fire({
+            title: 'Salvataggio in corso',
+            text: 'Attendere prego...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        fetch('op_commento.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.text())
+            .then(text => {
+                if (text.startsWith('Dati salvati con successo')) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Aggiornamento riuscito!',
+                        text: text,
+                    }).then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Errore!',
+                        text: text,
+                    });
+                }
+            });
+    }
+
+    /**
+     * Resetta i dati del commento
+     */
+    function resetCommentoData() {
+        Swal.fire({
+            title: 'Sei sicuro?',
+            text: "Questa azione resetterà il campo commento",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sì, ripristina!',
+            cancelButtonText: 'Annulla'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const formData = new FormData();
+                formData.append('progressivo', <?php echo $progressivo; ?>);
+                formData.append('azione', 'reset');
+
+                fetch('op_commento.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.text())
+                    .then(text => {
+                        if (text.startsWith('Dati ripristinati con successo')) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Ripristino riuscito!',
+                                text: text,
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Errore!',
+                                text: text,
+                            });
+                        }
+                    });
+            }
+        });
+    }
+
+    /**
+   * Apre il modal per l'autorizzazione
+   */
     function openAutorizzazioneModal() {
         // Mostra un loader
         Swal.fire({
@@ -1631,10 +1797,9 @@ include(BASE_PATH . "/components/header.php");
                 $('#autorizzazioneModal').modal('show');
             });
     }
-
     /**
-     * Salva i dati dell'autorizzazione
-     */
+    * Salva i dati dell'autorizzazione
+    */
     function saveAutorizzazioneData() {
         const formData = new FormData();
         formData.append('progressivo', <?php echo $progressivo; ?>);
