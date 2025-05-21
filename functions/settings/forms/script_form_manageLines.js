@@ -3,11 +3,13 @@ document.querySelectorAll('input[data-field="descrizione"]').forEach(input => {
         const id = this.dataset.id;
         const value = this.value;
         const field = this.dataset.field;
+
         const formData = new FormData();
         formData.append('action', 'update');
         formData.append('id', id);
         formData.append('field', field);
         formData.append('value', value);
+
         fetch('forms/processing_manageLines.php', {
             method: 'POST',
             body: formData
@@ -30,9 +32,11 @@ document.querySelectorAll('input[data-field="descrizione"]').forEach(input => {
             });
     });
 });
+
 document.querySelectorAll('.btn-delete-line').forEach(button => {
     button.addEventListener('click', function () {
         const id = this.dataset.id;
+
         Swal.fire({
             title: 'Sei sicuro?',
             text: "Questa azione non può essere annullata!",
@@ -47,6 +51,7 @@ document.querySelectorAll('.btn-delete-line').forEach(button => {
                 const formData = new FormData();
                 formData.append('action', 'delete');
                 formData.append('id', id);
+
                 fetch('forms/processing_manageLines.php', {
                     method: 'POST',
                     body: formData
@@ -67,6 +72,7 @@ document.querySelectorAll('.btn-delete-line').forEach(button => {
         });
     });
 });
+
 document.getElementById('addLineBtn').addEventListener('click', function () {
     Swal.fire({
         title: 'Aggiungi Linea',
@@ -90,6 +96,7 @@ document.getElementById('addLineBtn').addEventListener('click', function () {
             formData.append('action', 'add');
             formData.append('sigla', result.value.sigla);
             formData.append('descrizione', result.value.descrizione);
+
             fetch('forms/processing_manageLines.php', {
                 method: 'POST',
                 body: formData
@@ -127,11 +134,13 @@ function initializeEventListeners() {
             const id = this.dataset.id;
             const value = this.value;
             const field = this.dataset.field;
+
             const formData = new FormData();
             formData.append('action', 'update');
             formData.append('id', id);
             formData.append('field', field);
             formData.append('value', value);
+
             fetch('forms/processing_manageLines.php', {
                 method: 'POST',
                 body: formData
@@ -177,6 +186,7 @@ function initializeEventListeners() {
                 formData.append('action', 'add');
                 formData.append('sigla', result.value.sigla);
                 formData.append('descrizione', result.value.descrizione);
+
                 fetch('forms/processing_manageLines.php', {
                     method: 'POST',
                     body: formData
@@ -200,6 +210,7 @@ function initializeEventListeners() {
         button.addEventListener('click', function () {
             button.addEventListener('click', function () {
                 const id = this.dataset.id;
+
                 Swal.fire({
                     title: 'Sei sicuro?',
                     text: "Questa azione non può essere annullata!",
@@ -214,6 +225,7 @@ function initializeEventListeners() {
                         const formData = new FormData();
                         formData.append('action', 'delete');
                         formData.append('id', id);
+
                         fetch('forms/processing_manageLines.php', {
                             method: 'POST',
                             body: formData

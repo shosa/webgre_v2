@@ -49,43 +49,69 @@ try {
         'margin_left' => 10,
         'margin_right' => 10,
         'margin_top' => 10,
-        'margin_bottom' => 10
+        'margin_bottom' => 10,
+        'default_font' => 'dejavusans' // fallback perché CDN non è supportato
     ]);
 
-    // Generazione PDF per ogni collo
     $n_colli = (int) $piede['n_colli'];
     $aspetto_colli = $piede['aspetto_colli'];
     $ragione_sociale = $documento['ragione_sociale'];
+    $id_documento = $documento['id'];
 
-    // Salva come file singolo con tutti i segnacolli
     $mpdf->SetTitle('Segnacolli - ' . $ragione_sociale);
 
     for ($i = 1; $i <= $n_colli; $i++) {
-        // Contenuto del segnacollo
         $html = <<<EOD
-        <div style="text-align: center; padding: 20px;">
-            <img src="img/small_logo.png" style="max-width: 400px; margin-bottom: 70px;">
-            
-            <div style="font-size: 40pt; font-weight: bold; margin: 20px 0;">X</div>
-            
-            <div style="font-size: 60pt; font-weight: bold; margin: 20px 0;">
-                {$ragione_sociale}
-            </div>
-            
-            <div style="text-align: right; font-size: 20pt; margin-top: 180px;">
+        <html>
+        <head>
+            <!-- Roboto CDN inclusion -->
+            <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+            <style>
+                body {
+                    font-family: 'Roboto', sans-serif;
+                    text-align: center;
+                    padding: 20px;
+                }
+                .main-title {
+                    font-size: 40pt;
+                    font-weight: bold;
+                    margin: 20px 0;
+                }
+                .company {
+                    font-size: 60pt;
+                    font-weight: bold;
+                    margin: 20px 0;
+                    color: white;
+                    background-color: black;
+                    padding: 10px;
+                }
+                .footer {
+                    text-align: right;
+                    font-size: 25pt;
+                    margin-top: 160px;
+                }
+            </style>
+        </head>
+        <body>
+            <img src="img/small_logo.png" style="width: 320px; margin-bottom: 20px;">
+            <div class="main-title">X</div>
+            <div class="company">{$ragione_sociale}</div>
+            <div class="footer">
+                <b>DDT {$id_documento}</b> | 
                 {$aspetto_colli} {$i} di {$n_colli}
             </div>
-        </div>
-EOD;
+        </body>
+        </html>
+        EOD;
 
         $mpdf->AddPage();
         $mpdf->WriteHTML($html);
     }
 
-    // Output del PDF
-    $filename = 'Segnacolli_' . $id_documento . '_' . date('Ymd') . '.pdf';
-    $mpdf->Output($filename, 'I'); // 'I' per visualizzare nel browser
+    $filename = 'Segnacolli' . $id_documento . '_' . date('Ymd') . '.pdf';
+    $mpdf->Output($filename, 'I');
 
 } catch (Exception $e) {
     die('Errore: ' . $e->getMessage());
 }
+?>

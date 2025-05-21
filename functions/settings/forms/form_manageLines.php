@@ -1,6 +1,8 @@
 <?php
 require_once '../../../config/config.php';
+
 $conn = getDbInstance();
+
 function getLines($conn)
 {
     $sql = "SELECT * FROM linee";
@@ -8,6 +10,7 @@ function getLines($conn)
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
 function isSiglaInDati($conn, $sigla)
 {
     $sql = "SELECT COUNT(*) FROM dati WHERE Ln = :sigla";
@@ -16,9 +19,12 @@ function isSiglaInDati($conn, $sigla)
     $stmt->execute();
     return $stmt->fetchColumn() > 0;
 }
+
 $lines = getLines($conn);
 ?>
+
 <div class="p-4 border rounded shadow-sm bg-light" id="formManageLines">
+
     <table class="table table-bordered bg-white">
         <p class="text-info font-weight-bold">* Invio per salvare le modifiche</p>
         <thead>
@@ -38,7 +44,7 @@ $lines = getLines($conn);
                             data-id="<?= $line['ID'] ?>" data-field="descrizione"></td>
                     <td>
                         <?php if (!isSiglaInDati($conn, $line['sigla'])): ?>
-                            <button class="btn btn-light btn-circle text-danger btn-delete-line" data-id="<?= $line['ID'] ?>"><i
+                            <button class="btn btn-danger btn-delete-line" data-id="<?= $line['ID'] ?>"><i
                                     class="fal fa-trash"></i></button>
                         <?php endif; ?>
                     </td>

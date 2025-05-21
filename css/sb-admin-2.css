@@ -3113,6 +3113,25 @@ fieldset:disabled a.btn {
   box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.5);
 }
 
+.btn-outline-orange {
+  color: #ea8542 !important;
+  border-color: #ee5930 !important;
+}
+
+.btn-outline-orange:hover {
+  color: #fff !important;
+  background-color: #dc7928 !important;
+  border-color: #ee5930 !important;
+}
+
+.btn-outline-orange:focus,
+.btn-outline-orange.focus {
+  box-shadow: 0 0 0 0.2rem rgba(220, 102, 39, 0.5) !important;
+}
+
+
+
+
 .btn-outline-secondary {
   color: #858796;
   border-color: #858796;
@@ -11447,6 +11466,7 @@ a:focus {
 .border-left-warning {
   border-left: 0.25rem solid #f6c23e !important;
 }
+
 .border-left-indigo {
   border-left: 0.25rem solid #6610f2 !important;
 }
@@ -11454,6 +11474,7 @@ a:focus {
 .border-left-orange {
   border-left: 0.25rem solid var(--orange) !important;
 }
+
 .border-bottom-warning {
   border-bottom: 0.25rem solid #f6c23e !important;
 }

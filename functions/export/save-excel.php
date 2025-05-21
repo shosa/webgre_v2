@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $rowIndex++;
     }
 
-    // Recupera l'autorizzazione se abbiamo un ID documento
+    // Recupera l'autorizzazione se abbiamo un ID documentos
     $autorizzazione = "";
     if ($id_documento) {
         try {

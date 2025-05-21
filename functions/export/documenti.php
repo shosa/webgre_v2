@@ -126,20 +126,11 @@ include(BASE_PATH . "/components/header.php");
                                 <button class="btn btn-sm btn-outline-primary mr-2" id="refreshTable">
                                     <i class="fas fa-sync-alt"></i> Aggiorna
                                 </button>
-                                <button class="btn btn-sm btn-outline-info mr-2" id="stampaSovraccolliBtn"
+                                <button class="btn btn-sm btn-outline-orange mr-2" id="stampaSegnacolliBtn"
                                     data-toggle="modal" data-target="#segnacolli-modal">
-                                    <i class="fas fa-tags"></i> Stampa Sovraccolli
+                                    <i class="fas fa-tags"></i> Stampa Segnacolli
                                 </button>
-                                <div class="dropdown d-inline-block">
-                                    <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button"
-                                        id="exportDropdown" data-toggle="dropdown">
-                                        <i class="fas fa-download"></i> Esporta
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="exportDropdown">
-                                        <a class="dropdown-item" href="#" id="exportPDF">PDF</a>
-                                        <a class="dropdown-item" href="#" id="exportExcel">Excel</a>
-                                    </div>
-                                </div>
+                             
                             </div>
                         </div>
                         <div class="card-body">
@@ -376,7 +367,7 @@ include(BASE_PATH . "/components/header.php");
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="record-details-modal-label">Dettagli DDT</h5>
+                    <h5 class="modal-title" id="record-details-modal-label">Lanci allegati:</h5>
                     <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
