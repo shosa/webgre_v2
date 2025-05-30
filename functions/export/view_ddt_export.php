@@ -369,8 +369,10 @@ function separateArticlesByVoceDoganale($articoli)
                         <!-- Righe per autorizzazione -->
                         <tr>
                             <td colspan="6">
-                                <p><strong>Materiale consegnato per la realizzazione di
-                                        <?php echo $piede['consegnato_per']; ?>:</strong></p>
+                                <?php if (!empty($piede['consegnato_per'])): ?>
+                                    <p><strong>Materiale consegnato per la realizzazione di
+                                            <?php echo $piede['consegnato_per']; ?>:</strong></p>
+                                <?php endif; ?>
                                 <ul>
                                     <?php
                                     try {
