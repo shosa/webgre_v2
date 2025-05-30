@@ -795,7 +795,7 @@ include(BASE_PATH . "/components/header.php");
                                     </div>
                                     <div class="mb-3">
                                         <label for="consegnato" class="form-label">MATERIALE CONSEGNATO PER LA
-                                            REALIZZAZIONE DI:</label>
+                                            REALIZZAZIONE DI: (se lasciato vuoto non viene stampato)</label>
                                         <input type="text" class="form-control" id="consegnato"
                                             placeholder="Tomaie , sottopiedi , parti di tomaia">
                                     </div>
