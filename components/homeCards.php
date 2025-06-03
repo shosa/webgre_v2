@@ -267,7 +267,7 @@
             $stmt->execute([$data_oggi]);
             // Ottieni il risultato della query
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $num_cq_records = $row['num_records'];
+            $num_cq_hermes_records = $row['num_records'];
 
             // Query per i test superati/falliti
             $sqlHermesSuperati = "SELECT COUNT(*) AS superati FROM cq_hermes_records WHERE data = ? AND risultato = 'OK'";
@@ -299,11 +299,11 @@
                 <div class="card-body p-3">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <div class="d-flex align-items-center">
-                            <div class="icon-circle bg-orange text-info mr-3">
+                            <div class="icon-circle bg-orange text-white mr-3">
                                 <i class="fas fa-vials"></i>
                             </div>
                             <h6 class="font-weight-bold text-orange text-uppercase mb-0">
-                                Test Qualità Oggi
+                                Test Hermes Oggi
                             </h6>
                         </div>
                         <div class="dropdown no-arrow">
@@ -344,9 +344,9 @@
                 </div>
                 <div class="card-footer py-2 bg-light d-flex justify-content-between align-items-center">
                     <span class="small text-muted">Data: <?php echo $data_oggi; ?></span>
-                    <a href="<?php echo BASE_URL ?>/functions/quality/detail?date=<?php echo $data_oggi ?>"
+                    <a href="<?php echo BASE_URL ?>/functions/quality/manageHermes"
                         class="small text-info">
-                        Dettagli <i class="fas fa-chevron-right ml-1"></i>
+                        Vedi <i class="fas fa-chevron-right ml-1"></i>
                     </a>
                 </div>
             </div>
