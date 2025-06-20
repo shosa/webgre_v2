@@ -241,7 +241,7 @@ function renderTabellaLanci($lanci, $tipo, $pdo) {
                             <?= date('d/m/Y', strtotime($lancio['data_lancio'])) ?>
                         </td>
                         <td>
-                            <span class="badge <?= $badge_class ?>">
+                            <span class="badge bg-warning">
                                 <?= str_replace('_', ' ', $lancio['stato_generale']) ?>
                             </span>
                         </td>
