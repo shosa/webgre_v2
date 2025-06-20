@@ -2,21 +2,6 @@
 session_start();
 require_once '../config/config.php';
 
-// Controllo login
-if (!isset($_SESSION['laboratorio_id'])) {
-    http_response_code(401);
-    echo json_encode(['success' => false, 'error' => 'Non autorizzato']);
-    exit;
-}
-
-$laboratorio_id = $_SESSION['laboratorio_id'];
-
-// Controllo ID lancio
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    http_response_code(400);
-    echo json_encode(['success' => false, 'error' => 'ID lancio non valido']);
-    exit;
-}
 
 $lancio_id = (int)$_GET['id'];
 
