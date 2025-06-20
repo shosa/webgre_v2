@@ -192,13 +192,26 @@ function renderTabellaLanci($lanci, $tipo, $pdo) {
                         $percentuale_generale = round(($paia_completate_reali / $totale_paia_reale) * 100, 1);
                     }
 
-                    $badge_class = match ($lancio['stato_generale']) {
-                        'IN_PREPARAZIONE' => 'bg-secondary',
-                        'LANCIATO' => 'bg-info',
-                        'IN_LAVORAZIONE' => 'bg-warning',
-                        'COMPLETO' => 'bg-success',
-                        default => 'bg-secondary'
-                    };
+                     switch ($lancio['stato_generale']) {
+                                                            case 'IN_PREPARAZIONE':
+                                                                $badge_class = 'badge-secondary';
+                                                                break;
+                                                            case 'LANCIATO':
+                                                                $badge_class = 'badge-info';
+                                                                break;
+                                                            case 'IN_LAVORAZIONE':
+                                                                $badge_class = 'badge-success';
+                                                                break;
+                                                            case 'COMPLETO':
+                                                                $badge_class = 'badge-primary';
+                                                                break;
+                                                            case 'SOSPESO':
+                                                                $badge_class = 'badge-warning';
+                                                                break;
+                                                            default:
+                                                                $badge_class = 'badge-secondary';
+                                                                break;
+                                                        }
                     ?>
                     <tr>
                         <td>
