@@ -67,15 +67,29 @@ try {
     $where_clause = "WHERE " . implode(" AND ", $where_conditions);
 
     // Ordinamento
-    $order_clause = match ($ordinamento) {
-        'data_asc' => 'ORDER BY l.data_lancio ASC',
-        'data_desc' => 'ORDER BY l.data_lancio DESC',
-        'numero_asc' => 'ORDER BY l.numero_lancio ASC',
-        'numero_desc' => 'ORDER BY l.numero_lancio DESC',
-        'laboratorio' => 'ORDER BY lab.nome_laboratorio, l.data_lancio DESC',
-        'avanzamento' => 'ORDER BY percentuale_generale DESC',
-        default => 'ORDER BY l.data_lancio DESC'
-    };
+    switch ($ordinamento) {
+        case 'data_asc':
+            $order_clause = 'ORDER BY l.data_lancio ASC';
+            break;
+        case 'data_desc':
+            $order_clause = 'ORDER BY l.data_lancio DESC';
+            break;
+        case 'numero_asc':
+            $order_clause = 'ORDER BY l.numero_lancio ASC';
+            break;
+        case 'numero_desc':
+            $order_clause = 'ORDER BY l.numero_lancio DESC';
+            break;
+        case 'laboratorio':
+            $order_clause = 'ORDER BY lab.nome_laboratorio, l.data_lancio DESC';
+            break;
+        case 'avanzamento':
+            $order_clause = 'ORDER BY percentuale_generale DESC';
+            break;
+        default:
+            $order_clause = 'ORDER BY l.data_lancio DESC';
+            break;
+    }
 
     // Query principale
     $stmt = $pdo->prepare("
@@ -188,11 +202,11 @@ try {
                             <a href="crea_lancio.php" class="btn btn-success">
                                 <i class="fas fa-plus mr-2"></i>Nuovo Lancio
                             </a>
-                          
+
                         </div>
                     </div>
 
-                       <ol class="breadcrumb mb-4">
+                    <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="index">SCM</a></li>
                         <li class="breadcrumb-item active">Vista per Lanci</li>
@@ -344,7 +358,8 @@ try {
                                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                     Totale Paia</div>
                                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                    <?= number_format($totale_paia_risultati) ?></div>
+                                                    <?= number_format($totale_paia_risultati) ?>
+                                                </div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-boxes fa-2x text-gray-300"></i>
@@ -361,7 +376,8 @@ try {
                                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Paia
                                                     Completate</div>
                                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                    <?= number_format($paia_completate_risultati) ?></div>
+                                                    <?= number_format($paia_completate_risultati) ?>
+                                                </div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-check fa-2x text-gray-300"></i>
@@ -491,7 +507,7 @@ try {
                                                 // Evidenziazione in base all'avanzamento (solo per lanci in lavorazione)
                                                 $row_class = '';
                                                 if ($tab_attivo == 'IN_LAVORAZIONE') {
-                                                    
+
                                                 } elseif ($tab_attivo == 'COMPLETATI') {
                                                     $row_class = 'table-light';
                                                 }
@@ -543,13 +559,12 @@ try {
                                                     <?php endif; ?>
                                                     <td>
                                                         <div class="btn-group" role="group">
-                                                            <button type="button" 
-                                                                    class="btn btn-outline-info btn-sm" 
-                                                                    title="Matrice Avanzamento"
-                                                                    onclick="apriMatriceAvanzamento(<?= $lancio['id'] ?>, '<?= htmlspecialchars($lancio['numero_lancio']) ?>')">
+                                                            <button type="button" class="btn btn-outline-info btn-sm"
+                                                                title="Matrice Avanzamento"
+                                                                onclick="apriMatriceAvanzamento(<?= $lancio['id'] ?>, '<?= htmlspecialchars($lancio['numero_lancio']) ?>')">
                                                                 <i class="fas fa-th"></i>
                                                             </button>
-                                                          
+
                                                             <?php if ($tab_attivo != 'COMPLETATI'): ?>
                                                                 <a href="crea_lancio.php?id=<?= $lancio['id'] ?>"
                                                                     class="btn btn-outline-success btn-sm" title="Modifica">
@@ -574,16 +589,17 @@ try {
 
                 </div>
             </div>
-              <script src="<?php echo BASE_URL ?>/vendor/jquery/jquery.min.js"></script>
+            <script src="<?php echo BASE_URL ?>/vendor/jquery/jquery.min.js"></script>
             <script src="<?php echo BASE_URL ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
             <script src="<?php echo BASE_URL ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
             <script src="<?php echo BASE_URL ?>/js/sb-admin-2.min.js"></script>
             <?php include_once BASE_PATH . '/components/footer.php'; ?>
         </div>
     </div>
-    
+
     <!-- Modal Matrice Avanzamento -->
-    <div class="modal fade" id="modalMatriceAvanzamento" tabindex="-1" role="dialog" aria-labelledby="modalMatriceLabel" aria-hidden="true">
+    <div class="modal fade" id="modalMatriceAvanzamento" tabindex="-1" role="dialog" aria-labelledby="modalMatriceLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -681,7 +697,7 @@ try {
         .nav-item .active {
             width: 105% !important;
         }
-        
+
         /* Stili per la matrice avanzamento nel modal */
         .matrice-cell-readonly {
             min-width: 80px;
@@ -695,29 +711,32 @@ try {
             text-align: center;
             font-size: 0.75rem;
         }
-        
-        .stato-NON_INIZIATA { 
-            background-color: #f8f9fa; 
-            color: #6c757d; 
+
+        .stato-NON_INIZIATA {
+            background-color: #f8f9fa;
+            color: #6c757d;
             border-color: #dee2e6;
         }
-        .stato-IN_CORSO { 
-            background-color: #fff3cd; 
-            color: #856404; 
+
+        .stato-IN_CORSO {
+            background-color: #fff3cd;
+            color: #856404;
             border-color: #ffc107;
         }
-        .stato-COMPLETATA { 
-            background-color: #d1ecf1; 
-            color: #0c5460; 
+
+        .stato-COMPLETATA {
+            background-color: #d1ecf1;
+            color: #0c5460;
             border-color: #17a2b8;
         }
-        .stato-SPEDITO { 
-            background-color: #d4edda; 
-            color: #155724; 
-            border-color: #28a745; 
+
+        .stato-SPEDITO {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #28a745;
             font-weight: bold;
         }
-        
+
         .header-articolo-modal {
             background: linear-gradient(45deg, #007bff, #0056b3);
             color: white;
@@ -725,9 +744,11 @@ try {
             text-align: center;
             min-width: 120px;
         }
+
         .header-articolo-modal.completato {
             background: linear-gradient(45deg, #28a745, #1e7e34);
         }
+
         .header-fase-modal {
             background: linear-gradient(45deg, #28a745, #1e7e34);
             color: white;
@@ -735,38 +756,42 @@ try {
             text-align: center;
             min-width: 100px;
         }
-        
+
         .riga-completata-modal {
             background-color: #d4edda !important;
         }
-        
+
         .table-matrice {
             margin-bottom: 0;
             font-size: 0.85rem;
         }
-        
-        .table-matrice td, .table-matrice th {
+
+        .table-matrice td,
+        .table-matrice th {
             border: 1px solid #dee2e6;
             vertical-align: middle;
             padding: 0.25rem;
         }
-        
+
         .modal-lg {
             max-width: 80%;
         }
-        
+
         @media (max-width: 768px) {
             .modal-lg {
                 max-width: 95%;
             }
+
             .matrice-cell-readonly {
                 min-width: 60px;
                 min-height: 40px;
                 font-size: 0.7rem;
             }
+
             .header-articolo-modal {
                 min-width: 100px;
             }
+
             .header-fase-modal {
                 min-width: 80px;
             }
@@ -876,10 +901,10 @@ try {
         function apriMatriceAvanzamento(lancioId, numeroLancio) {
             // Imposta il numero lancio nel titolo del modal
             document.getElementById('numeroLancioModal').textContent = numeroLancio;
-            
+
             // Mostra il modal usando jQuery (come negli altri modali)
             $('#modalMatriceAvanzamento').modal('show');
-            
+
             // Carica i dati della matrice via AJAX
             fetch('get_matrice_avanzamento.php?lancio_id=' + lancioId)
                 .then(response => response.text())
@@ -888,7 +913,7 @@ try {
                 })
                 .catch(error => {
                     console.error('Errore nel caricamento:', error);
-                    document.getElementById('matriceContent').innerHTML = 
+                    document.getElementById('matriceContent').innerHTML =
                         '<div class="alert alert-danger m-3">' +
                         '<i class="fas fa-exclamation-triangle mr-2"></i>' +
                         'Errore nel caricamento della matrice. Riprova più tardi.' +

@@ -7,8 +7,8 @@ require_once BASE_PATH . '/components/header.php';
 
 // Gestione eliminazione
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
-    $lancio_id = (int)$_GET['delete'];
-    
+    $lancio_id = (int) $_GET['delete'];
+
     try {
         $pdo = getDbInstance();
         $stmt = $pdo->prepare("DELETE FROM scm_lanci WHERE id = ?");
@@ -17,7 +17,7 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     } catch (PDOException $e) {
         $_SESSION['error'] = 'Errore durante l\'eliminazione: ' . ($debug ? $e->getMessage() : 'Errore generico');
     }
-    
+
     header('Location: lista_lanci.php');
     exit;
 }
@@ -68,7 +68,7 @@ $where_clause = "WHERE " . implode(" AND ", $where_conditions);
 // Caricamento lanci
 try {
     $pdo = getDbInstance();
-    
+
     $stmt = $pdo->prepare("
         SELECT l.*, 
                lab.nome_laboratorio,
@@ -90,7 +90,7 @@ try {
     ");
     $stmt->execute($params);
     $lanci_base = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     // Per ogni lancio, calcola le paia corrette
     $lanci = [];
     foreach ($lanci_base as $lancio) {
@@ -103,21 +103,21 @@ try {
         ");
         $stmt_paia->execute([$lancio['id']]);
         $paia_stats = $stmt_paia->fetch(PDO::FETCH_ASSOC);
-        
+
         $lancio['totale_paia'] = $paia_stats['totale_paia'];
         $lancio['paia_completate'] = $paia_stats['paia_completate'];
-        
+
         // Calcola percentuale corretta
-        $lancio['percentuale_generale'] = $lancio['totale_paia'] > 0 ? 
+        $lancio['percentuale_generale'] = $lancio['totale_paia'] > 0 ?
             round(($lancio['paia_completate'] / $lancio['totale_paia']) * 100, 1) : 0;
-        
+
         $lanci[] = $lancio;
     }
-    
+
     // Caricamento laboratori per filtro
     $stmt = $pdo->query("SELECT id, nome_laboratorio FROM scm_laboratori ORDER BY nome_laboratorio");
     $laboratori = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     // Conta i lanci per ogni tab
     $stmt_count = $pdo->prepare("
         SELECT 
@@ -129,11 +129,11 @@ try {
     ");
     $stmt_count->execute();
     $count_stati = $stmt_count->fetchAll(PDO::FETCH_KEY_PAIR);
-    
+
     $count_preparazione = $count_stati['IN_PREPARAZIONE'] ?? 0;
     $count_lavorazione = $count_stati['IN_LAVORAZIONE'] ?? 0;
     $count_completati = ($count_stati['COMPLETO'] ?? 0);
-    
+
 } catch (PDOException $e) {
     $error = 'Errore database: ' . ($debug ? $e->getMessage() : 'Errore generico');
     $lanci = [];
@@ -149,7 +149,7 @@ try {
                 <?php include(BASE_PATH . "/components/topbar.php"); ?>
                 <div class="container-fluid">
                     <?php include(BASE_PATH . "/utils/alerts.php"); ?>
-                    
+
                     <!-- Header -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <div class="d-flex align-items-center">
@@ -165,11 +165,11 @@ try {
                             <a href="crea_lancio.php" class="btn btn-success">
                                 <i class="fas fa-plus mr-2"></i>Nuovo Lancio
                             </a>
-                        
+
                         </div>
-                        
+
                     </div>
-                     <ol class="breadcrumb mb-4">
+                    <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="../../index">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="index">SCM</a></li>
                         <li class="breadcrumb-item active">Lista Lanci</li>
@@ -179,8 +179,8 @@ try {
                         <div class="card-header p-0">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link <?= $tab_attivo == 'IN_PREPARAZIONE' ? 'active' : '' ?>" 
-                                       href="?tab=IN_PREPARAZIONE<?= !empty($_GET) ? '&' . http_build_query(array_diff_key($_GET, ['tab' => ''])) : '' ?>">
+                                    <a class="nav-link <?= $tab_attivo == 'IN_PREPARAZIONE' ? 'active' : '' ?>"
+                                        href="?tab=IN_PREPARAZIONE<?= !empty($_GET) ? '&' . http_build_query(array_diff_key($_GET, ['tab' => ''])) : '' ?>">
                                         <i class="fas fa-clipboard-list mr-2"></i>
                                         In Preparazione
                                         <?php if ($count_preparazione > 0): ?>
@@ -189,8 +189,8 @@ try {
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link <?= $tab_attivo == 'IN_LAVORAZIONE' ? 'active' : '' ?>" 
-                                       href="?tab=IN_LAVORAZIONE<?= !empty($_GET) ? '&' . http_build_query(array_diff_key($_GET, ['tab' => ''])) : '' ?>">
+                                    <a class="nav-link <?= $tab_attivo == 'IN_LAVORAZIONE' ? 'active' : '' ?>"
+                                        href="?tab=IN_LAVORAZIONE<?= !empty($_GET) ? '&' . http_build_query(array_diff_key($_GET, ['tab' => ''])) : '' ?>">
                                         <i class="fas fa-cogs mr-2"></i>
                                         In Lavorazione
                                         <?php if ($count_lavorazione > 0): ?>
@@ -199,8 +199,8 @@ try {
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link <?= $tab_attivo == 'COMPLETATI' ? 'active' : '' ?>" 
-                                       href="?tab=COMPLETATI<?= !empty($_GET) ? '&' . http_build_query(array_diff_key($_GET, ['tab' => ''])) : '' ?>">
+                                    <a class="nav-link <?= $tab_attivo == 'COMPLETATI' ? 'active' : '' ?>"
+                                        href="?tab=COMPLETATI<?= !empty($_GET) ? '&' . http_build_query(array_diff_key($_GET, ['tab' => ''])) : '' ?>">
                                         <i class="fas fa-check-circle mr-2"></i>
                                         Completati
                                         <?php if ($count_completati > 0): ?>
@@ -210,7 +210,7 @@ try {
                                 </li>
                             </ul>
                         </div>
-                        
+
                         <!-- Filtri -->
                         <div class="card-header">
                             <h6 class="m-0 font-weight-bold text-primary">
@@ -221,7 +221,7 @@ try {
                         <div class="card-body">
                             <form method="GET" class="row">
                                 <input type="hidden" name="tab" value="<?= $tab_attivo ?>">
-                                
+
                                 <div class="col-md-4">
                                     <label for="laboratorio" class="small">Laboratorio</label>
                                     <select class="form-control form-control-sm" id="laboratorio" name="laboratorio">
@@ -233,52 +233,48 @@ try {
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-                                
+
                                 <div class="col-md-2">
                                     <label for="data_da" class="small">Data Da</label>
-                                    <input type="date" 
-                                           class="form-control form-control-sm" 
-                                           id="data_da" 
-                                           name="data_da" 
-                                           value="<?= htmlspecialchars($filtro_data_da) ?>">
+                                    <input type="date" class="form-control form-control-sm" id="data_da" name="data_da"
+                                        value="<?= htmlspecialchars($filtro_data_da) ?>">
                                 </div>
-                                
+
                                 <div class="col-md-2">
                                     <label for="data_a" class="small">Data A</label>
-                                    <input type="date" 
-                                           class="form-control form-control-sm" 
-                                           id="data_a" 
-                                           name="data_a" 
-                                           value="<?= htmlspecialchars($filtro_data_a) ?>">
+                                    <input type="date" class="form-control form-control-sm" id="data_a" name="data_a"
+                                        value="<?= htmlspecialchars($filtro_data_a) ?>">
                                 </div>
-                                
+
                                 <div class="col-md-2 d-flex align-items-end">
                                     <button type="submit" class="btn btn-primary btn-sm mr-1" title="Applica filtri">
                                         <i class="fas fa-search"></i> Cerca
                                     </button>
-                                    <a href="?tab=<?= $tab_attivo ?>" class="btn btn-outline-secondary btn-sm" title="Rimuovi filtri">
+                                    <a href="?tab=<?= $tab_attivo ?>" class="btn btn-outline-secondary btn-sm"
+                                        title="Rimuovi filtri">
                                         <i class="fas fa-times"></i>
                                     </a>
                                 </div>
-                                
+
                                 <div class="col-md-2">
                                     <label class="small">Azioni Rapide</label>
                                     <div>
                                         <?php if ($tab_attivo == 'IN_LAVORAZIONE'): ?>
-                                            <a href="vista_lanci.php?tab=IN_LAVORAZIONE&avanzamento_min=0&avanzamento_max=25" class="btn btn-outline-danger btn-sm" title="Lanci con poco avanzamento">
-                                                <i class="fas fa-exclamation"></i> < 25%
-                                            </a>
-                                        <?php endif; ?>
+                                            <a href="vista_lanci.php?tab=IN_LAVORAZIONE&avanzamento_min=0&avanzamento_max=25"
+                                                class="btn btn-outline-danger btn-sm" title="Lanci con poco avanzamento">
+                                                <i class="fas fa-exclamation"></i>
+                                                < 25% </a>
+                                                <?php endif; ?>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    
+
                     <?php if (isset($error)): ?>
                         <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
                     <?php endif; ?>
-                    
+
                     <!-- Statistiche del Tab -->
                     <?php if (!empty($lanci)): ?>
                         <div class="row mb-4">
@@ -287,8 +283,10 @@ try {
                                     <div class="card-body py-3">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Risultati</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($lanci) ?></div>
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                    Risultati</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($lanci) ?>
+                                                </div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-list fa-2x text-gray-300"></i>
@@ -302,8 +300,11 @@ try {
                                     <div class="card-body py-3">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Totale Paia</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= number_format(array_sum(array_column($lanci, 'totale_paia'))) ?></div>
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                    Totale Paia</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                    <?= number_format(array_sum(array_column($lanci, 'totale_paia'))) ?>
+                                                </div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-boxes fa-2x text-gray-300"></i>
@@ -317,8 +318,11 @@ try {
                                     <div class="card-body py-3">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Paia Completate</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= number_format(array_sum(array_column($lanci, 'paia_completate'))) ?></div>
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Paia
+                                                    Completate</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                    <?= number_format(array_sum(array_column($lanci, 'paia_completate'))) ?>
+                                                </div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-check fa-2x text-gray-300"></i>
@@ -336,7 +340,7 @@ try {
                                                     <?= $tab_attivo == 'IN_PREPARAZIONE' ? 'Media Paia per Lancio' : 'Avanzamento Medio' ?>
                                                 </div>
                                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                    <?php 
+                                                    <?php
                                                     if ($tab_attivo == 'IN_PREPARAZIONE') {
                                                         echo count($lanci) > 0 ? number_format(array_sum(array_column($lanci, 'totale_paia')) / count($lanci)) : '0';
                                                     } else {
@@ -357,7 +361,7 @@ try {
                             </div>
                         </div>
                     <?php endif; ?>
-                    
+
                     <!-- Tabella Lanci -->
                     <div class="card shadow">
                         <div class="card-header d-flex justify-content-between align-items-center">
@@ -386,7 +390,8 @@ try {
                                     <p class="text-muted">
                                         <?php if ($filtro_laboratorio || $filtro_data_da || $filtro_data_a): ?>
                                             Nessun lancio corrisponde ai criteri di ricerca in questo stato.
-                                            <br><a href="?tab=<?= $tab_attivo ?>" class="btn btn-outline-primary btn-sm mt-2">Rimuovi filtri</a>
+                                            <br><a href="?tab=<?= $tab_attivo ?>"
+                                                class="btn btn-outline-primary btn-sm mt-2">Rimuovi filtri</a>
                                         <?php else: ?>
                                             Non ci sono lanci in stato "<?= str_replace('_', ' ', $tab_attivo) ?>".
                                             <?php if ($tab_attivo == 'IN_PREPARAZIONE'): ?>
@@ -419,26 +424,38 @@ try {
                                             <?php foreach ($lanci as $lancio): ?>
                                                 <?php
                                                 // Badge colore per stato
-                                                $badge_class = match($lancio['stato_generale']) {
-                                                    'IN_PREPARAZIONE' => 'badge-secondary',
-                                                    'LANCIATO' => 'badge-info',
-                                                    'IN_LAVORAZIONE' => 'badge-success',
-                                                    'COMPLETO' => 'badge-primary',
-                                                    'SOSPESO' => 'badge-warning',
-                                                    default => 'badge-secondary'
-                                                };
-                                                
+                                                switch ($lancio['stato_generale']) {
+                                                    case 'IN_PREPARAZIONE':
+                                                        $badge_class = 'badge-secondary';
+                                                        break;
+                                                    case 'LANCIATO':
+                                                        $badge_class = 'badge-info';
+                                                        break;
+                                                    case 'IN_LAVORAZIONE':
+                                                        $badge_class = 'badge-success';
+                                                        break;
+                                                    case 'COMPLETO':
+                                                        $badge_class = 'badge-primary';
+                                                        break;
+                                                    case 'SOSPESO':
+                                                        $badge_class = 'badge-warning';
+                                                        break;
+                                                    default:
+                                                        $badge_class = 'badge-secondary';
+                                                        break;
+                                                }
+
                                                 // Formatta ciclo fasi
                                                 $fasi = explode(';', $lancio['ciclo_fasi']);
                                                 $fasi = array_map('trim', $fasi);
-                                                $ciclo_formattato = count($fasi) <= 3 ? 
-                                                    implode(' → ', $fasi) : 
+                                                $ciclo_formattato = count($fasi) <= 3 ?
+                                                    implode(' → ', $fasi) :
                                                     implode(' → ', array_slice($fasi, 0, 3)) . '... (+' . (count($fasi) - 3) . ')';
-                                                
+
                                                 // Evidenziazione righe in base all'avanzamento (solo per lanci in lavorazione)
                                                 $row_class = '';
                                                 if ($tab_attivo == 'IN_LAVORAZIONE') {
-                                                  
+
                                                 } elseif ($tab_attivo == 'COMPLETATI') {
                                                     $row_class = 'table-light';
                                                 }
@@ -459,17 +476,20 @@ try {
                                                         <div>
                                                             <?= date('d/m/Y', strtotime($lancio['data_lancio'])) ?>
                                                         </div>
-                                                        <small class="<?= $lancio['giorni_dal_lancio'] > 60 ? 'text-danger' : ($lancio['giorni_dal_lancio'] > 30 ? 'text-warning' : 'text-muted') ?>">
+                                                        <small
+                                                            class="<?= $lancio['giorni_dal_lancio'] > 60 ? 'text-danger' : ($lancio['giorni_dal_lancio'] > 30 ? 'text-warning' : 'text-muted') ?>">
                                                             <?= $lancio['giorni_dal_lancio'] ?> giorni fa
                                                         </small>
                                                     </td>
                                                     <td>
                                                         <div class="small">
                                                             <strong><?= $lancio['numero_articoli'] ?></strong> articoli<br>
-                                                            <strong><?= number_format($lancio['totale_paia']) ?></strong> paia<br>
+                                                            <strong><?= number_format($lancio['totale_paia']) ?></strong>
+                                                            paia<br>
                                                             <?php if ($tab_attivo != 'IN_PREPARAZIONE'): ?>
                                                                 <span class="text-success">
-                                                                    <strong><?= number_format($lancio['paia_completate']) ?></strong> completate
+                                                                    <strong><?= number_format($lancio['paia_completate']) ?></strong>
+                                                                    completate
                                                                 </span>
                                                             <?php endif; ?>
                                                         </div>
@@ -485,12 +505,13 @@ try {
                                                             }
                                                             ?>
                                                             <div class="progress mb-1" style="height: 15px; min-width: 60px;">
-                                                                <div class="progress-bar <?= $progress_color ?>" 
-                                                                     style="width: <?= $lancio['percentuale_generale'] ?>%"
-                                                                     title="<?= $lancio['percentuale_generale'] ?>% paia completate">
+                                                                <div class="progress-bar <?= $progress_color ?>"
+                                                                    style="width: <?= $lancio['percentuale_generale'] ?>%"
+                                                                    title="<?= $lancio['percentuale_generale'] ?>% paia completate">
                                                                 </div>
                                                             </div>
-                                                            <small class="text-center d-block"><?= $lancio['percentuale_generale'] ?>%</small>
+                                                            <small
+                                                                class="text-center d-block"><?= $lancio['percentuale_generale'] ?>%</small>
                                                             <?php if ($lancio['ultimo_aggiornamento']): ?>
                                                                 <small class="text-muted d-block">
                                                                     Agg: <?= date('d/m', strtotime($lancio['ultimo_aggiornamento'])) ?>
@@ -507,7 +528,8 @@ try {
                                                             <?php endif; ?>
                                                             <?php if ($lancio['fasi_completate'] > 0): ?>
                                                                 <span class="badge badge-success ml-1">
-                                                                    <i class="fas fa-check mr-1"></i><?= $lancio['fasi_completate'] ?>
+                                                                    <i
+                                                                        class="fas fa-check mr-1"></i><?= $lancio['fasi_completate'] ?>
                                                                 </span>
                                                             <?php endif; ?>
                                                         </div>
@@ -527,27 +549,24 @@ try {
                                                     </td>
                                                     <td>
                                                         <div class="btn-group" role="group">
-                                                            <a href="dettaglio_lancio.php?id=<?= $lancio['id'] ?>" 
-                                                               class="btn btn-outline-info btn-sm" 
-                                                               title="Visualizza dettagli">
+                                                            <a href="dettaglio_lancio.php?id=<?= $lancio['id'] ?>"
+                                                                class="btn btn-outline-info btn-sm" title="Visualizza dettagli">
                                                                 <i class="fas fa-eye"></i>
                                                             </a>
                                                             <?php if ($tab_attivo != 'COMPLETATI'): ?>
-                                                                <a href="crea_lancio.php?id=<?= $lancio['id'] ?>" 
-                                                                   class="btn btn-outline-success btn-sm" 
-                                                                   title="Modifica">
+                                                                <a href="crea_lancio.php?id=<?= $lancio['id'] ?>"
+                                                                    class="btn btn-outline-success btn-sm" title="Modifica">
                                                                     <i class="fas fa-edit"></i>
                                                                 </a>
                                                             <?php else: ?>
-                                                                <span class="btn btn-outline-secondary btn-sm disabled" 
-                                                                      title="Lancio completato - Non modificabile">
+                                                                <span class="btn btn-outline-secondary btn-sm disabled"
+                                                                    title="Lancio completato - Non modificabile">
                                                                     <i class="fas fa-lock"></i>
                                                                 </span>
                                                             <?php endif; ?>
-                                                            <a href="lista_lanci.php?tab=<?= $tab_attivo ?>&delete=<?= $lancio['id'] ?>" 
-                                                               class="btn btn-outline-danger btn-sm" 
-                                                               title="Elimina"
-                                                               onclick="return confirm('Sei sicuro di voler eliminare questo lancio?\\n\\nNota: verranno eliminati anche tutti gli avanzamenti, le note e i dati delle fasi associate.')">
+                                                            <a href="lista_lanci.php?tab=<?= $tab_attivo ?>&delete=<?= $lancio['id'] ?>"
+                                                                class="btn btn-outline-danger btn-sm" title="Elimina"
+                                                                onclick="return confirm('Sei sicuro di voler eliminare questo lancio?\\n\\nNota: verranno eliminati anche tutti gli avanzamenti, le note e i dati delle fasi associate.')">
                                                                 <i class="fas fa-trash"></i>
                                                             </a>
                                                         </div>
@@ -560,14 +579,14 @@ try {
                             <?php endif; ?>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
             <?php include_once BASE_PATH . '/components/scripts.php'; ?>
             <?php include_once BASE_PATH . '/components/footer.php'; ?>
         </div>
     </div>
-    
+
     <style>
         /* Personalizzazione tab migliorata */
         .nav-tabs {
@@ -638,95 +657,95 @@ try {
             width: 105% !important;
         }
     </style>
-    
+
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Auto-submit form quando si cambiano i filtri principali
-        const selectElements = document.querySelectorAll('#laboratorio');
-        selectElements.forEach(select => {
-            select.addEventListener('change', function() {
-                this.form.submit();
+        document.addEventListener('DOMContentLoaded', function () {
+            // Auto-submit form quando si cambiano i filtri principali
+            const selectElements = document.querySelectorAll('#laboratorio');
+            selectElements.forEach(select => {
+                select.addEventListener('change', function () {
+                    this.form.submit();
+                });
             });
-        });
-        
-        // Salvataggio automatico del tab attivo
-        const currentTab = '<?= $tab_attivo ?>';
-        localStorage.setItem('lista_lanci_last_tab', currentTab);
-        
-        // Gestione dello stato dei filtri per tab
-        const form = document.querySelector('form');
-        if (form) {
-            // Carica filtri salvati per il tab corrente
-            const savedFilters = localStorage.getItem(`lista_lanci_filters_${currentTab}`);
-            if (savedFilters && !window.location.search.includes('laboratorio')) {
-                const filters = JSON.parse(savedFilters);
-                Object.keys(filters).forEach(key => {
-                    const input = document.querySelector(`[name="${key}"]`);
-                    if (input && !input.value && key !== 'tab') {
-                        input.value = filters[key];
+
+            // Salvataggio automatico del tab attivo
+            const currentTab = '<?= $tab_attivo ?>';
+            localStorage.setItem('lista_lanci_last_tab', currentTab);
+
+            // Gestione dello stato dei filtri per tab
+            const form = document.querySelector('form');
+            if (form) {
+                // Carica filtri salvati per il tab corrente
+                const savedFilters = localStorage.getItem(`lista_lanci_filters_${currentTab}`);
+                if (savedFilters && !window.location.search.includes('laboratorio')) {
+                    const filters = JSON.parse(savedFilters);
+                    Object.keys(filters).forEach(key => {
+                        const input = document.querySelector(`[name="${key}"]`);
+                        if (input && !input.value && key !== 'tab') {
+                            input.value = filters[key];
+                        }
+                    });
+                }
+
+                // Salva filtri correnti per il tab
+                form.addEventListener('submit', function () {
+                    const formData = new FormData(this);
+                    const filters = {};
+                    for (let [key, value] of formData.entries()) {
+                        if (value && key !== 'tab') {
+                            filters[key] = value;
+                        }
                     }
+                    localStorage.setItem(`lista_lanci_filters_${currentTab}`, JSON.stringify(filters));
                 });
             }
-            
-            // Salva filtri correnti per il tab
-            form.addEventListener('submit', function() {
-                const formData = new FormData(this);
-                const filters = {};
-                for (let [key, value] of formData.entries()) {
-                    if (value && key !== 'tab') {
-                        filters[key] = value;
+
+            // Aggiunta di notifiche per cambio tab
+            const tabLinks = document.querySelectorAll('.nav-link');
+            tabLinks.forEach(link => {
+                link.addEventListener('click', function () {
+                    if (!this.classList.contains('active')) {
+                        // Mostra indicatore di caricamento
+                        const badge = this.querySelector('.badge');
+                        if (badge) {
+                            badge.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                        }
                     }
-                }
-                localStorage.setItem(`lista_lanci_filters_${currentTab}`, JSON.stringify(filters));
-            });
-        }
-        
-        // Aggiunta di notifiche per cambio tab
-        const tabLinks = document.querySelectorAll('.nav-link');
-        tabLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                if (!this.classList.contains('active')) {
-                    // Mostra indicatore di caricamento
-                    const badge = this.querySelector('.badge');
-                    if (badge) {
-                        badge.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                    }
-                }
-            });
-        });
-        
-        // Evidenziazione dinamica delle righe
-        const rows = document.querySelectorAll('tbody tr');
-        rows.forEach(row => {
-            const progressBar = row.querySelector('.progress-bar');
-            if (progressBar) {
-                const percentage = parseFloat(progressBar.parentElement.nextElementSibling.textContent);
-                
-                // Tooltip con informazioni dettagliate
-                progressBar.setAttribute('title', 
-                    `Avanzamento: ${percentage}%\nClicca per vedere i dettagli`
-                );
-                
-                // Animazione al hover
-                progressBar.addEventListener('mouseenter', function() {
-                    this.style.transform = 'scaleY(1.2)';
-                    this.style.transition = 'transform 0.2s';
                 });
-                
-                progressBar.addEventListener('mouseleave', function() {
-                    this.style.transform = 'scaleY(1)';
+            });
+
+            // Evidenziazione dinamica delle righe
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const progressBar = row.querySelector('.progress-bar');
+                if (progressBar) {
+                    const percentage = parseFloat(progressBar.parentElement.nextElementSibling.textContent);
+
+                    // Tooltip con informazioni dettagliate
+                    progressBar.setAttribute('title',
+                        `Avanzamento: ${percentage}%\nClicca per vedere i dettagli`
+                    );
+
+                    // Animazione al hover
+                    progressBar.addEventListener('mouseenter', function () {
+                        this.style.transform = 'scaleY(1.2)';
+                        this.style.transition = 'transform 0.2s';
+                    });
+
+                    progressBar.addEventListener('mouseleave', function () {
+                        this.style.transform = 'scaleY(1)';
+                    });
+                }
+            });
+
+            // Conferma per azioni sui lanci completati
+            const lockedButtons = document.querySelectorAll('.btn.disabled');
+            lockedButtons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    alert('Questo lancio è completato e non può essere modificato.');
                 });
-            }
-        });
-        
-        // Conferma per azioni sui lanci completati
-        const lockedButtons = document.querySelectorAll('.btn.disabled');
-        lockedButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                alert('Questo lancio è completato e non può essere modificato.');
             });
         });
-    });
     </script>
 </body>
