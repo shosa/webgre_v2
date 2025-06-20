@@ -3,6 +3,11 @@ session_start();
 require_once '../config/config.php';
 
 
+
+$laboratorio_id = $_GET['laboratorio_id'];
+
+
+
 $lancio_id = (int)$_GET['id'];
 
 try {
