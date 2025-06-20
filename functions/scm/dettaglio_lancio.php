@@ -198,14 +198,26 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                                                     <th>Stato:</th>
                                                     <td>
                                                         <?php
-                                                        $badge_class = match($lancio['stato_generale']) {
-                                                            'IN_PREPARAZIONE' => 'badge-secondary',
-                                                            'LANCIATO' => 'badge-info',
-                                                            'IN_LAVORAZIONE' => 'badge-success',
-                                                            'COMPLETO' => 'badge-primary',
-                                                            'SOSPESO' => 'badge-warning',
-                                                            default => 'badge-secondary'
-                                                        };
+                                                        switch ($lancio['stato_generale']) {
+                                                            case 'IN_PREPARAZIONE':
+                                                                $badge_class = 'badge-secondary';
+                                                                break;
+                                                            case 'LANCIATO':
+                                                                $badge_class = 'badge-info';
+                                                                break;
+                                                            case 'IN_LAVORAZIONE':
+                                                                $badge_class = 'badge-success';
+                                                                break;
+                                                            case 'COMPLETO':
+                                                                $badge_class = 'badge-primary';
+                                                                break;
+                                                            case 'SOSPESO':
+                                                                $badge_class = 'badge-warning';
+                                                                break;
+                                                            default:
+                                                                $badge_class = 'badge-secondary';
+                                                                break;
+                                                        }
                                                         ?>
                                                         <span class="badge <?= $badge_class ?>">
                                                             <?= str_replace('_', ' ', $lancio['stato_generale']) ?>
