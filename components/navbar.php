@@ -112,6 +112,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_navbar'])) {
             </div>
         </li>
 
+        <!-- SCM -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSCM" aria-expanded="true"
+                aria-controls="collapseSCM">
+                <i class="far fa-user-hard-hat"></i>
+                <span>SCM</span>
+            </a>
+            <div id="collapseSCM" class="collapse" style="z-index:9999" aria-labelledby="headingSCM"
+                data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Sezioni:</h6>
+                    <a id="scm-home" class="collapse-item" href="<?php echo BASE_URL ?>/functions/scm/index"><i
+                            class="fa fa-home"></i>
+                        Home</a>
+                  
+                </div>
+            </div>
+        </li>
+
+
+
     <?php endif; ?>
     <!-- CONTROLLO QUALITA -->
     <?php if (isset($_SESSION['permessi_cq']) && $_SESSION['permessi_cq'] == 1): ?>
