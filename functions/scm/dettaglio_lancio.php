@@ -12,7 +12,7 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     exit;
 }
 
-$lancio_id = (int)$_GET['id'];
+$lancio_id = (int) $_GET['id'];
 
 // Gestione aggiunta avanzamento rapido
 
@@ -24,7 +24,7 @@ if ($_POST && isset($_POST['add_nota'])) {
     $tipo_nota = trim($_POST['tipo_nota'] ?? 'GENERALE');
     $priorita = trim($_POST['priorita'] ?? 'MEDIA');
     $autore = trim($_POST['autore'] ?? 'Admin');
-    
+
     if (!empty($contenuto)) {
         try {
             $pdo = getDbInstance();
@@ -40,7 +40,7 @@ if ($_POST && isset($_POST['add_nota'])) {
     } else {
         $_SESSION['error'] = 'Il contenuto della nota è obbligatorio';
     }
-    
+
     header("Location: dettaglio_lancio?id=$lancio_id");
     exit;
 }
@@ -48,7 +48,7 @@ if ($_POST && isset($_POST['add_nota'])) {
 // Caricamento dati lancio
 try {
     $pdo = getDbInstance();
-    
+
     // Dati lancio principale
     $stmt = $pdo->prepare("
         SELECT l.*, lab.nome_laboratorio, lab.email, lab.username as lab_username
@@ -58,13 +58,13 @@ try {
     ");
     $stmt->execute([$lancio_id]);
     $lancio = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
     if (!$lancio) {
         $_SESSION['error'] = 'Lancio non trovato';
         header('Location: lista_lanci');
         exit;
     }
-    
+
     // Articoli del lancio
     $stmt = $pdo->prepare("
         SELECT * FROM scm_articoli_lancio 
@@ -73,7 +73,7 @@ try {
     ");
     $stmt->execute([$lancio_id]);
     $articoli = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     // Fasi del lancio con dettagli
     $stmt = $pdo->prepare("
         SELECT f.*, a.codice_articolo, a.quantita_totale,
@@ -87,7 +87,7 @@ try {
     ");
     $stmt->execute([$lancio_id]);
     $fasi = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     // Storico avanzamenti
     $stmt = $pdo->prepare("
         SELECT av.*, f.nome_fase, a.codice_articolo
@@ -99,7 +99,7 @@ try {
     ");
     $stmt->execute([$lancio_id]);
     $avanzamenti = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     // Note
     $stmt = $pdo->prepare("
         SELECT * FROM scm_note 
@@ -108,17 +108,19 @@ try {
     ");
     $stmt->execute([$lancio_id]);
     $note = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
 } catch (PDOException $e) {
     $error = 'Errore database: ' . ($debug ? $e->getMessage() : 'Errore generico');
 }
 
 // Funzioni helper
-function calcolaTotalePaia($articoli) {
+function calcolaTotalePaia($articoli)
+{
     return array_sum(array_column($articoli, 'quantita_totale'));
 }
 
-function calcolaPaiaCompletate($articoli) {
+function calcolaPaiaCompletate($articoli)
+{
     return array_sum(array_column($articoli, 'quantita_completata'));
 }
 
@@ -136,7 +138,7 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                 <?php include(BASE_PATH . "/components/topbar.php"); ?>
                 <div class="container-fluid">
                     <?php include(BASE_PATH . "/utils/alerts.php"); ?>
-                    
+
                     <!-- Header -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <div class="d-flex align-items-center">
@@ -145,7 +147,8 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                             </div>
                             <div>
                                 <h1 class="h3 mb-0 text-gray-800">Dettaglio Lancio</h1>
-                                <p class="mb-0 text-gray-600"><?= htmlspecialchars($lancio['numero_lancio']) ?> - <?= htmlspecialchars($lancio['nome_laboratorio'] ?? 'Non assegnato') ?></p>
+                                <p class="mb-0 text-gray-600"><?= htmlspecialchars($lancio['numero_lancio']) ?> -
+                                    <?= htmlspecialchars($lancio['nome_laboratorio'] ?? 'Non assegnato') ?></p>
                             </div>
                         </div>
                         <div>
@@ -157,11 +160,11 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                             </a>
                         </div>
                     </div>
-                    
+
                     <?php if (isset($error)): ?>
                         <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
                     <?php endif; ?>
-                    
+
                     <div class="row">
                         <!-- Colonna sinistra: Dati principali -->
                         <div class="col-lg-8">
@@ -179,12 +182,13 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                                             <table class="table table-sm table-borderless">
                                                 <tr>
                                                     <th width="40%">Numero Lancio:</th>
-                                                    <td><strong><?= htmlspecialchars($lancio['numero_lancio']) ?></strong></td>
+                                                    <td><strong><?= htmlspecialchars($lancio['numero_lancio']) ?></strong>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <th>Ciclo Fasi:</th>
                                                     <td>
-                                                        <?php 
+                                                        <?php
                                                         $fasi_ciclo = explode(';', $lancio['ciclo_fasi']);
                                                         echo '<span class="badge badge-light">' . implode('</span> → <span class="badge badge-light">', array_map('trim', $fasi_ciclo)) . '</span>';
                                                         ?>
@@ -233,7 +237,8 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                                                     <td>
                                                         <?= htmlspecialchars($lancio['nome_laboratorio'] ?? 'Non assegnato') ?>
                                                         <?php if ($lancio['email']): ?>
-                                                            <br><small class="text-muted"><?= htmlspecialchars($lancio['email']) ?></small>
+                                                            <br><small
+                                                                class="text-muted"><?= htmlspecialchars($lancio['email']) ?></small>
                                                         <?php endif; ?>
                                                     </td>
                                                 </tr>
@@ -244,16 +249,18 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                                                 <tr>
                                                     <th>Paia Completate:</th>
                                                     <td>
-                                                        <strong class="text-success"><?= number_format($paia_completate) ?></strong>
-                                                        <small class="text-muted">/ <?= number_format($totale_paia) ?></small>
+                                                        <strong
+                                                            class="text-success"><?= number_format($paia_completate) ?></strong>
+                                                        <small class="text-muted">/
+                                                            <?= number_format($totale_paia) ?></small>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <th>Avanzamento:</th>
                                                     <td>
                                                         <div class="progress mb-1" style="height: 20px;">
-                                                            <div class="progress-bar bg-success" 
-                                                                 style="width: <?= $percentuale_generale ?>%">
+                                                            <div class="progress-bar bg-success"
+                                                                style="width: <?= $percentuale_generale ?>%">
                                                                 <?= $percentuale_generale ?>%
                                                             </div>
                                                         </div>
@@ -262,7 +269,7 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                                             </table>
                                         </div>
                                     </div>
-                                    
+
                                     <?php if ($lancio['note']): ?>
                                         <hr>
                                         <h6 class="text-muted">Note Generali:</h6>
@@ -270,7 +277,7 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                                     <?php endif; ?>
                                 </div>
                             </div>
-                            
+
                             <!-- Articoli -->
                             <div class="card shadow mb-4">
                                 <div class="card-header">
@@ -293,19 +300,22 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                                             </thead>
                                             <tbody>
                                                 <?php foreach ($articoli as $art): ?>
-                                                    <?php 
-                                                    $perc_articolo = $art['quantita_totale'] > 0 ? 
+                                                    <?php
+                                                    $perc_articolo = $art['quantita_totale'] > 0 ?
                                                         round(($art['quantita_completata'] / $art['quantita_totale']) * 100, 1) : 0;
                                                     ?>
                                                     <tr>
-                                                        <td><strong><?= htmlspecialchars($art['codice_articolo']) ?></strong></td>
+                                                        <td><strong><?= htmlspecialchars($art['codice_articolo']) ?></strong>
+                                                        </td>
                                                         <td><?= number_format($art['quantita_totale']) ?></td>
-                                                        <td class="text-success"><strong><?= number_format($art['quantita_completata']) ?></strong></td>
+                                                        <td class="text-success">
+                                                            <strong><?= number_format($art['quantita_completata']) ?></strong>
+                                                        </td>
                                                         <td><?= $perc_articolo ?>%</td>
                                                         <td>
                                                             <div class="progress" style="height: 20px;">
-                                                                <div class="progress-bar bg-success" 
-                                                                     style="width: <?= $perc_articolo ?>%">
+                                                                <div class="progress-bar bg-success"
+                                                                    style="width: <?= $perc_articolo ?>%">
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -316,9 +326,9 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                                     </div>
                                 </div>
                             </div>
-                            
-                           
-                            
+
+
+
                             <!-- Storico Avanzamenti -->
                             <div class="card shadow mb-4">
                                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -350,13 +360,16 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                                                 <tbody>
                                                     <?php foreach ($avanzamenti as $avanz): ?>
                                                         <tr>
-                                                            <td><?= date('d/m/Y', strtotime($avanz['data_aggiornamento'])) ?></td>
-                                                            <td class="small"><?= htmlspecialchars($avanz['nome_fase'] ?? '-') ?></td>
-                                                            <td class="small"><?= htmlspecialchars($avanz['codice_articolo'] ?? '-') ?></td>
+                                                            <td><?= date('d/m/Y', strtotime($avanz['data_aggiornamento'])) ?>
+                                                            </td>
+                                                            <td class="small">
+                                                                <?= htmlspecialchars($avanz['nome_fase'] ?? '-') ?></td>
+                                                            <td class="small">
+                                                                <?= htmlspecialchars($avanz['codice_articolo'] ?? '-') ?></td>
                                                             <td>
                                                                 <div class="progress" style="height: 15px;">
-                                                                    <div class="progress-bar bg-success" 
-                                                                         style="width: <?= $avanz['percentuale_completamento'] ?>%">
+                                                                    <div class="progress-bar bg-success"
+                                                                        style="width: <?= $avanz['percentuale_completamento'] ?>%">
                                                                     </div>
                                                                 </div>
                                                                 <small><?= $avanz['percentuale_completamento'] ?>%</small>
@@ -380,7 +393,7 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Colonna destra: Azioni rapide e Note -->
                         <div class="col-lg-4">
                             <!-- Azioni Rapide -->
@@ -392,31 +405,27 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                                     </h6>
                                 </div>
                                 <div class="card-body">
-                                   
-                                    
+
+
                                     <!-- Form Aggiunta Nota -->
                                     <form method="POST">
                                         <h6 class="text-info">Aggiungi Nota</h6>
                                         <div class="form-group">
                                             <label for="titolo" class="small">Titolo (opzionale)</label>
-                                            <input type="text" 
-                                                   class="form-control form-control-sm" 
-                                                   id="titolo" 
-                                                   name="titolo">
+                                            <input type="text" class="form-control form-control-sm" id="titolo"
+                                                name="titolo">
                                         </div>
                                         <div class="form-group">
                                             <label for="contenuto" class="small">Contenuto *</label>
-                                            <textarea class="form-control form-control-sm" 
-                                                      id="contenuto" 
-                                                      name="contenuto" 
-                                                      rows="3" 
-                                                      required></textarea>
+                                            <textarea class="form-control form-control-sm" id="contenuto"
+                                                name="contenuto" rows="3" required></textarea>
                                         </div>
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="tipo_nota" class="small">Tipo</label>
-                                                    <select class="form-control form-control-sm" id="tipo_nota" name="tipo_nota">
+                                                    <select class="form-control form-control-sm" id="tipo_nota"
+                                                        name="tipo_nota">
                                                         <option value="GENERALE">Generale</option>
                                                         <option value="PROBLEMA">Problema</option>
                                                         <option value="URGENTE">Urgente</option>
@@ -428,7 +437,8 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                                             <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="priorita" class="small">Priorità</label>
-                                                    <select class="form-control form-control-sm" id="priorita" name="priorita">
+                                                    <select class="form-control form-control-sm" id="priorita"
+                                                        name="priorita">
                                                         <option value="BASSA">Bassa</option>
                                                         <option value="MEDIA" selected>Media</option>
                                                         <option value="ALTA">Alta</option>
@@ -439,11 +449,8 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                                         </div>
                                         <div class="form-group">
                                             <label for="autore" class="small">Autore</label>
-                                            <input type="text" 
-                                                   class="form-control form-control-sm" 
-                                                   id="autore" 
-                                                   name="autore" 
-                                                   value="Admin">
+                                            <input type="text" class="form-control form-control-sm" id="autore"
+                                                name="autore" value="Admin">
                                         </div>
                                         <button type="submit" name="add_nota" class="btn btn-info btn-sm btn-block">
                                             <i class="fas fa-sticky-note mr-1"></i>Aggiungi Nota
@@ -451,7 +458,7 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                                     </form>
                                 </div>
                             </div>
-                            
+
                             <!-- Note -->
                             <div class="card shadow">
                                 <div class="card-header">
@@ -473,23 +480,43 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                                                     <div class="d-flex w-100 justify-content-between">
                                                         <div class="d-flex">
                                                             <?php
-                                                            $tipo_badge = match($nota['tipo_nota']) {
-                                                                'PROBLEMA' => 'badge-danger',
-                                                                'URGENTE' => 'badge-warning',
-                                                                'QUALITA' => 'badge-info',
-                                                                'LOGISTICA' => 'badge-secondary',
-                                                                default => 'badge-light'
-                                                            };
-                                                            
-                                                            $priorita_badge = match($nota['priorita']) {
-                                                                'CRITICA' => 'badge-danger',
-                                                                'ALTA' => 'badge-warning',
-                                                                'MEDIA' => 'badge-info',
-                                                                default => 'badge-secondary'
-                                                            };
+                                                            switch ($nota['tipo_nota']) {
+                                                                case 'PROBLEMA':
+                                                                    $tipo_badge = 'badge-danger';
+                                                                    break;
+                                                                case 'URGENTE':
+                                                                    $tipo_badge = 'badge-warning';
+                                                                    break;
+                                                                case 'QUALITA':
+                                                                    $tipo_badge = 'badge-info';
+                                                                    break;
+                                                                case 'LOGISTICA':
+                                                                    $tipo_badge = 'badge-secondary';
+                                                                    break;
+                                                                default:
+                                                                    $tipo_badge = 'badge-light';
+                                                                    break;
+                                                            }
+
+                                                            switch ($nota['priorita']) {
+                                                                case 'CRITICA':
+                                                                    $priorita_badge = 'badge-danger';
+                                                                    break;
+                                                                case 'ALTA':
+                                                                    $priorita_badge = 'badge-warning';
+                                                                    break;
+                                                                case 'MEDIA':
+                                                                    $priorita_badge = 'badge-info';
+                                                                    break;
+                                                                default:
+                                                                    $priorita_badge = 'badge-secondary';
+                                                                    break;
+                                                            }
                                                             ?>
-                                                            <span class="badge <?= $tipo_badge ?> mr-1"><?= $nota['tipo_nota'] ?></span>
-                                                            <span class="badge <?= $priorita_badge ?>"><?= $nota['priorita'] ?></span>
+                                                            <span
+                                                                class="badge <?= $tipo_badge ?> mr-1"><?= $nota['tipo_nota'] ?></span>
+                                                            <span
+                                                                class="badge <?= $priorita_badge ?>"><?= $nota['priorita'] ?></span>
                                                         </div>
                                                         <small><?= date('d/m H:i', strtotime($nota['data_creazione'])) ?></small>
                                                     </div>
@@ -508,81 +535,81 @@ $ultimo_avanzamento = !empty($avanzamenti) ? $avanzamenti[0] : null;
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
             <?php include_once BASE_PATH . '/components/scripts.php'; ?>
             <?php include_once BASE_PATH . '/components/footer.php'; ?>
         </div>
     </div>
-    
+
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Gestione selezione fase per avanzamento
-        const faseSelect = document.getElementById('fase_id');
-        const articoloInput = document.getElementById('articolo_id');
-        const percentualeInput = document.getElementById('percentuale');
-        const paiaInput = document.getElementById('paia_completate');
-        
-        if (faseSelect && articoloInput) {
-            faseSelect.addEventListener('change', function() {
-                const selectedOption = this.options[this.selectedIndex];
-                const articoloId = selectedOption.getAttribute('data-articolo');
-                articoloInput.value = articoloId || '';
-            });
-        }
-        
-        // Calcolo automatico percentuale in base alle paia completate
-        if (paiaInput && percentualeInput) {
-            paiaInput.addEventListener('input', function() {
-                const paiaCompletate = parseInt(this.value) || 0;
-                const totalePaia = <?= $totale_paia ?>;
-                
-                if (totalePaia > 0) {
-                    const percentuale = Math.round((paiaCompletate / totalePaia) * 100);
-                    percentualeInput.value = Math.min(percentuale, 100);
-                }
-            });
-            
-            // Calcolo automatico paia completate in base alla percentuale
-            percentualeInput.addEventListener('input', function() {
-                const percentuale = parseFloat(this.value) || 0;
-                const totalePaia = <?= $totale_paia ?>;
-                
-                if (totalePaia > 0) {
-                    const paiaCompletate = Math.round((percentuale / 100) * totalePaia);
-                    paiaInput.value = paiaCompletate;
-                }
-            });
-        }
-        
-        // Evidenziazione note in base al tipo e priorità
-        const noteItems = document.querySelectorAll('.list-group-item');
-        noteItems.forEach(item => {
-            const badges = item.querySelectorAll('.badge');
-            badges.forEach(badge => {
-                if (badge.textContent.includes('URGENTE') || badge.textContent.includes('CRITICA')) {
-                    item.style.borderLeft = '4px solid #dc3545';
-                } else if (badge.textContent.includes('PROBLEMA') || badge.textContent.includes('ALTA')) {
-                    item.style.borderLeft = '4px solid #ffc107';
-                }
-            });
-        });
-       
-        // Auto-refresh ogni 3 minuti per vedere nuovi aggiornamenti
-        let autoRefresh = setInterval(function() {
-            // Verifica solo se la pagina è visibile
-            if (!document.hidden) {
-                location.reload();
+        document.addEventListener('DOMContentLoaded', function () {
+            // Gestione selezione fase per avanzamento
+            const faseSelect = document.getElementById('fase_id');
+            const articoloInput = document.getElementById('articolo_id');
+            const percentualeInput = document.getElementById('percentuale');
+            const paiaInput = document.getElementById('paia_completate');
+
+            if (faseSelect && articoloInput) {
+                faseSelect.addEventListener('change', function () {
+                    const selectedOption = this.options[this.selectedIndex];
+                    const articoloId = selectedOption.getAttribute('data-articolo');
+                    articoloInput.value = articoloId || '';
+                });
             }
-        }, 180000); // 3 minuti
-        
-        // Ferma auto-refresh quando l'utente interagisce con i form
-        document.querySelectorAll('form input, form textarea, form select').forEach(input => {
-            input.addEventListener('focus', function() {
-                clearInterval(autoRefresh);
+
+            // Calcolo automatico percentuale in base alle paia completate
+            if (paiaInput && percentualeInput) {
+                paiaInput.addEventListener('input', function () {
+                    const paiaCompletate = parseInt(this.value) || 0;
+                    const totalePaia = <?= $totale_paia ?>;
+
+                    if (totalePaia > 0) {
+                        const percentuale = Math.round((paiaCompletate / totalePaia) * 100);
+                        percentualeInput.value = Math.min(percentuale, 100);
+                    }
+                });
+
+                // Calcolo automatico paia completate in base alla percentuale
+                percentualeInput.addEventListener('input', function () {
+                    const percentuale = parseFloat(this.value) || 0;
+                    const totalePaia = <?= $totale_paia ?>;
+
+                    if (totalePaia > 0) {
+                        const paiaCompletate = Math.round((percentuale / 100) * totalePaia);
+                        paiaInput.value = paiaCompletate;
+                    }
+                });
+            }
+
+            // Evidenziazione note in base al tipo e priorità
+            const noteItems = document.querySelectorAll('.list-group-item');
+            noteItems.forEach(item => {
+                const badges = item.querySelectorAll('.badge');
+                badges.forEach(badge => {
+                    if (badge.textContent.includes('URGENTE') || badge.textContent.includes('CRITICA')) {
+                        item.style.borderLeft = '4px solid #dc3545';
+                    } else if (badge.textContent.includes('PROBLEMA') || badge.textContent.includes('ALTA')) {
+                        item.style.borderLeft = '4px solid #ffc107';
+                    }
+                });
+            });
+
+            // Auto-refresh ogni 3 minuti per vedere nuovi aggiornamenti
+            let autoRefresh = setInterval(function () {
+                // Verifica solo se la pagina è visibile
+                if (!document.hidden) {
+                    location.reload();
+                }
+            }, 180000); // 3 minuti
+
+            // Ferma auto-refresh quando l'utente interagisce con i form
+            document.querySelectorAll('form input, form textarea, form select').forEach(input => {
+                input.addEventListener('focus', function () {
+                    clearInterval(autoRefresh);
+                });
             });
         });
-    });
     </script>
 </body>
