@@ -256,7 +256,16 @@ try {
                                         </div>
                                     </div>
                                 </div>
-
+                                <?php if ($laboratorio['lanci_lavorazione'] > 0): ?>
+                                    <div class="mt-2">
+                                        <button type="button" class="btn btn-outline-danger btn-sm"
+                                            onclick="generaPdfLanci(<?= $laboratorio['laboratorio_id'] ?>, '<?= htmlspecialchars($laboratorio['nome_laboratorio']) ?>')"
+                                            title="Genera PDF lanci in lavorazione">
+                                            <i class="fas fa-file-pdf mr-1"></i>
+                                            PDF Lanci in Lavorazione (<?= $laboratorio['lanci_lavorazione'] ?>)
+                                        </button>
+                                    </div>
+                                <?php endif; ?>
                                 <!-- Lanci del laboratorio -->
                                 <div class="card-body p-0">
                                     <?php if (empty($laboratorio['lanci'])): ?>
@@ -417,6 +426,14 @@ try {
                                 'Errore nel caricamento della matrice. Riprova più tardi.' +
                                 '</div>';
                         });
+                }
+
+                function generaPdfLanci(laboratorioId, nomeLaboratorio) {
+                    // Conferma prima di generare
+                    if (confirm('Vuoi generare il PDF con i lanci in lavorazione per ' + nomeLaboratorio + '?')) {
+                        // Apri il PDF in una nuova finestra/tab
+                        window.open('genera_pdf_lanci_lavorazione.php?laboratorio_id=' + laboratorioId, '_blank');
+                    }
                 }
             </SCRIPT>
         </div>
