@@ -278,14 +278,10 @@ try {
                 
                 // Colonna Paia
                 $html .= '<td class="paia-info">';
-                $html .= '<span class="paia-completate">' . number_format($articolo['quantita_completata']) . '</span>';
-                $html .= ' / ';
+        
                 $html .= '<span class="paia-totali">' . number_format($articolo['quantita_totale']) . '</span>';
+    
                 
-                // Calcola percentuale
-                $percentuale = $articolo['quantita_totale'] > 0 ? 
-                    round(($articolo['quantita_completata'] / $articolo['quantita_totale']) * 100, 1) : 0;
-                $html .= '<br>(' . $percentuale . '%)';
                 $html .= '</td>';
                 
                 // Colonna Ultimo Avanzamento
