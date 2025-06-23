@@ -2,21 +2,10 @@
 session_start();
 require_once '../config/config.php';
 
-// Controllo login
-if (!isset($_SESSION['laboratorio_id'])) {
-    header('Location: index.php');
-    exit;
-}
 
-$laboratorio_id = $_SESSION['laboratorio_id'];
-$laboratorio_nome = $_SESSION['laboratorio_nome'];
+$laboratorio_id = '1';
+$laboratorio_nome = 'MARLET 2012 SHPK';
 
-// Controllo ID lancio
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    $_SESSION['error'] = 'ID lancio non valido';
-    header('Location: dashboard.php');
-    exit;
-}
 
 $lancio_id = (int)$_GET['id'];
 
