@@ -2,10 +2,21 @@
 session_start();
 require_once '../config/config.php';
 
+// Controllo login
+if (!isset($_SESSION['laboratorio_id'])) {
+    header('Location: index.php');
+    exit;
+}
 
-$laboratorio_id = '1';
-$laboratorio_nome = 'MARLET 2012 SHPK';
+$laboratorio_id = $_SESSION['laboratorio_id'];
+$laboratorio_nome = $_SESSION['laboratorio_nome'];
 
+// Controllo ID lancio
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    $_SESSION['error'] = 'ID lancio non valido';
+    header('Location: dashboard.php');
+    exit;
+}
 
 $lancio_id = (int)$_GET['id'];
 
@@ -241,7 +252,7 @@ if ($_POST && isset($_POST['aggiorna_fase'])) {
             
         } catch (PDOException $e) {
             $pdo->rollback();
-            $_SESSION['error'] = 'Errore durante l\'aggiornamento: ' . ($debug ? $e->getMessage() : 'Errore generico');
+           $_SESSION['error'] = 'Errore durante l\'aggiornamento: ' . $e->getMessage() . ' - Codice: ' . $e->getCode() . ' - File: ' . $e->getFile() . ' - Linea: ' . $e->getLine();
         }
     } else {
         $_SESSION['error'] = 'Dati obbligatori mancanti';
