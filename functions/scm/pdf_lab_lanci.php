@@ -29,7 +29,6 @@ try {
             l.id,
             l.numero_lancio,
             l.data_lancio,
-            l.data_consegna,
             l.note
         FROM scm_lanci l
         WHERE l.laboratorio_id = ? 
@@ -48,13 +47,13 @@ try {
         // Articoli del lancio
         $stmt_articoli = $pdo->prepare("
             SELECT 
+                a.id,
                 a.codice_articolo,
-                a.descrizione,
                 a.quantita_totale,
                 a.quantita_completata
             FROM scm_articoli_lancio a
             WHERE a.lancio_id = ?
-            ORDER BY a.codice_articolo
+            ORDER BY a.ordine_articolo
         ");
         $stmt_articoli->execute([$lancio['id']]);
         $lancio['articoli'] = $stmt_articoli->fetchAll(PDO::FETCH_ASSOC);
@@ -64,15 +63,16 @@ try {
             $stmt_avanzamento = $pdo->prepare("
                 SELECT 
                     av.data_aggiornamento,
-                    av.note,
-                    f.nome_fase
+                    av.note_avanzamento,
+                    f.nome_fase,
+                    av.stato_fase
                 FROM scm_avanzamento av
                 JOIN scm_fasi_lancio f ON av.fase_id = f.id
                 WHERE av.lancio_id = ? AND av.articolo_id = ?
-                ORDER BY av.data_aggiornamento DESC
+                ORDER BY av.data_aggiornamento DESC, av.id DESC
                 LIMIT 1
             ");
-            $stmt_avanzamento->execute([$lancio['id'], $articolo['id'] ?? null]);
+            $stmt_avanzamento->execute([$lancio['id'], $articolo['id']]);
             $ultimo_avanzamento = $stmt_avanzamento->fetch(PDO::FETCH_ASSOC);
             
             $articolo['ultimo_avanzamento'] = $ultimo_avanzamento;
@@ -196,12 +196,6 @@ try {
             margin-top: 2px;
         }
         
-        .consegna-info {
-            font-size: 10px;
-            color: #dc3545;
-            margin-top: 3px;
-        }
-        
         .footer-info {
             margin-top: 30px;
             padding-top: 10px;
@@ -214,6 +208,30 @@ try {
         .no-avanzamento {
             color: #dc3545;
             font-style: italic;
+        }
+        
+        .stato-badge {
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 9px;
+            color: white;
+        }
+        
+        .stato-COMPLETATO {
+            background-color: #28a745;
+        }
+        
+        .stato-IN_CORSO {
+            background-color: #ffc107;
+            color: #000;
+        }
+        
+        .stato-NON_INIZIATO {
+            background-color: #6c757d;
+        }
+        
+        .stato-BLOCCATO {
+            background-color: #dc3545;
         }
     </style>';
     
@@ -234,9 +252,7 @@ try {
         $html .= '<div class="lancio-header">';
         $html .= '# LANCIO: ' . htmlspecialchars($lancio['numero_lancio']);
         $html .= ' (ID: ' . $lancio['id'] . ')';
-        if ($lancio['data_consegna']) {
-            $html .= ' - Consegna: ' . date('d/m/Y', strtotime($lancio['data_consegna']));
-        }
+        $html .= ' - Data: ' . date('d/m/Y', strtotime($lancio['data_lancio']));
         $html .= '</div>';
         
         // Tabella articoli
@@ -258,9 +274,6 @@ try {
                 // Colonna Articolo
                 $html .= '<td>';
                 $html .= '<strong>' . htmlspecialchars($articolo['codice_articolo']) . '</strong>';
-                if ($articolo['descrizione']) {
-                    $html .= '<br><small>' . htmlspecialchars($articolo['descrizione']) . '</small>';
-                }
                 $html .= '</td>';
                 
                 // Colonna Paia
@@ -278,10 +291,18 @@ try {
                 // Colonna Ultimo Avanzamento
                 $html .= '<td class="avanzamento-info">';
                 if ($articolo['ultimo_avanzamento']) {
-                    if ($articolo['ultimo_avanzamento']['note']) {
-                        $html .= htmlspecialchars($articolo['ultimo_avanzamento']['note']);
+                    if (!empty($articolo['ultimo_avanzamento']['note_avanzamento'])) {
+                        $html .= htmlspecialchars($articolo['ultimo_avanzamento']['note_avanzamento']);
                     } else {
-                        $html .= '<em>Nessuna nota</em>';
+                        $html .= '<em>Nessuna nota specifica</em>';
+                    }
+                    
+                    // Stato della fase
+                    if (!empty($articolo['ultimo_avanzamento']['stato_fase'])) {
+                        $stato_classe = 'stato-' . $articolo['ultimo_avanzamento']['stato_fase'];
+                        $html .= '<br><span class="stato-badge ' . $stato_classe . '">';
+                        $html .= str_replace('_', ' ', $articolo['ultimo_avanzamento']['stato_fase']);
+                        $html .= '</span>';
                     }
                 } else {
                     $html .= '<span class="no-avanzamento">Nessun avanzamento registrato</span>';
@@ -294,7 +315,7 @@ try {
                     $html .= '<div class="avanzamento-data">';
                     $html .= date('d/m/Y', strtotime($articolo['ultimo_avanzamento']['data_aggiornamento']));
                     $html .= '</div>';
-                    if ($articolo['ultimo_avanzamento']['nome_fase']) {
+                    if (!empty($articolo['ultimo_avanzamento']['nome_fase'])) {
                         $html .= '<div class="avanzamento-fase">';
                         $html .= htmlspecialchars($articolo['ultimo_avanzamento']['nome_fase']);
                         $html .= '</div>';
@@ -314,9 +335,9 @@ try {
         }
         
         // Note del lancio (se presenti)
-        if ($lancio['note']) {
+        if (!empty($lancio['note'])) {
             $html .= '<div style="margin-top: 10px; padding: 8px; background-color: #fff3cd; border-left: 3px solid #ffc107;">';
-            $html .= '<strong>Note:</strong> ' . nl2br(htmlspecialchars($lancio['note']));
+            $html .= '<strong>Note Lancio:</strong> ' . nl2br(htmlspecialchars($lancio['note']));
             $html .= '</div>';
         }
         
@@ -327,6 +348,11 @@ try {
     $html .= '<div class="footer-info">';
     $html .= 'Documento generato automaticamente dal Sistema SCM - ' . date('d/m/Y H:i:s');
     $html .= '<br>Totale lanci in lavorazione: ' . count($lanci);
+    $total_articoli = 0;
+    foreach ($lanci as $lancio) {
+        $total_articoli += count($lancio['articoli']);
+    }
+    $html .= ' | Totale articoli: ' . $total_articoli;
     $html .= '</div>';
     
     // Scrivi il contenuto nel PDF
