@@ -432,7 +432,7 @@ try {
                     // Conferma prima di generare
                     if (confirm('Vuoi generare il PDF con i lanci in lavorazione per ' + nomeLaboratorio + '?')) {
                         // Apri il PDF in una nuova finestra/tab
-                        window.open('genera_pdf_lanci_lavorazione.php?laboratorio_id=' + laboratorioId, '_blank');
+                        window.open('pdf_lab_lanc.php?laboratorio_id=' + laboratorioId, '_blank');
                     }
                 }
             </SCRIPT>
