@@ -33,7 +33,7 @@ try {
         FROM scm_lanci l
         WHERE l.laboratorio_id = ? 
         AND l.stato_generale = 'IN_LAVORAZIONE'
-        ORDER BY l.data_lancio DESC
+        ORDER BY l.data_lancio ASC
     ");
     $stmt->execute([$laboratorio_id]);
     $lanci = $stmt->fetchAll(PDO::FETCH_ASSOC);
