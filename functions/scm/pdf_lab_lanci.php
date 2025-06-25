@@ -33,7 +33,7 @@ try {
         FROM scm_lanci l
         WHERE l.laboratorio_id = ? 
         AND l.stato_generale = 'IN_LAVORAZIONE'
-        ORDER BY l.data_lancio DESC
+        ORDER BY l.data_lancio ASC
     ");
     $stmt->execute([$laboratorio_id]);
     $lanci = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -43,7 +43,7 @@ try {
     }
     
     // Per ogni lancio, ottieni articoli e ultimo avanzamento
-    foreach ($lanci as &$lancio) {
+    for ($i = 0; $i < count($lanci); $i++) {
         // Articoli del lancio
         $stmt_articoli = $pdo->prepare("
             SELECT 
@@ -55,11 +55,11 @@ try {
             WHERE a.lancio_id = ?
             ORDER BY a.ordine_articolo
         ");
-        $stmt_articoli->execute([$lancio['id']]);
-        $lancio['articoli'] = $stmt_articoli->fetchAll(PDO::FETCH_ASSOC);
+        $stmt_articoli->execute([$lanci[$i]['id']]);
+        $lanci[$i]['articoli'] = $stmt_articoli->fetchAll(PDO::FETCH_ASSOC);
         
         // Ultimo avanzamento per ogni articolo
-        foreach ($lancio['articoli'] as &$articolo) {
+        for ($j = 0; $j < count($lanci[$i]['articoli']); $j++) {
             $stmt_avanzamento = $pdo->prepare("
                 SELECT 
                     av.data_aggiornamento,
@@ -72,10 +72,10 @@ try {
                 ORDER BY av.data_aggiornamento DESC, av.id DESC
                 LIMIT 1
             ");
-            $stmt_avanzamento->execute([$lancio['id'], $articolo['id']]);
+            $stmt_avanzamento->execute([$lanci[$i]['id'], $lanci[$i]['articoli'][$j]['id']]);
             $ultimo_avanzamento = $stmt_avanzamento->fetch(PDO::FETCH_ASSOC);
             
-            $articolo['ultimo_avanzamento'] = $ultimo_avanzamento;
+            $lanci[$i]['articoli'][$j]['ultimo_avanzamento'] = $ultimo_avanzamento;
         }
     }
     
@@ -226,7 +226,7 @@ try {
             color: #000;
         }
         
-        .stato-NON_INIZIATO {
+        .stato-NON_INIZIATA {
             background-color: #6c757d;
         }
         
@@ -260,9 +260,9 @@ try {
             $html .= '<table class="articoli-table">';
             $html .= '<thead>';
             $html .= '<tr>';
-            $html .= '<th style="width: 25%;">ARTICOLO</th>';
-            $html .= '<th style="width: 20%;">PAIA</th>';
-            $html .= '<th style="width: 35%;">ULTIMO AVANZAMENTO</th>';
+            $html .= '<th style="width: 35%;">ARTICOLO</th>';
+            $html .= '<th style="width: 15%;">PAIA</th>';
+            $html .= '<th style="width: 30%;">ULTIMO AVANZAMENTO</th>';
             $html .= '<th style="width: 20%;">DATA/FASE</th>';
             $html .= '</tr>';
             $html .= '</thead>';
@@ -278,10 +278,14 @@ try {
                 
                 // Colonna Paia
                 $html .= '<td class="paia-info">';
-        
+                $html .= '<span class="paia-completate">' . number_format($articolo['quantita_completata']) . '</span>';
+                $html .= ' / ';
                 $html .= '<span class="paia-totali">' . number_format($articolo['quantita_totale']) . '</span>';
-    
                 
+                // Calcola percentuale
+                $percentuale = $articolo['quantita_totale'] > 0 ? 
+                    round(($articolo['quantita_completata'] / $articolo['quantita_totale']) * 100, 1) : 0;
+                $html .= '<br>(' . $percentuale . '%)';
                 $html .= '</td>';
                 
                 // Colonna Ultimo Avanzamento
